@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: Bash - Mon blog perso.</title>
+  <title>Php en Mode Intéractif - Mon blog perso.</title>
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Category: bash">
+  <meta name="description" content="Je me baladai sous Github et je suis tombé sur ce dépot https://github.com/borisrepl/boris (en fait c'est un des dépots les plus actifs de ce mois &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mcamuzat.github.io/blog/categories/bash/">
+  <link rel="canonical" href="http://mcamuzat.github.io/blog/2015/03/08/php-en-mode-interactif/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Mon blog perso." type="application/atom+xml">
@@ -76,35 +76,117 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Bash</h1>
+    
+      <h1 class="entry-title">Php en Mode Intéractif</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-03-08T19:24:57+01:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:24 pm</span></time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>Je me baladai sous Github</p>
 
-  
-  <h2>2015</h2>
+<p>et je suis tombé sur ce dépot</p>
 
-<article>
-  
-<h1><a href="/blog/2015/03/02/quelques-commandes-vim-slash-bash/">Quelques Commandes Vim/Bash</a></h1>
-<time datetime="2015-03-02T21:24:52+01:00" pubdate><span class='month'>Mar</span> <span class='day'>02</span> <span class='year'>2015</span></time>
+<p><a href="https://github.com/borisrepl/boris">https://github.com/borisrepl/boris</a></p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/bash/'>bash</a>, <a class='category' href='/blog/categories/vim/'>vim</a></span>
-</footer>
+<p>(en fait c&#8217;est un des dépots les plus actifs de ce mois pour Php)</p>
+
+<p>c&#8217;est vraiment cool</p>
+
+<p>Bien entendu il existe déja un mode interactif sous Php</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>php -a
+</span></code></pre></td></tr></table></div></figure>
 
 
-</article>
+<p>On peux le refaire en encore moins de ligne.</p>
 
+<p>Explication : La documentation parle de REPL.
+c&#8217;est l&#8217;abbreviation de <strong>R</strong>ead <strong>E</strong>val <strong>P</strong>rint <strong>L</strong>oop</p>
+
+<p>et voici comment on peut l&#8217;implémenter (difficile de faire plus simple)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="k">while</span> <span class="o">(</span><span class="nb">true</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="nb">echo eval</span><span class="o">(</span>fgets<span class="o">(</span>STDIN<span class="o">))</span><span class="p">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> avec les commentaires</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="k">while</span> <span class="o">(</span><span class="nb">true</span><span class="o">)</span>/*Loop*/ <span class="o">{</span>
+</span><span class='line'>  <span class="nb">echo</span> /*Print*/ <span class="nb">eval</span><span class="o">(</span>/*Read*/ fgets<span class="o">(</span>STDIN<span class="o">))</span><span class="p">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Read Eval Print Loop. le nom donne le programme.</p>
+
+<p>C&#8217;est une technique qui marche avec un peu tout les languages.
+voir <a href="http://repl.it">http://repl.it</a></p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">mcamuzat</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-03-08T19:24:57+01:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:24 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/php/'>php</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mcamuzat.github.io/blog/2015/03/08/php-en-mode-interactif/" data-via="" data-counturl="http://mcamuzat.github.io/blog/2015/03/08/php-en-mode-interactif/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/03/08/comprendre-les-raccourcis-clavier-de-vi-slash-vim/" title="Previous Post: Comprendre les raccourcis clavier de vi/vim">&laquo; Comprendre les raccourcis clavier de vi/vim</a>
+      
+      
+    </p>
+  </footer>
 </article>
 
 </div>
