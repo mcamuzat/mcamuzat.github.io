@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Comprendre les raccourcis clavier de vi/vim"
+title: "Comprendre les raccourcis claviers de vi/vim"
 date: 2015-03-08 18:37:20 +0100
 comments: true
 categories: [Vim, Ide, Linux]
