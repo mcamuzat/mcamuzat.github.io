@@ -9,13 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Aujourd'hui je vais essayer d'expliquer les évalutations partielles. Soit la fonction suivante 1
-2
-3
-4
-function add($a , $b)
-{ return $a + $b;
-} j'ai &hellip;">
+  <meta name="description" content="Comprendre les raccourcis claviers Vim : la méthode des deux tableaux Ajourd'hui nous allons essayer de comprendre les raccourcis de vi/vim. je vous &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -37,6 +31,18 @@ function add($a , $b)
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
   
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-60315965-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
 
 </head>
 
@@ -77,7 +83,7 @@ function add($a , $b)
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2015/03/06/evaluation-partielle/">Evaluation Partielle</a></h1>
+      <h1 class="entry-title"><a href="/blog/2015/03/08/comprendre-les-raccourcis-clavier-de-vi-slash-vim/">Comprendre Les Raccourcis Clavier De Vi/vim</a></h1>
     
     
       <p class="meta">
@@ -86,156 +92,257 @@ function add($a , $b)
 
 
 
-<time class='entry-date' datetime='2015-03-06T23:02:05+01:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:02 pm</span></time>
+<time class='entry-date' datetime='2015-03-08T18:37:20+01:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:37 pm</span></time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>Aujourd&#8217;hui je vais essayer d&#8217;expliquer les évalutations partielles.</p>
+  <div class="entry-content"><h1>Comprendre les raccourcis claviers Vim : la méthode des deux tableaux</h1>
 
-<p>Soit la fonction suivante</p>
+<p>Ajourd&#8217;hui nous allons essayer de comprendre les raccourcis de vi/vim. je vous demande de prendre de deux feuilles. Je vais essayer de vous monter comment se combinent les touches.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">add</span><span class="p">(</span><span class="nv">$a</span> <span class="p">,</span> <span class="nv">$b</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nv">$a</span> <span class="o">+</span> <span class="nv">$b</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
+<ul>
+<li>sur la feuille 1 dessinez deux colonnes: touche description.</li>
+<li>Titre de la feuille 1 : Mouvement</li>
+<li>Tire de la feuille 2 : Action deux colonnes : touche et description.</li>
+</ul>
 
 
-<p>j&#8217;ai parfaitement le droit de faire cette fonction</p>
+<p>lancez <code>vim</code> et ouvrez un fichier texte existant.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">addbis</span><span class="p">(</span><span class="nv">$a</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="k">function</span><span class="p">(</span><span class="nv">$b</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$a</span><span class="p">)</span> <span class="p">[</span>
-</span><span class='line'>      <span class="k">return</span> <span class="nv">$a</span> <span class="o">+</span> <span class="nv">$b</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
+<h2>Les mouvements :</h2>
+
+<p><code>w</code> signifie <strong>w</strong>ord
+appuyez sur <code>w</code> vous passez au mot suivant.</p>
+
+<p>ajouter à votre tableau mouvement
+w <strong>w</strong>ord  passe au mots suivant</p>
+
+<p><code>b</code> signifie <strong>b</strong>ack. vous allez au mot précédent</p>
+
+<p>vous ajoutez a la feuille b <strong>b</strong>ack</p>
+
+<p><code>e</code> signifie <strong>e</strong>nd va à la fin du mot</p>
+
+<h3>les directions</h3>
+
+<p>J&#8217;ai un peu peur de vous perdre ici.
+dans le temps les clavier n&#8217;avait pas de touche de direction. donc les touche sont <code>h</code>, <code>j</code>, <code>k</code>, <code>l</code> pour repectivement <code>gauche</code>, <code>bas</code>, <code>haut</code>, <code>droite</code></p>
+
+<p>moyen mnemotechnique <code>j</code> va vers le bas, <code>k</code> va vers le haut.</p>
+
+<p>Vous pouvez utiliser les flèches. Mais un des avantage d&#8217;utiliser les <code>j</code> et <code>k</code> est que vos doigts ne quitte jamais le milieu du clavier.</p>
+
+<p>vous avez maintenant 7 lignes à votre tableau</p>
+
+<h3>Un quiz !</h3>
+
+<p>que se passe t&#8217;il si je tape <code>3w</code> ou <code>5j</code> ?</p>
+
+<p>réponse je me déplace de <code>3 mots</code> ou <code>5 ligne vers le bas</code>
+modifions notre tableau en rajoutant le (n).</p>
+
+<h3>Se déplacer dans le fichier.</h3>
+
+<p><code>gg</code> vous ramène au début du fichier (<code>g</code> pour <strong>g</strong>o)
+<code>G</code> vous emmène à la fin du fichier
+<code>50G</code> vous emmène à la ligne 50 (variante <code>:50</code> marche aussi)</p>
+
+<p>vous rajoutez les 3 lignes dans votre tableau.</p>
+
+<h3>Début de ligne, fin de ligne</h3>
+
+<p>si vous connaissez vos regex <code>^a</code> vous donnes tout les occurences qui commencent par <code>a</code> et <code>a$</code> qui finissent par <code>a</code>
+<code>^</code> début du texte sur la ligne actuelle
+<code>$</code> fin de la ligne
+<code>0</code> colonne 0 (tout début de la ligne)</p>
+
+<h3>A la recherche du mot perdu</h3>
+
+<p>pour chercher de vi on utilise la touche <code>/</code>, vous mettez le mot que vous souhaitez, appuyez sur <code>n</code> pour suivant ou <code>N</code> pour précédent.</p>
+
+<p>nous avons le tableau final</p>
+
+<table>
+<thead>
+<tr>
+<th> Touche      </th>
+<th style="text-align:center;"> Description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>w</code>               </td>
+<td style="text-align:center;"> <strong>w</strong>ord  mot suivant</td>
+</tr>
+<tr>
+<td> <code>(n)w</code>            </td>
+<td style="text-align:center;"> n <strong>w</strong>ord  (ex: <code>3w</code> 3 mots)</td>
+</tr>
+<tr>
+<td> <code>b</code>      </td>
+<td style="text-align:center;"> <strong>b</strong>ack   mots précédent  </td>
+</tr>
+<tr>
+<td> <code>e</code> </td>
+<td style="text-align:center;"> <strong>e</strong>nd fin du mot</td>
+</tr>
+<tr>
+<td> <code>h</code>,<code>j</code>, <code>k</code>,<code>l</code> </td>
+<td style="text-align:center;"> gauche, bas, haut, droite</td>
+</tr>
+<tr>
+<td> <code>(n)j</code> </td>
+<td style="text-align:center;"> 3 fois bas</td>
+</tr>
+<tr>
+<td> <code>gg</code> </td>
+<td style="text-align:center;"> début du fichier</td>
+</tr>
+<tr>
+<td> <code>G</code> </td>
+<td style="text-align:center;"> fin du fichier</td>
+</tr>
+<tr>
+<td><code>20G</code></td>
+<td style="text-align:center;"> ligne 20</td>
+</tr>
+<tr>
+<td><code>^</code></td>
+<td style="text-align:center;">Début de ligne</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td style="text-align:center;"> fin de la ligne</td>
+</tr>
+<tr>
+<td> <code>/mot</code></td>
+<td style="text-align:center;"> cherche <code>mot</code>. <code>n</code> pour suivant <code>N</code> pour précédent</td>
+</tr>
+</tbody>
+</table>
 
 
-<p>remarquer que l&#8217;appel change un peu ..</p>
+<p>Nous avons la feuille 1.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="c1">// cas n° 1</span>
-</span><span class='line'><span class="nv">$result</span> <span class="o">=</span> <span class="nx">add</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
-</span><span class='line'><span class="c1">// cas n° 2</span>
-</span><span class='line'><span class="nv">$addFour</span><span class="o">=</span> <span class="nx">addbis</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
-</span><span class='line'><span class="nv">$result</span> <span class="o">=</span> <span class="nv">$addFour</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
+<h3>Un demi conclusion :</h3>
+
+<ul>
+<li>Il existe plus de mouvement.</li>
+<li>mais le but ici n&#8217;est pas d&#8217;etre exhaustif. J&#8217;ai besoin des mouvements pour introduire la feuille suivante.</li>
+</ul>
 
 
-<p>en fait, je suis obligé de passer par une variable <code>$addFour</code> car je n&#8217;ai pas le droit de faire <code>addbis(4)(5)</code> en <code>PHP</code> (c&#8217;est parfaitement légal en javascript).</p>
+<h2>Les Actions.</h2>
 
-<p>J&#8217;ai fait une évaluation partielle. car dans l&#8217;absolu rien ne m&#8217;empeche de commencer le traitement de ma fonction. renommons les variables</p>
+<p><code>d</code> signifie <strong>d</strong>elete (en fait c&#8217;est un couper)</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">partiel</span><span class="p">(</span><span class="nv">$valeurTresCompliqué</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="k">function</span><span class="p">(</span><span class="nv">$valeurTresSimple</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$valeurTresCompliqué</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">return</span> <span class="nv">$valeurTresSimple</span> <span class="o">+</span> <span class="nv">$valeurTresCompliqué</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
+<p>Petit quizz : que se passe t&#8217;il si j&#8217;appuie sur les touches suivantes ? <code>d3w</code>
+une traduction <strong>d</strong>elete <strong>3</strong> <strong>w</strong>ords. j&#8217;efface trois mots. vous comprenez pourquoi j&#8217;ai absolument besoin de la table d&#8217;avant. car en fait et c&#8217;est une des vérités qui vous aidera dans Vi/Vim. Un combinaison dans Vi c&#8217;est <strong>action</strong> + <strong>mouvement</strong>.</p>
 
+<p>Je donne les autres actions</p>
 
-<p>mon exemple devient</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$UnlongCalcul</span> <span class="o">=</span> <span class="nx">partiel</span><span class="p">(</span><span class="nv">$uneValeurCompliqué</span><span class="p">)</span>
-</span><span class='line'><span class="nv">$uneAdditionRapide</span> <span class="o">=</span> <span class="nv">$UnlongCalcul</span><span class="p">(</span><span class="nv">$valeurTresSimple</span><span class="p">);</span>
-</span><span class='line'><span class="nv">$uneAutreAdditionRapide</span> <span class="o">=</span> <span class="nv">$UnlongCalcul</span><span class="p">(</span><span class="nv">$unAutrevaleurTresSimple</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
+<ul>
+<li><code>y</code>pour <strong>y</strong>ank pour copier <code>yw</code> copie un mot. <code>y3j</code> copie 3 lignes. pour coller on utilise la touche <code>p</code> comme <strong>p</strong>aste</li>
+<li><code>c</code> pour <strong>c</strong>hange. vous souhaiter changer un mot. avant vous appuyer sur <code>i</code> pour vous effacer le mot, puis vous rajouter le votre. si vous taper <code>cw</code> comme <strong>c</strong>hange <strong>w</strong>ord. vi supprime le mot et met directement en mode <em>insertion</em>.</li>
+<li><code>&gt;</code> et <code>&lt;</code> deplace à droite et a gauche le texte <code>&lt;4j</code> deplace 4 ligne à gauche.</li>
+<li><code>=</code> re-indente le texte, c&#8217;est un pictogramme le deux lignes du égale sont alignées. pour réindenter tout le texte <code>gg=G</code> soit <code>gg</code> va au début du fichier <code>=G</code> réindente jusqu&#8217;a la fin du fichier.</li>
+</ul>
 
 
-<p>C&#8217;est sur que le cas de l&#8217;addition est peu pertinent. mais constatons que je ré-utilise mieux mes calculs. Je vais probablement mieux utiliser le cache</p>
+<p>Table 2</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="c1">// avant</span>
-</span><span class='line'><span class="nx">calcul</span><span class="p">(</span><span class="nv">$valeurQuineBougePas</span><span class="p">,</span> <span class="nv">$valeur2quiBouge</span><span class="p">);</span>
-</span><span class='line'><span class="nx">calcul</span><span class="p">(</span><span class="nv">$valeur1QuineBougePas</span><span class="p">,</span> <span class="nv">$valeur2quiBouge</span><span class="p">);</span>
-</span><span class='line'><span class="nx">calcul</span><span class="p">(</span><span class="nv">$valeur1QuineBougePas</span><span class="p">,</span> <span class="nv">$valeur2quiBouge</span><span class="p">);</span>
-</span><span class='line'><span class="nx">calcul</span><span class="p">(</span><span class="nv">$valeur1QuineBougePas</span><span class="p">,</span> <span class="nv">$valeur2quiBouge</span><span class="p">);</span>
-</span><span class='line'><span class="c1">/// apres</span>
-</span><span class='line'><span class="nx">partiel</span> <span class="o">=</span> <span class="nx">partiel</span><span class="p">(</span><span class="nv">$valeurQuiNeChangePas</span><span class="p">)</span>
-</span><span class='line'><span class="nx">partiel</span><span class="p">(</span><span class="nv">$valeur2quiChange</span><span class="p">);</span>
-</span><span class='line'><span class="nx">partiel</span><span class="p">(</span><span class="nv">$valeur3quiChange</span><span class="p">);</span>
-</span><span class='line'><span class="nx">partiel</span><span class="p">(</span><span class="nv">$valeur4quiChange</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
+<table>
+<thead>
+<tr>
+<th>Touche      </th>
+<th style="text-align:center;"> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>d</code>               </td>
+<td style="text-align:center;"> <strong>d</strong>elete</td>
+</tr>
+<tr>
+<td> <code>c</code>               </td>
+<td style="text-align:center;"> <strong>c</strong>hange efface et passe en mode insertion</td>
+</tr>
+<tr>
+<td> <code>y</code>            </td>
+<td style="text-align:center;">  <strong>y</strong>ank (copier) <code>p</code> pour <strong>p</strong>aste coller</td>
+</tr>
+<tr>
+<td> <code>&gt;</code>      </td>
+<td style="text-align:center;"> décale le texte à droite </td>
+</tr>
+<tr>
+<td> <code>&lt;</code> </td>
+<td style="text-align:center;"> décale à droite</td>
+</tr>
+<tr>
+<td> <code>=</code></td>
+<td style="text-align:center;"> reindente le code</td>
+</tr>
+<tr>
+<td> <code>v</code> </td>
+<td style="text-align:center;"> <strong>v</strong>isual selectionne le texte  <code>y</code> copie <code>d</code> coupe etc ..</td>
+</tr>
+</tbody>
+</table>
 
 
-<p>enfin avoir un seul arguments rend la fonction plus claire et aussi plus facile à tester ..</p>
+<h1>Conclusion</h1>
 
-<p>pour une fonction a trois arguments
-&#8220;`
-function tertio($a) {
-    return function ($b) use ($a) {
-        return function ($c) use ($a, $b) {
-            return $a + $b + $c;
-};</p>
+<ul>
+<li><p>Pour faire une combinaison de touche il suffit de prendre une lettre de la table 2 + un mouvement de la table 1.
+par exemple je veux effacer 5 lignes:
+<code>delete 5 lines</code> -> d5j
+je veux changer un mot
+<code>change word</code> -> cw</p></li>
+<li><p>Recopier les deux tableaux. l&#8217;astuce est vraiment d&#8217;avoir la feuille sous les yeux.</p></li>
+<li>Les touches sont les mêmes pour <code>man</code> et surtout <code>less</code></li>
+</ul>
 
-<p>};
-}</p>
 
-<p>function composition1 ($a, $b, $c) {
-    return ($a($b($c)));
-};</p>
+<h1>Un peu de philosophie.</h1>
 
-<p>function composition2($a) {
-    return function ($b, $c) use ($a) {
-        return ($a( + $b + $c);
-    };
-}</p>
+<ul>
+<li>Je n&#8217;ai pas utilisée une seul fois la touche controle et alt.</li>
+<li>En 1 sens, je n&#8217;utilise pas la souris. Je veux indenter le texte je dis <em>indente le texte</em> <code>=G</code> et pas selectionner le texte, puis boutton droit ou un raccourci clavier. En un sens Vi est plus direct.</li>
+<li>J&#8217;espère que cela dé-mystifie un peu l&#8217;utilisation du clavier sur vi</li>
+</ul>
 
-<p>function add3($a, $b) {
-    return function ($c) use ($a,$b) {
-        return ($a + $b + $c);
-    };
-}</p>
 
-<p>function add4($a) {
-    return function ($b) use ($a) {
-        return function ($c) use ($a,$b) {
-            return ($a + $b +$c);
-        };
-    };
-}</p>
+<h2>Teaser</h2>
 
-<p>cela par du constant qu&#8217;il n&#8217;y a pas vraiment de differences entre les quatres function suivantes.</p>
+<p>il existe d&#8217;autre mouvement ! je ferai une version deluxe, l&#8217;idée ici est de comprendre la combinaison de mouvements. une touche apprise c&#8217;est de dizaine de nouvelles possibilités
+par exemple <code>di(</code> <code>i</code> signifie inside. donc delete inside paraenthèse. efface le texte dans une parenthese.</p>
 
-<p>nous avons une fonction qui génére une fonction qui génere une fonction.. Cela fait un peu mal au crane..</p>
+<h2>Faq</h2>
 
-<p>le fait de transformer une fonction a plusieurs arguments en une serie de plusieurs appel s&#8217;appelle la curryfication du noms du mathématiciens Haskell Curry.</p>
+<p>j&#8217;appris que pour effacer une ligne c&#8217;est <code>dd</code> ? je ne le vois pas dans le tableau.
+en fait</p>
 
-<p>Quel sont les avantages:
-On peux evaluer un par un les arguments</p>
+<ul>
+<li><code>dd</code> efface une ligne.</li>
+<li><code>yy</code> copie la ligne.</li>
+<li><code>cc</code> change la ligne.</li>
+</ul>
+
+
+<p>Il existe un mouvement qui s&#8217;appelle <code>_</code> qui represente la ligne actuelle (c&#8217;est d&#8217;ailleurs le pictogramme d&#8217;une ligne)
+donc en fait si on tape <code>d_</code> on efface la ligne actuelle (essayez !). mais la plupart du temps c&#8217;est un peu compliqué à taper pour une operation plutot courante (supprimer une ligne) . donc il a été décidé que <code>dd</code>, <code>yy</code> , <code>cc</code>
+ sont les raccourcis de <code>d_</code>, <code>y_</code> et <code>c_</code>.</p>
+
+<p>Il y a en fait une multitude de racourcis
+par exemple:
+* <code>c$</code> donne <code>C</code>(Change tout la ligne à partir du curseur).
+* <code>d$</code> donne <code>D</code>(Efface toute la ligne à partir du Curseur).
+* <code>^i</code> donne <code>I</code> insera au début de la ligne.
+* <code>$a</code> donne <code>A</code> ajoute à la fin de la ligne.</p>
 </div>
   
   
@@ -369,7 +476,7 @@ On peux evaluer un par un les arguments</p>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2015/03/06/evaluation-partielle/">Evaluation Partielle</a>
+        <a href="/blog/2015/03/08/comprendre-les-raccourcis-clavier-de-vi-slash-vim/">Comprendre Les Raccourcis Clavier De Vi/vim</a>
       </li>
     
       <li class="post">
