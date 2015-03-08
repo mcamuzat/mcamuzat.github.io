@@ -36,14 +36,14 @@ dans le temps les clavier n'avait pas de touche de direction. donc les touche so
 
 moyen mnemotechnique `j` va vers le bas, `k` va vers le haut. 
 
-Vous pouvez utiliser les fleches. Mais un des avantage d'utiliser les `j` et `k` est que vos doigts ne quitte jamais le milieu du clavier.
+Vous pouvez utiliser les flèches. Mais un des avantage d'utiliser les `j` et `k` est que vos doigts ne quitte jamais le milieu du clavier.
 
 vous avez maintenant 7 lignes à votre tableau
 
 ###Un quiz !
 que se passe t'il si je tape `3w` ou `5j` ?
 
-reponse je me déplace de `3 mots` ou `5 ligne vers le bas`
+réponse je me déplace de `3 mots` ou `5 ligne vers le bas`
 modifions notre tableau en rajoutant le (n).
 
 ###Se déplacer dans le fichier.
@@ -60,6 +60,7 @@ si vous connaissez vos regex `^a` vous donnes tout les occurences qui commencent
 `0` colonne 0 (tout début de la ligne)
 
 ###A la recherche du mot perdu
+
 pour chercher de vi on utilise la touche `/`, vous mettez le mot que vous souhaitez, appuyez sur `n` pour suivant ou `N` pour précédent. 
 
 nous avons le tableau final
@@ -95,10 +96,10 @@ une traduction **d**elete **3** **w**ords. j'efface trois mots. vous comprenez p
 
 Je donne les autres actions
 
-`y`pour **y**ank pour copier `yw` copie un mot. `y3j` copie 3 lignes. pour coller on utilise la touche `p` comme **p**aste
-`c` pour **c**hange. vous souhaiter changer un mot. avant vous appuyer sur `i` pour vous effacer le mot, puis vous rajouter le votre. si vous taper `cw` comme **c**hange **w**ord. vi supprime le mot et met directement en mode *insertion*.
-`>` et `<` deplace à droite et a gauche le texte `<4j` deplace 4 ligne à gauche.
-`=` re-indente le texte, c'est un pictogramme le deux lignes du égale sont alignées. pour réindenter tout le texte `gg=G` soit `gg` va au début du fichier `=G` réindente jusqu'a la fin du fichier.
+* `y`pour **y**ank pour copier `yw` copie un mot. `y3j` copie 3 lignes. pour coller on utilise la touche `p` comme **p**aste
+* `c` pour **c**hange. vous souhaiter changer un mot. avant vous appuyer sur `i` pour vous effacer le mot, puis vous rajouter le votre. si vous taper `cw` comme **c**hange **w**ord. vi supprime le mot et met directement en mode *insertion*.
+* `>` et `<` deplace à droite et a gauche le texte `<4j` deplace 4 ligne à gauche.
+* `=` re-indente le texte, c'est un pictogramme le deux lignes du égale sont alignées. pour réindenter tout le texte `gg=G` soit `gg` va au début du fichier `=G` réindente jusqu'a la fin du fichier.
 
 Table 2
 
@@ -113,14 +114,14 @@ Table 2
 | `v` | **v**isual selectionne le texte  `y` copie `d` coupe etc ..|
 
 #Conclusion
-Pour faire une combinaision de touche il suffit de prendre une lettre de la table 2 + un mouvement de la table 1. 
+* Pour faire une combinaison de touche il suffit de prendre une lettre de la table 2 + un mouvement de la table 1. 
 par exemple je veux effacer 5 lignes: 
 `delete 5 lines` -> d5j
 je veux changer un mot
 `change word` -> cw
 
-Recopier les deux tableaux. l'astuce est vraiment d'avoir la feuille sous les yeux. 
-Les touches sont les memes pour `man` et surtout `less`
+* Recopier les deux tableaux. l'astuce est vraiment d'avoir la feuille sous les yeux. 
+* Les touches sont les mêmes pour `man` et surtout `less`
 
 #Un peu de philosophie.
 
@@ -135,18 +136,20 @@ par exemple `di(` `i` signifie inside. donc delete inside paraenthèse. efface l
 ##Faq
 j'appris que pour effacer une ligne c'est `dd` ? je ne le vois pas dans le tableau.
 en fait 
-`dd` efface une ligne.
-`yy` copie la ligne.
-`cc` change la ligne.
+
+* `dd` efface une ligne.
+* `yy` copie la ligne.
+* `cc` change la ligne.
+
 Il existe un mouvement qui s'appelle `_` qui represente la ligne actuelle (c'est d'ailleurs le pictogramme d'une ligne)
-donc en fait si on tape `d_` on efface la ligne actuelle (essayez !). mais la plupart du temps c'est un peu compliqué a taper pour une operation plutot courante (supprimer une ligne) . donc il a été décidé que `dd`, `yy` , `cc`
+donc en fait si on tape `d_` on efface la ligne actuelle (essayez !). mais la plupart du temps c'est un peu compliqué à taper pour une operation plutot courante (supprimer une ligne) . donc il a été décidé que `dd`, `yy` , `cc`
  sont les raccourcis de `d_`, `y_` et `c_`.
 
 Il y a en fait une multitude de racourcis
 par exemple:
-`c$` donne `C`(Change tout la ligne à partir du curseur).
-`d$` donne `D`(Efface toute la ligne à partir du Curseur).
-`^i` donne `I` insera au début de la ligne.
-`$a` donne `A` ajoute à la fin de la ligne.
+* `c$` donne `C`(Change tout la ligne à partir du curseur).
+* `d$` donne `D`(Efface toute la ligne à partir du Curseur).
+* `^i` donne `I` insera au début de la ligne.
+* `$a` donne `A` ajoute à la fin de la ligne.
 
 
