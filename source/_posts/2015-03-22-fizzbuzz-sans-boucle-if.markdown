@@ -9,7 +9,7 @@ categories: [PHP, FizzBuzz, Question, Kata]
 
 FizzBuzz sans boucle if.
 
-Bon, j'ai passé deux trois entretiens ou on m'a demandé d'implementer "fizzbuz"
+Bon, j'ai passé deux-trois entretiens ou on m'a demandé d'implementer "fizzbuz"
 
 les règles sont simples.
 
@@ -57,7 +57,7 @@ for ($i = 1; $i <= 100; $i++) {
 
 ##Ma version que j'avais programmé
 
-Le `continue` est pas souvent utilisé. Mais je trouve qu'il remplis son rôle ici. 
+Le `continue` n'est pas souvent utilisé. Mais je trouve qu'il remplit son rôle ici. 
 
 ``` php
 for ($i = 1; $i <= 100; $i++) {
@@ -106,7 +106,7 @@ for ($i = 1; $i <= 100; $i++) {
 
 ```
 
-en php on ne peut pas faire la commande suivante qui correct en javascript;
+En php on ne peux pas faire la commande suivante qui correcte en javascript;
 ``` js
 var a = value || defautvalue ;
 ```
@@ -116,10 +116,10 @@ $output = $resp[i%15] || $i// => $output = true
 ```
 
 
-c'est pour cela que l'on utilise cette ligne un peu bancale.
+C'est pour cela que l'on utilise cette ligne un peu bancale.
 ```
 ($output = $resp[$i%15]) || ($output = $i);
 ```
-Il n'y a pas de boucle if. 
+Il n'y a pas de boucle if. Si un jour on vous demande d'implémenter FizzBuzzben essayer cette version.  
 
 
