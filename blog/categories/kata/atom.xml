@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Kata | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/kata/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-03-22T23:25:46+01:00</updated>
+  <updated>2015-03-22T23:33:02+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -20,7 +20,7 @@
     <id>http://mcamuzat.github.io/blog/2015/03/22/fizzbuzz-sans-boucle-if</id>
     <content type="html"><![CDATA[<p>FizzBuzz sans boucle if.</p>
 
-<p>Bon, j&#8217;ai passé deux trois entretiens ou on m&#8217;a demandé d&#8217;implementer &ldquo;fizzbuz&rdquo;</p>
+<p>Bon, j&#8217;ai passé deux-trois entretiens ou on m&#8217;a demandé d&#8217;implementer &ldquo;fizzbuz&rdquo;</p>
 
 <p>les règles sont simples.</p>
 
@@ -70,7 +70,7 @@
 
 <h2>Ma version que j&#8217;avais programmé</h2>
 
-<p>Le <code>continue</code> est pas souvent utilisé. Mais je trouve qu&#8217;il remplis son rôle ici.</p>
+<p>Le <code>continue</code> n&#8217;est pas souvent utilisé. Mais je trouve qu&#8217;il remplit son rôle ici.</p>
 
 <pre><code class="php">for ($i = 1; $i &lt;= 100; $i++) {
     if ($i % 15 == 0) {
@@ -145,7 +145,7 @@
 </span><span class='line'><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span>
-</span><span class='line'><span class="nx">en</span> <span class="nx">php</span> <span class="nx">on</span> <span class="nx">ne</span> <span class="nx">peut</span> <span class="nx">pas</span> <span class="nx">faire</span> <span class="nx">la</span> <span class="nx">commande</span> <span class="nx">suivante</span> <span class="nx">qui</span> <span class="nx">correct</span> <span class="nx">en</span> <span class="nx">javascript</span><span class="p">;</span>
+</span><span class='line'><span class="nx">En</span> <span class="nx">php</span> <span class="nx">on</span> <span class="nx">ne</span> <span class="nx">peux</span> <span class="nx">pas</span> <span class="nx">faire</span> <span class="nx">la</span> <span class="nx">commande</span> <span class="nx">suivante</span> <span class="nx">qui</span> <span class="nx">correcte</span> <span class="nx">en</span> <span class="nx">javascript</span><span class="p">;</span>
 </span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="k">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="nx">value</span> <span class="o">||</span> <span class="nx">defautvalue</span> <span class="p">;</span>
@@ -154,11 +154,11 @@
 <pre><code>$output = $resp[i%15] || $i// =&gt; $output = true
 </code></pre>
 
-<p>c&#8217;est pour cela que l&#8217;on utilise cette ligne un peu bancale.
+<p>C&#8217;est pour cela que l&#8217;on utilise cette ligne un peu bancale.
 <code>
 ($output = $resp[$i%15]) || ($output = $i);
 </code>
-Il n&#8217;y a pas de boucle if.</p>
+Il n&#8217;y a pas de boucle if. Si un jour on vous demande d&#8217;implémenter FizzBuzzben essayer cette version.</p>
 ]]></content>
   </entry>
   
