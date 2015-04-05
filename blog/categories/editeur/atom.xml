@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Editeur | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/editeur/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-03-30T22:38:36+02:00</updated>
+  <updated>2015-04-05T21:28:19+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -18,14 +18,12 @@
     <link href="http://mcamuzat.github.io/blog/2015/03/30/comprendre-la-ligne-de-commande-de-vi/"/>
     <updated>2015-03-30T22:36:21+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/03/30/comprendre-la-ligne-de-commande-de-vi</id>
-    <content type="html"><![CDATA[<h1>Comprendre la ligne de commande sous vim</h1>
-
-<p>sous Vi quand on appuie sur <code>:</code> on a la ligne de commande</p>
+    <content type="html"><![CDATA[<p>sous Vi quand on appuie sur <code>:</code> on a la ligne de commande</p>
 
 <p>tout le monde connaît
 <code>
 :wq // quitter et enregistrer
-:q! // quitter sans enregistrer
+:q! // quitter sans enregistrer et sans confirmation !
 </code></p>
 
 <p>mais en pratique il existe plein de commandes.
