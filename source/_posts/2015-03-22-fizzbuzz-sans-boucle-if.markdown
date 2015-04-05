@@ -7,7 +7,6 @@ categories: [PHP, FizzBuzz, Question, Kata]
 ---
 
 
-FizzBuzz sans boucle if.
 
 Bon, j'ai passé deux-trois entretiens ou on m'a demandé d'implementer "fizzbuz"
 

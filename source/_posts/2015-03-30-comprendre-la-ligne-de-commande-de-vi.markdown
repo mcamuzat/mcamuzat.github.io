@@ -6,14 +6,13 @@ comments: true
 categories: [Vim, Editeur, Linux]
 ---
 
-#Comprendre la ligne de commande sous vim
 
 sous Vi quand on appuie sur `:` on a la ligne de commande
 
 tout le monde connaît 
 ```
 :wq // quitter et enregistrer
-:q! // quitter sans enregistrer
+:q! // quitter sans enregistrer et sans confirmation !
 ```
 
 mais en pratique il existe plein de commandes.
