@@ -7,7 +7,7 @@ categories: [design-pattern, interpret, visiteur, php]
 ---
 
 #Introduction
-Nous allons voir ensemble sur une série de deux postes
+Nous allons voir ensemble sur une série de deux posts
 
 - le design-pattern interpréteur
 - les limitations et une solution qui va introduire le visiteur pattern
