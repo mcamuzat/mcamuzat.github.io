@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Php | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/php/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-04-06T20:02:07+02:00</updated>
+  <updated>2015-04-06T20:16:56+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -15,12 +15,12 @@
   
   <entry>
     <title type="html"><![CDATA[Suite Visiteur Pattern : Visiteur Booleen]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/04/06/suite-visiteur-pattern-visiteur-booleen/"/>
+    <link href="http://mcamuzat.github.io/blog/2015/04/06/suite-visiteur-pattern-visiteur-bool%C3%A9en/"/>
     <updated>2015-04-06T19:55:44+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/04/06/suite-visiteur-pattern-visiteur-booleen</id>
+    <id>http://mcamuzat.github.io/blog/2015/04/06/suite-visiteur-pattern-visiteur-booléen</id>
     <content type="html"><![CDATA[<h2>Introduction:</h2>
 
-<p>Nous allons refaire la même chose que notre interpréteur d&#8217;expression.
+<p>Nous allons refaire la même chose que notre interpréteur d&#8217;expressions.
 mais avec des expressions booléennes.
 par exemple
 <code>php
@@ -225,7 +225,7 @@ $expression =  new BinaryAnd(new Not(new False()), new BinaryOr(new True(), new 
 var_dump($expression-&gt;accept($ve)) //Affiche bool(true);
 </code></pre>
 
-<p>bien sur on peux refaire un autre visiteur pour traduire en chaine de caractère
+<p>bien sur on peux refaire un autre visiteur pour traduire en chaînes de caractères
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
@@ -394,9 +394,9 @@ class Gt extends BinaryComparaison{}
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nv">$memory</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Memory</span><span class="p">();</span>
 </span><span class='line'><span class="nv">$memory</span><span class="o">-&gt;</span><span class="na">write</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">i</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;,</span> <span class="mi">10</span><span class="p">);</span>
-</span><span class='line'><span class="c1">// j&#39;ai besoin d&#39;un visitor</span>
-</span><span class='line'><span class="c1">//</span>
+</span><span class='line'><span class="c1">// une visiteur d&#39;expression</span>
 </span><span class='line'><span class="nv">$ve</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VisitorEvaluation</span><span class="p">(</span><span class="nv">$memory</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// un visiteur pour les expressions booléennes</span>
 </span><span class='line'><span class="nv">$vb</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VisitorBoolEvaluation</span><span class="p">(</span><span class="nv">$memory</span><span class="p">,</span> <span class="nv">$ve</span><span class="p">);</span>
 </span><span class='line'><span class="c1">// une expression</span>
 </span><span class='line'><span class="nv">$expression</span> <span class="o">=</span>  <span class="k">new</span> <span class="k">Not</span><span class="p">(</span><span class="k">new</span> <span class="nx">Equal</span><span class="p">(</span> <span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Addition</span><span class="p">(</span><span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Variable</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">i</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;))));</span>
@@ -407,8 +407,6 @@ class Gt extends BinaryComparaison{}
 
 <pre><code class="php">$memory = new Memory();
 $memory-&gt;write('i', 10);
-// j'ai besoin d'un visitor
-//
 $ve = new VisitorToPhp($memory);
 $vb = new VisitorBoolPrint($memory, $ve);
 // une expression
@@ -416,10 +414,13 @@ $expression =  new Not(new Equal( new Constant(10), new Addition(new Constant(5)
 var_dump ( $expression-&gt;accept($vb) ); //affiche  "!(10==(5+$i))"
 </code></pre>
 
-<h2>Une concluson.</h2>
+<h2>Une conclusion.</h2>
 
-<p>dans le premier post : On a vu le visiteur pour évaluer/afficher des expressions.
-dans le second post : le visiteur pour les expressions booléenes et les comparaisons. Celui-ci utilise le premier visiteur pour faire les calculs.</p>
+<ul>
+<li>dans le premier post : On a vu le visiteur pour évaluer/afficher des expressions.</li>
+<li>dans le second post : le visiteur pour les expressions booléenes et les comparaisons. Celui-ci utilise le premier visiteur pour faire les calculs.</li>
+</ul>
+
 
 <p>dans un prochain post, je vais montrer un troisième visiteur <code>visitorInstruction</code> pour évaluer des instruction d&#8217;un langage très simple. mais cela est un peu long à écrire. Il y a un peu de théorie et des figures à faire.</p>
 
