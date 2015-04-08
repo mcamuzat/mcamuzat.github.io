@@ -20,13 +20,13 @@ $expression = new Not(new NotEqual(new Constant(5), new Variable('i')));
 
 Beaucoup de code. mais si vous avez compris la première partie. cela devrait aller.
 
-##Expression Booléene
+##Expression Booléenne
 
 Nous definissons l'interface suivante.
 
 ``` php
 /**
- * Une expression Booléene
+ * Une expression Booléenne
  */
 interface BoolExpression
 {
@@ -44,7 +44,7 @@ abstract class Unary implements BoolExpression
 }
 ```
 
-Pour faire l'algebre boolean j'ai besoin de `False` et de `True`
+Pour faire l'algebre booleen j'ai besoin de `False` et de `True`
 
 voici le code.
 
@@ -91,7 +91,7 @@ class Binary extends Unary
 }
 ```
 
-Les classes sont alors très simple.
+Les classes sont alors très simples.
 ``` php
 // Or et And sont des mots réservés en Php.
 class BinaryOr extends Binary{}
@@ -303,9 +303,9 @@ var_dump ( $expression->accept($vb) ); //affiche  "!(10==(5+$i))"
 
 ##Une conclusion.
 * dans le premier post : On a vu le visiteur pour évaluer/afficher des expressions.
-* dans le second post : le visiteur pour les expressions booléenes et les comparaisons. Celui-ci utilise le premier visiteur pour faire les calculs.
+* dans le second post : le visiteur pour les expressions booléennes et les comparaisons. Celui-ci utilise le premier visiteur pour faire les calculs.
 
-dans un prochain post, je vais montrer un troisième visiteur `visitorInstruction` pour évaluer des instruction d'un langage très simple. mais cela est un peu long à écrire. Il y a un peu de théorie et des figures à faire.
+dans un prochain post, je vais montrer un troisième visiteur `visitorInstruction` pour évaluer des instructions d'un langage très simple. Mais cela est un peu long à écrire. Il y a un peu de théorie et des figures à faire.
 
 Merci de m'avoir lu.
 

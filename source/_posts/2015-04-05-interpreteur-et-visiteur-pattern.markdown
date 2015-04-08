@@ -55,7 +55,7 @@ $constante = new Constant(5);
 echo $constante->interpret(); // affiche 5
 ```
 
-jusqu'ici rien de complexe. Si j'interprète la constante que j'ai défini à 5, j'obtiens 5.
+jusqu'ici rien de complexe. Si j'interprète la constante que j'ai définie à 5, j'obtiens 5.
 
 ##Evaluer des additions
 
@@ -101,7 +101,7 @@ Faire la multiplication, la soustraction, la division ne sont pas plus compliqu�
 
 ##Ajouter d'autres méthodes
 
-Ajoutons la methode Abso qui renvoie la valuer absolue, la fonction min qui renvoie le minimum 
+Ajoutons la methode Abso qui renvoie la valeur absolue, la fonction min qui renvoie le minimum 
 ``` php
 Class Abso Implements Expression
 {
@@ -109,7 +109,7 @@ Class Abso Implements Expression
         $this->value = $value;
     }
     public function interpret(Context $context = null) {
-        return abs($this->value);
+        return abs($this->value->interpret($context));
     }
 
 }
@@ -136,7 +136,7 @@ echo $min->interpret(); // renvoie 10
 
 Nous allons ajouter les variables.
 
-Il nous faut d'abord implementer le Context
+Il nous faut d'abord implémenter le Context
 
 Voici la définition
 ``` php
@@ -181,7 +181,7 @@ class Memory implements Context
 
 ```
 
-Il ne nous reste plus qu'a implémenter la variable.
+Il ne nous reste plus qu'à implémenter la variable.
 
 ``` php
 class Variable implements Expression
@@ -207,7 +207,7 @@ $memory->write('i', 0);
 echo $expression->interpret($memory); // 10
 ```
 
-On peux rajouter plein d'autre expression. l'avantage est qu'il suffit de rajouter une methode `->interpret(..)` pour chaque objet.
+On peux rajouter plein d'autre expression. l'avantage est qu'il suffit de rajouter une méthode `->interpret(..)` pour chaque objet.
 
 #mais si on change le cahier des charges...
 
@@ -227,6 +227,7 @@ $expression->__toString() // me donne ((3 + 4) + 4);
 
 // pour l'addition
          public function __toString() {
+                // this->left->__toString()
                 return '(' . $this->left . ' + ' . $this->right .')';
          }
 ```
@@ -243,7 +244,7 @@ je suis un peu bloqué, je dois rajouter à chaque fois une méthode dans chaque
 
 ##Visiteur Pattern à la rescousse !
 
-Je vais definir une methode `accept(Visitor $visitor)`
+Je vais définir une méthode `accept(Visitor $visitor)`
 ``` php
 interface Expression{
      public function accept(VisitorExpression $v);
@@ -251,14 +252,14 @@ interface Expression{
 
 ```
 
-avec VisitorExpression definit ainsi
+avec VisitorExpression définit ainsi
 ```
 abstract class VisitorExpression{
     public abstract function visite(Expression $expr);
 }
 ```
 
-voici comment se transforme l'addition, la constante et la variable (je ne mets pas tout..)
+Voici comment se transforme l'addition, la constante et la variable (je ne mets pas tout..)
 ``` php
 Class Constant implements Expression
 {
@@ -313,7 +314,7 @@ class Variable implements Expression
 
 ```
 
-Voici l'implementation de notre Visiteur
+Voici l'implémentation de notre Visiteur
 ```
 class VisitorEvaluation extends VisitorExpression {
     protected $context;
@@ -342,8 +343,8 @@ class VisitorEvaluation extends VisitorExpression {
     }
 
 ```
-en pratique. On appelle la méthode `accept`. celle appelle la methode `visit($this)`. la méthode visit determine la fonction a appeller. 
-Si c'est une constante alors `visistConstant()` celle-ci resout la valeur. pour une addition c'est un plus compliqué on ré-appelle récursivement `accept` sur chaque partie de l'addition.
+en pratique. On appelle la méthode `accept`. Celle-ci appelle la methode `visit($this)`. la méthode visit détermine la fonction à appeller. 
+Si c'est une constante alors `visistConstant()` celle-ci résout la valeur. pour une addition c'est un plus compliqué on ré-appelle récursivement `accept` sur chaque partie de l'addition.
 
 voici comment s'en servir
 
@@ -453,9 +454,9 @@ Les limitations du visiteur pattern
 Les avantages du visiteur pattern.
 On peut parfaitement imaginer un type document, et lui ajouter un visiteur `toJson`, `toPdf`, `toEbook`, `toHtml`. sans jamais changer le modèle.
 
-Nous continuerons avec le visiteur pattern dans un prochain post. Nous ajouterons un visiteur pour les expressions booléenes. puis nous ajouterons un visiteur pour des instructions . nous allons créer un mini-langage..
+Nous continuerons avec le visiteur pattern dans un prochain post. Nous ajouterons un visiteur pour les expressions booléenes. puis nous ajouterons un visiteur pour des instructions. nous allons créer un mini-langage..
 
-Ce projet vient des notes que j'avais pris quand j'étais au CNAM sur le cours de Design-Pattern en Java. J'avais adoré! 
+Ce projet vient des notes que j'avais prise quand j'étais au CNAM sur le cours de Design-Pattern en Java. J'avais adoré! 
 
 
 
