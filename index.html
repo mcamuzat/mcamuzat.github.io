@@ -122,7 +122,7 @@ par exemple</p>
 
 <p>Beaucoup de code. mais si vous avez compris la première partie. cela devrait aller.</p>
 
-<h2>Expression Booléene</h2>
+<h2>Expression Booléenne</h2>
 
 <p>Nous definissons l&#8217;interface suivante.</p>
 
@@ -144,7 +144,7 @@ par exemple</p>
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
 </pre></td><td class='code'><pre><code class='php'><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * Une expression Booléene</span>
+</span><span class='line'><span class="sd"> * Une expression Booléenne</span>
 </span><span class='line'><span class="sd"> */</span>
 </span><span class='line'><span class="k">interface</span> <span class="nx">BoolExpression</span>
 </span><span class='line'><span class="p">{</span>
@@ -163,7 +163,7 @@ par exemple</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Pour faire l&#8217;algebre boolean j&#8217;ai besoin de <code>False</code> et de <code>True</code></p>
+<p>Pour faire l&#8217;algebre booleen j&#8217;ai besoin de <code>False</code> et de <code>True</code></p>
 
 <p>voici le code.</p>
 
@@ -236,7 +236,7 @@ par exemple</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Les classes sont alors très simple.</p>
+<p>Les classes sont alors très simples.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -612,11 +612,11 @@ par exemple</p>
 
 <ul>
 <li>dans le premier post : On a vu le visiteur pour évaluer/afficher des expressions.</li>
-<li>dans le second post : le visiteur pour les expressions booléenes et les comparaisons. Celui-ci utilise le premier visiteur pour faire les calculs.</li>
+<li>dans le second post : le visiteur pour les expressions booléennes et les comparaisons. Celui-ci utilise le premier visiteur pour faire les calculs.</li>
 </ul>
 
 
-<p>dans un prochain post, je vais montrer un troisième visiteur <code>visitorInstruction</code> pour évaluer des instruction d&#8217;un langage très simple. mais cela est un peu long à écrire. Il y a un peu de théorie et des figures à faire.</p>
+<p>dans un prochain post, je vais montrer un troisième visiteur <code>visitorInstruction</code> pour évaluer des instructions d&#8217;un langage très simple. Mais cela est un peu long à écrire. Il y a un peu de théorie et des figures à faire.</p>
 
 <p>Merci de m&#8217;avoir lu.</p>
 </div>
@@ -722,7 +722,7 @@ par exemple</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>jusqu&#8217;ici rien de complexe. Si j&#8217;interprète la constante que j&#8217;ai défini à 5, j&#8217;obtiens 5.</p>
+<p>jusqu&#8217;ici rien de complexe. Si j&#8217;interprète la constante que j&#8217;ai définie à 5, j&#8217;obtiens 5.</p>
 
 <h2>Evaluer des additions</h2>
 
@@ -790,7 +790,7 @@ par exemple</p>
 
 <h2>Ajouter d&#8217;autres méthodes</h2>
 
-<p>Ajoutons la methode Abso qui renvoie la valuer absolue, la fonction min qui renvoie le minimum</p>
+<p>Ajoutons la methode Abso qui renvoie la valeur absolue, la fonction min qui renvoie le minimum</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -819,7 +819,7 @@ par exemple</p>
 </span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">value</span> <span class="o">=</span> <span class="nv">$value</span><span class="p">;</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">interpret</span><span class="p">(</span><span class="nx">Context</span> <span class="nv">$context</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">value</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">value</span><span class="o">-&gt;</span><span class="na">interpret</span><span class="p">(</span><span class="nv">$context</span><span class="p">));</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="p">}</span>
@@ -850,7 +850,7 @@ par exemple</p>
 
 <p>Nous allons ajouter les variables.</p>
 
-<p>Il nous faut d&#8217;abord implementer le Context</p>
+<p>Il nous faut d&#8217;abord implémenter le Context</p>
 
 <p>Voici la définition</p>
 
@@ -933,7 +933,7 @@ par exemple</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Il ne nous reste plus qu&#8217;a implémenter la variable.</p>
+<p>Il ne nous reste plus qu&#8217;à implémenter la variable.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -975,7 +975,7 @@ par exemple</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>On peux rajouter plein d&#8217;autre expression. l&#8217;avantage est qu&#8217;il suffit de rajouter une methode <code>-&gt;interpret(..)</code> pour chaque objet.</p>
+<p>On peux rajouter plein d&#8217;autre expression. l&#8217;avantage est qu&#8217;il suffit de rajouter une méthode <code>-&gt;interpret(..)</code> pour chaque objet.</p>
 
 <h1>mais si on change le cahier des charges&hellip;</h1>
 
@@ -1001,6 +1001,7 @@ par exemple</p>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
+<span class='line-number'>10</span>
 </pre></td><td class='code'><pre><code class='php'><span class='line'><span class="c1">// pour la constante</span>
 </span><span class='line'>        <span class="k">public</span> <span class="k">function</span> <span class="nf">__toString</span><span class="p">()</span> <span class="p">{</span>
 </span><span class='line'>            <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">value</span><span class="p">;</span>
@@ -1008,6 +1009,7 @@ par exemple</p>
 </span><span class='line'>
 </span><span class='line'><span class="c1">// pour l&#39;addition</span>
 </span><span class='line'>         <span class="k">public</span> <span class="k">function</span> <span class="nf">__toString</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>                <span class="c1">// this-&gt;left-&gt;__toString()</span>
 </span><span class='line'>                <span class="k">return</span> <span class="s1">&#39;(&#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">left</span> <span class="o">.</span> <span class="s1">&#39; + &#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">right</span> <span class="o">.</span><span class="s1">&#39;)&#39;</span><span class="p">;</span>
 </span><span class='line'>         <span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -1026,7 +1028,7 @@ par exemple</p>
 
 <h2>Visiteur Pattern à la rescousse !</h2>
 
-<p>Je vais definir une methode <code>accept(Visitor $visitor)</code></p>
+<p>Je vais définir une méthode <code>accept(Visitor $visitor)</code></p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -1037,7 +1039,7 @@ par exemple</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>avec VisitorExpression definit ainsi</p>
+<p>avec VisitorExpression définit ainsi</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -1048,7 +1050,7 @@ par exemple</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>voici comment se transforme l&#8217;addition, la constante et la variable (je ne mets pas tout..)</p>
+<p>Voici comment se transforme l&#8217;addition, la constante et la variable (je ne mets pas tout..)</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -1153,7 +1155,7 @@ par exemple</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Voici l&#8217;implementation de notre Visiteur</p>
+<p>Voici l&#8217;implémentation de notre Visiteur</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -1208,8 +1210,8 @@ par exemple</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>en pratique. On appelle la méthode <code>accept</code>. celle appelle la methode <code>visit($this)</code>. la méthode visit determine la fonction a appeller.
-Si c&#8217;est une constante alors <code>visistConstant()</code> celle-ci resout la valeur. pour une addition c&#8217;est un plus compliqué on ré-appelle récursivement <code>accept</code> sur chaque partie de l&#8217;addition.</p>
+<p>en pratique. On appelle la méthode <code>accept</code>. Celle-ci appelle la methode <code>visit($this)</code>. la méthode visit détermine la fonction à appeller.
+Si c&#8217;est une constante alors <code>visistConstant()</code> celle-ci résout la valeur. pour une addition c&#8217;est un plus compliqué on ré-appelle récursivement <code>accept</code> sur chaque partie de l&#8217;addition.</p>
 
 <p>voici comment s&#8217;en servir</p>
 
@@ -1398,9 +1400,9 @@ Si c&#8217;est une constante alors <code>visistConstant()</code> celle-ci resout
 <p>Les avantages du visiteur pattern.
 On peut parfaitement imaginer un type document, et lui ajouter un visiteur <code>toJson</code>, <code>toPdf</code>, <code>toEbook</code>, <code>toHtml</code>. sans jamais changer le modèle.</p>
 
-<p>Nous continuerons avec le visiteur pattern dans un prochain post. Nous ajouterons un visiteur pour les expressions booléenes. puis nous ajouterons un visiteur pour des instructions . nous allons créer un mini-langage..</p>
+<p>Nous continuerons avec le visiteur pattern dans un prochain post. Nous ajouterons un visiteur pour les expressions booléenes. puis nous ajouterons un visiteur pour des instructions. nous allons créer un mini-langage..</p>
 
-<p>Ce projet vient des notes que j&#8217;avais pris quand j&#8217;étais au CNAM sur le cours de Design-Pattern en Java. J&#8217;avais adoré!</p>
+<p>Ce projet vient des notes que j&#8217;avais prise quand j&#8217;étais au CNAM sur le cours de Design-Pattern en Java. J&#8217;avais adoré!</p>
 </div>
   
   

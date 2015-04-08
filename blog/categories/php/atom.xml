@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Php | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/php/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-04-06T20:16:56+02:00</updated>
+  <updated>2015-04-08T22:11:05+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -33,12 +33,12 @@ $expression = new Not(new NotEqual(new Constant(5), new Variable('i')));
 
 <p>Beaucoup de code. mais si vous avez compris la première partie. cela devrait aller.</p>
 
-<h2>Expression Booléene</h2>
+<h2>Expression Booléenne</h2>
 
 <p>Nous definissons l&#8217;interface suivante.</p>
 
 <pre><code class="php">/**
- * Une expression Booléene
+ * Une expression Booléenne
  */
 interface BoolExpression
 {
@@ -56,7 +56,7 @@ abstract class Unary implements BoolExpression
 }
 </code></pre>
 
-<p>Pour faire l&#8217;algebre boolean j&#8217;ai besoin de <code>False</code> et de <code>True</code></p>
+<p>Pour faire l&#8217;algebre booleen j&#8217;ai besoin de <code>False</code> et de <code>True</code></p>
 
 <p>voici le code.</p>
 
@@ -99,7 +99,7 @@ class Binary extends Unary
 }
 </code></p>
 
-<p>Les classes sont alors très simple.
+<p>Les classes sont alors très simples.
 <code>php
 // Or et And sont des mots réservés en Php.
 class BinaryOr extends Binary{}
@@ -418,11 +418,11 @@ var_dump ( $expression-&gt;accept($vb) ); //affiche  "!(10==(5+$i))"
 
 <ul>
 <li>dans le premier post : On a vu le visiteur pour évaluer/afficher des expressions.</li>
-<li>dans le second post : le visiteur pour les expressions booléenes et les comparaisons. Celui-ci utilise le premier visiteur pour faire les calculs.</li>
+<li>dans le second post : le visiteur pour les expressions booléennes et les comparaisons. Celui-ci utilise le premier visiteur pour faire les calculs.</li>
 </ul>
 
 
-<p>dans un prochain post, je vais montrer un troisième visiteur <code>visitorInstruction</code> pour évaluer des instruction d&#8217;un langage très simple. mais cela est un peu long à écrire. Il y a un peu de théorie et des figures à faire.</p>
+<p>dans un prochain post, je vais montrer un troisième visiteur <code>visitorInstruction</code> pour évaluer des instructions d&#8217;un langage très simple. Mais cela est un peu long à écrire. Il y a un peu de théorie et des figures à faire.</p>
 
 <p>Merci de m&#8217;avoir lu.</p>
 ]]></content>
@@ -499,7 +499,7 @@ $constante = new Constant(5);
 echo $constante-&gt;interpret(); // affiche 5
 </code></p>
 
-<p>jusqu&#8217;ici rien de complexe. Si j&#8217;interprète la constante que j&#8217;ai défini à 5, j&#8217;obtiens 5.</p>
+<p>jusqu&#8217;ici rien de complexe. Si j&#8217;interprète la constante que j&#8217;ai définie à 5, j&#8217;obtiens 5.</p>
 
 <h2>Evaluer des additions</h2>
 
@@ -541,7 +541,7 @@ echo $constante-&gt;interpret(); // affiche 15
 
 <h2>Ajouter d&#8217;autres méthodes</h2>
 
-<p>Ajoutons la methode Abso qui renvoie la valuer absolue, la fonction min qui renvoie le minimum
+<p>Ajoutons la methode Abso qui renvoie la valeur absolue, la fonction min qui renvoie le minimum
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
@@ -569,7 +569,7 @@ echo $constante-&gt;interpret(); // affiche 15
 </span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">value</span> <span class="o">=</span> <span class="nv">$value</span><span class="p">;</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">interpret</span><span class="p">(</span><span class="nx">Context</span> <span class="nv">$context</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">value</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">value</span><span class="o">-&gt;</span><span class="na">interpret</span><span class="p">(</span><span class="nv">$context</span><span class="p">));</span>
 </span><span class='line'>    <span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
@@ -596,7 +596,7 @@ echo $min-&gt;interpret(); // renvoie 10
 
 <p>Nous allons ajouter les variables.</p>
 
-<p>Il nous faut d&#8217;abord implementer le Context</p>
+<p>Il nous faut d&#8217;abord implémenter le Context</p>
 
 <p>Voici la définition
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -705,7 +705,7 @@ echo $min-&gt;interpret(); // renvoie 10
 </span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span>
-</span><span class='line'><span class="nx">Il</span> <span class="nx">ne</span> <span class="nx">nous</span> <span class="nx">reste</span> <span class="nx">plus</span> <span class="nx">qu</span><span class="s1">&#39;a implémenter la variable.</span>
+</span><span class='line'><span class="nx">Il</span> <span class="nx">ne</span> <span class="nx">nous</span> <span class="nx">reste</span> <span class="nx">plus</span> <span class="nx">qu</span><span class="s1">&#39;à implémenter la variable.</span>
 </span><span class='line'><span class="s1">&lt;/code&gt;&lt;/pre&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="s1">&lt;p&gt;class Variable implements Expression</span>
@@ -731,7 +731,7 @@ echo $min-&gt;interpret(); // renvoie 10
 </span><span class='line'><span class="k">echo</span> <span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">interpret</span><span class="p">(</span><span class="nv">$memory</span><span class="p">);</span> <span class="c1">// 10</span>
 </span></code></pre></td></tr></table></div></figure></p>
 
-<p>On peux rajouter plein d&#8217;autre expression. l&#8217;avantage est qu&#8217;il suffit de rajouter une methode <code>-&gt;interpret(..)</code> pour chaque objet.</p>
+<p>On peux rajouter plein d&#8217;autre expression. l&#8217;avantage est qu&#8217;il suffit de rajouter une méthode <code>-&gt;interpret(..)</code> pour chaque objet.</p>
 
 <h1>mais si on change le cahier des charges&hellip;</h1>
 
@@ -750,6 +750,7 @@ $expression-&gt;__toString() // me donne ((3 + 4) + 4);
 
 // pour l'addition
          public function __toString() {
+                // this-&gt;left-&gt;__toString()
                 return '(' . $this-&gt;left . ' + ' . $this-&gt;right .')';
          }
 </code></pre>
@@ -764,7 +765,7 @@ $expression-&gt;__toPhp() // me donne (($i + 4) + 4);
 
 <h2>Visiteur Pattern à la rescousse !</h2>
 
-<p>Je vais definir une methode <code>accept(Visitor $visitor)</code>
+<p>Je vais définir une méthode <code>accept(Visitor $visitor)</code>
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
@@ -781,7 +782,7 @@ $expression-&gt;__toPhp() // me donne (($i + 4) + 4);
 </span><span class='line'><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span>
-</span><span class='line'><span class="nx">avec</span> <span class="nx">VisitorExpression</span> <span class="nx">definit</span> <span class="nx">ainsi</span>
+</span><span class='line'><span class="nx">avec</span> <span class="nx">VisitorExpression</span> <span class="nx">définit</span> <span class="nx">ainsi</span>
 </span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="k">abstract</span> <span class="k">class</span> <span class="nc">VisitorExpression</span><span class="p">{</span>
@@ -789,7 +790,7 @@ $expression-&gt;__toPhp() // me donne (($i + 4) + 4);
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure></p>
 
-<p>voici comment se transforme l&#8217;addition, la constante et la variable (je ne mets pas tout..)
+<p>Voici comment se transforme l&#8217;addition, la constante et la variable (je ne mets pas tout..)
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
@@ -939,7 +940,7 @@ $expression-&gt;__toPhp() // me donne (($i + 4) + 4);
 </span><span class='line'><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span>
-</span><span class='line'><span class="nx">Voici</span> <span class="nx">l</span><span class="s1">&#39;implementation de notre Visiteur</span>
+</span><span class='line'><span class="nx">Voici</span> <span class="nx">l</span><span class="s1">&#39;implémentation de notre Visiteur</span>
 </span><span class='line'><span class="s1">&lt;/code&gt;&lt;/pre&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="s1">&lt;p&gt;class VisitorEvaluation extends VisitorExpression {</span>
@@ -969,8 +970,8 @@ $expression-&gt;__toPhp() // me donne (($i + 4) + 4);
 </span><span class='line'><span class="s1">}</span>
 </span><span class='line'><span class="s1">&lt;/code&gt;&lt;/pre&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="s1">&lt;pre&gt;&lt;code&gt;en pratique. On appelle la méthode `accept`. celle appelle la methode `visit($this)`. la méthode visit determine la fonction a appeller. </span>
-</span><span class='line'><span class="s1">Si c&#39;</span><span class="nx">est</span> <span class="nx">une</span> <span class="nx">constante</span> <span class="nx">alors</span> <span class="sb">`visistConstant()`</span> <span class="nx">celle</span><span class="o">-</span><span class="nx">ci</span> <span class="nx">resout</span> <span class="nx">la</span> <span class="nx">valeur</span><span class="o">.</span> <span class="nx">pour</span> <span class="nx">une</span> <span class="nx">addition</span> <span class="nx">c</span><span class="s1">&#39;est un plus compliqué on ré-appelle récursivement `accept` sur chaque partie de l&#39;</span><span class="nx">addition</span><span class="o">.</span>
+</span><span class='line'><span class="s1">&lt;pre&gt;&lt;code&gt;en pratique. On appelle la méthode `accept`. Celle-ci appelle la methode `visit($this)`. la méthode visit détermine la fonction à appeller. </span>
+</span><span class='line'><span class="s1">Si c&#39;</span><span class="nx">est</span> <span class="nx">une</span> <span class="nx">constante</span> <span class="nx">alors</span> <span class="sb">`visistConstant()`</span> <span class="nx">celle</span><span class="o">-</span><span class="nx">ci</span> <span class="nx">résout</span> <span class="nx">la</span> <span class="nx">valeur</span><span class="o">.</span> <span class="nx">pour</span> <span class="nx">une</span> <span class="nx">addition</span> <span class="nx">c</span><span class="s1">&#39;est un plus compliqué on ré-appelle récursivement `accept` sur chaque partie de l&#39;</span><span class="nx">addition</span><span class="o">.</span>
 </span><span class='line'>
 </span><span class='line'><span class="nx">voici</span> <span class="nx">comment</span> <span class="nx">s</span><span class="s1">&#39;en servir</span>
 </span><span class='line'><span class="s1">&lt;/code&gt;&lt;/pre&gt;</span>
@@ -1118,9 +1119,9 @@ class VisitorToPhp extends VisitorEvaluation {
 <p>Les avantages du visiteur pattern.
 On peut parfaitement imaginer un type document, et lui ajouter un visiteur <code>toJson</code>, <code>toPdf</code>, <code>toEbook</code>, <code>toHtml</code>. sans jamais changer le modèle.</p>
 
-<p>Nous continuerons avec le visiteur pattern dans un prochain post. Nous ajouterons un visiteur pour les expressions booléenes. puis nous ajouterons un visiteur pour des instructions . nous allons créer un mini-langage..</p>
+<p>Nous continuerons avec le visiteur pattern dans un prochain post. Nous ajouterons un visiteur pour les expressions booléenes. puis nous ajouterons un visiteur pour des instructions. nous allons créer un mini-langage..</p>
 
-<p>Ce projet vient des notes que j&#8217;avais pris quand j&#8217;étais au CNAM sur le cours de Design-Pattern en Java. J&#8217;avais adoré!</p>
+<p>Ce projet vient des notes que j&#8217;avais prise quand j&#8217;étais au CNAM sur le cours de Design-Pattern en Java. J&#8217;avais adoré!</p>
 ]]></content>
   </entry>
   
