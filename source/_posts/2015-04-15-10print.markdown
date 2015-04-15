@@ -1,0 +1,79 @@
+---
+layout: post
+title: "10print"
+date: 2015-04-15 22:38:15 +0200
+comments: true
+categories: [php, kata, livre, exercice]
+---
+
+
+Je suis tombé un peu par hasard sur la critique du livre [10 PRINT](http://10print.org/) , le pdf du livre est gratuit et plutôt joli, il parle de programmation, d'art et d'aléatoire.
+tout le livre est centré sur le programme de basic suivant qui donne m'image de la couverture.
+
+```
+10 PRINT CHR$(205.5+RND(1)); : GOTO 10
+/\\\\\\//\\////\\/\/\/\//\///////\\/////\///\\/\\
+\/\///\/\//\\//\\\/\\\/\///\\\\\\/\/\\\\\\/\\\/\\
+\\////\/////\\\\\\\/\\\\\\\\\\\//////\/\/\\\\/\//
+/\//\\\/\\\/\\///\\//\////\\/\/\//\\//\//\\/////\
+///\\/\\\\///\\/\/////\\\/\\\///\//\\\\//\\//\//\
+//\\\\//\\/\//\\//\///\\/////\///\/\//\/\//\//\\/
+//\/\/\///\\\/\//\////\\\//\/\/\\\\\\//\\\\\///\/
+//\\/\\\//\////\//\\\\\/\////\\\///\/\\/\//\\\///
+//\//\/\\\\\//////\///\/\\\/\/\/\\//\\/\\\//\//\\
+//\/\/\\\/\\/\/\////\//\\//\\//\/\///\/\/////\///
+//\\//\\\/////\//\//\\/\\//\/\//\//\\/\//\\\\\//\
+```
+
+Bon la police d'écriture ne rend pas vraiment justice au code.
+
+c'est possible de faire le même motif en PHP et en peu de code ?
+
+Une solution
+``` php
+$out = array('/', '\\');
+for($i = 0; $i < 1000; $i++){
+    echo $out[array_rand($out)];
+}
+```
+
+attention `array_rand` renvoie la clé et non la valeur d'où le `$out[array_rand($out)]`
+
+et puis je me suis dit que array_rand ne sert pas à grand chose.
+
+donc j'ai essayé
+``` php
+$out = array('/', '\\');
+for($i =0; $i < 1000; $i++){
+ echo $out[rand(0,1)];
+}
+```
+pour générer des nombres aléatoire, il vaut mieux utiliser `mt_rand` qui d'après la documentation génére des nombres aléatoires plus interressants (?). Pour des vrai nombres aléatoires pour les mots de passe,  on utilise des librairies voir cette [présentation](http://blog.ircmaxell.com/2013/01/password-storage-talk-at-php-benelux-13.html). 
+
+mais il est possible d'initialiser plus d'une constante dans la boucle for.
+
+```
+for($i =0, $out = array('/', '\\'); $i < 1000; $i++){
+ echo $out[mt_rand(0,1)];
+}
+
+```
+On peut aussi faire plus d'une action dans l'incrémentation.
+
+```
+for($i = 0, $out = array('/', '\\'); $i < 1000; $i++, echo $out[mt_rand(0,1)])
+);
+```
+
+on minimise les variables et la notation avec les `[]`
+
+nous obtenons le code suivant
+
+``` php
+for($i =0, $o = ['/', '\\']; $i < 1000; $i++, echo $o[mt_rand(0,1)]);
+```
+
+Je n'avais jamais écris de boucle for sans corps(`{..}`). 
+
+La documentation de php est plutôt claire sur le [for](http://php.net/manual/fr/control-structures.for.php) 
+
