@@ -4,7 +4,7 @@
   <title><![CDATA[Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-04-12T22:34:42+02:00</updated>
+  <updated>2015-04-15T23:03:19+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,111 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[10print]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/04/15/10print/"/>
+    <updated>2015-04-15T22:38:15+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/04/15/10print</id>
+    <content type="html"><![CDATA[<p>Je suis tombé un peu par hasard sur la critique du livre <a href="http://10print.org/">10 PRINT</a> , le pdf du livre est gratuit et plutôt joli, il parle de programmation, d&#8217;art et d&#8217;aléatoire.
+tout le livre est centré sur le programme de basic suivant qui donne m&#8217;image de la couverture.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>10 PRINT CHR$(205.5+RND(1)); : GOTO 10
+</span><span class='line'>/\\\\\\//\\////\\/\/\/\//\///////\\/////\///\\/\\
+</span><span class='line'>\/\///\/\//\\//\\\/\\\/\///\\\\\\/\/\\\\\\/\\\/\\
+</span><span class='line'>\\////\/////\\\\\\\/\\\\\\\\\\\//////\/\/\\\\/\//
+</span><span class='line'>/\//\\\/\\\/\\///\\//\////\\/\/\//\\//\//\\/////\
+</span><span class='line'>///\\/\\\\///\\/\/////\\\/\\\///\//\\\\//\\//\//\
+</span><span class='line'>//\\\\//\\/\//\\//\///\\/////\///\/\//\/\//\//\\/
+</span><span class='line'>//\/\/\///\\\/\//\////\\\//\/\/\\\\\\//\\\\\///\/
+</span><span class='line'>//\\/\\\//\////\//\\\\\/\////\\\///\/\\/\//\\\///
+</span><span class='line'>//\//\/\\\\\//////\///\/\\\/\/\/\\//\\/\\\//\//\\
+</span><span class='line'>//\/\/\\\/\\/\/\////\//\\//\\//\/\///\/\/////\///
+</span><span class='line'>//\\//\\\/////\//\//\\/\\//\/\//\//\\/\//\\\\\//\</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bon la police d&#8217;écriture ne rend pas vraiment justice au code.</p>
+
+<p>c&#8217;est possible de faire le même motif en PHP et en peu de code ?</p>
+
+<p>Une solution</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$out</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;\\&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="k">for</span><span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">){</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="nv">$out</span><span class="p">[</span><span class="nb">array_rand</span><span class="p">(</span><span class="nv">$out</span><span class="p">)];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>attention <code>array_rand</code> renvoie la clé et non la valeur d&#8217;où le <code>$out[array_rand($out)]</code></p>
+
+<p>et puis je me suis dit que array_rand ne sert pas à grand chose.</p>
+
+<p>donc j&#8217;ai essayé</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$out</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;\\&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="k">for</span><span class="p">(</span><span class="nv">$i</span> <span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">){</span>
+</span><span class='line'> <span class="k">echo</span> <span class="nv">$out</span><span class="p">[</span><span class="nb">rand</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>pour générer des nombres aléatoire, il vaut mieux utiliser <code>mt_rand</code> qui d&#8217;après la documentation génére des nombres aléatoires plus interressants (?). Pour des vrai nombres aléatoires pour les mots de passe,  on utilise des librairies voir cette <a href="http://blog.ircmaxell.com/2013/01/password-storage-talk-at-php-benelux-13.html">présentation</a>.</p>
+
+<p>mais il est possible d&#8217;initialiser plus d&#8217;une constante dans la boucle for.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">for</span><span class="p">(</span><span class="nv">$i</span> <span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nv">$out</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;\\&#39;</span><span class="p">);</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">){</span>
+</span><span class='line'> <span class="k">echo</span> <span class="nv">$out</span><span class="p">[</span><span class="nb">mt_rand</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On peut aussi faire plus d&#8217;une action dans l&#8217;incrémentation.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">for</span><span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">$out</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;\\&#39;</span><span class="p">);</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">,</span> <span class="k">echo</span> <span class="nv">$out</span><span class="p">[</span><span class="nb">mt_rand</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+</span><span class='line'><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>on minimise les variables et la notation avec les <code>[]</code></p>
+
+<p>nous obtenons le code suivant</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">for</span><span class="p">(</span><span class="nv">$i</span> <span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nv">$o</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;\\&#39;</span><span class="p">];</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">,</span> <span class="k">echo</span> <span class="nv">$o</span><span class="p">[</span><span class="nb">mt_rand</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)]);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je n&#8217;avais jamais écris de boucle for sans corps(<code>{..}</code>).</p>
+
+<p>La documentation de php est plutôt claire sur le <a href="http://php.net/manual/fr/control-structures.for.php">for</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Docker Je Débute]]></title>
@@ -22,7 +127,7 @@
 
 <p>Suite à une présentation à une conférence. j&#8217;ai commencé à my mettre. J&#8217;écris ce post en tant que grand débutant..</p>
 
-<p>Docker est une solution de virtualisation d&#8217;instance, plus précisement de container. Il y a pas mal de différence avec la virtualisation classique de Virtual box/Xen/VmWare ici on n&#8217;émule pas le processeur. On isole juste le file-system. Ce qui fait que l&#8217;on consomme très peu de processeurs.</p>
+<p>Docker est une solution de virtualisation d&#8217;instance, plus précisement de container. Il y a pas mal de différence avec les différentes virtualisations de Virtual box/Xen/VmWare. On isole juste les process et le file-system. Ce qui fait que l&#8217;on consomme très peu de processeurs.</p>
 
 <h2>Installation</h2>
 
@@ -176,13 +281,13 @@
 <h2>Résumé des commandes</h2>
 
 <ul>
-<li><code>docker run -i -t ubuntu:14.10 /bin/bash</code> lance en mode intéractif et un terminalle container avec la commande bash.</li>
+<li><code>docker run -i -t ubuntu:14.10 /bin/bash</code> lance en mode intéractif et un terminal avec la commande bash.</li>
 <li><code>docker run -i -t ubuntu:14.10 'hello world'</code></li>
 <li><code>docker ps</code> liste les containers en cours.</li>
 <li><code>docker ps -a</code> liste tout les containers.</li>
 <li><code>docker images</code> liste toutes les images.</li>
 <li><code>docker pull centos</code> pour télécharger une image (tout les images officielles sont sur le <a href="https://hub.docker.com/">Hub</a></li>
-<li><code>docker inspect</code>uuid` affiche les informations sur l&#8217;instance.</li>
+<li><code>docker inspect uuid</code> affiche les informations sur l&#8217;instance.</li>
 <li><code>docker commit uuid name</code>pour commiter.</li>
 </ul>
 

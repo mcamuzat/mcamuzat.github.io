@@ -100,7 +100,7 @@
 
 <p>Suite à une présentation à une conférence. j&#8217;ai commencé à my mettre. J&#8217;écris ce post en tant que grand débutant..</p>
 
-<p>Docker est une solution de virtualisation d&#8217;instance, plus précisement de container. Il y a pas mal de différence avec la virtualisation classique de Virtual box/Xen/VmWare ici on n&#8217;émule pas le processeur. On isole juste le file-system. Ce qui fait que l&#8217;on consomme très peu de processeurs.</p>
+<p>Docker est une solution de virtualisation d&#8217;instance, plus précisement de container. Il y a pas mal de différence avec les différentes virtualisations de Virtual box/Xen/VmWare. On isole juste les process et le file-system. Ce qui fait que l&#8217;on consomme très peu de processeurs.</p>
 
 <h2>Installation</h2>
 
@@ -254,13 +254,13 @@
 <h2>Résumé des commandes</h2>
 
 <ul>
-<li><code>docker run -i -t ubuntu:14.10 /bin/bash</code> lance en mode intéractif et un terminalle container avec la commande bash.</li>
+<li><code>docker run -i -t ubuntu:14.10 /bin/bash</code> lance en mode intéractif et un terminal avec la commande bash.</li>
 <li><code>docker run -i -t ubuntu:14.10 'hello world'</code></li>
 <li><code>docker ps</code> liste les containers en cours.</li>
 <li><code>docker ps -a</code> liste tout les containers.</li>
 <li><code>docker images</code> liste toutes les images.</li>
 <li><code>docker pull centos</code> pour télécharger une image (tout les images officielles sont sur le <a href="https://hub.docker.com/">Hub</a></li>
-<li><code>docker inspect</code>uuid` affiche les informations sur l&#8217;instance.</li>
+<li><code>docker inspect uuid</code> affiche les informations sur l&#8217;instance.</li>
 <li><code>docker commit uuid name</code>pour commiter.</li>
 </ul>
 
@@ -309,6 +309,8 @@
         <a class="basic-alignment left" href="/blog/2015/04/06/suite-visiteur-pattern-visiteur-bool%C3%A9en/" title="Previous Post: Suite visiteur pattern : Visiteur Booleen">&laquo; Suite visiteur pattern : Visiteur Booleen</a>
       
       
+        <a class="basic-alignment right" href="/blog/2015/04/15/10print/" title="Next Post: 10print">10print &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -320,6 +322,10 @@
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/04/15/10print/">10print</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2015/04/12/docker-je-debute/">Docker Je Débute</a>
@@ -335,10 +341,6 @@
     
       <li class="post">
         <a href="/blog/2015/03/30/comprendre-la-ligne-de-commande-de-vi/">Comprendre La Ligne De Commande De Vi</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/03/22/fizzbuzz-sans-boucle-if/">FizzBuzz Sans Boucle If</a>
       </li>
     
   </ul>

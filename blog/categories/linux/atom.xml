@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-04-12T22:34:42+02:00</updated>
+  <updated>2015-04-15T23:03:19+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -22,7 +22,7 @@
 
 <p>Suite à une présentation à une conférence. j&#8217;ai commencé à my mettre. J&#8217;écris ce post en tant que grand débutant..</p>
 
-<p>Docker est une solution de virtualisation d&#8217;instance, plus précisement de container. Il y a pas mal de différence avec la virtualisation classique de Virtual box/Xen/VmWare ici on n&#8217;émule pas le processeur. On isole juste le file-system. Ce qui fait que l&#8217;on consomme très peu de processeurs.</p>
+<p>Docker est une solution de virtualisation d&#8217;instance, plus précisement de container. Il y a pas mal de différence avec les différentes virtualisations de Virtual box/Xen/VmWare. On isole juste les process et le file-system. Ce qui fait que l&#8217;on consomme très peu de processeurs.</p>
 
 <h2>Installation</h2>
 
@@ -140,13 +140,13 @@ sudo docker run -it marc/vim vim
 <h2>Résumé des commandes</h2>
 
 <ul>
-<li><code>docker run -i -t ubuntu:14.10 /bin/bash</code> lance en mode intéractif et un terminalle container avec la commande bash.</li>
+<li><code>docker run -i -t ubuntu:14.10 /bin/bash</code> lance en mode intéractif et un terminal avec la commande bash.</li>
 <li><code>docker run -i -t ubuntu:14.10 'hello world'</code></li>
 <li><code>docker ps</code> liste les containers en cours.</li>
 <li><code>docker ps -a</code> liste tout les containers.</li>
 <li><code>docker images</code> liste toutes les images.</li>
 <li><code>docker pull centos</code> pour télécharger une image (tout les images officielles sont sur le <a href="https://hub.docker.com/">Hub</a></li>
-<li><code>docker inspect</code>uuid` affiche les informations sur l&#8217;instance.</li>
+<li><code>docker inspect uuid</code> affiche les informations sur l&#8217;instance.</li>
 <li><code>docker commit uuid name</code>pour commiter.</li>
 </ul>
 

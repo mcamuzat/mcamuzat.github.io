@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Php | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/php/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-04-12T22:34:42+02:00</updated>
+  <updated>2015-04-15T23:03:19+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,79 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[10print]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/04/15/10print/"/>
+    <updated>2015-04-15T22:38:15+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/04/15/10print</id>
+    <content type="html"><![CDATA[<p>Je suis tombé un peu par hasard sur la critique du livre <a href="http://10print.org/">10 PRINT</a> , le pdf du livre est gratuit et plutôt joli, il parle de programmation, d&#8217;art et d&#8217;aléatoire.
+tout le livre est centré sur le programme de basic suivant qui donne m&#8217;image de la couverture.</p>
+
+<pre><code>10 PRINT CHR$(205.5+RND(1)); : GOTO 10
+/\\\\\\//\\////\\/\/\/\//\///////\\/////\///\\/\\
+\/\///\/\//\\//\\\/\\\/\///\\\\\\/\/\\\\\\/\\\/\\
+\\////\/////\\\\\\\/\\\\\\\\\\\//////\/\/\\\\/\//
+/\//\\\/\\\/\\///\\//\////\\/\/\//\\//\//\\/////\
+///\\/\\\\///\\/\/////\\\/\\\///\//\\\\//\\//\//\
+//\\\\//\\/\//\\//\///\\/////\///\/\//\/\//\//\\/
+//\/\/\///\\\/\//\////\\\//\/\/\\\\\\//\\\\\///\/
+//\\/\\\//\////\//\\\\\/\////\\\///\/\\/\//\\\///
+//\//\/\\\\\//////\///\/\\\/\/\/\\//\\/\\\//\//\\
+//\/\/\\\/\\/\/\////\//\\//\\//\/\///\/\/////\///
+//\\//\\\/////\//\//\\/\\//\/\//\//\\/\//\\\\\//\
+</code></pre>
+
+<p>Bon la police d&#8217;écriture ne rend pas vraiment justice au code.</p>
+
+<p>c&#8217;est possible de faire le même motif en PHP et en peu de code ?</p>
+
+<p>Une solution
+<code>php
+$out = array('/', '\\');
+for($i = 0; $i &lt; 1000; $i++){
+    echo $out[array_rand($out)];
+}
+</code></p>
+
+<p>attention <code>array_rand</code> renvoie la clé et non la valeur d&#8217;où le <code>$out[array_rand($out)]</code></p>
+
+<p>et puis je me suis dit que array_rand ne sert pas à grand chose.</p>
+
+<p>donc j&#8217;ai essayé
+<code>php
+$out = array('/', '\\');
+for($i =0; $i &lt; 1000; $i++){
+ echo $out[rand(0,1)];
+}
+</code>
+pour générer des nombres aléatoire, il vaut mieux utiliser <code>mt_rand</code> qui d&#8217;après la documentation génére des nombres aléatoires plus interressants (?). Pour des vrai nombres aléatoires pour les mots de passe,  on utilise des librairies voir cette <a href="http://blog.ircmaxell.com/2013/01/password-storage-talk-at-php-benelux-13.html">présentation</a>.</p>
+
+<p>mais il est possible d&#8217;initialiser plus d&#8217;une constante dans la boucle for.</p>
+
+<pre><code>for($i =0, $out = array('/', '\\'); $i &lt; 1000; $i++){
+ echo $out[mt_rand(0,1)];
+}
+</code></pre>
+
+<p>On peut aussi faire plus d&#8217;une action dans l&#8217;incrémentation.</p>
+
+<pre><code>for($i = 0, $out = array('/', '\\'); $i &lt; 1000; $i++, echo $out[mt_rand(0,1)])
+);
+</code></pre>
+
+<p>on minimise les variables et la notation avec les <code>[]</code></p>
+
+<p>nous obtenons le code suivant</p>
+
+<pre><code class="php">for($i =0, $o = ['/', '\\']; $i &lt; 1000; $i++, echo $o[mt_rand(0,1)]);
+</code></pre>
+
+<p>Je n&#8217;avais jamais écris de boucle for sans corps(<code>{..}</code>).</p>
+
+<p>La documentation de php est plutôt claire sur le <a href="http://php.net/manual/fr/control-structures.for.php">for</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Suite Visiteur Pattern : Visiteur Booleen]]></title>
@@ -1359,50 +1432,6 @@ var_dump(filter(function($input) { return ($input > 4); }, $a)); // [6]</p>
 
 <p>&#8220;`
 Map et Reduce sont des fonctions un peu particulières, elle prenent comme argument des fonctions. On parle de fonctions d&#8217;ordre supérieure, parfois de functor (mais çà c&#8217;est une autre histoire ..)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Php en Mode Intéractif]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/03/08/php-en-mode-interactif/"/>
-    <updated>2015-03-08T19:24:57+01:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/03/08/php-en-mode-interactif</id>
-    <content type="html"><![CDATA[<p>Je me baladai sous Github</p>
-
-<p>et je suis tombé sur ce dépot</p>
-
-<p><a href="https://github.com/borisrepl/boris">https://github.com/borisrepl/boris</a></p>
-
-<p>(en fait c&#8217;est un des dépots les plus actifs de ce mois pour Php)</p>
-
-<p>c&#8217;est vraiment cool</p>
-
-<p>Bien entendu il existe déja un mode interactif sous Php</p>
-
-<pre><code class="sh">php -a
-</code></pre>
-
-<p>On peux le refaire en encore moins de ligne.</p>
-
-<p>Explication : La documentation parle de REPL.
-c&#8217;est l&#8217;abbreviation de <strong>R</strong>ead <strong>E</strong>val <strong>P</strong>rint <strong>L</strong>oop</p>
-
-<p>et voici comment on peut l&#8217;implémenter (difficile de faire plus simple)
-<code>
-while (true) {
-    echo eval(fgets(STDIN));
-}
-</code>
- avec les commentaires
-<code>
-while (true)/*Loop*/ {
-    echo /*Print*/ eval(/*Read*/ fgets(STDIN));
-}
-</code>
-Read Eval Print Loop. le nom donne le programme.</p>
-
-<p>C&#8217;est une technique qui marche avec un peu tout les languages.
-voir <a href="http://repl.it">http://repl.it</a></p>
 ]]></content>
   </entry>
   
