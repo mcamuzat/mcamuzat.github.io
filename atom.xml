@@ -4,7 +4,7 @@
   <title><![CDATA[Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-04-22T22:22:49+02:00</updated>
+  <updated>2015-04-22T23:22:37+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,76 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Correction Orthographique Et VIM]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/04/22/correction-orthographique-et-vim/"/>
+    <updated>2015-04-22T22:26:43+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/04/22/correction-orthographique-et-vim</id>
+    <content type="html"><![CDATA[<p>J&#8217;ai assisté à un Meetup sur VIM.</p>
+
+<p>Le speaker parlait de la correction orthographique sous VIM. Je savais que c&#8217;était possible, mais je ne m&#8217;en suis jamais servis. J&#8217;ai donc décidé de réessayer.. Et j&#8217;ai vu de façon différente mes posts sur ce blog. Je suis repasser un peu sur tout.</p>
+
+<p>Voici la commande pour activer/installer la correction automatique</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>set spell spelllang=fr</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Normalement Vim va télécharger pour vous les différents fichiers sur le Ftp officiel.  Il y a une commande interactive pour vous aider dans l&#8217;installation. Si jamais il a un souci le wiki français indique de se placer dans son répertoire <code>spell</code> (chez moi <code>~/.vim/spell</code>) et de lancer les commandes suivantes</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>wget http://ftp.vim.org/vim/runtime/spell/fr.latin1.spl
+</span><span class='line'>wget http://ftp.vim.org/vim/runtime/spell/fr.latin1.sug
+</span><span class='line'>wget http://ftp.vim.org/vim/runtime/spell/fr.utf-8.spl
+</span><span class='line'>wget http://ftp.vim.org/vim/runtime/spell/fr.utf-8.sug
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>La touche magique ici est <code>z=</code> puis les touches du <code>0..n</code>. <code>]s</code> pour aller à l&#8217;erreur suivante <code>[s</code> pour l&#8217;erreur précédente. Il y a différentes touches pour ajouter à son propre dictionnaire. J&#8217;avoue que cela ne m&#8217;intéresse pas trop de suite.</p>
+
+<p>On peut aussi faire de l&#8217;auto complétion ou plutôt de l&#8217;auto correction pendant la saisie avec les touche <code>Ctrl-x</code> + <code>s</code>.</p>
+
+<h2>Résumé</h2>
+
+<table>
+<thead>
+<tr>
+<th> Touche      </th>
+<th style="text-align:center;"> Description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>z=</code>               </td>
+<td style="text-align:center;"> auto correct si <code>spell</code> est activée</td>
+</tr>
+<tr>
+<td> <code>[s</code>               </td>
+<td style="text-align:center;"> erreur précédente</td>
+</tr>
+<tr>
+<td> <code>]s</code>               </td>
+<td style="text-align:center;"> erreur suivante</td>
+</tr>
+<tr>
+<td> <code>Crtl-x s</code>      </td>
+<td style="text-align:center;">auto complétion via le dictionnaire </td>
+</tr>
+</tbody>
+</table>
+
+
+<p>Warning : <code>Ctrl-s</code> parfois freeze le terminal (option pratique quand je regarde les tests fonctionnels passés). Pour <em>defreezer</em> le terminal c&#8217;est <code>Ctrl-Q</code></p>
+
+<h2>Conclusion:</h2>
+
+<p>Il manque le correcteur grammatical :-)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Dockers Et CI]]></title>

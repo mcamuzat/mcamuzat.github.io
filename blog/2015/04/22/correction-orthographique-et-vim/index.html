@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Php en Mode Interactif - Mon blog perso.</title>
+  <title>Correction Orthographique Et VIM - Mon blog perso.</title>
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Je me baladai sous Github Et je suis tombé sur ce dépôt https://github.com/borisrepl/boris (en fait c'est un des dépôts les plus actifs de ce mois &hellip;">
+  <meta name="description" content="J'ai assisté à un Meetup sur VIM. Le speaker parlait de la correction orthographique sous VIM. Je savais que c'était possible, mais je ne m'en suis &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mcamuzat.github.io/blog/2015/03/08/php-en-mode-interactif/">
+  <link rel="canonical" href="http://mcamuzat.github.io/blog/2015/04/22/correction-orthographique-et-vim/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Mon blog perso." type="application/atom+xml">
@@ -80,7 +80,7 @@
   
   <header>
     
-      <h1 class="entry-title">Php en Mode Interactif</h1>
+      <h1 class="entry-title">Correction Orthographique Et VIM</h1>
     
     
       <p class="meta">
@@ -89,61 +89,75 @@
 
 
 
-<time class='entry-date' datetime='2015-03-08T19:24:57+01:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:24 pm</span></time>
+<time class='entry-date' datetime='2015-04-22T22:26:43+02:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>10:26 pm</span></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>Je me baladai sous Github</p>
+<div class="entry-content"><p>J&#8217;ai assisté à un Meetup sur VIM.</p>
 
-<p>Et je suis tombé sur ce dépôt</p>
+<p>Le speaker parlait de la correction orthographique sous VIM. Je savais que c&#8217;était possible, mais je ne m&#8217;en suis jamais servis. J&#8217;ai donc décidé de réessayer.. Et j&#8217;ai vu de façon différente mes posts sur ce blog. Je suis repasser un peu sur tout.</p>
 
-<p><a href="https://github.com/borisrepl/boris">https://github.com/borisrepl/boris</a></p>
+<p>Voici la commande pour activer/installer la correction automatique</p>
 
-<p>(en fait c&#8217;est un des dépôts les plus actifs de ce mois pour Php)</p>
-
-<p>C&#8217;est vraiment cool</p>
-
-<p>Bien entendu il existe déjà un mode interactif sous Php</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>php -a
-</span></code></pre></td></tr></table></div></figure>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>set spell spelllang=fr</span></code></pre></td></tr></table></div></figure>
 
 
-<p>On peux le refaire en encore moins de ligne.</p>
-
-<p>Explication : La documentation parle de REPL.
-c&#8217;est l&#8217;abréviation de <strong>R</strong>ead <strong>E</strong>val <strong>P</strong>rint <strong>L</strong>oop</p>
-
-<p>et voici comment on peut l&#8217;implémenter (difficile de faire plus simple)</p>
+<p>Normalement Vim va télécharger pour vous les différents fichiers sur le Ftp officiel.  Il y a une commande interactive pour vous aider dans l&#8217;installation. Si jamais il a un souci le wiki français indique de se placer dans son répertoire <code>spell</code> (chez moi <code>~/.vim/spell</code>) et de lancer les commandes suivantes</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="k">while</span> <span class="o">(</span><span class="nb">true</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>  <span class="nb">echo eval</span><span class="o">(</span>fgets<span class="o">(</span>STDIN<span class="o">))</span><span class="p">;</span>
-</span><span class='line'><span class="o">}</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>wget http://ftp.vim.org/vim/runtime/spell/fr.latin1.spl
+</span><span class='line'>wget http://ftp.vim.org/vim/runtime/spell/fr.latin1.sug
+</span><span class='line'>wget http://ftp.vim.org/vim/runtime/spell/fr.utf-8.spl
+</span><span class='line'>wget http://ftp.vim.org/vim/runtime/spell/fr.utf-8.sug
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p> avec les commentaires</p>
+<p>La touche magique ici est <code>z=</code> puis les touches du <code>0..n</code>. <code>]s</code> pour aller à l&#8217;erreur suivante <code>[s</code> pour l&#8217;erreur précédente. Il y a différentes touches pour ajouter à son propre dictionnaire. J&#8217;avoue que cela ne m&#8217;intéresse pas trop de suite.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="k">while</span> <span class="o">(</span><span class="nb">true</span><span class="o">)</span>/*Loop*/ <span class="o">{</span>
-</span><span class='line'>  <span class="nb">echo</span> /*Print*/ <span class="nb">eval</span><span class="o">(</span>/*Read*/ fgets<span class="o">(</span>STDIN<span class="o">))</span><span class="p">;</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
+<p>On peut aussi faire de l&#8217;auto complétion ou plutôt de l&#8217;auto correction pendant la saisie avec les touche <code>Ctrl-x</code> + <code>s</code>.</p>
+
+<h2>Résumé</h2>
+
+<table>
+<thead>
+<tr>
+<th> Touche      </th>
+<th style="text-align:center;"> Description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>z=</code>               </td>
+<td style="text-align:center;"> auto correct si <code>spell</code> est activée</td>
+</tr>
+<tr>
+<td> <code>[s</code>               </td>
+<td style="text-align:center;"> erreur précédente</td>
+</tr>
+<tr>
+<td> <code>]s</code>               </td>
+<td style="text-align:center;"> erreur suivante</td>
+</tr>
+<tr>
+<td> <code>Crtl-x s</code>      </td>
+<td style="text-align:center;">auto complétion via le dictionnaire </td>
+</tr>
+</tbody>
+</table>
 
 
-<p>Read Eval Print Loop. le nom donne le programme.</p>
+<p>Warning : <code>Ctrl-s</code> parfois freeze le terminal (option pratique quand je regarde les tests fonctionnels passés). Pour <em>defreezer</em> le terminal c&#8217;est <code>Ctrl-Q</code></p>
 
-<p>C&#8217;est une technique qui marche avec un peu tout les langages.
-voir <a href="http://repl.it">http://repl.it</a></p>
+<h2>Conclusion:</h2>
+
+<p>Il manque le correcteur grammatical :-)</p>
 </div>
 
 
@@ -159,12 +173,12 @@ voir <a href="http://repl.it">http://repl.it</a></p>
 
 
 
-<time class='entry-date' datetime='2015-03-08T19:24:57+01:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:24 pm</span></time>
+<time class='entry-date' datetime='2015-04-22T22:26:43+02:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>10:26 pm</span></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/php/'>php</a>
+    <a class='category' href='/blog/categories/vim/'>vim</a>
   
 </span>
 
@@ -173,7 +187,7 @@ voir <a href="http://repl.it">http://repl.it</a></p>
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mcamuzat.github.io/blog/2015/03/08/php-en-mode-interactif/" data-via="" data-counturl="http://mcamuzat.github.io/blog/2015/03/08/php-en-mode-interactif/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mcamuzat.github.io/blog/2015/04/22/correction-orthographique-et-vim/" data-via="" data-counturl="http://mcamuzat.github.io/blog/2015/04/22/correction-orthographique-et-vim/" >Tweet</a>
   
   
   
@@ -182,10 +196,8 @@ voir <a href="http://repl.it">http://repl.it</a></p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/03/08/comprendre-les-raccourcis-claviers-de-vi-slash-vim/" title="Previous Post: Comprendre les raccourcis claviers de vi/vim">&laquo; Comprendre les raccourcis claviers de vi/vim</a>
+        <a class="basic-alignment left" href="/blog/2015/04/18/dockers-et-ci/" title="Previous Post: Dockers et CI">&laquo; Dockers et CI</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2015/03/16/mapreduce-du-pauvre/" title="Next Post: MapReduce du pauvre">MapReduce du pauvre &raquo;</a>
       
     </p>
   </footer>
