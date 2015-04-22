@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Livre | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/livre/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-04-18T20:09:57+02:00</updated>
+  <updated>2015-04-22T22:22:49+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -19,7 +19,7 @@
     <updated>2015-04-15T22:38:15+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/04/15/10print</id>
     <content type="html"><![CDATA[<p>Je suis tombé un peu par hasard sur la critique du livre <a href="http://10print.org/">10 PRINT</a> , le pdf du livre est gratuit et plutôt joli, il parle de programmation, d&#8217;art et d&#8217;aléatoire.
-tout le livre est centré sur le programme de basic suivant qui donne m&#8217;image de la couverture.</p>
+Tout le livre est centré sur le programme de basic suivant qui donne l&#8217;image de la couverture.</p>
 
 <pre><code>10 PRINT CHR$(205.5+RND(1)); : GOTO 10
 /\\\\\\//\\////\\/\/\/\//\///////\\/////\///\\/\\
@@ -37,7 +37,7 @@ tout le livre est centré sur le programme de basic suivant qui donne m&#8217;im
 
 <p>Bon la police d&#8217;écriture ne rend pas vraiment justice au code.</p>
 
-<p>c&#8217;est possible de faire le même motif en PHP et en peu de code ?</p>
+<p>C&#8217;est possible de faire le même motif en PHP et en peu de code ?</p>
 
 <p>Une solution
 <code>php
@@ -47,20 +47,20 @@ for($i = 0; $i &lt; 1000; $i++){
 }
 </code></p>
 
-<p>attention <code>array_rand</code> renvoie la clé et non la valeur d&#8217;où le <code>$out[array_rand($out)]</code></p>
+<p>Attention <code>array_rand</code> renvoie la clé et non la valeur d&#8217;où le <code>$out[array_rand($out)]</code></p>
 
-<p>et puis je me suis dit que array_rand ne sert pas à grand chose.</p>
+<p>Et puis je me suis dit que array_rand ne sert pas à grand chose.</p>
 
-<p>donc j&#8217;ai essayé
+<p>Donc j&#8217;ai essayé
 <code>php
 $out = array('/', '\\');
 for($i =0; $i &lt; 1000; $i++){
  echo $out[rand(0,1)];
 }
 </code>
-pour générer des nombres aléatoire, il vaut mieux utiliser <code>mt_rand</code> qui d&#8217;après la documentation génére des nombres aléatoires plus interressants (?). Pour des vrai nombres aléatoires pour les mots de passe,  on utilise des librairies voir cette <a href="http://blog.ircmaxell.com/2013/01/password-storage-talk-at-php-benelux-13.html">présentation</a>.</p>
+pour générer des nombres aléatoire, il vaut mieux utiliser <code>mt_rand</code> qui d&#8217;après la documentation génère des nombres aléatoires plus intéressants (?). Pour des vrai nombres aléatoires pour les mots de passe,  on utilise des librairies voir cette <a href="http://blog.ircmaxell.com/2013/01/password-storage-talk-at-php-benelux-13.html">présentation</a>.</p>
 
-<p>mais il est possible d&#8217;initialiser plus d&#8217;une constante dans la boucle for.</p>
+<p>Mais il est possible d&#8217;initialiser plus d&#8217;une constante dans la boucle for.</p>
 
 <pre><code>for($i =0, $out = array('/', '\\'); $i &lt; 1000; $i++){
  echo $out[mt_rand(0,1)];
@@ -73,16 +73,16 @@ pour générer des nombres aléatoire, il vaut mieux utiliser <code>mt_rand</cod
 );
 </code></pre>
 
-<p>on minimise les variables et la notation avec les <code>[]</code></p>
+<p>On minimise les variables et la notation avec les <code>[]</code></p>
 
-<p>nous obtenons le code suivant</p>
+<p>Nous obtenons le code suivant</p>
 
 <pre><code class="php">for($i =0, $o = ['/', '\\']; $i &lt; 1000; $i++, echo $o[mt_rand(0,1)]);
 </code></pre>
 
 <p>Je n&#8217;avais jamais écris de boucle for sans corps(<code>{..}</code>).</p>
 
-<p>La documentation de php est plutôt claire sur le <a href="http://php.net/manual/fr/control-structures.for.php">for</a></p>
+<p>La documentation de PHP est plutôt claire sur le <a href="http://php.net/manual/fr/control-structures.for.php">for</a></p>
 ]]></content>
   </entry>
   

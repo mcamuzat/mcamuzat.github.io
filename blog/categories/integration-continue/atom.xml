@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Intégration Continue | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/integration-continue/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-04-18T20:09:57+02:00</updated>
+  <updated>2015-04-22T22:22:49+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -30,14 +30,14 @@
 
 <h2>Faire de la qualité avec Docker</h2>
 
-<p>Il y a un container fourni par <a href="https://github.com/jolicode/docker-images/tree/master/languages/php/phaudit">phaudit</a> qui contient déja des outils pour auditer le code.</p>
+<p>Il y a un container fourni par <a href="https://github.com/jolicode/docker-images/tree/master/languages/php/phaudit">phaudit</a> qui contient déjà des outils pour auditer le code.</p>
 
-<p>voici la ligne de commande pour l&#8217;installer
+<p>Voici la ligne de commande pour l&#8217;installer
 <code>
 docker pull jolicode/phaudit
 </code></p>
 
-<p>et je me place dans mon répertoire projet</p>
+<p>Et je me place dans mon répertoire projet</p>
 
 <h3>Listes des programmes</h3>
 
@@ -201,13 +201,13 @@ Time: 7 ms, Memory: 6.25Mb
 OK (6 tests, 34 assertions)
 </code></pre>
 
-<p>En ajoutant un fichier <code>.yml</code> et sans installer aucune version de php, je peux tester sur trois plate-formes mon code. c&#8217;est vraiment impressionnant.</p>
+<p>En ajoutant un fichier <code>.yml</code> et sans installer aucune version de php, je peux tester sur trois plateformes mon code. C&#8217;est vraiment impressionnant.</p>
 
 <h2>Conclusion</h2>
 
 <p>Nous avons vus ensemble deux applications très simples qui permettent d&#8217;intégrer Docker dans notre workflow.</p>
 
-<p>merci à l&#8217;équipe <a href="http://jolicode.com/">JoliCode</a>  pour ces deux outils.</p>
+<p>Merci à l&#8217;équipe <a href="http://jolicode.com/">JoliCode</a>  pour ces deux outils.</p>
 
 <p>Je me suis inspiré de la présentation suivante.
 <a href="http://slides.com/jeremyderusse/docker-dev#/5/2">http://slides.com/jeremyderusse/docker-dev#/5/2</a></p>

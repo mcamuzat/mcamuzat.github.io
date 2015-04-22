@@ -9,8 +9,8 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Introduction Nous allons voir ensemble sur une série de deux posts le design-pattern interpréteur
-les limitations et une solution qui va introduire &hellip;">
+  <meta name="description" content="Introduction Nous allons voir ensemble sur une série trois posts le design-pattern interpréteur
+les limitations et une solution qui va introduire le &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -99,7 +99,7 @@ les limitations et une solution qui va introduire &hellip;">
 
 <div class="entry-content"><h1>Introduction</h1>
 
-<p>Nous allons voir ensemble sur une série de deux posts</p>
+<p>Nous allons voir ensemble sur une série trois posts</p>
 
 <ul>
 <li>le design-pattern interpréteur</li>
@@ -132,7 +132,7 @@ les limitations et une solution qui va introduire &hellip;">
 
 <h2>Evaluer des constantes</h2>
 
-<p>voici le code pour evaluer des constantes</p>
+<p>Voici le code pour évaluer des constantes</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -216,7 +216,7 @@ les limitations et une solution qui va introduire &hellip;">
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>On utilise la <strong>récursion</strong> pour interpreter la partie droite et gauche</p>
+<p>On utilise la <strong>récursion</strong> pour interpréter la partie droite et gauche</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -225,7 +225,7 @@ les limitations et une solution qui va introduire &hellip;">
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Faire la multiplication, la soustraction, la division ne sont pas plus compliquées. il suffit de changer le signe dans la fonction interpret()</p>
+<p>Faire la multiplication, la soustraction, la division ne sont pas plus compliquées. Il suffit de changer le signe dans la fonction interpret()</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -404,9 +404,9 @@ les limitations et une solution qui va introduire &hellip;">
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>On comprend l&#8217;intéret du context. il nous permet de passer un pseudo-scope..</p>
+<p>On comprend l&#8217;intérêt du context. Il nous permet de passer un pseudo-scope..</p>
 
-<p>un exemple:</p>
+<p>Un exemple:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -425,13 +425,13 @@ les limitations et une solution qui va introduire &hellip;">
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>On peux rajouter plein d&#8217;autre expression. l&#8217;avantage est qu&#8217;il suffit de rajouter une méthode <code>-&gt;interpret(..)</code> pour chaque objet.</p>
+<p>On peux rajouter plein d&#8217;autre expression. L&#8217;avantage est qu&#8217;il suffit de rajouter une méthode <code>-&gt;interpret(..)</code> pour chaque objet.</p>
 
 <h1>mais si on change le cahier des charges&hellip;</h1>
 
-<p>changeons le cahier des charges. je souhaite transformer mon Expression en chaine de caractères. je peux m&#8217;en sortir en surchargeant la methode <code>__tostring</code></p>
+<p>Changeons le cahier des charges. Je souhaite transformer mon Expression en chaine de caractères. Je peux m&#8217;en sortir en surchargeant la méthode <code>__tostring</code></p>
 
-<p>par exemple :</p>
+<p>Par exemple :</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -465,7 +465,7 @@ les limitations et une solution qui va introduire &hellip;">
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>rechangeons le cahier des charges : je veux la traduction en Php</p>
+<p>Rechangeons le cahier des charges : je veux la traduction en Php</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -474,7 +474,7 @@ les limitations et une solution qui va introduire &hellip;">
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>je suis un peu bloqué, je dois rajouter à chaque fois une méthode dans chaque object. Je perd un peu de la simplicité du pattern..</p>
+<p>je suis un peu bloqué, je dois rajouter à chaque fois une méthode dans chaque Object. Je perd un peu de la simplicité du pattern..</p>
 
 <h2>Visiteur Pattern à la rescousse !</h2>
 
@@ -663,7 +663,7 @@ les limitations et une solution qui va introduire &hellip;">
 <p>en pratique. On appelle la méthode <code>accept</code>. Celle-ci appelle la methode <code>visit($this)</code>. la méthode visit détermine la fonction à appeller.
 Si c&#8217;est une constante alors <code>visistConstant()</code> celle-ci résout la valeur. pour une addition c&#8217;est un plus compliqué on ré-appelle récursivement <code>accept</code> sur chaque partie de l&#8217;addition.</p>
 
-<p>voici comment s&#8217;en servir</p>
+<p>Voici comment s&#8217;en servir</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -686,11 +686,11 @@ Si c&#8217;est une constante alors <code>visistConstant()</code> celle-ci résou
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>On se rend compte qu&#8217;il n&#8217;y a plus de logique dans mes objet. tout est sous-traité dans le visiteur.</p>
+<p>On se rend compte qu&#8217;il n&#8217;y a plus de logique dans mes objet. Tout est sous-traité dans le visiteur.</p>
 
-<p>l&#8217;avantage de cette méthode est qu&#8217;il est très simple de changer le visiteur sans changer la logique.</p>
+<p>L&#8217;avantage de cette méthode est qu&#8217;il est très simple de changer le visiteur sans changer la logique.</p>
 
-<p>par exemple le visiteur qui convertit en php</p>
+<p>Par exemple le visiteur qui convertit en php</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -759,7 +759,7 @@ Si c&#8217;est une constante alors <code>visistConstant()</code> celle-ci résou
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>et celui qui convertit en Javascript !</p>
+<p>Et celui qui convertit en Javascript !</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>

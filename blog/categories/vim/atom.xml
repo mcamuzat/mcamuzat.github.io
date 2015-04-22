@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Vim | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/vim/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-04-18T20:09:57+02:00</updated>
+  <updated>2015-04-22T22:22:49+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -18,16 +18,17 @@
     <link href="http://mcamuzat.github.io/blog/2015/03/30/comprendre-la-ligne-de-commande-de-vi/"/>
     <updated>2015-03-30T22:36:21+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/03/30/comprendre-la-ligne-de-commande-de-vi</id>
-    <content type="html"><![CDATA[<p>sous Vi quand on appuie sur <code>:</code> on a la ligne de commande</p>
+    <content type="html"><![CDATA[<p>Sous Vi quand on appuie sur <code>:</code> on a la ligne de commande</p>
 
-<p>tout le monde connaît
+<p>Tout le monde connaît
 <code>
 :wq // quitter et enregistrer
 :q! // quitter sans enregistrer et sans confirmation !
 </code></p>
 
-<p>mais en pratique il existe plein de commandes.
-par exemple :</p>
+<p>Mais en pratique il existe plein de commandes.</p>
+
+<p>Par exemple :</p>
 
 <pre><code>:1,10d 
 </code></pre>
@@ -148,15 +149,15 @@ par exemple
 &#8220;`
 Action + Nombre de fois + Mouvement</p>
 
-<p>exemple:
+<p>Exemple:
 d5w # <em>d</em>elete <em>5</em> word
 yG  # copier jusqu&#8217;à la fin du fichier (G)
 =4j # indenter (=) 4 lignes vers le bas
 di( # efface entre les parenthèses <em>d</em>elete <em>i</em>nside (</p>
 
 <dl>
-<dt>dans le mode commande</dt>
-<dd>debut, fin action</dd>
+<dt>Dans le mode commande</dt>
+<dd>début, fin action</dd>
 </dl>
 
 <p>:%d # efface tout le fichier
@@ -182,7 +183,7 @@ sur tout le fichier (</code>%<code>) remplace(</code>s<code>) un ou plus(</code>
     <id>http://mcamuzat.github.io/blog/2015/03/08/comprendre-les-raccourcis-claviers-de-vi-slash-vim</id>
     <content type="html"><![CDATA[<h1>Comprendre les raccourcis claviers Vim : la méthode des deux tableaux</h1>
 
-<p>Ajourd&#8217;hui nous allons essayer de comprendre les raccourcis de vi/vim. je vous demande de prendre de deux feuilles. Je vais essayer de vous monter comment se combinent les touches.</p>
+<p>Aujourd&#8217;hui nous allons essayer de comprendre les raccourcis de vi/vim. Je vous demande de prendre deux feuilles. Je vais essayer de vous monter comment se combinent les touches.</p>
 
 <ul>
 <li>sur la feuille 1 dessinez deux colonnes: touche description.</li>
@@ -191,38 +192,38 @@ sur tout le fichier (</code>%<code>) remplace(</code>s<code>) un ou plus(</code>
 </ul>
 
 
-<p>lancez <code>vim</code> et ouvrez un fichier texte existant.</p>
+<p>Lancez <code>vim</code> et ouvrez un fichier texte existant.</p>
 
 <h2>Les mouvements :</h2>
 
 <p><code>w</code> signifie <strong>w</strong>ord
 appuyez sur <code>w</code> vous passez au mot suivant.</p>
 
-<p>ajouter à votre tableau mouvement
+<p>Ajouter à votre tableau mouvement
 w <strong>w</strong>ord  passe au mots suivant</p>
 
-<p><code>b</code> signifie <strong>b</strong>ack. vous allez au mot précédent</p>
+<p><code>b</code> signifie <strong>b</strong>ack. Vous allez au mot précédent</p>
 
-<p>vous ajoutez a la feuille b <strong>b</strong>ack</p>
+<p>Vous ajoutez a la feuille b <strong>b</strong>ack</p>
 
 <p><code>e</code> signifie <strong>e</strong>nd va à la fin du mot</p>
 
 <h3>les directions</h3>
 
 <p>J&#8217;ai un peu peur de vous perdre ici.
-dans le temps les clavier n&#8217;avait pas de touche de direction. donc les touche sont <code>h</code>, <code>j</code>, <code>k</code>, <code>l</code> pour repectivement <code>gauche</code>, <code>bas</code>, <code>haut</code>, <code>droite</code></p>
+Dans le temps les clavier n&#8217;avait pas de touche de direction. Les touches sont <code>h</code>, <code>j</code>, <code>k</code>, <code>l</code> pour respectivement <code>gauche</code>, <code>bas</code>, <code>haut</code>, <code>droite</code></p>
 
-<p>moyen mnemotechnique <code>j</code> va vers le bas, <code>k</code> va vers le haut.</p>
+<p>Moyen mnémotechnique <code>j</code> va vers le bas, <code>k</code> va vers le haut.</p>
 
 <p>Vous pouvez utiliser les flèches. Mais un des avantage d&#8217;utiliser les <code>j</code> et <code>k</code> est que vos doigts ne quitte jamais le milieu du clavier.</p>
 
-<p>vous avez maintenant 7 lignes à votre tableau</p>
+<p>Vous avez maintenant 7 lignes à votre tableau</p>
 
 <h3>Un quiz !</h3>
 
-<p>que se passe t&#8217;il si je tape <code>3w</code> ou <code>5j</code> ?</p>
+<p>Que se passe t&#8217;il si je tape <code>3w</code> ou <code>5j</code> ?</p>
 
-<p>réponse je me déplace de <code>3 mots</code> ou <code>5 ligne vers le bas</code>
+<p>Réponse je me déplace de <code>3 mots</code> ou <code>5 ligne vers le bas</code>
 modifions notre tableau en rajoutant le (n).</p>
 
 <h3>Se déplacer dans le fichier.</h3>
@@ -231,11 +232,11 @@ modifions notre tableau en rajoutant le (n).</p>
 <code>G</code> vous emmène à la fin du fichier
 <code>50G</code> vous emmène à la ligne 50 (variante <code>:50</code> marche aussi)</p>
 
-<p>vous rajoutez les 3 lignes dans votre tableau.</p>
+<p>Vous rajoutez les 3 lignes dans votre tableau.</p>
 
 <h3>Début de ligne, fin de ligne</h3>
 
-<p>si vous connaissez vos regex <code>^a</code> vous donnes tout les occurences qui commencent par <code>a</code> et <code>a$</code> qui finissent par <code>a</code>
+<p>si vous connaissez vos Regex <code>^a</code> vous donnes tout les occurrences qui commencent par <code>a</code> et <code>a$</code> qui finissent par <code>a</code>
 <code>^</code> début du texte sur la ligne actuelle
 <code>$</code> fin de la ligne
 <code>0</code> colonne 0 (tout début de la ligne)</p>
@@ -312,7 +313,7 @@ modifions notre tableau en rajoutant le (n).</p>
 
 <ul>
 <li>Il existe plus de mouvement.</li>
-<li>mais le but ici n&#8217;est pas d&#8217;etre exhaustif. J&#8217;ai besoin des mouvements pour introduire la feuille suivante.</li>
+<li>mais le but ici n&#8217;est pas d&#8217;être exhaustif. J&#8217;ai besoin des mouvements pour introduire la feuille suivante.</li>
 </ul>
 
 
@@ -321,15 +322,15 @@ modifions notre tableau en rajoutant le (n).</p>
 <p><code>d</code> signifie <strong>d</strong>elete (en fait c&#8217;est un couper)</p>
 
 <p>Petit quizz : que se passe t&#8217;il si j&#8217;appuie sur les touches suivantes ? <code>d3w</code>
-une traduction <strong>d</strong>elete <strong>3</strong> <strong>w</strong>ords. j&#8217;efface trois mots. vous comprenez pourquoi j&#8217;ai absolument besoin de la table d&#8217;avant. car en fait et c&#8217;est une des vérités qui vous aidera dans Vi/Vim. Un combinaison dans Vi c&#8217;est <strong>action</strong> + <strong>mouvement</strong>.</p>
+une traduction <strong>d</strong>elete <strong>3</strong> <strong>w</strong>ords. J&#8217;efface trois mots, Vous comprenez pourquoi j&#8217;ai absolument besoin de la table d&#8217;avant. Car en fait et c&#8217;est une des vérités qui vous aidera dans Vi/Vim. Un combinaison dans Vi c&#8217;est <strong>action</strong> + <strong>mouvement</strong>.</p>
 
 <p>Je donne les autres actions</p>
 
 <ul>
 <li><code>y</code>pour <strong>y</strong>ank pour copier <code>yw</code> copie un mot. <code>y3j</code> copie 3 lignes. pour coller on utilise la touche <code>p</code> comme <strong>p</strong>aste</li>
-<li><code>c</code> pour <strong>c</strong>hange. vous souhaiter changer un mot. avant vous appuyer sur <code>i</code> pour vous effacer le mot, puis vous rajouter le votre. si vous taper <code>cw</code> comme <strong>c</strong>hange <strong>w</strong>ord. vi supprime le mot et met directement en mode <em>insertion</em>.</li>
-<li><code>&gt;</code> et <code>&lt;</code> deplace à droite et a gauche le texte <code>&lt;4j</code> deplace 4 ligne à gauche.</li>
-<li><code>=</code> re-indente le texte, c&#8217;est un pictogramme le deux lignes du égale sont alignées. pour réindenter tout le texte <code>gg=G</code> soit <code>gg</code> va au début du fichier <code>=G</code> réindente jusqu&#8217;a la fin du fichier.</li>
+<li><code>c</code> pour <strong>c</strong>hange. Vous souhaitez changer un mot. avant vous appuyer sur <code>i</code> pour vous effacer le mot, puis vous rajouter le votre. Si vous taper <code>cw</code> comme <strong>c</strong>hange <strong>w</strong>ord. vi supprime le mot et met directement en mode <em>insertion</em>.</li>
+<li><code>&gt;</code> et <code>&lt;</code> déplace à droite et à gauche le texte <code>&lt;4j</code> déplace 4 ligne à gauche.</li>
+<li><code>=</code> re-indente le texte, c&#8217;est un pictogramme le deux lignes du égale sont alignées. Pour ré-indenter tout le texte <code>gg=G</code> soit <code>gg</code> va au début du fichier <code>=G</code> ré-indente jusqu&#8217;à la fin du fichier.</li>
 </ul>
 
 
@@ -383,7 +384,7 @@ par exemple je veux effacer 5 lignes:
 <code>delete 5 lines</code> -> d5j
 je veux changer un mot
 <code>change word</code> -> cw</p></li>
-<li><p>Recopier les deux tableaux. l&#8217;astuce est vraiment d&#8217;avoir la feuille sous les yeux.</p></li>
+<li><p>Recopier les deux tableaux. L&#8217;astuce est vraiment d&#8217;avoir les feuilles sous les yeux.</p></li>
 <li>Les touches sont les mêmes pour <code>man</code> et surtout <code>less</code></li>
 </ul>
 
@@ -391,16 +392,16 @@ je veux changer un mot
 <h1>Un peu de philosophie.</h1>
 
 <ul>
-<li>Je n&#8217;ai pas utilisée une seul fois la touche controle et alt.</li>
-<li>En 1 sens, je n&#8217;utilise pas la souris. Je veux indenter le texte je dis <em>indente le texte</em> <code>=G</code> et pas selectionner le texte, puis boutton droit ou un raccourci clavier. En un sens Vi est plus direct.</li>
-<li>J&#8217;espère que cela dé-mystifie un peu l&#8217;utilisation du clavier sur vi</li>
+<li>Je n&#8217;ai pas utilisé une seul fois la touche controle et alt.</li>
+<li>En 1 sens, je n&#8217;utilise pas la souris. Je veux indenter le texte je dis <em>indente le texte</em> <code>=G</code> et pas sélectionner le texte, puis bouton droit ou un raccourci clavier. En un sens Vi est plus direct.</li>
+<li>J&#8217;espère que cela démystifie un peu l&#8217;utilisation du clavier sur vi</li>
 </ul>
 
 
 <h2>Teaser</h2>
 
-<p>il existe d&#8217;autre mouvement ! je ferai une version deluxe, l&#8217;idée ici est de comprendre la combinaison de mouvements. une touche apprise c&#8217;est de dizaine de nouvelles possibilités
-par exemple <code>di(</code> <code>i</code> signifie inside. donc delete inside paraenthèse. efface le texte dans une parenthese.</p>
+<p>il existe d&#8217;autre mouvement ! Je ferai une version deluxe, l&#8217;idée ici est de comprendre la combinaison de mouvements. une touche apprise c&#8217;est de dizaine de nouvelles possibilités
+par exemple <code>di(</code> <code>i</code> signifie inside. donc delete inside parenthèse. Efface le texte entre les parenthèses.</p>
 
 <h2>Faq</h2>
 
@@ -414,16 +415,20 @@ en fait</p>
 </ul>
 
 
-<p>Il existe un mouvement qui s&#8217;appelle <code>_</code> qui represente la ligne actuelle (c&#8217;est d&#8217;ailleurs le pictogramme d&#8217;une ligne)
-donc en fait si on tape <code>d_</code> on efface la ligne actuelle (essayez !). mais la plupart du temps c&#8217;est un peu compliqué à taper pour une operation plutot courante (supprimer une ligne) . donc il a été décidé que <code>dd</code>, <code>yy</code> , <code>cc</code>
+<p>Il existe un mouvement qui s&#8217;appelle <code>_</code> qui représente la ligne actuelle (c&#8217;est d&#8217;ailleurs le pictogramme d&#8217;une ligne)
+donc en fait si on tape <code>d_</code> on efface la ligne actuelle (essayez !). Mais la plupart du temps c&#8217;est un peu compliqué à taper pour une opération plutôt courante (supprimer une ligne) . Donc il a été décidé que <code>dd</code>, <code>yy</code> , <code>cc</code>
  sont les raccourcis de <code>d_</code>, <code>y_</code> et <code>c_</code>.</p>
 
-<p>Il y a en fait une multitude de racourcis
-par exemple:
-* <code>c$</code> donne <code>C</code>(Change tout la ligne à partir du curseur).
-* <code>d$</code> donne <code>D</code>(Efface toute la ligne à partir du Curseur).
-* <code>^i</code> donne <code>I</code> insera au début de la ligne.
-* <code>$a</code> donne <code>A</code> ajoute à la fin de la ligne.</p>
+<p>Il y a en fait une multitude de raccourcis
+par exemple:</p>
+
+<ul>
+<li><code>c$</code> donne <code>C</code>(Change tout la ligne à partir du curseur).</li>
+<li><code>d$</code> donne <code>D</code>(Efface toute la ligne à partir du Curseur).</li>
+<li><code>^i</code> donne <code>I</code> insert au début de la ligne.</li>
+<li><code>$a</code> donne <code>A</code> ajoute à la fin de la ligne.</li>
+</ul>
+
 ]]></content>
   </entry>
   
@@ -444,7 +449,7 @@ E: Unable to lock the administration directory (/var/lib/dpkg/), are you root?
 $ sudo !!
 </code></pre>
 
-<p><code>!!</code> est la dernière commande executée</p>
+<p><code>!!</code> est la dernière commande exécutée</p>
 
 <h3>Une variante</h3>
 
@@ -456,14 +461,14 @@ cd !$
 
 <h2>Vi/Vim</h2>
 
-<p>Bon il y a beaucoup de commandes relativement sympas et complexes mais je donne celle que tout le monde demande</p>
+<p>Bon il y a beaucoup de commandes relativement sympa et complexes mais je donne celle que tout le monde demande</p>
 
-<p>enregister un fichier en lecture seule
+<p>Enregistrer un fichier en lecture seule
 <code>
 :w !sudo tee %
 </code></p>
 
-<p>dite oui pour recharger la page. et dite oui si vous voulez quitter la page sans enregistrer.</p>
+<p>Dite oui pour recharger la page. Et dite oui si vous voulez quitter la page sans enregistrer.</p>
 
 <p>D&#8217;ailleurs si vous utilisez tout le temps <code>:wq</code> vous pouvez essayer</p>
 
@@ -472,7 +477,7 @@ cd !$
 <li><code>:q</code> quitte mais avec warning si vous n&#8217;avez pas sauvegarder</li>
 <li><code>:q!</code> quitte sans warning et sans sauver</li>
 <li><code>:x</code> raccourci de <code>:wq</code>. Il existe aussi le raccourci clavier <code>ZZ</code> comme pour aller dormir. quitte et enregistre.</li>
-<li><code>:e fichier.txt</code> ouvre le fichier (l&#8217;auto-complétion avec tab fonctionne..)</li>
+<li><code>:e fichier.txt</code> ouvre le fichier (l&#8217;auto complétion avec tab fonctionne..)</li>
 <li><code>:tabe fichier.txt</code> ouvre dans un nouvel onglet (vim seulement). on peux se ballader d&#8217;onglet en onglet avec les touches <code>gt</code> et <code>gT</code> <code>g</code> est le diminutif de <em>go</em> et <code>t</code> pour <em>tab</em>. ou avec <code>ctrl+&lt;pageUp&gt;</code> et <code>ctrl+&lt;pageDown&gt;</code> ou encore tout simplement cliquer avec la souris (astuce suivante)</li>
 </ul>
 
@@ -486,25 +491,25 @@ cd !$
 
 <h3>le <code>vimrc</code></h3>
 
-<p>Vous en avez besoin !! il existe deux versions de vi: <code>vi</code> et <code>vim</code> vim démarre par default en mode vi compatible (ce qui n&#8217;est plus tout à fait vrai).Certaines fonctionnalités sont coupées. Dont les flèches de directions (et ca vous <em>voulez</em>les flèches haut, bas, gauche, droite) et surtout le annuler (<code>u</code> come <em>u</em>ndo) illimité (il est parfois limité à 1). Quel rapport avec le <code>vimrc</code> ? L&#8217;existence du fichier fera que votre vi démarre en mode non compatible. donc vous aurez les touches et le undo.</p>
+<p>Vous en avez besoin !! Il existe deux versions de vi: <code>vi</code> et <code>vim</code> vim démarre par défaut en mode vi compatible (ce qui n&#8217;est plus tout à fait vrai).Certaines fonctionnalités sont coupées. Dont les flèches de directions (et ca vous <em>voulez</em>les flèches haut, bas, gauche, droite) et surtout le annuler (<code>u</code> come <em>u</em>ndo) illimité (il est parfois limité à 1). Quel rapport avec le <code>vimrc</code> ? L&#8217;existence du fichier fera que votre vi démarre en mode non compatible. donc vous aurez les touches et le undo.</p>
 
 <h2>l&#8217;auto-complétion sous vim</h2>
 
-<p>il existe une dizaine d&#8217;auto-complétion sous vim. Certainenement pas aussi puissantes que IDE mais cela rend service.</p>
+<p>Il existe une dizaine d&#8217;auto complétion sous vim. Certainement pas aussi puissantes que IDE mais cela rend service.</p>
 
-<p>en mode insertion <code>ctrl+p</code> autocompletion en cherchant dans les fichiers ouverts. Cela resoud 50 % des auto-complétions.</p>
+<p>En mode insertion <code>ctrl+p</code> auto complétion en cherchant dans les fichiers ouverts. Cela résout 50 % des auto complétions.</p>
 
 <p>l&#8217;auto-complétion est activé via la touche <code>ctrl+x</code> +<code>crtl+lettre</code> avec :</p>
 
 <ul>
-<li><code>ctrl+x</code> <code>ctrl+f</code> <code>f</code> pour <code>file</code> auto-complétion suivant le fichier (marche nickel pour les hosts apache !)</li>
-<li><code>ctrl+x</code> <code>ctrl+l</code> <code>l</code> pour <code>line</code> auto-completion sur la ligne entiere</li>
+<li><code>ctrl+x</code> <code>ctrl+f</code> <code>f</code> pour <code>file</code> auto complétion suivant le fichier (marche nickel pour les hosts apache !)</li>
+<li><code>ctrl+x</code> <code>ctrl+l</code> <code>l</code> pour <code>line</code> auto complétion sur la ligne entière</li>
 <li><code>ctrl+x</code> <code>ctrl+p</code> c&#8217;est pareil que ctrl+p</li>
-<li><code>ctrl+x</code> <code>ctrl+o</code> <code>o</code> pour <code>omni-completion</code> auto-complete php/python/bash suivant le fichier que vous éditez. (cela comprend les mots cles et peux vous donner la syntaxe)</li>
+<li><code>ctrl+x</code> <code>ctrl+o</code> <code>o</code> pour <code>omni-completion</code> auto complete php/python/bash suivant le fichier que vous éditez. (cela comprend les mots clés et peux vous donner la syntaxe)</li>
 </ul>
 
 
-<p>Je montrerai dans un prochain post comment faire pareil qu&#8217;un IDE avec les fonctions. Ou se ballader dans les classes et/ou auto-compléter le code. Ce n&#8217;est pas encore le niveau des IDEs mais c&#8217;est souvent une fonctionnalité méconnue (pourtant c&#8217;est dans vi depuis des années)</p>
+<p>Je montrerai dans un prochain post comment faire pareil qu&#8217;un IDE avec les fonctions. Ou se balader dans les classes et/ou auto compléter le code. Ce n&#8217;est pas encore le niveau des IDEs mais c&#8217;est souvent une fonctionnalité méconnue (pourtant c&#8217;est dans vi depuis des années)</p>
 ]]></content>
   </entry>
   

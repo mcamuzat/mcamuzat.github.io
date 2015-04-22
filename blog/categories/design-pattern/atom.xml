@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Design-pattern | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/design-pattern/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-04-18T20:09:57+02:00</updated>
+  <updated>2015-04-22T22:22:49+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -21,8 +21,8 @@
     <content type="html"><![CDATA[<h2>Introduction:</h2>
 
 <p>Nous allons refaire la même chose que notre interpréteur d&#8217;expressions.
-mais avec des expressions booléennes.
-par exemple
+Mais avec des expressions booléennes.
+Par exemple
 <code>php
 $expression = new Or( new And(New False(), New True()), new False);
 </code>
@@ -35,7 +35,7 @@ $expression = new Not(new NotEqual(new Constant(5), new Variable('i')));
 
 <h2>Expression Booléenne</h2>
 
-<p>Nous definissons l&#8217;interface suivante.</p>
+<p>Nous définissons l&#8217;interface suivante.</p>
 
 <pre><code class="php">/**
  * Une expression Booléenne
@@ -56,16 +56,16 @@ abstract class Unary implements BoolExpression
 }
 </code></pre>
 
-<p>Pour faire l&#8217;algebre booleen j&#8217;ai besoin de <code>False</code> et de <code>True</code></p>
+<p>Pour faire l&#8217;algèbre booléen j&#8217;ai besoin de <code>False</code> et de <code>True</code></p>
 
-<p>voici le code.</p>
+<p>Voici le code.</p>
 
 <pre><code class="php">class True extends Unary {}
 
 class False extends Unary {}
 </code></pre>
 
-<p>j&#8217;ai aussi besoin de la négation</p>
+<p>J&#8217;ai aussi besoin de la négation</p>
 
 <pre><code class="php">class Not extends Unary {
     private $value;
@@ -80,7 +80,7 @@ class False extends Unary {}
 
 <p>Je vais rajouter la condition And, Or, Nand (No-et), Nor(Non-ou)</p>
 
-<p>je definis une classe avec deux arguments dans le constructeur.
+<p>Je définis une classe avec deux arguments dans le constructeur.
 <code>php
 class Binary extends Unary
 {
@@ -417,7 +417,7 @@ var_dump ( $expression-&gt;accept($vb) ); //affiche  "!(10==(5+$i))"
 <h2>Une conclusion.</h2>
 
 <ul>
-<li>dans le premier post : On a vu le visiteur pour évaluer/afficher des expressions.</li>
+<li>Dans le premier post : On a vu le visiteur pour évaluer/afficher des expressions.</li>
 <li>dans le second post : le visiteur pour les expressions booléennes et les comparaisons. Celui-ci utilise le premier visiteur pour faire les calculs.</li>
 </ul>
 
@@ -435,7 +435,7 @@ var_dump ( $expression-&gt;accept($vb) ); //affiche  "!(10==(5+$i))"
     <id>http://mcamuzat.github.io/blog/2015/04/05/interpreteur-et-visiteur-pattern</id>
     <content type="html"><![CDATA[<h1>Introduction</h1>
 
-<p>Nous allons voir ensemble sur une série de deux posts</p>
+<p>Nous allons voir ensemble sur une série trois posts</p>
 
 <ul>
 <li>le design-pattern interpréteur</li>
@@ -460,7 +460,7 @@ interface Expression
 
 <h2>Evaluer des constantes</h2>
 
-<p>voici le code pour evaluer des constantes
+<p>Voici le code pour évaluer des constantes
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
@@ -525,13 +525,13 @@ echo $constante-&gt;interpret(); // affiche 5
 $addition = new Addition(new Constant(5), new Constant(6));
 echo $constante-&gt;interpret(); // affiche 11
 </code>
-On utilise la <strong>récursion</strong> pour interpreter la partie droite et gauche</p>
+On utilise la <strong>récursion</strong> pour interpréter la partie droite et gauche</p>
 
 <pre><code>$addition = new Addition(new Addition( new Constant(5), new Constant(6)), new Constante(4));
 echo $constante-&gt;interpret(); // affiche 15
 </code></pre>
 
-<p>Faire la multiplication, la soustraction, la division ne sont pas plus compliquées. il suffit de changer le signe dans la fonction interpret()</p>
+<p>Faire la multiplication, la soustraction, la division ne sont pas plus compliquées. Il suffit de changer le signe dans la fonction interpret()</p>
 
 <pre><code>    // muliplication 
     public function interpret(Context $context = null) {
@@ -717,9 +717,9 @@ echo $min-&gt;interpret(); // renvoie 10
 </span><span class='line'><span class="s1">    }</span>
 </span><span class='line'><span class="s1">}&lt;/p&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="s1">&lt;pre&gt;&lt;code&gt;On comprend l&#39;</span><span class="nx">intéret</span> <span class="nx">du</span> <span class="nx">context</span><span class="o">.</span> <span class="nx">il</span> <span class="nx">nous</span> <span class="nx">permet</span> <span class="nx">de</span> <span class="nx">passer</span> <span class="nx">un</span> <span class="nx">pseudo</span><span class="o">-</span><span class="nx">scope</span><span class="o">..</span>
+</span><span class='line'><span class="s1">&lt;pre&gt;&lt;code&gt;On comprend l&#39;</span><span class="nx">intérêt</span> <span class="nx">du</span> <span class="nx">context</span><span class="o">.</span> <span class="nx">Il</span> <span class="nx">nous</span> <span class="nx">permet</span> <span class="nx">de</span> <span class="nx">passer</span> <span class="nx">un</span> <span class="nx">pseudo</span><span class="o">-</span><span class="nx">scope</span><span class="o">..</span>
 </span><span class='line'>
-</span><span class='line'><span class="nx">un</span> <span class="nx">exemple</span><span class="o">:</span>
+</span><span class='line'><span class="nx">Un</span> <span class="nx">exemple</span><span class="o">:</span>
 </span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nv">$memory</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Memory</span><span class="p">();</span>
@@ -731,13 +731,13 @@ echo $min-&gt;interpret(); // renvoie 10
 </span><span class='line'><span class="k">echo</span> <span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">interpret</span><span class="p">(</span><span class="nv">$memory</span><span class="p">);</span> <span class="c1">// 10</span>
 </span></code></pre></td></tr></table></div></figure></p>
 
-<p>On peux rajouter plein d&#8217;autre expression. l&#8217;avantage est qu&#8217;il suffit de rajouter une méthode <code>-&gt;interpret(..)</code> pour chaque objet.</p>
+<p>On peux rajouter plein d&#8217;autre expression. L&#8217;avantage est qu&#8217;il suffit de rajouter une méthode <code>-&gt;interpret(..)</code> pour chaque objet.</p>
 
 <h1>mais si on change le cahier des charges&hellip;</h1>
 
-<p>changeons le cahier des charges. je souhaite transformer mon Expression en chaine de caractères. je peux m&#8217;en sortir en surchargeant la methode <code>__tostring</code></p>
+<p>Changeons le cahier des charges. Je souhaite transformer mon Expression en chaine de caractères. Je peux m&#8217;en sortir en surchargeant la méthode <code>__tostring</code></p>
 
-<p>par exemple :
+<p>Par exemple :
 <code>php
 $expression = new Addition (new Addition(new Constant(3), new Constant(4)), new Constante(4));
 $expression-&gt;__toString() // me donne ((3 + 4) + 4);
@@ -755,13 +755,13 @@ $expression-&gt;__toString() // me donne ((3 + 4) + 4);
          }
 </code></pre>
 
-<p>rechangeons le cahier des charges : je veux la traduction en Php</p>
+<p>Rechangeons le cahier des charges : je veux la traduction en Php</p>
 
 <pre><code>$expression = new Addition (new Addition(new Variable('i'), new Constant(4)), new Constante(4));
 $expression-&gt;__toPhp() // me donne (($i + 4) + 4);
 </code></pre>
 
-<p>je suis un peu bloqué, je dois rajouter à chaque fois une méthode dans chaque object. Je perd un peu de la simplicité du pattern..</p>
+<p>je suis un peu bloqué, je dois rajouter à chaque fois une méthode dans chaque Object. Je perd un peu de la simplicité du pattern..</p>
 
 <h2>Visiteur Pattern à la rescousse !</h2>
 
@@ -973,7 +973,7 @@ $expression-&gt;__toPhp() // me donne (($i + 4) + 4);
 </span><span class='line'><span class="s1">&lt;pre&gt;&lt;code&gt;en pratique. On appelle la méthode `accept`. Celle-ci appelle la methode `visit($this)`. la méthode visit détermine la fonction à appeller. </span>
 </span><span class='line'><span class="s1">Si c&#39;</span><span class="nx">est</span> <span class="nx">une</span> <span class="nx">constante</span> <span class="nx">alors</span> <span class="sb">`visistConstant()`</span> <span class="nx">celle</span><span class="o">-</span><span class="nx">ci</span> <span class="nx">résout</span> <span class="nx">la</span> <span class="nx">valeur</span><span class="o">.</span> <span class="nx">pour</span> <span class="nx">une</span> <span class="nx">addition</span> <span class="nx">c</span><span class="s1">&#39;est un plus compliqué on ré-appelle récursivement `accept` sur chaque partie de l&#39;</span><span class="nx">addition</span><span class="o">.</span>
 </span><span class='line'>
-</span><span class='line'><span class="nx">voici</span> <span class="nx">comment</span> <span class="nx">s</span><span class="s1">&#39;en servir</span>
+</span><span class='line'><span class="nx">Voici</span> <span class="nx">comment</span> <span class="nx">s</span><span class="s1">&#39;en servir</span>
 </span><span class='line'><span class="s1">&lt;/code&gt;&lt;/pre&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="s1">&lt;p&gt;// j&#39;</span><span class="nx">ai</span> <span class="nx">besoin</span> <span class="nx">d</span><span class="s1">&#39;une mémoire</span>
@@ -987,11 +987,11 @@ $expression-&gt;__toPhp() // me donne (($i + 4) + 4);
 </span><span class='line'><span class="k">echo</span> <span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$ve</span><span class="p">);</span> <span class="c1">// 20</span>
 </span></code></pre></td></tr></table></div></figure></p>
 
-<p>On se rend compte qu&#8217;il n&#8217;y a plus de logique dans mes objet. tout est sous-traité dans le visiteur.</p>
+<p>On se rend compte qu&#8217;il n&#8217;y a plus de logique dans mes objet. Tout est sous-traité dans le visiteur.</p>
 
-<p>l&#8217;avantage de cette méthode est qu&#8217;il est très simple de changer le visiteur sans changer la logique.</p>
+<p>L&#8217;avantage de cette méthode est qu&#8217;il est très simple de changer le visiteur sans changer la logique.</p>
 
-<p>par exemple le visiteur qui convertit en php</p>
+<p>Par exemple le visiteur qui convertit en php</p>
 
 <pre><code class="php">}
 class VisitorToPhp extends VisitorEvaluation {
@@ -1027,7 +1027,7 @@ class VisitorToPhp extends VisitorEvaluation {
 }
 </code></pre>
 
-<p>et celui qui convertit en Javascript !
+<p>Et celui qui convertit en Javascript !
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>

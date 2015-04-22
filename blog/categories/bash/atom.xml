@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Bash | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/bash/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-04-18T20:09:57+02:00</updated>
+  <updated>2015-04-22T22:22:49+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -120,7 +120,7 @@ E: Unable to lock the administration directory (/var/lib/dpkg/), are you root?
 $ sudo !!
 </code></pre>
 
-<p><code>!!</code> est la dernière commande executée</p>
+<p><code>!!</code> est la dernière commande exécutée</p>
 
 <h3>Une variante</h3>
 
@@ -132,14 +132,14 @@ cd !$
 
 <h2>Vi/Vim</h2>
 
-<p>Bon il y a beaucoup de commandes relativement sympas et complexes mais je donne celle que tout le monde demande</p>
+<p>Bon il y a beaucoup de commandes relativement sympa et complexes mais je donne celle que tout le monde demande</p>
 
-<p>enregister un fichier en lecture seule
+<p>Enregistrer un fichier en lecture seule
 <code>
 :w !sudo tee %
 </code></p>
 
-<p>dite oui pour recharger la page. et dite oui si vous voulez quitter la page sans enregistrer.</p>
+<p>Dite oui pour recharger la page. Et dite oui si vous voulez quitter la page sans enregistrer.</p>
 
 <p>D&#8217;ailleurs si vous utilisez tout le temps <code>:wq</code> vous pouvez essayer</p>
 
@@ -148,7 +148,7 @@ cd !$
 <li><code>:q</code> quitte mais avec warning si vous n&#8217;avez pas sauvegarder</li>
 <li><code>:q!</code> quitte sans warning et sans sauver</li>
 <li><code>:x</code> raccourci de <code>:wq</code>. Il existe aussi le raccourci clavier <code>ZZ</code> comme pour aller dormir. quitte et enregistre.</li>
-<li><code>:e fichier.txt</code> ouvre le fichier (l&#8217;auto-complétion avec tab fonctionne..)</li>
+<li><code>:e fichier.txt</code> ouvre le fichier (l&#8217;auto complétion avec tab fonctionne..)</li>
 <li><code>:tabe fichier.txt</code> ouvre dans un nouvel onglet (vim seulement). on peux se ballader d&#8217;onglet en onglet avec les touches <code>gt</code> et <code>gT</code> <code>g</code> est le diminutif de <em>go</em> et <code>t</code> pour <em>tab</em>. ou avec <code>ctrl+&lt;pageUp&gt;</code> et <code>ctrl+&lt;pageDown&gt;</code> ou encore tout simplement cliquer avec la souris (astuce suivante)</li>
 </ul>
 
@@ -162,25 +162,25 @@ cd !$
 
 <h3>le <code>vimrc</code></h3>
 
-<p>Vous en avez besoin !! il existe deux versions de vi: <code>vi</code> et <code>vim</code> vim démarre par default en mode vi compatible (ce qui n&#8217;est plus tout à fait vrai).Certaines fonctionnalités sont coupées. Dont les flèches de directions (et ca vous <em>voulez</em>les flèches haut, bas, gauche, droite) et surtout le annuler (<code>u</code> come <em>u</em>ndo) illimité (il est parfois limité à 1). Quel rapport avec le <code>vimrc</code> ? L&#8217;existence du fichier fera que votre vi démarre en mode non compatible. donc vous aurez les touches et le undo.</p>
+<p>Vous en avez besoin !! Il existe deux versions de vi: <code>vi</code> et <code>vim</code> vim démarre par défaut en mode vi compatible (ce qui n&#8217;est plus tout à fait vrai).Certaines fonctionnalités sont coupées. Dont les flèches de directions (et ca vous <em>voulez</em>les flèches haut, bas, gauche, droite) et surtout le annuler (<code>u</code> come <em>u</em>ndo) illimité (il est parfois limité à 1). Quel rapport avec le <code>vimrc</code> ? L&#8217;existence du fichier fera que votre vi démarre en mode non compatible. donc vous aurez les touches et le undo.</p>
 
 <h2>l&#8217;auto-complétion sous vim</h2>
 
-<p>il existe une dizaine d&#8217;auto-complétion sous vim. Certainenement pas aussi puissantes que IDE mais cela rend service.</p>
+<p>Il existe une dizaine d&#8217;auto complétion sous vim. Certainement pas aussi puissantes que IDE mais cela rend service.</p>
 
-<p>en mode insertion <code>ctrl+p</code> autocompletion en cherchant dans les fichiers ouverts. Cela resoud 50 % des auto-complétions.</p>
+<p>En mode insertion <code>ctrl+p</code> auto complétion en cherchant dans les fichiers ouverts. Cela résout 50 % des auto complétions.</p>
 
 <p>l&#8217;auto-complétion est activé via la touche <code>ctrl+x</code> +<code>crtl+lettre</code> avec :</p>
 
 <ul>
-<li><code>ctrl+x</code> <code>ctrl+f</code> <code>f</code> pour <code>file</code> auto-complétion suivant le fichier (marche nickel pour les hosts apache !)</li>
-<li><code>ctrl+x</code> <code>ctrl+l</code> <code>l</code> pour <code>line</code> auto-completion sur la ligne entiere</li>
+<li><code>ctrl+x</code> <code>ctrl+f</code> <code>f</code> pour <code>file</code> auto complétion suivant le fichier (marche nickel pour les hosts apache !)</li>
+<li><code>ctrl+x</code> <code>ctrl+l</code> <code>l</code> pour <code>line</code> auto complétion sur la ligne entière</li>
 <li><code>ctrl+x</code> <code>ctrl+p</code> c&#8217;est pareil que ctrl+p</li>
-<li><code>ctrl+x</code> <code>ctrl+o</code> <code>o</code> pour <code>omni-completion</code> auto-complete php/python/bash suivant le fichier que vous éditez. (cela comprend les mots cles et peux vous donner la syntaxe)</li>
+<li><code>ctrl+x</code> <code>ctrl+o</code> <code>o</code> pour <code>omni-completion</code> auto complete php/python/bash suivant le fichier que vous éditez. (cela comprend les mots clés et peux vous donner la syntaxe)</li>
 </ul>
 
 
-<p>Je montrerai dans un prochain post comment faire pareil qu&#8217;un IDE avec les fonctions. Ou se ballader dans les classes et/ou auto-compléter le code. Ce n&#8217;est pas encore le niveau des IDEs mais c&#8217;est souvent une fonctionnalité méconnue (pourtant c&#8217;est dans vi depuis des années)</p>
+<p>Je montrerai dans un prochain post comment faire pareil qu&#8217;un IDE avec les fonctions. Ou se balader dans les classes et/ou auto compléter le code. Ce n&#8217;est pas encore le niveau des IDEs mais c&#8217;est souvent une fonctionnalité méconnue (pourtant c&#8217;est dans vi depuis des années)</p>
 ]]></content>
   </entry>
   
