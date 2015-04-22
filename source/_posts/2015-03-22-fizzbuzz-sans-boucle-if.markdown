@@ -8,11 +8,11 @@ categories: [PHP, FizzBuzz, Question, Kata]
 
 
 
-Bon, j'ai passé deux-trois entretiens ou on m'a demandé d'implementer "fizzbuz"
+Bon, j'ai passé deux-trois entretiens ou on m'a demandé d'implémenter "fizzbuz"
 
-les règles sont simples.
+Les règles sont simples.
 
-* Ecrire un programme qui écrit les nombres de 1 à 100.
+* Écrire un programme qui écrit les nombres de 1 à 100.
 * Si le chiffre est divisible par 3 afficher seulement "fizz" 
 * Si le chiffre est divisible par 5 afficher seulement "buzz"
 * Si divisible par 3 et 5 afficher "fizzbuzz"
@@ -119,6 +119,6 @@ C'est pour cela que l'on utilise cette ligne un peu bancale.
 ```
 ($output = $resp[$i%15]) || ($output = $i);
 ```
-Il n'y a pas de boucle if. Si un jour on vous demande d'implémenter FizzBuzzben essayer cette version.  
+Il n'y a pas de boucle if. Si un jour on vous demande d'implémenter FizzBuzzb en essayer cette version.  
 
 

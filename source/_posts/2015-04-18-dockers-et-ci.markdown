@@ -14,14 +14,14 @@ je continue sur ma découverte de Docker. Je vais parler de deux containers
 
 ##Faire de la qualité avec Docker
 
-Il y a un container fourni par [phaudit](https://github.com/jolicode/docker-images/tree/master/languages/php/phaudit) qui contient déja des outils pour auditer le code. 
+Il y a un container fourni par [phaudit](https://github.com/jolicode/docker-images/tree/master/languages/php/phaudit) qui contient déjà des outils pour auditer le code. 
 
-voici la ligne de commande pour l'installer
+Voici la ligne de commande pour l'installer
 ```
 docker pull jolicode/phaudit
 ```
 
-et je me place dans mon répertoire projet
+Et je me place dans mon répertoire projet
 
 ###Listes des programmes
 
@@ -182,12 +182,12 @@ Time: 7 ms, Memory: 6.25Mb
 OK (6 tests, 34 assertions)
 ```
 
-En ajoutant un fichier `.yml` et sans installer aucune version de php, je peux tester sur trois plate-formes mon code. c'est vraiment impressionnant.
+En ajoutant un fichier `.yml` et sans installer aucune version de php, je peux tester sur trois plateformes mon code. C'est vraiment impressionnant.
 
 ## Conclusion
 Nous avons vus ensemble deux applications très simples qui permettent d'intégrer Docker dans notre workflow. 
 
-merci à l'équipe [JoliCode](http://jolicode.com/)  pour ces deux outils.
+Merci à l'équipe [JoliCode](http://jolicode.com/)  pour ces deux outils.
 
 Je me suis inspiré de la présentation suivante.
 http://slides.com/jeremyderusse/docker-dev#/5/2

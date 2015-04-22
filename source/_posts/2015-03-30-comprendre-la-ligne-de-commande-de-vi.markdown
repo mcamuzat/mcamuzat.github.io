@@ -7,16 +7,17 @@ categories: [Vim, Editeur, Linux]
 ---
 
 
-sous Vi quand on appuie sur `:` on a la ligne de commande
+Sous Vi quand on appuie sur `:` on a la ligne de commande
 
-tout le monde connaît 
+Tout le monde connaît 
 ```
 :wq // quitter et enregistrer
 :q! // quitter sans enregistrer et sans confirmation !
 ```
 
-mais en pratique il existe plein de commandes.
-par exemple : 
+Mais en pratique il existe plein de commandes.
+
+Par exemple : 
 
 ```
 :1,10d 
@@ -101,14 +102,14 @@ j'avais expliqué dans un précédent articles les mouvements en mode normal son
 ```
 Action + Nombre de fois + Mouvement
 
-exemple:
+Exemple:
 d5w # *d*elete *5* word
 yG  # copier jusqu'à la fin du fichier (G)
 =4j # indenter (=) 4 lignes vers le bas 
 di( # efface entre les parenthèses *d*elete *i*nside ( 
 
-dans le mode commande
-: debut, fin action
+Dans le mode commande
+: début, fin action
 
 :%d # efface tout le fichier
 :1,10y # copie dans le presse-papier la ligne 1 à 10

@@ -8,8 +8,8 @@ categories:  [design-pattern, interpret, visiteur, php]
 
 ##Introduction:
 Nous allons refaire la même chose que notre interpréteur d'expressions.
-mais avec des expressions booléennes.
-par exemple
+Mais avec des expressions booléennes.
+Par exemple
 ``` php
 $expression = new Or( new And(New False(), New True()), new False);
 ```
@@ -22,7 +22,7 @@ Beaucoup de code. mais si vous avez compris la première partie. cela devrait al
 
 ##Expression Booléenne
 
-Nous definissons l'interface suivante.
+Nous définissons l'interface suivante.
 
 ``` php
 /**
@@ -44,9 +44,9 @@ abstract class Unary implements BoolExpression
 }
 ```
 
-Pour faire l'algebre booleen j'ai besoin de `False` et de `True`
+Pour faire l'algèbre booléen j'ai besoin de `False` et de `True`
 
-voici le code.
+Voici le code.
 
 ``` php
 class True extends Unary {}
@@ -56,7 +56,7 @@ class False extends Unary {}
 
 ```
 
-j'ai aussi besoin de la négation
+J'ai aussi besoin de la négation
 
 ``` php
 class Not extends Unary {
@@ -72,7 +72,7 @@ class Not extends Unary {
 
 Je vais rajouter la condition And, Or, Nand (No-et), Nor(Non-ou)
 
-je definis une classe avec deux arguments dans le constructeur.
+Je définis une classe avec deux arguments dans le constructeur.
 ``` php
 class Binary extends Unary
 {
@@ -302,7 +302,7 @@ var_dump ( $expression->accept($vb) ); //affiche  "!(10==(5+$i))"
 ```
 
 ##Une conclusion.
-* dans le premier post : On a vu le visiteur pour évaluer/afficher des expressions.
+* Dans le premier post : On a vu le visiteur pour évaluer/afficher des expressions.
 * dans le second post : le visiteur pour les expressions booléennes et les comparaisons. Celui-ci utilise le premier visiteur pour faire les calculs.
 
 dans un prochain post, je vais montrer un troisième visiteur `visitorInstruction` pour évaluer des instructions d'un langage très simple. Mais cela est un peu long à écrire. Il y a un peu de théorie et des figures à faire.

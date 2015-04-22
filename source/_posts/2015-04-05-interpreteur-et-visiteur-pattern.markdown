@@ -7,7 +7,7 @@ categories: [design-pattern, interpret, visiteur, php]
 ---
 
 #Introduction
-Nous allons voir ensemble sur une série de deux posts
+Nous allons voir ensemble sur une série trois posts
 
 - le design-pattern interpréteur
 - les limitations et une solution qui va introduire le visiteur pattern
@@ -32,7 +32,7 @@ interface Expression
 
 ##Evaluer des constantes
 
-voici le code pour evaluer des constantes
+Voici le code pour évaluer des constantes
 ``` php
 Class Constant implements Expression
 {
@@ -83,14 +83,14 @@ Un exemple
 $addition = new Addition(new Constant(5), new Constant(6));
 echo $constante->interpret(); // affiche 11
 ```
-On utilise la **récursion** pour interpreter la partie droite et gauche
+On utilise la **récursion** pour interpréter la partie droite et gauche
 
 ```
 $addition = new Addition(new Addition( new Constant(5), new Constant(6)), new Constante(4));
 echo $constante->interpret(); // affiche 15
 ```
 
-Faire la multiplication, la soustraction, la division ne sont pas plus compliquées. il suffit de changer le signe dans la fonction interpret()
+Faire la multiplication, la soustraction, la division ne sont pas plus compliquées. Il suffit de changer le signe dans la fonction interpret()
 
 ```
     // muliplication 
@@ -194,9 +194,9 @@ class Variable implements Expression
 }
 
 ```
-On comprend l'intéret du context. il nous permet de passer un pseudo-scope..
+On comprend l'intérêt du context. Il nous permet de passer un pseudo-scope..
 
-un exemple:
+Un exemple:
 ```
 $memory = new Memory();
 $memory->write('i', 10);
@@ -207,13 +207,13 @@ $memory->write('i', 0);
 echo $expression->interpret($memory); // 10
 ```
 
-On peux rajouter plein d'autre expression. l'avantage est qu'il suffit de rajouter une méthode `->interpret(..)` pour chaque objet.
+On peux rajouter plein d'autre expression. L'avantage est qu'il suffit de rajouter une méthode `->interpret(..)` pour chaque objet.
 
 #mais si on change le cahier des charges...
 
-changeons le cahier des charges. je souhaite transformer mon Expression en chaine de caractères. je peux m'en sortir en surchargeant la methode `__tostring`
+Changeons le cahier des charges. Je souhaite transformer mon Expression en chaine de caractères. Je peux m'en sortir en surchargeant la méthode `__tostring`
 
-par exemple :
+Par exemple :
 ``` php
 $expression = new Addition (new Addition(new Constant(3), new Constant(4)), new Constante(4));
 $expression->__toString() // me donne ((3 + 4) + 4);
@@ -232,14 +232,14 @@ $expression->__toString() // me donne ((3 + 4) + 4);
          }
 ```
 
-rechangeons le cahier des charges : je veux la traduction en Php
+Rechangeons le cahier des charges : je veux la traduction en Php
 
 ```
 $expression = new Addition (new Addition(new Variable('i'), new Constant(4)), new Constante(4));
 $expression->__toPhp() // me donne (($i + 4) + 4);
 
 ```
-je suis un peu bloqué, je dois rajouter à chaque fois une méthode dans chaque object. Je perd un peu de la simplicité du pattern..
+je suis un peu bloqué, je dois rajouter à chaque fois une méthode dans chaque Object. Je perd un peu de la simplicité du pattern..
 
 
 ##Visiteur Pattern à la rescousse !
@@ -346,7 +346,7 @@ class VisitorEvaluation extends VisitorExpression {
 en pratique. On appelle la méthode `accept`. Celle-ci appelle la methode `visit($this)`. la méthode visit détermine la fonction à appeller. 
 Si c'est une constante alors `visistConstant()` celle-ci résout la valeur. pour une addition c'est un plus compliqué on ré-appelle récursivement `accept` sur chaque partie de l'addition.
 
-voici comment s'en servir
+Voici comment s'en servir
 
 ```php
 // j'ai besoin d'une mémoire
@@ -360,11 +360,11 @@ $expression = new Addition(new Constant(10), new Variable('i'));
 echo $expression->accept($ve); // 20
 ```
 
-On se rend compte qu'il n'y a plus de logique dans mes objet. tout est sous-traité dans le visiteur.
+On se rend compte qu'il n'y a plus de logique dans mes objet. Tout est sous-traité dans le visiteur.
 
-l'avantage de cette méthode est qu'il est très simple de changer le visiteur sans changer la logique.
+L'avantage de cette méthode est qu'il est très simple de changer le visiteur sans changer la logique.
 
-par exemple le visiteur qui convertit en php
+Par exemple le visiteur qui convertit en php
 
 ``` php
 }
@@ -402,7 +402,7 @@ class VisitorToPhp extends VisitorEvaluation {
 
 ```
 
-et celui qui convertit en Javascript !
+Et celui qui convertit en Javascript !
 ```
 class VisitorToJs extends VisitorToPhp {
     public function visitVariable(Expression $expr)
