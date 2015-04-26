@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Dockerhub | Mon blog perso.]]></title>
+  <link href="http://mcamuzat.github.io/blog/categories/dockerhub/atom.xml" rel="self"/>
+  <link href="http://mcamuzat.github.io/"/>
+  <updated>2015-04-26T20:05:47+02:00</updated>
+  <id>http://mcamuzat.github.io/</id>
+  <author>
+    <name><![CDATA[mcamuzat]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Docker Et Dockerfile]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/04/26/docker-et-dockerfile/"/>
+    <updated>2015-04-26T19:44:44+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/04/26/docker-et-dockerfile</id>
+    <content type="html"><![CDATA[<h2>Introduction</h2>
+
+<p>Je continue dans mon exploration de Docker, aujourd&#8217;hui nous allons voir comment automatiser la création d&#8217;un container à l&#8217;aide d&#8217;un <code>Dockerfile</code>.</p>
+
+<p>Nous allons créer un container pour <a href="http://jonas.nitro.dk/tig/">tig</a>.. C&#8217;est un interface git qui marche sous un terminal. Pour moi, c&#8217;est un magnifique outil de travail. Je m&#8217;en sers très souvent (surtout la vue de status (touche <code>S</code>) puis <code>u</code> pour ajouter, <code>!</code> pour reverter, <code>C</code> pour commit, <code>e</code> pour lancer mon éditeur (Bien entendu Vim)</p>
+
+<p>Nous allons faire</p>
+
+<ul>
+<li>L&#8217;installation à la main</li>
+<li>Puis écrire le <code>Dockerfile</code> qui automatise la partie 1</li>
+<li>Optimiser un peu celui-ci en utilisant une autre distribution</li>
+<li>Faire des commit sous Github, puis sous DockerHub</li>
+</ul>
+
+
+<h2>Création du container à la main</h2>
+
+<p>Je commence avec une Ubuntu que je lance en mode interactif.</p>
+
+<pre><code class="sh">docker run -it ubuntu:14.10
+</code></pre>
+
+<p>Je mets à jour ma distribution
+<code>
+apt-get update
+</code></p>
+
+<p>J&#8217;installe tig (il est dans les dépôts officiels)</p>
+
+<pre><code class="sh">apt-get install -y tig
+</code></pre>
+
+<p>A cause du <code>apt-get update</code> Ubuntu a téléchargé toutes les sources des dépôts dans le répertoire <code>var/lib/apt/lists/</code> pour ne pas alourdir le container je vais effacer celui-ci
+<code>
+rm -rf /var/lib/apt/lists/*
+</code></p>
+
+<p>Je lance <code>tig</code>
+<code>
+root@0a475b7fbed7:/# tig
+tig: Not a git repository
+</code></p>
+
+<p>Il n&#8217;y a pas de dépot git à la racine c&#8217;est normal.</p>
+
+<p>je quitte mon container et je liste</p>
+
+<pre><code>docker ps -a
+CONTAINER ID        IMAGE                                         COMMAND                CREATED             STATUS                            PORTS                                                                         NAMES
+0a475b7fbed7        ubuntu:14.10                                  "/bin/bash"            13 minutes ago      Exited (130) About a minute ago
+</code></pre>
+
+<p>Je vais le committer.
+<code>
+docker commit -m "add tig" -a "mcamuzat" admiring_yonath mcamuzat/tig:v1
+</code></p>
+
+<p>Je vais le relancer avec la commande suivante.
+<code>
+docker run -t -i -v `pwd`:/project mcamuzat/tig:v1
+</code></p>
+
+<p>En gros j&#8217;ai crée un lien symbolique qui pointe le répertoire courant de mon ordinateur vers le répertoire <code>project</code> du container.</p>
+
+<p>je me place dans le répertoire project.
+<code>
+cd /project
+</code></p>
+
+<p>et je lance tig
+<code>
+tig
+</code></p>
+
+<p>Si dans le répertoire courant il y a un dépôt git. Normalement l&#8217;interface de Tig apparait.</p>
+
+<p>Voila j&#8217;ai placé tig dans un container.</p>
+
+<h2>Automatisation via un DockerFile.</h2>
+
+<p>On se place dans un répertoire vide</p>
+
+<p>Je crée un fichier <code>DockerFile</code> avec le contenu suivant</p>
+
+<pre><code>FROM ubuntu:14.10
+MAINTAINER Marc Camuzat &lt;marco@crans.org&gt;
+RUN apt-get update \
+    &amp;&amp; apt-get install -y mysql-client \
+    &amp;&amp; rm -rf /var/lib/apt/lists/*
+WORKDIR /project
+VOLUME  /project
+ENTRYPOINT ["tig"]
+</code></pre>
+
+<p><code>WORKDIR</code> et <code>VOLUME</code> indique à Docker que le répertoire par défault est <code>project</code> et que l&#8217;on lance tig</p>
+
+<p>On va maintenant demander à docker de <em>builder</em> l&#8217;image à l&#8217;aide de la commande suivante</p>
+
+<pre><code>docker build -t mcamuzat/tig:v2 .
+</code></pre>
+
+<p>On attend un peu.. Et on relance
+<code>
+docker run -t -i -v `pwd`:/project mcamuzat/tig:v2
+</code></p>
+
+<p>C&#8217;est beaucoup plus rapide.</p>
+
+<h2>Optimisons la taille.</h2>
+
+<p>Quand je liste mon image via la commande suivante</p>
+
+<pre><code>REPOSITORY              TAG                     IMAGE ID            CREATED             VIRTUAL SIZE
+mcamuzat/tig            v2                      103a05c16a2b        3 minutes ago       234.6 MB
+</code></pre>
+
+<p>Mon container fait 234 méga ! C&#8217;est beaucoup pour un simple utilitaire.
+pour simplifier je vais utiliser une autre distribution <a href="https://www.alpinelinux.org/">alpine-linux</a> (que je ne connaissais pas ..) et le dockerhub <a href="https://registry.hub.docker.com/u/gliderlabs/alpine/">suivant</a> qui réduit la distribution à 5 méga !</p>
+
+<p>Voici mon <code>DockerFile</code></p>
+
+<pre><code>FROM gliderlabs/alpine:3.1
+RUN apk --update add tig
+WORKDIR /project
+VOLUME  /project
+ENTRYPOINT ["tig"]
+</code></pre>
+
+<p>Je relance un build.</p>
+
+<pre><code>docker build -t mcamuzat/tig:v3 .
+</code></pre>
+
+<p>Maintenant mon container ne fait plus que 24 Méga !</p>
+
+<h2>Publions sous Github</h2>
+
+<p>Nous allons créer un nouveau dépôt avec un README.</p>
+
+<p>Que je vais cloner.
+<code>
+git clone https://github.com/mcamuzat/tig-docker.git
+</code></p>
+
+<p>Je vais ajouter mon DockerFile, Commiter et Pusher
+<code>
+git add Dockerfile
+git commit -m"initial commit"
+git push origin master
+</code></p>
+
+<p>Et c&#8217;est tout.</p>
+
+<p>Résultat <a href="https://github.com/mcamuzat/tig-docker">ici</a></p>
+
+<h2>Publions sur DockerHub</h2>
+
+<p>Je pars du principe que vous avez un compte sur DockerHub.</p>
+
+<ul>
+<li>Cliquer sur le bouton <code>Add Repository-&gt;Automated Build</code></li>
+<li>choisir Github.</li>
+<li>Puis On va vous demander de relier votre compte DockerHub à Github.</li>
+<li>DockerHub va vous demander quel projet vous souhaitez builder automatiquement.</li>
+</ul>
+
+
+<p>Résultat <a href="https://registry.hub.docker.com/u/mcamuzat/tig/">ici</a></p>
+
+<h2>Conclusion</h2>
+
+<p>Le Dockerfile sert à automatiser la création d&#8217;image. il est plus simple de stocker le <code>Dockerfile</code> que le container (puisque Dockerhub s&#8217;occupe de faire build)</p>
+
+<p>J&#8217;ai crée mon premier dépôt. Ce n&#8217;est pas très compliqué. Dans un prochain article, je vais essayer d&#8217;expérimenter <code>docker compose</code>.</p>
+]]></content>
+  </entry>
+  
+</feed>
