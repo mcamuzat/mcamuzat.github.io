@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Php | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/php/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-04-29T22:57:45+02:00</updated>
+  <updated>2015-04-29T23:06:16+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -26,6 +26,7 @@
 
 <ul>
 <li>PHP : <a href="https://github.com/ziadoz/awesome-php">awesome-php</a></li>
+<li>Symfony2 : <a href="https://github.com/EmanueleMinotto/awesome-symfony2">awesome-symfony2</a></li>
 <li>Docker : <a href="https://github.com/veggiemonk/awesome-docker">awesome-docker</a></li>
 <li>Les meilleurs cours en ligne : <a href="https://github.com/prakhar1989/awesome-courses">awesome-courses</a></li>
 <li>React : <a href="https://github.com/enaqx/awesome-react">awesome-react</a></li>
