@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Docker-compose | Mon blog perso.]]></title>
+  <link href="http://mcamuzat.github.io/blog/categories/docker-compose/atom.xml" rel="self"/>
+  <link href="http://mcamuzat.github.io/"/>
+  <updated>2015-05-03T21:46:57+02:00</updated>
+  <id>http://mcamuzat.github.io/</id>
+  <author>
+    <name><![CDATA[mcamuzat]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Docker-compose]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/05/03/docker-compose/"/>
+    <updated>2015-05-03T21:33:31+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/05/03/docker-compose</id>
+    <content type="html"><![CDATA[<h2>Docker-compose</h2>
+
+<p>Dans le post précèdent sur docker, j&#8217;avais expliqué comment automatiser la création des containers grâce au <code>Dockerfile</code> aujourd&#8217;hui je vais expliquer <code>docker-compose</code></p>
+
+<h2>Intro.</h2>
+
+<p>Dans un projet, il n&#8217;y a rarement qu&#8217;une seule instance. Voir il peut y avoir plusieurs fronts et une seule base de donnée. docker-compose est la justement pour organiser cela.</p>
+
+<p>Par exemple le <code>docker-compose.yml</code> suivant:</p>
+
+<pre><code class="yml">web:
+  image: php:5.6-apache
+  links:
+    - db:db
+  volumes:
+    - .:/var/www/html
+
+db:
+  image: postgres
+</code></pre>
+
+<p>On déclare deux type de containers le container type <strong>web</strong> et le container de type <strong>db</strong>. à noter la ligne <code>links</code> qui fait que le container web partage/vois le container db</p>
+
+<p>Il suffit de faire <code>docker-compose up</code> (comme un <code>vagrant up</code>)  pour automatiquement lancer deux containers. un container web avec une image php-5.6, et un container avec PostGresSQL</p>
+
+<h2>Installation</h2>
+
+<p>Il existe deux façons de l&#8217;installer soit passer par <code>pip</code> (pip est l&#8217;équivalent de <code>npm</code> pour le python).</p>
+
+<pre><code class="bash">sudo pip install -U docker-compose
+</code></pre>
+
+<p>Ou de passer par curl</p>
+
+<pre><code class="bash">curl -L https://github.com/docker/compose/releases/download/1.2.0/docker-compose-`uname -s`-`uname -m` &gt; /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+</code></pre>
+
+<h2>Quelques commandes</h2>
+
+<p>Lancer les containers en mode démon (<code>-d</code>)</p>
+
+<pre><code>docker-compose up -d
+</code></pre>
+
+<p>Cela crée deux containers</p>
+
+<p>Que l&#8217;on peux surveiller grâce à la commande suivante
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>docker-compose ps&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;Name                   Command               State    Ports   
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;hr /&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;compose_db_1    /docker-entrypoint.sh postgres   Up      5432/tcp
+</span><span class='line'>compose_web_1   apache2-foreground               Up      80/tcp&lt;br/&gt;</span></code></pre></td></tr></table></div></figure></p>
+
+<p>On peux voir les logs
+<code>
+docker-compose logs
+</code></p>
+
+<p>Plus intéressant on peux rajouter des containers..</p>
+
+<pre><code>docker-compose scale web=3
+Creating compose_web_2...
+Creating compose_web_3...
+Starting compose_web_2...
+Starting compose_web_3...
+</code></pre>
+
+<p>Si je re-liste mes containers
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>docker-compose ps&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;Name                   Command               State    Ports   
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;hr /&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;compose_db_1    /docker-entrypoint.sh postgres   Up      5432/tcp
+</span><span class='line'>compose_web_1   apache2-foreground               Up      80/tcp &lt;br/&gt;
+</span><span class='line'>compose_web_2   apache2-foreground               Up      80/tcp &lt;br/&gt;
+</span><span class='line'>compose_web_3   apache2-foreground               Up      80/tcp</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Je viens de multiplier par 3 le nombre de container en une simple commande et sans stopper le système.</p>
+
+<h2>Conclusion</h2>
+
+<p>Si vous n&#8217;avez qu&#8217;un seul container docker-compose ne sert pas à grand chose. Mais si vous avez plusieurs containers. Cela ne vaux pas la peine de se priver. Docker-compose contient en fait la liste des container ainsi que leurs configurations si on devait les lancers en la ligne de commande.</p>
+
+<p>Dans le prochain post sur docker, je vais tenter <code>docker-machine</code>.</p>
+]]></content>
+  </entry>
+  
+</feed>
