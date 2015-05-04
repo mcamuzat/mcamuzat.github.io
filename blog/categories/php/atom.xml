@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Php | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/php/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-05-03T21:46:57+02:00</updated>
+  <updated>2015-05-05T00:16:58+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -52,7 +52,7 @@
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Dockers Et CI]]></title>
+    <title type="html"><![CDATA[Docker Et CI]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/04/18/dockers-et-ci/"/>
     <updated>2015-04-18T18:13:48+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/04/18/dockers-et-ci</id>
