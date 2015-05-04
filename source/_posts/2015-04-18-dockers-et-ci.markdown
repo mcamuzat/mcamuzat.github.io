@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Dockers et CI"
+title: "Docker et CI"
 date: 2015-04-18 18:13:48 +0200
 comments: true
 categories: ["Docker", "Php", "Intégration continue"]
