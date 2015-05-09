@@ -1,0 +1,364 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Docker-machine - Mon blog perso.</title>
+  <meta name="author" content="mcamuzat">
+
+  
+  <meta name="description" content="Introduction Nous allons voir docker-machine. Docker-machine permet de simplifier l'installation/gestion/déploiement de Docker. Installation Tout d' &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mcamuzat.github.io/blog/2015/05/09/docker-machine/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Mon blog perso." type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-60315965-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Mon blog perso.</a></h1>
+  
+    <h2>Un simple blog PHP/Linux/Programmation/Docker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="mcamuzat.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Docker-machine</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-05-09T18:29:45+02:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:29 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>Introduction</h2>
+
+<p>Nous allons voir <a href="https://docs.docker.com/machine/">docker-machine</a>. Docker-machine permet de simplifier l&#8217;installation/gestion/déploiement de Docker.</p>
+
+<h2>Installation</h2>
+
+<p>Tout d&#8217;abord il faut connaitre votre architecture <code>x86_64</code>ou <code>i386</code>.</p>
+
+<p>La commande classique est <code>uname -a</code>.</p>
+
+<p>Puis télécharger l&#8217;exécutable via <code>curl</code></p>
+
+<p>Sous linux.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>curl -L https://github.com/docker/machine/releases/download/v0.2.0/docker-machine_linux-amd64 &gt; docker-machine
+</span><span class='line'>sudo mv docker-machine /usr/local/bin/docker-machine
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Puis le marquer comme exécutable.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo chmod +x /usr/local/bin/docker-machine
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Testons notre application.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker-machine -v
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Enfin vous avez besoin d&#8217;avoir <a href="https://www.virtualbox.org/wiki/Downloads">Virtual-Box</a></p>
+
+<h2>Mise en route.</h2>
+
+<p>Voici la commande pour tout lancer</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker-machine create --driver virtualbox dev
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cette ligne demande à docker-machine de créer une environnement que l&#8217;on appelle <strong>dev</strong> qui sera sur Virtual-box.
+docker-machine va télécharger une iso (boot2docker) contenant docker. Et lancer Virtualbox.</p>
+
+<p>Jusqu&#8217;à maintenant on avait installé docker sur notre ordi local.
+Ici on installe docker sur une VM.
+Toutes les commandes seront passer de manière transparente à la machine virtuelle.
+L&#8217;avantage de cette méthode est que tout le monde utilise la même iso virtuelle (boot2docker). Il n&#8217;y a moins le risque du &ldquo;chez moi ça marche&rdquo; qui est une remarque au combien rageante.</p>
+
+<p>Je veux travailler sur mon environnement de dev</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">eval</span> <span class="s2">&quot;$(docker-machine env dev)&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Toutes mes commandes sont directement envoyées sur la vm à distance</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker run busybox <span class="nb">echo </span>hello
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je peux rajouter un environnement (ici <strong>prod</strong>)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker-machine create --driver amazon prod --les options qui vont bien..
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il suffit de changer l&#8217;environnement pour automatiquement déployer sur Amazon.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">eval</span> <span class="s2">&quot;$(docker-machine env prod)&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Plein de drivers sont fournis:</p>
+
+<ul>
+<li><a href="https://docs.docker.com/machine/#amazon-web-services">Amazon Web Services</a></li>
+<li><a href="https://docs.docker.com/machine/#digital-ocean">Digital Ocean</a></li>
+<li><a href="https://docs.docker.com/machine/#google-compute-engine">Google Compute Engine</a></li>
+<li><a href="https://docs.docker.com/machine/#ibm-softlayer">IBM Softlayer</a></li>
+<li><a href="https://docs.docker.com/machine/#microsoft-azure">Microsoft Azure</a></li>
+<li><a href="https://docs.docker.com/machine/#microsoft-hyper-v">Microsoft Hyper-V</a></li>
+<li><a href="https://docs.docker.com/machine/#openstack">Openstack</a></li>
+<li><a href="https://docs.docker.com/machine/#rackspace">Rackspace</a></li>
+<li><a href="https://docs.docker.com/machine/#oracle-virtualbox">Oracle VirtualBox</a></li>
+<li><a href="https://docs.docker.com/machine/#vmware-fusion">VMware Fusion</a></li>
+<li><a href="https://docs.docker.com/machine/#vmware-vcloud-air">VMware vCloud Air</a></li>
+<li><a href="https://docs.docker.com/machine/#vmware-vsphere">VMware vSphere</a></li>
+</ul>
+
+
+<h2>L&#8217;avantage de docker-machine</h2>
+
+<ul>
+<li>Simplifie l&#8217;installation. il n&#8217;y a que docker-machine à installer. Arès docker-machine s&#8217;occupe de tout installer. (il installe docker sur un vm/instance)</li>
+<li>Simplifie le déploiement, il suffit de changer l&#8217;environnement</li>
+<li>Enfin il s&#8217;interface avec docker-swarm (qui permet de gérer plusieurs node de Dockers).</li>
+</ul>
+
+
+<h2>En conclusion</h2>
+
+<p>Le slogan &ldquo;a way to get from zero to Docker&rdquo; est plutôt juste.</p>
+
+<ul>
+<li>Cela simplifie beaucoup l&#8217;installation sous windows (pas testé :-)).</li>
+<li>Et harmonise les environnements de dev (tout le monde utilise la même iso)</li>
+<li>Facilite le déploiement. Il n&#8217;y a pas a se soucier si c&#8217;est du Amazon/OpenStack/Azure..</li>
+</ul>
+
+
+<p>Dans un prochain post nous allons essayer de voir docker-swarm.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mcamuzat</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-05-09T18:29:45+02:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:29 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/amazon/'>amazon</a>, <a class='category' href='/blog/categories/digital-ocean/'>digital-ocean</a>, <a class='category' href='/blog/categories/docker/'>docker</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/openstack/'>openstack</a>, <a class='category' href='/blog/categories/virtual-box/'>virtual-box</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mcamuzat.github.io/blog/2015/05/09/docker-machine/" data-via="" data-counturl="http://mcamuzat.github.io/blog/2015/05/09/docker-machine/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/05/04/je-joue-donc-je-programme/" title="Previous Post: Je joue donc je programme">&laquo; Je joue donc je programme</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/05/09/docker-machine/">Docker-machine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/04/je-joue-donc-je-programme/">Je Joue Donc Je Programme</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/03/docker-compose/">Docker-compose</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/04/29/awesome-et-liste-de-liens/">Awesome Et Liste De Liens</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/04/26/docker-et-dockerfile/">Docker Et Dockerfile</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/mcamuzat">@mcamuzat</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'mcamuzat',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - mcamuzat -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

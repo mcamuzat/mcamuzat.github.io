@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Docker | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/docker/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-05-05T00:16:58+02:00</updated>
+  <updated>2015-05-09T19:39:44+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,118 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Docker-machine]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/05/09/docker-machine/"/>
+    <updated>2015-05-09T18:29:45+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/05/09/docker-machine</id>
+    <content type="html"><![CDATA[<h2>Introduction</h2>
+
+<p>Nous allons voir <a href="https://docs.docker.com/machine/">docker-machine</a>. Docker-machine permet de simplifier l&#8217;installation/gestion/déploiement de Docker.</p>
+
+<h2>Installation</h2>
+
+<p>Tout d&#8217;abord il faut connaitre votre architecture <code>x86_64</code>ou <code>i386</code>.</p>
+
+<p>La commande classique est <code>uname -a</code>.</p>
+
+<p>Puis télécharger l&#8217;exécutable via <code>curl</code></p>
+
+<p>Sous linux.
+<code>bash
+curl -L https://github.com/docker/machine/releases/download/v0.2.0/docker-machine_linux-amd64 &gt; docker-machine
+sudo mv docker-machine /usr/local/bin/docker-machine
+</code></p>
+
+<p>Puis le marquer comme exécutable.
+<code>bash
+sudo chmod +x /usr/local/bin/docker-machine
+</code></p>
+
+<p>Testons notre application.
+<code>bash
+docker-machine -v
+</code></p>
+
+<p>Enfin vous avez besoin d&#8217;avoir <a href="https://www.virtualbox.org/wiki/Downloads">Virtual-Box</a></p>
+
+<h2>Mise en route.</h2>
+
+<p>Voici la commande pour tout lancer</p>
+
+<pre><code class="bash">docker-machine create --driver virtualbox dev
+</code></pre>
+
+<p>Cette ligne demande à docker-machine de créer une environnement que l&#8217;on appelle <strong>dev</strong> qui sera sur Virtual-box.
+docker-machine va télécharger une iso (boot2docker) contenant docker. Et lancer Virtualbox.</p>
+
+<p>Jusqu&#8217;à maintenant on avait installé docker sur notre ordi local.
+Ici on installe docker sur une VM.
+Toutes les commandes seront passer de manière transparente à la machine virtuelle.
+L&#8217;avantage de cette méthode est que tout le monde utilise la même iso virtuelle (boot2docker). Il n&#8217;y a moins le risque du &ldquo;chez moi ça marche&rdquo; qui est une remarque au combien rageante.</p>
+
+<p>Je veux travailler sur mon environnement de dev</p>
+
+<pre><code>eval "$(docker-machine env dev)"
+</code></pre>
+
+<p>Toutes mes commandes sont directement envoyées sur la vm à distance
+<code>
+docker run busybox echo hello
+</code></p>
+
+<p>Je peux rajouter un environnement (ici <strong>prod</strong>)
+<code>
+docker-machine create --driver amazon prod --les options qui vont bien..
+</code></p>
+
+<p>Il suffit de changer l&#8217;environnement pour automatiquement déployer sur Amazon.
+<code>
+eval "$(docker-machine env prod)"
+</code></p>
+
+<p>Plein de drivers sont fournis:</p>
+
+<ul>
+<li><a href="https://docs.docker.com/machine/#amazon-web-services">Amazon Web Services</a></li>
+<li><a href="https://docs.docker.com/machine/#digital-ocean">Digital Ocean</a></li>
+<li><a href="https://docs.docker.com/machine/#google-compute-engine">Google Compute Engine</a></li>
+<li><a href="https://docs.docker.com/machine/#ibm-softlayer">IBM Softlayer</a></li>
+<li><a href="https://docs.docker.com/machine/#microsoft-azure">Microsoft Azure</a></li>
+<li><a href="https://docs.docker.com/machine/#microsoft-hyper-v">Microsoft Hyper-V</a></li>
+<li><a href="https://docs.docker.com/machine/#openstack">Openstack</a></li>
+<li><a href="https://docs.docker.com/machine/#rackspace">Rackspace</a></li>
+<li><a href="https://docs.docker.com/machine/#oracle-virtualbox">Oracle VirtualBox</a></li>
+<li><a href="https://docs.docker.com/machine/#vmware-fusion">VMware Fusion</a></li>
+<li><a href="https://docs.docker.com/machine/#vmware-vcloud-air">VMware vCloud Air</a></li>
+<li><a href="https://docs.docker.com/machine/#vmware-vsphere">VMware vSphere</a></li>
+</ul>
+
+
+<h2>L&#8217;avantage de docker-machine</h2>
+
+<ul>
+<li>Simplifie l&#8217;installation. il n&#8217;y a que docker-machine à installer. Arès docker-machine s&#8217;occupe de tout installer. (il installe docker sur un vm/instance)</li>
+<li>Simplifie le déploiement, il suffit de changer l&#8217;environnement</li>
+<li>Enfin il s&#8217;interface avec docker-swarm (qui permet de gérer plusieurs node de Dockers).</li>
+</ul>
+
+
+<h2>En conclusion</h2>
+
+<p>Le slogan &ldquo;a way to get from zero to Docker&rdquo; est plutôt juste.</p>
+
+<ul>
+<li>Cela simplifie beaucoup l&#8217;installation sous windows (pas testé :-)).</li>
+<li>Et harmonise les environnements de dev (tout le monde utilise la même iso)</li>
+<li>Facilite le déploiement. Il n&#8217;y a pas a se soucier si c&#8217;est du Amazon/OpenStack/Azure..</li>
+</ul>
+
+
+<p>Dans un prochain post nous allons essayer de voir docker-swarm.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Docker-compose]]></title>
@@ -552,150 +664,6 @@ OK (6 tests, 34 assertions)
 
 <p>Je me suis inspiré de la présentation suivante.
 <a href="http://slides.com/jeremyderusse/docker-dev#/5/2">http://slides.com/jeremyderusse/docker-dev#/5/2</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Docker Je Débute]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/04/12/docker-je-debute/"/>
-    <updated>2015-04-12T22:25:27+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/04/12/docker-je-debute</id>
-    <content type="html"><![CDATA[<h2>Docker</h2>
-
-<p>Suite à une présentation à une conférence. J&#8217;ai commencé à m&#8217;y mettre. J&#8217;écris ce post en tant que grand débutant..</p>
-
-<p>Docker est une solution de virtualisation d&#8217;instance, plus précisément de container. Il y a pas mal de différence avec les différentes visualisations de Virtual box/Xen/VmWare. On isole juste les process et le file-system. Ce qui fait que l&#8217;on consomme très peu de processeurs.</p>
-
-<h2>Installation</h2>
-
-<p>Installer docker n&#8217;est pas très compliqué sous ubuntu 14.04.</p>
-
-<pre><code class="bash">sudo apt-get install docker.io
-</code></pre>
-
-<p>Et c&#8217;est tout !</p>
-
-<p>Pour éviter de préfixer <code>sudo</code> à chaque commande il est plus facile d&#8217;ajouter son utilisateur au group docker.</p>
-
-<pre><code class="bash">sudo addgroup &lt;votre user&gt; docker
-</code></pre>
-
-<h2>Hello world sous docker</h2>
-
-<p>Lancer docker</p>
-
-<pre><code>docker run ubuntu:14.04 /bin/echo 'Hello world'
-</code></pre>
-
-<p>Cette commande fait plusieurs choses:</p>
-
-<ul>
-<li>si l&#8217;image <code>ubuntu:14.04</code> n&#8217;existe pas, elle va la télécharger.</li>
-<li>Puis on lance le container</li>
-<li>Puis on exécute echo &lsquo;Hello world&rsquo;</li>
-</ul>
-
-
-<p>D&#8217;ailleurs si on relance la même commande, on constate que l&#8217;image est déjà sur le disque dur.</p>
-
-<p>la commande prend moins d&#8217;une seconde. Pourtant on a chargé un container et lancer une commande !</p>
-
-<p>Essayons la commande suivante
-<code>
-docker run ubuntu:14.04 - it /bin/bash
-root@b2634b81c3dc:/#
-</code></p>
-
-<p>Nous avons un bash intéractif. <code>-i</code> mode interactif, et <code>-t</code> affiche un pseudo terminal</p>
-
-<p>Il faut comprendre que  dès que la commande principale est finie, l&#8217;instance aussi. Dans le cas <code>Echo 'Hello World'</code> la commande se finit de suite. Dans le cas de <code>/bin/bash</code> On spécifie le mode interactif. Donc l&#8217;instance continue tant que l&#8217;on a pas quitté le bash.</p>
-
-<p>Ouvrons un nouveau terminal
-<code>
-docker ps
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-b2634b81c3dc        ubuntu:14.04        /bin/bash           43 seconds ago      Up 42 seconds                           sharp_archimedes
-</code>
-On voit que mon image est toujours en cours.</p>
-
-<p>La commande docker ps affiche tout les containers allumés pour afficher tout les containers allumés pendant la session. C&#8217;est <code>dockers ps -a</code></p>
-
-<p>On peux inspecter une instance avec la commande
-<code>
-docker inspect sharp_archimedes
-docker inspect b2634b81c3dc
-</code>
-Cela renvoie un json.</p>
-
-<p>On peux aussi lister les images disponibles via la commande</p>
-
-<pre><code>docker images
-</code></pre>
-
-<p>Vous voulez télécharger des images
-<code>
-docker pull centos
-</code></p>
-
-<p>Vous cherchez une images particulières
-<code>
-docker search php56
-</code></p>
-
-<p>La liste des images disponibles est disponible sur <a href="https://hub.docker.com/">Docker Hub</a> . D&#8217;ailleurs Dockers est très couplé avec DockerHub. DockerHub est un le GitHub pour Docker. On peux très bien faire du Git sans GitHub. C&#8217;est la même chose pour docker.</p>
-
-<p>Docker et Git partage aussi la notion de commit et de push.</p>
-
-<p>relancons notre instance
-<code>
-docker run -it ubuntu:14.04 /bin/bash
-root@f5882f7f608d:/#
-</code></p>
-
-<p>Installons un paquet au hasard
-<code>
-sudo apt-get install vim
-</code></p>
-
-<p>On quitte <code>Exit</code></p>
-
-<p>puis on commit
-<code>sh
-sudo docker commit f5882f7f608do marc/vim
-4f177bd27a9ff0f6dc2a830403925b5360bfe0b93d476f7fc3231110e7f71b1c
-</code></p>
-
-<p>Si je liste les images.
-<code>sh
-docker images
-</code></p>
-
-<p>je vois apparaitre mon <code>marc/vim</code></p>
-
-<p>Je peux ainsi réutiliser mon container ainsi
-<code>sh
-sudo docker run -it marc/vim vim
-</code></p>
-
-<p>On peux ainsi se créer ses propres containers. Mais c&#8217;est un peu laborieux. Docker utilise des <code>DockerFile</code> pour automatiser le process. Cela fera un prochain post</p>
-
-<h2>Résumé des commandes</h2>
-
-<ul>
-<li><code>docker run -i -t ubuntu:14.10 /bin/bash</code> lance en mode interactif et un terminal avec la commande Bash.</li>
-<li><code>docker run -i -t ubuntu:14.10 'hello world'</code></li>
-<li><code>docker ps</code> liste les containers en cours.</li>
-<li><code>docker ps -a</code> liste tout les containers.</li>
-<li><code>docker images</code> liste toutes les images.</li>
-<li><code>docker pull centos</code> pour télécharger une image (tout les images officielles sont sur le <a href="https://hub.docker.com/">Hub</a></li>
-<li><code>docker inspect uuid</code> affiche les informations sur l&#8217;instance.</li>
-<li><code>docker commit uuid name</code>pour commiter.</li>
-</ul>
-
-
-<h2>Conclusion</h2>
-
-<p>Bon j&#8217;avoue que je débute depuis 2 jours.  Ce qui m&#8217;impressionne dans Docker c&#8217;est la vitesse (moins d&#8217;une seconde pour démarrer). C&#8217;est plutôt simple d&#8217;utilisation. La notion de commit a l&#8217;air sympa (Même si au fond c&#8217;est l&#8217;équivalent d&#8217;un snapshot sous vmware). J&#8217;espère pouvoir faire mon premier dépôt sous DockerHub bientôt.</p>
 ]]></content>
   </entry>
   
