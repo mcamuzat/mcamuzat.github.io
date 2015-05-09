@@ -3,19 +3,20 @@ layout: post
 title: "Je joue donc je programme"
 date: 2015-05-04 22:32:00 +0200
 comments: true
-categories: 
+categories: ["javascript", "vim", "ruby", "regex"] 
 ---
 
 Il existe des jeux vidéos pour apprendre à programmer. Voici quelques exemples.
 
 ## VimAdventure
-{% img center images/vimadventures.jpg 600 339 'Vim adventure' 'Vim adventure' %}
+{% img center /images/vimadventures.jpg 600 339 'Vim adventure' 'Vim adventure' %}
 [Vim adventure](http://vim-adventures.com/) permet d'apprendre les touches de Vim de manière ludique. Personnellement j'ai beaucoup joué à [Dungeon Crawl](http://crawl.develz.org/wordpress/) qui utilise les touches `h`, `j`, `k`, `l`
 
 
 
 ## Ruby
 Ruby warrior existe en deux versions:
+{% img center /images/ruby-warrior.png 600 288 'Ruby warrior' 'Ruby warrior' %}
 
 En ligne de commande [ruby-warrior](https://github.com/ryanb/ruby-warrior)
 
@@ -29,30 +30,31 @@ Depuis il existe une version web. Beaucoup plus accessible et jolie
 
 ### Untrusted
 
+{% img center /images/untrusted.jpg 600 339 'Untrusted' 'Untrusted' %}
 pour passer les niveaux, il faut atteindre le terminal et commencer à hacker le js. C'est vraiment malin.
 [untrusted](http://alexnisnevich.github.io/untrusted/)
 
-### ElevatorGame
+### Elevator Saga
 
-{% img center images/elevator-saga.png 600 288 'Elevator Saga' 'Elevator Saga' %}
+{% img center /images/elevator-saga.png 600 288 'Elevator Saga' 'Elevator Saga' %}
 
 Quoi de plus passionnant que simulation d'ascenseur.On passe assez facilement le niveau 1. Cela se complique vraiment avec le niveau deux et les objectifs.
 [elevator-saga](http://play.elevatorsaga.com/)
 
 ### CodeCombat
 
-[CoceCombat](http://codecombat.com/)
+[CodeCombat](http://codecombat.com/)
 Diriger un petit combattant, Un peu la même idée que ruby-warror, mais l'interface est très belle. Il y a du multi-joueurs
 
 
 
 ## Multi-plateforme
-{% img center images/codingame.jpg 600 375 'Coding game' 'Coding game' %}
+{% img center /images/codingame.jpg 600 375 'Coding game' 'Coding game' %}
 
 [Codingame](http://www.codingame.com). L'interface est magnifique, vous pouvez choisir le langage (il y a une vingtaine de langage PHP, Js, Haskell, Bash, C). les exercices sont assez variés. C'est plus des katas de programmation.
 
 ## Le SQL
-{% img center images/schemaverse.png 450 131 'Schemaverse' 'Schemaverse' %}
+{% img center /images/schemaverse.png 450 131 'Schemaverse' 'Schemaverse' %}
 
 [Schemaverse](https://schemaverse.com/)
 Un jeux video en prosgresSQL pur. Il y a même une histoire. C'est assez compliqué.
