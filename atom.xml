@@ -4,7 +4,7 @@
   <title><![CDATA[Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-05-09T19:39:44+02:00</updated>
+  <updated>2015-05-10T18:33:45+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,214 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Go Introduction]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/05/10/go-introduction/"/>
+    <updated>2015-05-10T18:21:31+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/05/10/go-introduction</id>
+    <content type="html"><![CDATA[<h2>Introduction</h2>
+
+<p>J&#8217;ai regardé Docker. Docker est en Go ainsi que pas mal de projets en fait. J&#8217;ai donc décidé d&#8217;essayer.</p>
+
+<p>Dans ce chapitre nous n&#8217;allons pas trop discuter du langage mais surtout mettre en place tout les outils.</p>
+
+<h2>Installation(linux)</h2>
+
+<ul>
+<li><p>Nous allons télécharger les fichiers <a href="https://golang.org/dl/">ici</a></p></li>
+<li><p>On décompresse le fichier</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo tar -C /usr/local -xzf go1.4.2.linux-amd64.tar.gz
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Créer un répertoire go dans votre <code>/usr/local</code></p>
+
+<ul>
+<li>enfin il faut l&#8217;ajouter à votre <code>$PATH</code> en modifiant le <code>.profile</code></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:/usr/local/go/bin
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>testons dans notre ligne de commande.</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>go version
+</span><span class='line'>go version go1.4.2 linux/amd64
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Hello world !</h2>
+
+<p>Ouvrons un fichier <code>hello.go</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">package</span> <span class="nx">main</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="s">&quot;fmt&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;hello, world\n&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pour l&#8217;exécuter</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>go run hello.go
+</span><span class='line'>hello, world
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Tout va bien ! Nous avons installé Go</p>
+
+<h2>Organisation d&#8217;un projet</h2>
+
+<p>L&#8217;organisation d&#8217;un projet sous Go est fixe ! Comprendre qu&#8217;il faut un <strong>workspace</strong></p>
+
+<p>Nous allons ensemble créer le projet <code>Hello</code></p>
+
+<ul>
+<li><p>Créer un répertoire <code>go</code></p></li>
+<li><p>Assigner la variable d&#8217;environnement <code>$GOPATH</code></p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'> <span class="nb">export </span><span class="nv">GOPATH</span><span class="o">=</span><span class="nv">$HOME</span>/go
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>enfin rajouter le $GOPATH/bin dans le PATH</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="nv">$GOPATH</span>/bin
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Nous voulons sauvegarder notre code quelques part. ici github!</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>mkdir -p <span class="nv">$GOPATH</span>/src/github.com/&lt;votreusername&gt;/hello
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Votre <code>username</code> est votre namespace pour les packages (un peu comme java).</p>
+
+<ul>
+<li><p>dans notre répertoire <code>src/github.com/&lt;votreusername&gt;/hello</code> nous allons copier notre <code>hello.go</code></p></li>
+<li><p>Tout est en place. Il n&#8217;y a plus qu&#8217;a taper <code>go install github.com/user/hello</code>.</p></li>
+<li><p>autre possibilité se rendre dans le répertoire <code>src/github.com/&lt;votreusername&gt;/hello</code></p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>go install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Nous pouvons vérifier que dans le répertoire <code>$HOME/go</code> il y a un dossier <code>bin/</code></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$GOPATH</span>/bin/hello
+</span><span class='line'>hello world
+</span><span class='line'><span class="c"># de manière plus simple puisque nous avons ajouter dans le path $GOPATH/bin</span>
+</span><span class='line'>hello
+</span><span class='line'>hello world
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>voici la structure finale</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>.
+</span><span class='line'>├── bin
+</span><span class='line'>│   └── hello
+</span><span class='line'>└── src
+</span><span class='line'>    └── github.com
+</span><span class='line'>        └── mcamuzat
+</span><span class='line'>            └── hello
+</span><span class='line'>                ├── hello.go
+</span><span class='line'>                ├── LICENSE
+</span><span class='line'>                └── README.md
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Sauvegarde d&#8217;un projet</h2>
+
+<p>Nous allons sauvegarder celui-ci sous <a href="https://github.com/">Github</a>. Ce n&#8217;est pas obligatoire.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> <span class="nv">$GOPATH</span>/src/github.com/user/hello
+</span><span class='line'>git init
+</span><span class='line'>git add .
+</span><span class='line'>git commit -m<span class="s2">&quot;create project&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Sous github, j&#8217;ai crée un nouveau repository <code>hello-go</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git remote add origin git@github.com:mcamuzat/hello-go.git
+</span><span class='line'>git pull --rebase
+</span><span class='line'>git push origin master
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Conclusion</h2>
+
+<p>Nous avons d&#8217;installer Go.</p>
+
+<p>Je viens juste de m&#8217;y mettre, Je ne sais pas encore ce que la suite nous réserve..</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Docker-machine]]></title>
@@ -123,7 +331,7 @@ L&#8217;avantage de cette méthode est que tout le monde utilise la même iso vi
 <ul>
 <li>Simplifie l&#8217;installation. il n&#8217;y a que docker-machine à installer. Arès docker-machine s&#8217;occupe de tout installer. (il installe docker sur un vm/instance)</li>
 <li>Simplifie le déploiement, il suffit de changer l&#8217;environnement</li>
-<li>Enfin il s&#8217;interface avec docker-swarm (qui permet de gérer plusieurs node de Dockers).</li>
+<li>Enfin il s&#8217;interface avec docker-swarm (qui permet de gérer plusieurs nodes de Dockers).</li>
 </ul>
 
 
