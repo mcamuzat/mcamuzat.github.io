@@ -92,7 +92,7 @@ Plein de drivers sont fournis:
 
 * Simplifie l'installation. il n'y a que docker-machine à installer. Arès docker-machine s'occupe de tout installer. (il installe docker sur un vm/instance)
 * Simplifie le déploiement, il suffit de changer l'environnement
-* Enfin il s'interface avec docker-swarm (qui permet de gérer plusieurs node de Dockers).
+* Enfin il s'interface avec docker-swarm (qui permet de gérer plusieurs nodes de Dockers).
 
 ## En conclusion
 
