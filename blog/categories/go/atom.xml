@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Go | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/go/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-05-10T18:33:45+02:00</updated>
+  <updated>2015-05-18T23:18:15+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,104 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Go Hello Server]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/05/18/go-hello-server/"/>
+    <updated>2015-05-18T23:00:46+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/05/18/go-hello-server</id>
+    <content type="html"><![CDATA[<h2> Introduction</h2>
+
+<p>Je continue mon apprentissage en go. Nous allons essayer de faire un hello world via une page web.</p>
+
+<p>L&#8217;exemple le plus simple de la <a href="https://gowalker.org/net/http#HandleFunc">documentation officielle</a>.</p>
+
+<h2>Mise en place</h2>
+
+<p>Je me place dans mon répertoire <code>go</code></p>
+
+<p>Je vais dans le répertoire <code>src/github.com/&lt;username&gt;/</code></p>
+
+<p>Je crée un répertoire <code>hello-server</code></p>
+
+<p>Dans ce répertoire je crée le fichier server.go</p>
+
+<pre><code class="go">package main
+
+import (
+    "io"
+    "net/http"
+    "log"
+)
+
+// hello world, the web server
+func HelloServer(w http.ResponseWriter, req *http.Request) {
+    io.WriteString(w, "hello, world!\n")
+}
+
+func main() {
+    http.HandleFunc("/", HelloServer)
+    err := http.ListenAndServe(":12345", nil)
+    if err != nil {
+        log.Fatal("ListenAndServe: ", err)
+    }
+}
+</code></pre>
+
+<p>Il suffit pour tester de lancer</p>
+
+<pre><code>go run server.go
+</code></pre>
+
+<p>Ou sinon dans le répertoire <code>src/github.com/&lt;username&gt;/hello-server</code></p>
+
+<pre><code>go install
+</code></pre>
+
+<p>Dans votre répertoire <code>bin</code> vous avez un exécutable <code>hello-server</code></p>
+
+<p>si on reprend notre répertoire <code>go</code> avec le précédent post</p>
+
+<pre><code class="bash">
+.
+├── bin
+│   ├── hello
+│   └── hello-server
+└── src
+    └── github.com
+        └── mcamuzat
+            ├── hello
+            │   ├── hello.go
+            │   ├── LICENSE
+            │   └── README.md
+            └── hello-server
+                └── server.go
+</code></pre>
+
+<p>Avec votre navigateur aller à l&#8217;adresse suivante <a href="http://localhost:12345/">http://localhost:12345/</a></p>
+
+<h3>Micro analyse</h3>
+
+<pre><code>    http.HandleFunc("/", HelloServer)
+</code></pre>
+
+<p>On initialise un router qui associe à la route <code>/</code> (la route vide) un <em>callback</em> <code>HelloServer</code> (qui ne fait qu&#8217;un simple <code>hello world!</code>)</p>
+
+<pre><code>    err := http.ListenAndServe(":12345", nil)
+</code></pre>
+
+<p>On demande à go d&#8217;écouter le port <code>:12345</code></p>
+
+<p>Et il n&#8217;y a pas grand chose à dire d&#8217;autre.</p>
+
+<h2>En conclusion</h2>
+
+<p>Cela ressemble à beaucoup de micro-framework, en tant que développeur PHP je ne suis pas vraiment perdu.
+Je vais essayer de continuer un peu sur le serveur web (récupération des posts).</p>
+
+<p>L&#8217;avantage ici est que le fichier <code>hello-server</code> est exécutable et n&#8217;a besoin d&#8217;aucune dépendance (donc pas besoin de apache, PHP, etc..).</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Go Introduction]]></title>
