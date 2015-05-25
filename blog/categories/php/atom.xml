@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Php | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/php/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-05-18T23:18:15+02:00</updated>
+  <updated>2015-05-25T21:37:18+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,116 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Koan Et Programmation]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/05/25/koan-et-programmation/"/>
+    <updated>2015-05-25T20:53:23+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/05/25/koan-et-programmation</id>
+    <content type="html"><![CDATA[<p>Un koan est dixit wikipedia</p>
+
+<blockquote><blockquote><p>koan est une une brève anecdote ou un court échange entre un maître et son disciple, absurde, énigmatique ou paradoxal, ne sollicitant pas la logique ordinaire.</p></blockquote></blockquote>
+
+<p>Un exemple de Koan</p>
+
+<blockquote><blockquote><p>Quel est le son d’une seule main qui applaudit ?</p></blockquote></blockquote>
+
+<p>Il existe des Koan pour la programmation. Ce sont des mini problèmes pour s&#8217;initier à une technologie.</p>
+
+<h2>RubyKoan</h2>
+
+<p>Le plus connu et le premier est <a href="http://rubykoans.com/">RubyKoan</a>.</p>
+
+<p>Regardons ensemble la première utilisation.</p>
+
+<pre><code class="bash">cd koans
+/home/marc/.rvm/rubies/ruby-2.2.0/bin/ruby path_to_enlightenment.rb
+AboutAsserts#test_assert_truth has damaged your karma.
+
+The Master says:
+  You have not yet reached enlightenment.
+
+The answers you seek...
+  Failed assertion.
+
+Please meditate on the following code:
+  /home/marc/prog/ruby_koans/koans/about_asserts.rb:10:in `test_assert_truth'
+
+mountains are merely mountains
+your path thus far [X_________________________________________________] 0/282
+</code></pre>
+
+<p>J&#8217;ouvre le fichier <code>about_asserts.rb</code>.</p>
+
+<pre><code class="ruby">#!/usr/bin/env ruby
+# -*- ruby -*-
+
+require File.expand_path(File.dirname(__FILE__) + '/neo')
+
+class AboutAsserts &lt; Neo::Koan
+
+  # We shall contemplate truth by testing reality, via asserts.
+  def test_assert_truth
+    assert false                # This should be true
+  end
+</code></pre>
+
+<p>Il suffit de changer le <code>false</code> en <code>true</code></p>
+
+<p>Relancons, On avance petit à petit et toutes les notions du ruby sont expliquées.</p>
+
+<pre><code class="bash">cd koans
+/home/marc/.rvm/rubies/ruby-2.2.0/bin/ruby path_to_enlightenment.rb
+AboutAsserts#test_assert_truth has expanded your awareness.
+AboutAsserts#test_assert_with_message has damaged your karma.
+
+The Master says:
+  You have not yet reached enlightenment.
+  You are progressing. Excellent. 1 completed.
+
+The answers you seek...
+  This should be true -- Please fix this
+
+Please meditate on the following code:
+  /home/marc/prog/ruby_koans/koans/about_asserts.rb:16:in `test_assert_with_message'
+
+learn the rules so you know how to break them properly
+your path thus far [.X________________________________________________] 1/282
+</code></pre>
+
+<p>C&#8217;est un moyen facile et rapide pour apprendre un langage. Ceci dit j&#8217;ai personnellement fini les rubykoans. Mais 1 mois plus tard, j&#8217;étais incapable d&#8217;aligner une ligne de code en ruby. Faire passer les tests n&#8217;est pas très compliqué quelque soit le langage.</p>
+
+<p>Il y a aussi les Katas de programmation, Mais c&#8217;est plus un cahier des charges avec des tests d&#8217;acceptations (On parle de BDD) alors que les koan sont plutôt dans la notion d&#8217;unitaire.</p>
+
+<h2>Quelques Koan.</h2>
+
+<p>Bien sur les <a href="http://rubykoans.com/">RubyKoans</a> il existe une version <a href="http://koans.herokuapp.com/en/about_asserts">en ligne</a>.</p>
+
+<p>Les <a href="https://github.com/gregmalcolm/python_koans">python-koans</a> sont vraiment chouettes Il y a python 2.7 et python 3. Si les premiers problèmes sont faciles. Les derniers sont plutôt durs.</p>
+
+<p>En javascript on peux citer</p>
+
+<ul>
+<li><a href="https://github.com/mrdavidlaing/javascript-koans">javascript-koans</a></li>
+<li><a href="https://github.com/larrymyers/backbone-koans">backbone-koans</a></li>
+<li><a href="https://github.com/bjpbakker/angular-koans">angular-koans</a></li>
+</ul>
+
+
+<p>J&#8217;ai été un peu déçus de ne pas trouver des Koans en php. Cela reste très basique.
+je citerai:</p>
+
+<ul>
+<li><a href="https://github.com/TorontoPHPSoftwareCraftsmanship/PHPUnit-Koans">PHPUnit-koans</a></li>
+<li>et celui-ci par votre serviteur (mais c&#8217;était il y a bien longtemps) <a href="https://github.com/mcamuzat/PHPUnitRegexKoan">mcamuzat/PHPUnitRegexKoan</a></li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>Je vous avais parler des <a href="/blog/2015/04/29/awesome-et-liste-de-liens/">awesome-list</a> et bien il existe une liste de <a href="https://github.com/ahmdrefat/awesome-koans">awesome-koans</a>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Go Hello Server]]></title>
@@ -420,421 +530,6 @@ pour générer des nombres aléatoire, il vaut mieux utiliser <code>mt_rand</cod
 <p>Je n&#8217;avais jamais écris de boucle for sans corps(<code>{..}</code>).</p>
 
 <p>La documentation de PHP est plutôt claire sur le <a href="http://php.net/manual/fr/control-structures.for.php">for</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Suite Visiteur Pattern : Visiteur Booleen]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/04/06/suite-visiteur-pattern-visiteur-bool%C3%A9en/"/>
-    <updated>2015-04-06T19:55:44+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/04/06/suite-visiteur-pattern-visiteur-booléen</id>
-    <content type="html"><![CDATA[<h2>Introduction:</h2>
-
-<p>Nous allons refaire la même chose que notre interpréteur d&#8217;expressions.
-Mais avec des expressions booléennes.
-Par exemple
-<code>php
-$expression = new Or( new And(New False(), New True()), new False);
-</code>
-Nous allons ensuite rajouter les comparaisons <code>==</code>, <code>&lt;</code>, etc ..
-<code>php
-$expression = new Not(new NotEqual(new Constant(5), new Variable('i')));
-</code></p>
-
-<p>Beaucoup de code. mais si vous avez compris la première partie. cela devrait aller.</p>
-
-<h2>Expression Booléenne</h2>
-
-<p>Nous définissons l&#8217;interface suivante.</p>
-
-<pre><code class="php">/**
- * Une expression Booléenne
- */
-interface BoolExpression
-{
-    public function accept(VisitorBoolExpression $v);
-}
-/**
- * Une classe abstraite.
- */
-abstract class Unary implements BoolExpression
-{
-    public function accept(VisitorBoolExpression $v)
-    {
-        return $v-&gt;visit($this);
-    }
-}
-</code></pre>
-
-<p>Pour faire l&#8217;algèbre booléen j&#8217;ai besoin de <code>False</code> et de <code>True</code></p>
-
-<p>Voici le code.</p>
-
-<pre><code class="php">class True extends Unary {}
-
-class False extends Unary {}
-</code></pre>
-
-<p>J&#8217;ai aussi besoin de la négation</p>
-
-<pre><code class="php">class Not extends Unary {
-    private $value;
-    public function __construct(BoolExpression $expr) {
-        $this-&gt;value = $expr;
-    }
-    public function getValue() {
-        return $this-&gt;value;
-    }
-}
-</code></pre>
-
-<p>Je vais rajouter la condition And, Or, Nand (No-et), Nor(Non-ou)</p>
-
-<p>Je définis une classe avec deux arguments dans le constructeur.
-<code>php
-class Binary extends Unary
-{
-    private $left;
-    private $right;
-    public function __construct(BoolExpression $left, BoolExpression $right) {
-        $this-&gt;left = $left;
-        $this-&gt;right = $right;
-    }
-    public function getLeft() {
-        return $this-&gt;left;
-    }
-    public function getRight() {
-        return $this-&gt;left;
-    }
-}
-</code></p>
-
-<p>Les classes sont alors très simples.
-<code>php
-// Or et And sont des mots réservés en Php.
-class BinaryOr extends Binary{}
-class BinaryAnd extends Binary{}
-class BinaryNand extends Binary{}
-class BinaryNor extends Binary{}
-</code></p>
-
-<p>J&#8217;ai un peu près tout.</p>
-
-<p>On peut passer au Visiteur.
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">interface</span> <span class="nx">VisitorBoolExpression</span><span class="p">{</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visit</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">VisitorBoolEvaluation</span> <span class="k">implements</span> <span class="nx">VisitorBoolExpression</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">protected</span> <span class="nv">$context</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$context</span><span class="p">){</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">context</span> <span class="o">=</span> <span class="nv">$context</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">public</span> <span class="k">function</span> <span class="nf">visit</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">){</span>
-</span><span class='line'>    <span class="nv">$class</span> <span class="o">=</span> <span class="s1">&#39;visit&#39;</span><span class="o">.</span><span class="nb">get_class</span><span class="p">(</span><span class="nv">$expr</span><span class="p">);</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nv">$class</span><span class="p">(</span><span class="nv">$expr</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">visitTrue</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">visitFalse</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">visitNot</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="o">!</span><span class="nv">$expr</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">getValue</span><span class="p">()</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">visitBinaryOr</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nv">$expr</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">getLeft</span><span class="p">()</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">)</span><span class="o">||</span><span class="nv">$expr</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">getRight</span><span class="p">()</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">visitBinaryAnd</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nv">$expr</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">getLeft</span><span class="p">()</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">)</span><span class="o">&amp;</span><span class="nx">amp</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">amp</span><span class="p">;</span><span class="nv">$expr</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">getRight</span><span class="p">()</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">visitBinaryNor</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="o">!</span><span class="p">(</span><span class="nv">$expr</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">getLeft</span><span class="p">()</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">)</span><span class="o">||</span><span class="nv">$expr</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">getRight</span><span class="p">()</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">));</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">visitBinaryNand</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="o">!</span><span class="p">(</span><span class="nv">$expr</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">getLeft</span><span class="p">()</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">)</span> <span class="o">&amp;</span><span class="nx">amp</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">amp</span><span class="p">;</span> <span class="nv">$expr</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">getRight</span><span class="p">()</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">));</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>Quelques exemples.</p>
-
-<p>On réutilise notre mémoire du billet précédent. On utilise aussi <code>var_dump</code> plutôt que <code>echo</code> car <code>echo false</code> ne renvoie rien.</p>
-
-<pre><code class="php">$memory = new Memory();
-$memory-&gt;write('i', 10);
-
-$ve = new VisitorBoolEvaluation($memory);
-// une expression
-$expression =  new True();
-// appelle le visiteur
-var_dump($expression-&gt;accept($ve)) // affiche bool(true);
-$expression =  new Not(new False());
-var_dump($expression-&gt;accept($ve)) // affiche bool(true);
-$expression =  new BinaryAnd(new Not(new False()), new BinaryOr(new True(), new False()));
-var_dump($expression-&gt;accept($ve)) //Affiche bool(true);
-</code></pre>
-
-<p>bien sur on peux refaire un autre visiteur pour traduire en chaînes de caractères
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">VisitorBoolPrint</span> <span class="k">implements</span> <span class="nx">VisitorBoolExpression</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">protected</span> <span class="nv">$context</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$context</span><span class="p">){</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">context</span> <span class="o">=</span> <span class="nv">$context</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">public</span> <span class="k">function</span> <span class="nf">visit</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">){</span>
-</span><span class='line'>    <span class="nv">$class</span> <span class="o">=</span> <span class="s1">&#39;visit&#39;</span><span class="o">.</span><span class="nb">get_class</span><span class="p">(</span><span class="nv">$expr</span><span class="p">);</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nv">$class</span><span class="p">(</span><span class="nv">$expr</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">visitTrue</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="s2">&quot;true&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">visitFalse</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="s2">&quot;false&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">visitNot</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="s2">&quot;!&quot;</span> <span class="o">.</span> <span class="nv">$epr</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">getValue</span><span class="p">()</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">visitBinaryOr</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="s2">&quot;(&quot;</span> <span class="o">.</span> <span class="nv">$expr</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">getLeft</span><span class="p">()</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">)</span>
-</span><span class='line'>    <span class="o">.</span><span class="s1">&#39;||&#39;</span> <span class="o">.</span><span class="nv">$expr</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">getRight</span><span class="p">()</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">)</span><span class="o">.</span> <span class="s2">&quot;)&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="o">...</span>
-</span><span class='line'><span class="o">...</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span> <span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-Le même exemple .</p>
-
-<pre><code class="php">$memory = new Memory();
-$memory-&gt;write('i', 10);
-$ve = new VisitorBoolPrint($memory);
-// une expression
-$expression =  new True();
-// appelle le visiteur
-var_dump($expression-&gt;accept($ve)) // affiche true;
-$expression =  new Not(new False());
-var_dump($expression-&gt;accept($ve)) // affiche !false;
-$expression =  new BinaryAnd(new Not(new False()), new BinaryOr(new True(), new False()));
-var_dump($expression-&gt;accept($ve)) //Affiche (!false&amp;&amp;(true||false));
-</code></pre>
-
-<h2>Les comparaisons</h2>
-
-<p>Nous pouvons rajouter le <code>==</code>, <code>!=</code>, <code>&gt;</code> , <code>&lt;</code> !</p>
-
-<p>ajoutons de nouveau objet. les object prennent en entrée des expressions mais sortent des boléens.</p>
-
-<pre><code class="php">class BinaryComparaison extends Unary
-{
-    private $left;
-    private $right;
-    public function __construct(Expression $left, Expression $right) {
-        $this-&gt;left = $left;
-        $this-&gt;right = $right;
-    }
-    public function getLeft() {
-        return $this-&gt;left;
-    }
-    public function getRight() {
-        return $this-&gt;right;
-    }
-}
-
-class Equal extends BinaryComparaison{}
-class NotEqual extends BinaryComparaison{}
-//Greater Than Equal
-class Gte extends BinaryComparaison{}
-// Lesser Than Equal
-class Lte extends BinaryComparaison{}
-// Lesser Than
-class Lt extends BinaryComparaison{}
-// Greater Than
-class Gt extends BinaryComparaison{}
-</code></pre>
-
-<p>Pour mon visiteur je vais utiliser mon visiteur d&#8217;expression du post précédent.</p>
-
-<p>donc je modifie le constructeur.
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$context</span><span class="p">,</span> <span class="nv">$ve</span><span class="p">){</span>
-</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">context</span> <span class="o">=</span> <span class="nv">$context</span><span class="p">;</span>
-</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ve</span> <span class="o">=</span> <span class="nv">$ve</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">je</span> <span class="nx">ne</span> <span class="nx">montre</span> <span class="nx">que</span> <span class="nx">le</span> <span class="nx">égal</span><span class="p">,</span> <span class="nx">mais</span> <span class="nx">vous</span> <span class="nx">avez</span> <span class="nx">un</span> <span class="nx">peu</span> <span class="nx">près</span> <span class="nx">l</span><span class="s1">&#39;idée pour le reste. </span>
-</span><span class='line'><span class="s1">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s1">&lt;pre&gt;&lt;code&gt;public function visitEqual(BoolExpression $expr)</span>
-</span><span class='line'><span class="s1">{</span>
-</span><span class='line'><span class="s1">return ($expr-&amp;gt;getLeft()-&amp;gt;accept($this-&amp;gt;ve)  == $expr-&amp;gt;getRight()-&amp;gt;accept($this-&amp;gt;ve));</span>
-</span><span class='line'><span class="s1">}</span>
-</span><span class='line'><span class="s1">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s1">&lt;pre&gt;&lt;code&gt;</span>
-</span><span class='line'><span class="s1">Le visiteur booléen utilise un autre visiteur pour évaluer une expression. </span>
-</span><span class='line'>
-</span><span class='line'><span class="s1">Un exemple d&#39;</span><span class="nx">utilisation</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nv">$memory</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Memory</span><span class="p">();</span>
-</span><span class='line'><span class="nv">$memory</span><span class="o">-&gt;</span><span class="na">write</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">i</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;,</span> <span class="mi">10</span><span class="p">);</span>
-</span><span class='line'><span class="c1">// une visiteur d&#39;expression</span>
-</span><span class='line'><span class="nv">$ve</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VisitorEvaluation</span><span class="p">(</span><span class="nv">$memory</span><span class="p">);</span>
-</span><span class='line'><span class="c1">// un visiteur pour les expressions booléennes</span>
-</span><span class='line'><span class="nv">$vb</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VisitorBoolEvaluation</span><span class="p">(</span><span class="nv">$memory</span><span class="p">,</span> <span class="nv">$ve</span><span class="p">);</span>
-</span><span class='line'><span class="c1">// une expression</span>
-</span><span class='line'><span class="nv">$expression</span> <span class="o">=</span>  <span class="k">new</span> <span class="k">Not</span><span class="p">(</span><span class="k">new</span> <span class="nx">Equal</span><span class="p">(</span> <span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Addition</span><span class="p">(</span><span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Variable</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">i</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;))));</span>
-</span><span class='line'><span class="nb">var_dump</span> <span class="p">(</span> <span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$vb</span><span class="p">)</span> <span class="p">);</span><span class="c1">// affiche bool(true)</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>si je reprend mon autre visiteur <code>VisitorToPhp</code> avec le <code>visitorBoolPrint</code></p>
-
-<pre><code class="php">$memory = new Memory();
-$memory-&gt;write('i', 10);
-$ve = new VisitorToPhp($memory);
-$vb = new VisitorBoolPrint($memory, $ve);
-// une expression
-$expression =  new Not(new Equal( new Constant(10), new Addition(new Constant(5), new Variable('i'))));
-var_dump ( $expression-&gt;accept($vb) ); //affiche  "!(10==(5+$i))"
-</code></pre>
-
-<h2>Une conclusion.</h2>
-
-<ul>
-<li>Dans le premier post : On a vu le visiteur pour évaluer/afficher des expressions.</li>
-<li>dans le second post : le visiteur pour les expressions booléennes et les comparaisons. Celui-ci utilise le premier visiteur pour faire les calculs.</li>
-</ul>
-
-
-<p>dans un prochain post, je vais montrer un troisième visiteur <code>visitorInstruction</code> pour évaluer des instructions d&#8217;un langage très simple. Mais cela est un peu long à écrire. Il y a un peu de théorie et des figures à faire.</p>
-
-<p>Merci de m&#8217;avoir lu.</p>
 ]]></content>
   </entry>
   
