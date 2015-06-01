@@ -5,11 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Php en Mode Interactif - Mon blog perso.</title>
+  <title>Copier Coller Dans Vim - Mon blog perso.</title>
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Je me baladai sous Github Et je suis tombé sur ce dépôt https://github.com/borisrepl/boris (en fait c'est un des dépôts les plus actifs de ce mois &hellip;">
+  <meta name="description" content="Pour commencer : comment sélectionner sous vim solution n°1 : utiliser la souris tapez : 1
+set mouse=a vous pouvez sélectionnez avec la souris. Pour &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mcamuzat.github.io/blog/2015/03/08/php-en-mode-interactif/">
+  <link rel="canonical" href="http://mcamuzat.github.io/blog/2015/05/30/copier-coller-dans-vim/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Mon blog perso." type="application/atom+xml">
@@ -80,7 +81,7 @@
   
   <header>
     
-      <h1 class="entry-title">Php en Mode Interactif</h1>
+      <h1 class="entry-title">Copier Coller Dans Vim</h1>
     
     
       <p class="meta">
@@ -89,61 +90,101 @@
 
 
 
-<time class='entry-date' datetime='2015-03-08T19:24:57+01:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:24 pm</span></time>
+<time class='entry-date' datetime='2015-05-30T23:23:37+02:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:23 pm</span></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>Je me baladai sous Github</p>
+<div class="entry-content"><h2>Pour commencer : comment sélectionner sous vim</h2>
 
-<p>Et je suis tombé sur ce dépôt</p>
+<h3>solution n°1 : utiliser la souris</h3>
 
-<p><a href="https://github.com/borisrepl/boris">https://github.com/borisrepl/boris</a></p>
-
-<p>(en fait c&#8217;est un des dépôts les plus actifs de ce mois pour Php)</p>
-
-<p>C&#8217;est vraiment cool</p>
-
-<p>Bien entendu il existe déjà un mode interactif sous Php</p>
+<p>tapez :</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>php -a
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">set </span><span class="nv">mouse</span><span class="o">=</span>a
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>On peux le refaire en encore moins de ligne.</p>
+<p>vous pouvez sélectionnez avec la souris. Pour copier appuyer sur <code>y</code> comme <strong>y</strong>ank</p>
 
-<p>Explication : La documentation parle de REPL.
-c&#8217;est l&#8217;abréviation de <strong>R</strong>ead <strong>E</strong>val <strong>P</strong>rint <strong>L</strong>oop</p>
+<h3>solution n°2 : utiliser le mode visuel</h3>
 
-<p>et voici comment on peut l&#8217;implémenter (difficile de faire plus simple)</p>
+<p>avec la touche <code>v</code> ou <code>V</code> pour utiliser la ligne entière. Puis les flèches ou les <a href="/blog/2015/03/08/comprendre-les-raccourcis-claviers-de-vi-slash-vim/">mouvements</a></p>
+
+<h3>solution n°3 : utiliser les touches mouvements</h3>
+
+<p>Quelques exemples:</p>
+
+<ul>
+<li><code>y3w</code> copier trois mots (<strong>y</strong>ank <strong>3</strong> words)</li>
+<li><code>yG</code> copier jusqu&#8217;à la fin du fichier (<strong>y</strong>ank fin</li>
+<li><code>y5j</code> copier 5 lignes vers le bas (<strong>y</strong> <strong>5</strong> lignes vers le bas <code>j</code>)</li>
+<li><code>yi(</code> pour copier le texte entre parenthèse (<strong>y</strong>ank <strong>i</strong>nside <code>(</code>)</li>
+</ul>
+
+
+<p>Pour coller on utilise la touche <code>p</code> pour <strong>p</strong>aste ou <code>P</code> (colle avant le curseur)</p>
+
+<h2>Les presse-papiers sous vi ou les registres</h2>
+
+<p>La notion de presse-papier est appelle registre dans Vi.</p>
+
+<p>Pour voir l&#8217;état des registres (et si il ne fallait retenir qu&#8217;une seule commande..)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>:register ou :reg
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Vous devez voir quelques choses dans le genre:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="k">while</span> <span class="o">(</span><span class="nb">true</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>  <span class="nb">echo eval</span><span class="o">(</span>fgets<span class="o">(</span>STDIN<span class="o">))</span><span class="p">;</span>
-</span><span class='line'><span class="o">}</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="s2">&quot;&quot;</span> dernier texte <span class="o">)</span>
+</span><span class='line'><span class="s2">&quot;0 dernier texte copié</span>
+</span><span class='line'><span class="s2">... les dix derniers textes copiés</span>
+</span><span class='line'><span class="s2">&quot;</span><span class="m">9</span> ..
+</span><span class='line'><span class="s2">&quot;a contenu du registre &quot;</span>a<span class="s2">&quot; (s&#39;il existe)</span>
+</span><span class='line'><span class="s2">...</span>
+</span><span class='line'><span class="s2">&quot;</span>% noms du fichier
+</span><span class='line'><span class="s2">&quot;. dernier texte inséré</span>
+</span><span class='line'><span class="s2">&quot;</span>/ dernier texte recherché
+</span><span class='line'><span class="err">&quot;</span>: derniere commande.
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p> avec les commentaires</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="k">while</span> <span class="o">(</span><span class="nb">true</span><span class="o">)</span>/*Loop*/ <span class="o">{</span>
-</span><span class='line'>  <span class="nb">echo</span> /*Print*/ <span class="nb">eval</span><span class="o">(</span>/*Read*/ fgets<span class="o">(</span>STDIN<span class="o">))</span><span class="p">;</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
+<ul>
+<li>Pour coller le texte contenue dans le registre <code>a</code> il faut taper<code>"ap</code> pour le registre <code>"a</code> + <code>p</code> paste.</li>
+<li>Pour copier le texte dans le registre a c&#8217;est <code>"ay</code></li>
+<li>Avec les mouvements de vi <code>"ay3w</code> dans le registre a (<code>"a</code>) copier (<code>y</code> comme <em>yank</em>) 3 mots (3w pour 3 words).</li>
+</ul>
 
 
-<p>Read Eval Print Loop. le nom donne le programme.</p>
+<p>Un registre intéressant le registre <code>+</code> ou le registre <code>*</code> les deux registres sont associés au clipboard de Linux ou celui de windows.</p>
 
-<p>C&#8217;est une technique qui marche avec un peu tout les langages.
-voir <a href="http://repl.it">http://repl.it</a></p>
+<h2>Pour résumer</h2>
+
+<ul>
+<li>Pour voir les registres. Il suffit de taper <code>:register</code>.</li>
+<li>Pour coller un registre c&#8217;est <code>"&lt;nom du registre&gt;p</code>.</li>
+<li>Pour copier c&#8217;est <code>"&lt;nom du registre&gt;y(+mouvement)</code>.</li>
+<li>Le registre <code>+</code> est le presse-papier de windows ou linux. Pour copier/coller du presse-papier il suffit de taper <code>"+p</code> et <code>"+y</code>.</li>
+<li>On a 26 presse-papiers de <code>a</code> à <code>z</code> personnellement j&#8217;en ai rarement utilisé plus de deux registres en même temps.</li>
+</ul>
+
+
+<p>Nous reparlerons des registres avec les macros dans un prochain post.</p>
 </div>
 
 
@@ -159,12 +200,12 @@ voir <a href="http://repl.it">http://repl.it</a></p>
 
 
 
-<time class='entry-date' datetime='2015-03-08T19:24:57+01:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:24 pm</span></time>
+<time class='entry-date' datetime='2015-05-30T23:23:37+02:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:23 pm</span></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/php/'>php</a>
+    <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/vim/'>vim</a>
   
 </span>
 
@@ -173,7 +214,7 @@ voir <a href="http://repl.it">http://repl.it</a></p>
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mcamuzat.github.io/blog/2015/03/08/php-en-mode-interactif/" data-via="" data-counturl="http://mcamuzat.github.io/blog/2015/03/08/php-en-mode-interactif/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mcamuzat.github.io/blog/2015/05/30/copier-coller-dans-vim/" data-via="" data-counturl="http://mcamuzat.github.io/blog/2015/05/30/copier-coller-dans-vim/" >Tweet</a>
   
   
   
@@ -182,10 +223,8 @@ voir <a href="http://repl.it">http://repl.it</a></p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/03/08/comprendre-les-raccourcis-claviers-de-vi-slash-vim/" title="Previous Post: Comprendre les raccourcis claviers de vi/vim">&laquo; Comprendre les raccourcis claviers de vi/vim</a>
+        <a class="basic-alignment left" href="/blog/2015/05/25/koan-et-programmation/" title="Previous Post: Koan et Programmation">&laquo; Koan et Programmation</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2015/03/16/mapreduce-du-pauvre/" title="Next Post: MapReduce du pauvre">MapReduce du pauvre &raquo;</a>
       
     </p>
   </footer>
