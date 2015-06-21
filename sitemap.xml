@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://mcamuzat.github.io/blog/2015/06/21/if-hemingway-wrote-javascript/</loc>
+    <lastmod>2015-06-21T19:06:54+02:00</lastmod>
+  </url>
+  <url>
     <loc>http://mcamuzat.github.io/blog/2015/05/30/copier-coller-dans-vim/</loc>
     <lastmod>2015-05-30T23:23:37+02:00</lastmod>
   </url>
@@ -86,11 +90,11 @@
   </url>
   <url>
     <loc>http://mcamuzat.github.io/</loc>
-    <lastmod>2015-06-01T21:48:02+02:00</lastmod>
+    <lastmod>2015-06-21T19:12:19+02:00</lastmod>
   </url>
   <url>
     <loc>http://mcamuzat.github.io/blog/archives/</loc>
-    <lastmod>2015-06-01T21:48:02+02:00</lastmod>
+    <lastmod>2015-06-21T19:12:19+02:00</lastmod>
   </url>
   <url>
     <loc>http://mcamuzat.github.io/google8cb39a84ece2ce48.html</loc>
