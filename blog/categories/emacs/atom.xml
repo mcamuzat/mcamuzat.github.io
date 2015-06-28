@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Emacs | Mon blog perso.]]></title>
+  <link href="http://mcamuzat.github.io/blog/categories/emacs/atom.xml" rel="self"/>
+  <link href="http://mcamuzat.github.io/"/>
+  <updated>2015-06-28T19:40:30+02:00</updated>
+  <id>http://mcamuzat.github.io/</id>
+  <author>
+    <name><![CDATA[mcamuzat]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Less Is More Et BASH]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/06/28/less-is-more-et-bash/"/>
+    <updated>2015-06-28T19:19:59+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/06/28/less-is-more-et-bash</id>
+    <content type="html"><![CDATA[<h2>less comme tail -f</h2>
+
+<p>On peux utiliser <code>less</code> pour suivre et parser les logs avec la commande</p>
+
+<pre><code>less -F nom_du_fichier
+</code></pre>
+
+<p>Ou tout simplement appuyer sur <code>F</code> quand le fichier est ouvert avec <code>less</code>.</p>
+
+<p>Less est compatible avec les raccourcis VI donc les commandes suivantes marchent</p>
+
+<pre><code>gg # debut du fichier
+G # fin du fichier
+/ #recherche
+&amp; #affiche seulement les lignes qui contiennent le mot 
+h,j,k,l les directions
+</code></pre>
+
+<p>les touche suivantes marche aussi avec <code>man</code></p>
+
+<p>Je vous conseille ce post sur les <a href="blog/2015/03/08/comprendre-les-raccourcis-claviers-de-vi-slash-vim/">mouvement vi</a></p>
+
+<h2>Éditer une ligne de commande trop complexe</h2>
+
+<p>Si on souhaite récupérer la commande actuelle sous BASH. C&#8217;est <code>Ctrl x + Ctrl e</code>. Cela ouvre la commande actuelle dans <code>vi</code> ou votre éditeur par défaut <code>$EDITOR</code> enregistrer et quitter.</p>
+
+<h2>Copier/Coller dans bash</h2>
+
+<ul>
+<li>Coupe toute la ligne : <code>Ctrl u</code></li>
+<li>Coupe à droite du curseur: <code>Ctrl k</code></li>
+<li>Coller <code>Ctrl y</code></li>
+</ul>
+
+
+<h3>Cas d&#8217;utilisation</h3>
+
+<pre><code>vim /etc/hosts (oups j'ai oublié le sudo..)
+&lt;Ctrl u&gt; sudo &lt;Ctrl k&gt;
+</code></pre>
+
+<h1>Annuler dans Bash</h1>
+
+<p>C&#8217;est <code>Ctrl _</code></p>
+
+<h1>En conclusion</h1>
+
+<p>Les raccourcis claviers <code>Ctrl _</code> et <code>Ctrl y</code> sont des raccourcis claviers de emacs.</p>
+
+<p>Bien qu&#8217;utilisateur Vim, j&#8217;aime beaucoup Emacs. Notamment le <code>org-mode</code>. Emacs est supérieur à Vim. (plus de mode, plus de personnalisation, une véritable interaction en REPL pour les langage type lisp). Il y a une tendance à utiliser Emacs avec le Evil-mode (ce qui en gros rajoute les raccourcis claviers de vim dans Emacs). Mais je pas encore passé le cap.</p>
+
+<p>Il est possible de passer son BASH en Vi-mode avec la commande suivante. Personnellement j&#8217;aime pas.</p>
+
+<pre><code>set -o vi
+</code></pre>
+
+<p>L&#8217;article <a href="http://www.catonmat.net/blog/bash-vi-editing-mode-cheat-sheet/">suivant</a> aide un peu. Mais ce n&#8217;est pas évident de dé-apprendre les raccourcis claviers.</p>
+
+<h1>Quelques liens</h1>
+
+<ul>
+<li><a href="https://github.com/jlevy/the-art-of-command-line">the art of the command line</a></li>
+<li><a href="http://www.commandlinefu.com">commandlinefu</a></li>
+<li><a href="http://orgmode.org/index.html">org-mode</a></li>
+<li><a href="http://www.emacswiki.org/emacs/Evil">evil-mode</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

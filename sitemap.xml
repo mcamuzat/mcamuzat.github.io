@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://mcamuzat.github.io/blog/2015/06/28/less-is-more-et-bash/</loc>
+    <lastmod>2015-06-28T19:19:59+02:00</lastmod>
+  </url>
+  <url>
     <loc>http://mcamuzat.github.io/blog/2015/06/21/if-hemingway-wrote-javascript/</loc>
     <lastmod>2015-06-21T19:06:54+02:00</lastmod>
   </url>
@@ -90,11 +94,11 @@
   </url>
   <url>
     <loc>http://mcamuzat.github.io/</loc>
-    <lastmod>2015-06-21T19:12:19+02:00</lastmod>
+    <lastmod>2015-06-28T19:40:30+02:00</lastmod>
   </url>
   <url>
     <loc>http://mcamuzat.github.io/blog/archives/</loc>
-    <lastmod>2015-06-21T19:12:19+02:00</lastmod>
+    <lastmod>2015-06-28T19:40:30+02:00</lastmod>
   </url>
   <url>
     <loc>http://mcamuzat.github.io/google8cb39a84ece2ce48.html</loc>
