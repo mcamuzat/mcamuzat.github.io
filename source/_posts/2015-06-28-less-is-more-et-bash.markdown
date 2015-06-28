@@ -10,7 +10,7 @@ categories: ["vim", "emacs", "bash", "linux"]
 On peux utiliser `less` pour suivre et parser les logs avec la commande
 
 ```
-less -F nom_du_fichier
+less +F nom_du_fichier
 ```
 
 Ou tout simplement appuyer sur `F` quand le fichier est ouvert avec `less`.
