@@ -4,7 +4,7 @@
   <title><![CDATA[Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-06-28T19:40:30+02:00</updated>
+  <updated>2015-06-28T20:00:19+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -23,7 +23,7 @@
 <p>On peux utiliser <code>less</code> pour suivre et parser les logs avec la commande</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>less -F nom_du_fichier</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>less +F nom_du_fichier</span></code></pre></td></tr></table></div></figure>
 
 
 <p>Ou tout simplement appuyer sur <code>F</code> quand le fichier est ouvert avec <code>less</code>.</p>
