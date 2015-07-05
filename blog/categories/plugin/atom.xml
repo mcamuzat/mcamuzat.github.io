@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Plugin | Mon blog perso.]]></title>
+  <link href="http://mcamuzat.github.io/blog/categories/plugin/atom.xml" rel="self"/>
+  <link href="http://mcamuzat.github.io/"/>
+  <updated>2015-07-05T19:14:27+02:00</updated>
+  <id>http://mcamuzat.github.io/</id>
+  <author>
+    <name><![CDATA[mcamuzat]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Vim Et Debbuger]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/07/05/vim-et-debbuger/"/>
+    <updated>2015-07-05T17:12:57+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/07/05/vim-et-debbuger</id>
+    <content type="html"><![CDATA[<h2>Introduction</h2>
+
+<p>Je vais montrer aujourd&#8217;hui comment interfacer Vim et xdebug pour debugger du php.</p>
+
+<ul>
+<li>Installer xdebug</li>
+<li>Paramétrer xdebug</li>
+<li>Présentation de deux plugins <strong>Vdebug</strong> et <strong>DBGPavim</strong></li>
+<li>Comment installer les deux plugin avec</li>
+</ul>
+
+
+<h2>Installer xdebug</h2>
+
+<p>Je connais deux méthodes</p>
+
+<p>Utiliser PECL</p>
+
+<pre><code>sudo pecl install xdebug
+</code></pre>
+
+<p>il faut alors ajouter dans votre <code>php.ini</code> la ligne suivante</p>
+
+<pre><code>zend_extension=/usr/lib/php5/20090626/xdebug.so
+</code></pre>
+
+<p>Ou plus propre rajouter dans un nouveau fichier  <code>/etc/php5/apache2/conf.d/xdebug.ini</code> et pareil pour la ligne de commande <code>/etc/php5/cli/conf.d/xdebug.ini</code></p>
+
+<p>utiliser apt-get sous Ubuntu
+<code>
+sudo apt-get install php5-xdebug
+</code>
+sur mon Ubuntu, les fichier conf.d était déjà crée</p>
+
+<h2>Paramétrer xdebug pour le debugger</h2>
+
+<p>Il faut rajouter les lignes suivantes le <code>xdebug.ini</code></p>
+
+<pre><code>xdebug.remote_enable=on
+xdebug.remote_handler=dbgp
+xdebug.remote_host=localhost
+xdebug.remote_port=9000
+</code></pre>
+
+<p>Puis aller sur l&#8217;url en ajoutant
+<code>
+http://monsite.com/?XDEBUG_SESSION_START=1
+</code>
+Il y a des plugins Firefox et Chrome qui s&#8217;occupe de cela.</p>
+
+<p>Pour que le debugger soit lancer par défaut. Vous pouvez rajouter la ligne suivante</p>
+
+<pre><code class="ini">xdebug.remote_autostart=1
+</code></pre>
+
+<p>Pour tester en ligne de commande.</p>
+
+<pre><code class="sh">php -dxdebug.remote_autostart=1 test.php
+</code></pre>
+
+<p>un simple script bash fait l&#8217;affaire. <code>php-debug</code></p>
+
+<pre><code class="sh">#!/bin/bash
+/usr/bin/php -dxdebug.remote_autostart=1 "$@"
+</code></pre>
+
+<h2>Les plugins VIM</h2>
+
+<p>Je vais pas trop insister sur comment installer un plugin sous Vim. Ce n&#8217;est pas très compliqué. Il faut passer par un gestionnaire de plugin (la gestion des plugins par défaut dans Vim n&#8217;est pas pratique)</p>
+
+<h2> Vdebug</h2>
+
+<h3>Utilisation</h3>
+
+<ul>
+<li>appuyer sur <code>&lt;F5&gt;</code></li>
+<li>vous avez 20 seconde pour lancer le script ou aller sur le serveur apache.</li>
+<li>Une fois le signal capturé</li>
+</ul>
+
+
+<h3>Liste des raccourcis claviers</h3>
+
+<p><img class="center" src="/images/VDebug.png" width="600" height="375" title="&lsquo;Vdebug&rsquo; &lsquo;Screenshot de VDebug&rsquo;" ></p>
+
+<ul>
+<li><code>&lt;F5&gt;</code>: start/run (to next breakpoint/end of script)</li>
+<li><code>&lt;F2&gt;</code>: step over</li>
+<li><code>&lt;F3&gt;</code>: step into</li>
+<li><code>&lt;F4&gt;</code>: step out</li>
+<li><code>&lt;F6&gt;</code>: stop debugging</li>
+<li><code>&lt;F7&gt;</code>: detach script from debugger</li>
+<li><code>&lt;F9&gt;</code>: run to cursor</li>
+<li><code>&lt;F10&gt;</code>: toggle line breakpoint</li>
+<li><code>&lt;F11&gt;</code>: show context variables (e.g. after &ldquo;eval&rdquo;)</li>
+<li><code>&lt;F12&gt;</code>: evaluate variable under cursor</li>
+<li><code>:VdebugEval &lt;code&gt;</code>: evaluate some code and display the result</li>
+<li><code>&lt;Leader&gt;e</code>: evaluate the expression under visual highlight and display the result</li>
+</ul>
+
+
+<p>La touche <code>&lt;Leader&gt;</code> est par défault <code>\</code> sur un clavier anglais. <code>&lt;Leader&gt;e</code> correspond à <code>\e</code>. Pas simple à taper sur un clavier azerty. la touche <code>&lt;Leader&gt;</code> est réglable grâce à cette configuration du <code>.vimrc</code></p>
+
+<pre><code>let mapleader = ","
+</code></pre>
+
+<p>Sur mon poste, je tape <code>,e</code></p>
+
+<h3>Un avis</h3>
+
+<p>Marche plutôt bien, mais par défaut Le debugger commence au début du script et pas au premier breakpoint.</p>
+
+<p>Il faut rajouter cette ligne dans votre <code>.vimrc</code>.</p>
+
+<pre><code>g:vdebug_options["break_on_open"]=0
+</code></pre>
+
+<p>L&#8217;histoire des 20 secondes pour se connecter est un peu frustrante.</p>
+
+<p>Par contre le code python est super propre.</p>
+
+<h2>DBGPavim</h2>
+
+<p><img class="center" src="/images/DBGPAVIM.png" width="600" height="375" title="&lsquo;DBGPavim&rsquo; &lsquo;Screenshot de DBGPavim&rsquo;" ></p>
+
+<p>Ce plugin résout les deux problèmes de Vdebug (aucune limitation de temps, démarre au premier point d&#8217;arrêt). Je le trouve moins intuitif. Mais il est visiblement plus puissant, il gère plusieurs sessions.</p>
+
+<p>Sur les screenshots la différence est plutôt minime.</p>
+
+<p>Les touches sont un peu près les mêmes.</p>
+
+<h2>Installations sous vim</h2>
+
+<p>Suivant le plugin que vous avez choisi</p>
+
+<p>Par <a href="https://github.com/tpope/vim-pathogen">Pathogen</a>:
+<code>
+git clone git://github.com/joonty/vdebug.git bundle/vdebug
+ou
+git://github.com/joonty/vdebug.git bundle/vdebug
+</code></p>
+
+<p>Ou avec les submodules de Git</p>
+
+<pre><code>git submodule add git://github.com/joonty/vdebug.git bundle/vdebug
+# ou 
+git submodule add git://github.com/brookhong/DBGPavim.git bundle/DBGPavim
+</code></pre>
+
+<p>Ajouter cette ligne à votre <code>.vimrc</code></p>
+
+<p>par <a href="https://github.com/gmarik/Vundle.vim">Vundle</a>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Bundle &ldquo;joonty/vdebug&rdquo;&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;ou&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Bundle &lsquo;brookhong/DBGPavim&rsquo;</span></code></pre></td></tr></table></div></figure></p>
+
+<p>par <a href="https://github.com/Shougo/neobundle.vim">NeoBundle</a> :
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>NeoBundle &ldquo;joonty/vdebug&rdquo;&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;ou&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;NeoBundle &lsquo;brookhong/DBGPavim&rsquo;</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>En conclusion</h2>
+
+<p>Le debugger c&#8217;est chouette et cela rends un peu obsolète ce bon vieux <code>var_dump(); die();</code></p>
+
+<p>D&#8217;ailleurs sur le <code>var_dump</code>. Il est plus simple de taper cette commande directement.</p>
+
+<pre><code>die(var_dump($foo));
+</code></pre>
+
+<p>Enfin sur les versions récentes de Symfony la commande <code>dump()</code> est pratique.</p>
+
+<p>Je vais reparler de xdebug. J&#8217;ai plein d&#8217;astuce à partager.</p>
+
+<h2>Des liens</h2>
+
+<ul>
+<li><a href="https://github.com/joonty/vdebug">Vdebug</a></li>
+<li><a href="https://github.com/brookhong/DBGPavim">DBGPAVIM</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>
