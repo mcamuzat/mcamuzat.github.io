@@ -118,7 +118,7 @@ Marche plutôt bien, mais par défaut Le debugger commence au début du script e
 Il faut rajouter cette ligne dans votre `.vimrc`.
 
 ```
-g:vdebug_options["break_on_open"]=0
+let g:vdebug_options["break_on_open"]=0
 ```
 
 L'histoire des 20 secondes pour se connecter est un peu frustrante.
@@ -145,7 +145,7 @@ Par [Pathogen](https://github.com/tpope/vim-pathogen):
 ```
 git clone git://github.com/joonty/vdebug.git bundle/vdebug
 ou 
-git://github.com/joonty/vdebug.git bundle/vdebug
+git://github.com/joonty/vdebug.git brookhong/DBGPavim.git 
 ```
 
 Ou avec les submodules de Git
