@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Plugin | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/plugin/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-07-05T19:14:27+02:00</updated>
+  <updated>2015-07-06T23:07:22+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -132,7 +132,7 @@ Il y a des plugins Firefox et Chrome qui s&#8217;occupe de cela.</p>
 
 <p>Il faut rajouter cette ligne dans votre <code>.vimrc</code>.</p>
 
-<pre><code>g:vdebug_options["break_on_open"]=0
+<pre><code>let g:vdebug_options["break_on_open"]=0
 </code></pre>
 
 <p>L&#8217;histoire des 20 secondes pour se connecter est un peu frustrante.</p>
@@ -157,7 +157,7 @@ Il y a des plugins Firefox et Chrome qui s&#8217;occupe de cela.</p>
 <code>
 git clone git://github.com/joonty/vdebug.git bundle/vdebug
 ou
-git://github.com/joonty/vdebug.git bundle/vdebug
+git://github.com/joonty/vdebug.git brookhong/DBGPavim.git
 </code></p>
 
 <p>Ou avec les submodules de Git</p>

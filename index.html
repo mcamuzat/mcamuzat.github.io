@@ -9,9 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Introduction Je vais montrer aujourd'hui comment interfacer Vim et xdebug pour debugger du php. Installer xdebug
-Paramétrer xdebug
-Présentation de &hellip;">
+  <meta name="description" content="Introduction Nous allons voir comment multiplier par 5 voir 10 les tests et l'environnement de test et de dev. L'astuce ici est de mettre le &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +77,209 @@ Présentation de &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/07/06/des-tests-plus-rapides-sous-symfony/">Des Tests Behat Plus Rapides Sous Symfony</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-07-06T19:46:43+02:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:46 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Introduction</h2>
+
+<p>Nous allons voir comment multiplier par 5 voir 10 les tests et l&#8217;environnement de test et de dev. L&#8217;astuce ici est de mettre le répertoire <code>cache</code> et <code>log</code> dans la Ram de l&#8217;ordinateur. Ainsi plus d&#8217;écriture sur le disque dur. C&#8217;est très pratique aussi pour les tests Behat. Attention à ne pas utiliser cette astuce sur une instance en production.</p>
+
+<h2>Mise en Oeuvre</h2>
+
+<h3>Méthode 1 : modification du code</h3>
+
+<p>Il suffit de modifier le <code>AppKernel.php</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">getCacheDir</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nb">in_array</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">environment</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;dev&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">)))</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="s1">&#39;/run/shm/&lt;MonProjet&gt;/cache/&#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">environment</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="k">parent</span><span class="o">::</span><span class="na">getCacheDir</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">getLogDir</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nb">in_array</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">environment</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;dev&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">)))</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="s1">&#39;/run/shm/&lt;Monprojet&gt;/logs&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="k">parent</span><span class="o">::</span><span class="na">getLogDir</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il faut bien entendu créer les répertoires suivants. <code>/run/shm/&lt;Monprojet&gt;/logs</code> et <code>/run/shm/&lt;Monprojet&gt;/cache</code>.</p>
+
+<p>Le problème de cette méthode est que l&#8217;on modifie le code. Et que ce genre de modification ne marche pas très bien avec les tests automatiques Jenkins. Bref pratique sur son poste mais pas en production.</p>
+
+<h3>Fixer les problèmes de droit.</h3>
+
+<p>Suivant comme est configuré votre projet et votre apache. Il peux y avoir des problème de droit.</p>
+
+<h4>Solution a : mettre les permissions à l&#8217;utilisateur apache</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nb">chown</span> <span class="o">-</span><span class="nx">R</span> <span class="nx">www</span><span class="o">-</span><span class="nx">data</span><span class="o">:</span><span class="nx">www</span><span class="o">-</span><span class="nx">data</span> <span class="o">/</span><span class="nx">run</span><span class="o">/</span><span class="nx">shm</span><span class="o">/&lt;</span><span class="nx">MonProjet</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Solution b : mettre l&#8217;utilisateur actuel en utilisateur apache.</h4>
+
+<p>Normalement apache utilise l&#8217;utilisateur www-data, mais rien n&#8217;empêche de changer celui-ci par votre utilisateur.</p>
+
+<p>Il suffit de modifier votre <code>/etc/apache2/httpd.conf</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">User</span> <span class="o">&lt;</span><span class="nx">mon</span> <span class="nx">user</span><span class="o">&gt;</span>
+</span><span class='line'><span class="nx">Group</span> <span class="o">&lt;</span><span class="nx">mon</span> <span class="nx">user</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>que je lance symfony de la console, ou du site c&#8217;est toujours le même utilisateur.</p>
+
+<h4>Solution c : Fixer juste pour le projet votre utilisateur.</h4>
+
+<p>La solution la plus simple à mettre en oeuvre est <code>mpm-itk</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">sudo</span> <span class="nx">apt</span><span class="o">-</span><span class="nx">get</span> <span class="nx">install</span> <span class="nx">apache2</span><span class="o">-</span><span class="nx">mpm</span><span class="o">-</span><span class="nx">itk</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Dans mon fichier de conf <code>/etc/apache2/site-available/&lt;monprojet&gt;.conf</code></p>
+
+<p>J&#8217;ajoute les lignes suivantes</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;</span><span class="nx">IfModule</span> <span class="nx">mpm_itk_module</span><span class="o">&gt;</span>
+</span><span class='line'><span class="nx">AssignUserId</span> <span class="o">&lt;</span><span class="nx">mon</span> <span class="nx">user</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nx">mon</span> <span class="nx">group</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">IfModule</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il faut redémarrer apache. Les plus courageux tenterons le fast-cgi et autre fpm</p>
+
+<h4>Un petit HS:</h4>
+
+<ul>
+<li>Vous pouvez créer un utilisateur par projet.</li>
+<li>Et installer le projet dans /home/projet1</li>
+<li>dans le /etc/apache2/site-available/projet1.conf</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;</span><span class="nx">IfModule</span> <span class="nx">mpm_itk_module</span><span class="o">&gt;</span>
+</span><span class='line'><span class="nx">AssignUserId</span> <span class="o">&lt;</span><span class="nx">projet1</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nx">projet1</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">IfModule</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si l&#8217;utilisateur <em>projet1</em> est compromis, il ne peux modifier que son home. Il y a plus de risque avec l&#8217;utilisateur apache <code>www-data</code> qui peux modifier l&#8217;ensemble de projet dans le /www/var.</p>
+
+<h3>Solution N°2 : Aucune modifaction du code.</h3>
+
+<p>Nous allons tout simplement supprimer les répertoires cache et logs du projet et remplacer par un lien symbolique.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">rm</span> <span class="o">-</span><span class="nx">rf</span> <span class="nx">app</span><span class="o">/</span><span class="nx">cache</span>
+</span><span class='line'><span class="nx">ln</span> <span class="o">-</span><span class="nx">s</span> <span class="o">/</span><span class="nx">run</span><span class="o">/</span><span class="nx">shm</span><span class="o">/&lt;</span><span class="nx">mon</span> <span class="nx">projet</span><span class="o">&gt;/</span><span class="nx">cache</span>  <span class="nx">app</span><span class="o">/</span><span class="nx">cache</span>
+</span><span class='line'><span class="nx">ln</span> <span class="o">-</span><span class="nx">s</span> <span class="o">/</span><span class="nx">run</span><span class="o">/</span><span class="nx">shm</span><span class="o">/&lt;</span><span class="nx">mon</span> <span class="nx">projet</span><span class="o">&gt;/</span><span class="nx">logs</span>  <span class="nx">app</span><span class="o">/</span><span class="nx">logs</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Le code n&#8217;est pas modifié. Donc pas de commit bizarre et pas de problème en Prod. Le seul souci est qu&#8217;il y a souvent un <code>.gitkeep</code> sur <code>cache</code> et <code>log</code> donc les <code>git stash</code> et autre se comporte un peu bizarrement.</p>
+
+<h3>des chiffres</h3>
+
+<p>J&#8217;ai pris un projet de mon boulot voici la différence pour les tests Behat</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">Avant</span>
+</span><span class='line'><span class="mi">49</span> <span class="nx">scenarios</span> <span class="p">(</span><span class="mi">49</span> <span class="nx">passed</span><span class="p">)</span>
+</span><span class='line'><span class="mi">396</span> <span class="nx">steps</span> <span class="p">(</span><span class="mi">396</span> <span class="nx">passed</span><span class="p">)</span>
+</span><span class='line'><span class="mi">5</span><span class="nx">m12</span><span class="o">.</span><span class="mi">80</span><span class="nx">s</span> <span class="p">(</span><span class="mf">66.61</span><span class="nx">Mb</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">Après</span>
+</span><span class='line'><span class="mi">49</span> <span class="nx">scenarios</span> <span class="p">(</span><span class="mi">49</span> <span class="nx">passed</span><span class="p">)</span>
+</span><span class='line'><span class="mi">396</span> <span class="nx">steps</span> <span class="p">(</span><span class="mi">396</span> <span class="nx">passed</span><span class="p">)</span>
+</span><span class='line'><span class="mi">0</span><span class="nx">m23</span><span class="o">.</span><span class="mi">74</span><span class="nx">s</span> <span class="p">(</span><span class="mf">72.85</span><span class="nx">Mb</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>je suis passé de 5 minutes à 24 secondes. Les fixtures sur le SQLite sont plus rapides. Bref un gain de temps énorme.</p>
+
+<h2>Conclusion</h2>
+
+<p>Nous avons vu deux solutions.
+Un Post un peu bizarre, puisque c&#8217;est un collègue qui m&#8217;a montré l&#8217;astuce. J&#8217;avais envie d&#8217;écrire un post dessus. Merci à <a href="https://github.com/floyoops">lui</a></p>
+
+<h2>Des liens</h2>
+
+<ul>
+<li><a href="http://www.whitewashing.de/2013/08/19/speedup_symfony2_on_vagrant_boxes.html">le liens le plus cité</a></li>
+<li>sur Npm-itk en <a href="http://bibabox.fr/apache2-mpm-itk-utiliser-un-utiliser-un-utilisateur-different-pour-chaque-vhost/">français</a> ou en <a href="http://blog.stuartherbert.com/php/2008/04/19/using-mpm-itk-to-secure-a-shared-server/">anglais</a> les deux sont biens.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -237,7 +438,7 @@ Présentation de &hellip;">
 <p>Il faut rajouter cette ligne dans votre <code>.vimrc</code>.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>g:vdebug_options<span class="o">[</span><span class="s2">&quot;break_on_open&quot;</span><span class="o">]=</span>0
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">let </span>g:vdebug_options<span class="o">[</span><span class="s2">&quot;break_on_open&quot;</span><span class="o">]=</span>0
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -266,7 +467,7 @@ Présentation de &hellip;">
 <span class='line-number'>3</span>
 </pre></td><td class='code'><pre><code class='sh'><span class='line'>git clone git://github.com/joonty/vdebug.git bundle/vdebug
 </span><span class='line'>ou
-</span><span class='line'>git://github.com/joonty/vdebug.git bundle/vdebug
+</span><span class='line'>git://github.com/joonty/vdebug.git brookhong/DBGPavim.git
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -1452,161 +1653,6 @@ Un jeux video en prosgresSQL pur. Il y a même une histoire. C&#8217;est assez c
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/05/03/docker-compose/">Docker-compose</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-05-03T21:33:31+02:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>9:33 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Docker-compose</h2>
-
-<p>Dans le post précèdent sur docker, j&#8217;avais expliqué comment automatiser la création des containers grâce au <code>Dockerfile</code> aujourd&#8217;hui je vais expliquer <code>docker-compose</code></p>
-
-<h2>Intro.</h2>
-
-<p>Dans un projet, il n&#8217;y a rarement qu&#8217;une seule instance. Voir il peut y avoir plusieurs fronts et une seule base de donnée. docker-compose est la justement pour organiser cela.</p>
-
-<p>Par exemple le <code>docker-compose.yml</code> suivant:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">web</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">php:5.6-apache</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">links</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">db:db</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">volumes</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">.:/var/www/html</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">db</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">postgres</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On déclare deux type de containers le container type <strong>web</strong> et le container de type <strong>db</strong>. à noter la ligne <code>links</code> qui fait que le container web partage/vois le container db</p>
-
-<p>Il suffit de faire <code>docker-compose up</code> (comme un <code>vagrant up</code>)  pour automatiquement lancer deux containers. un container web avec une image php-5.6, et un container avec PostGresSQL</p>
-
-<h2>Installation</h2>
-
-<p>Il existe deux façons de l&#8217;installer soit passer par <code>pip</code> (pip est l&#8217;équivalent de <code>npm</code> pour le python).</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo pip install -U docker-compose
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Ou de passer par curl</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>curl -L https://github.com/docker/compose/releases/download/1.2.0/docker-compose-<span class="sb">`</span>uname -s<span class="sb">`</span>-<span class="sb">`</span>uname -m<span class="sb">`</span> &gt; /usr/local/bin/docker-compose
-</span><span class='line'>chmod +x /usr/local/bin/docker-compose
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Quelques commandes</h2>
-
-<p>Lancer les containers en mode démon (<code>-d</code>)</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker-compose up -d
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Cela crée deux containers</p>
-
-<p>Que l&#8217;on peux surveiller grâce à la commande suivante</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker-compose ps
-</span><span class='line'>    Name                   Command               State    Ports
-</span><span class='line'>-----------------------------------------------------------------
-</span><span class='line'>compose_db_1    /docker-entrypoint.sh postgres   Up      5432/tcp
-</span><span class='line'>compose_web_1   apache2-foreground               Up      80/tcp
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On peux voir les logs</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker-compose logs
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Plus intéressant on peux rajouter des containers..</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker-compose scale <span class="nv">web</span><span class="o">=</span>3
-</span><span class='line'>Creating compose_web_2...
-</span><span class='line'>Creating compose_web_3...
-</span><span class='line'>Starting compose_web_2...
-</span><span class='line'>Starting compose_web_3...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Si je re-liste mes containers</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker-compose ps
-</span><span class='line'>    Name                   Command               State    Ports
-</span><span class='line'>-----------------------------------------------------------------
-</span><span class='line'>compose_db_1    /docker-entrypoint.sh postgres   Up      5432/tcp
-</span><span class='line'>compose_web_1   apache2-foreground               Up      80/tcp
-</span><span class='line'>compose_web_2   apache2-foreground               Up      80/tcp
-</span><span class='line'>compose_web_3   apache2-foreground               Up      80/tcp
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Je viens de multiplier par 3 le nombre de container en une simple commande et sans stopper le système.</p>
-
-<h2>Conclusion</h2>
-
-<p>Si vous n&#8217;avez qu&#8217;un seul container docker-compose ne sert pas à grand chose. Mais si vous avez plusieurs containers. Cela ne vaux pas la peine de se priver. Docker-compose contient en fait la liste des container ainsi que leurs configurations si on devait les lancers en la ligne de commande.</p>
-
-<p>Dans le prochain post sur docker, je vais tenter <code>docker-machine</code>.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -1622,6 +1668,10 @@ Un jeux video en prosgresSQL pur. Il y a même une histoire. C&#8217;est assez c
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/07/06/des-tests-plus-rapides-sous-symfony/">Des Tests Behat Plus Rapides Sous Symfony</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/07/05/vim-et-debbuger/">Vim Et Debbuger</a>
       </li>
     
@@ -1635,10 +1685,6 @@ Un jeux video en prosgresSQL pur. Il y a même une histoire. C&#8217;est assez c
     
       <li class="post">
         <a href="/blog/2015/05/30/copier-coller-dans-vim/">Copier Coller Dans Vim</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/25/koan-et-programmation/">Koan Et Programmation</a>
       </li>
     
   </ul>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Behat | Mon blog perso.]]></title>
+  <link href="http://mcamuzat.github.io/blog/categories/behat/atom.xml" rel="self"/>
+  <link href="http://mcamuzat.github.io/"/>
+  <updated>2015-07-06T23:07:22+02:00</updated>
+  <id>http://mcamuzat.github.io/</id>
+  <author>
+    <name><![CDATA[mcamuzat]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Des Tests Behat Plus Rapides Sous Symfony]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/07/06/des-tests-plus-rapides-sous-symfony/"/>
+    <updated>2015-07-06T19:46:43+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/07/06/des-tests-plus-rapides-sous-symfony</id>
+    <content type="html"><![CDATA[<h2>Introduction</h2>
+
+<p>Nous allons voir comment multiplier par 5 voir 10 les tests et l&#8217;environnement de test et de dev. L&#8217;astuce ici est de mettre le répertoire <code>cache</code> et <code>log</code> dans la Ram de l&#8217;ordinateur. Ainsi plus d&#8217;écriture sur le disque dur. C&#8217;est très pratique aussi pour les tests Behat. Attention à ne pas utiliser cette astuce sur une instance en production.</p>
+
+<h2>Mise en Oeuvre</h2>
+
+<h3>Méthode 1 : modification du code</h3>
+
+<p>Il suffit de modifier le <code>AppKernel.php</code></p>
+
+<pre><code class="php">public function getCacheDir()
+{
+    if (in_array($this-&gt;environment, array('dev', 'test'))) {
+        return '/run/shm/&lt;MonProjet&gt;/cache/' . $this-&gt;environment;
+    }
+
+    return parent::getCacheDir();
+}
+
+public function getLogDir()
+{
+    if (in_array($this-&gt;environment, array('dev', 'test'))) {
+        return '/run/shm/&lt;Monprojet&gt;/logs';
+    }
+
+    return parent::getLogDir();
+}
+</code></pre>
+
+<p>Il faut bien entendu créer les répertoires suivants. <code>/run/shm/&lt;Monprojet&gt;/logs</code> et <code>/run/shm/&lt;Monprojet&gt;/cache</code>.</p>
+
+<p>Le problème de cette méthode est que l&#8217;on modifie le code. Et que ce genre de modification ne marche pas très bien avec les tests automatiques Jenkins. Bref pratique sur son poste mais pas en production.</p>
+
+<h3>Fixer les problèmes de droit.</h3>
+
+<p>Suivant comme est configuré votre projet et votre apache. Il peux y avoir des problème de droit.</p>
+
+<h4>Solution a : mettre les permissions à l&#8217;utilisateur apache</h4>
+
+<pre><code>chown -R www-data:www-data /run/shm/&lt;MonProjet&gt;
+</code></pre>
+
+<h4>Solution b : mettre l&#8217;utilisateur actuel en utilisateur apache.</h4>
+
+<p>Normalement apache utilise l&#8217;utilisateur www-data, mais rien n&#8217;empêche de changer celui-ci par votre utilisateur.</p>
+
+<p>Il suffit de modifier votre <code>/etc/apache2/httpd.conf</code></p>
+
+<pre><code>User &lt;mon user&gt; 
+Group &lt;mon user&gt;
+</code></pre>
+
+<p>que je lance symfony de la console, ou du site c&#8217;est toujours le même utilisateur.</p>
+
+<h4>Solution c : Fixer juste pour le projet votre utilisateur.</h4>
+
+<p>La solution la plus simple à mettre en oeuvre est <code>mpm-itk</code></p>
+
+<pre><code>sudo apt-get install apache2-mpm-itk
+</code></pre>
+
+<p>Dans mon fichier de conf <code>/etc/apache2/site-available/&lt;monprojet&gt;.conf</code></p>
+
+<p>J&#8217;ajoute les lignes suivantes</p>
+
+<pre><code>    &lt;IfModule mpm_itk_module&gt;
+    AssignUserId &lt;mon user&gt; &lt;mon group&gt;
+    &lt;/IfModule&gt;
+</code></pre>
+
+<p>Il faut redémarrer apache. Les plus courageux tenterons le fast-cgi et autre fpm</p>
+
+<h4>Un petit HS:</h4>
+
+<ul>
+<li>Vous pouvez créer un utilisateur par projet.</li>
+<li>Et installer le projet dans /home/projet1</li>
+<li>dans le /etc/apache2/site-available/projet1.conf</li>
+</ul>
+
+
+<pre><code>    &lt;IfModule mpm_itk_module&gt;
+    AssignUserId &lt;projet1&gt; &lt;projet1&gt;
+    &lt;/IfModule&gt;
+</code></pre>
+
+<p>Si l&#8217;utilisateur <em>projet1</em> est compromis, il ne peux modifier que son home. Il y a plus de risque avec l&#8217;utilisateur apache <code>www-data</code> qui peux modifier l&#8217;ensemble de projet dans le /www/var.</p>
+
+<h3>Solution N°2 : Aucune modifaction du code.</h3>
+
+<p>Nous allons tout simplement supprimer les répertoires cache et logs du projet et remplacer par un lien symbolique.
+<code>
+rm -rf app/cache
+ln -s /run/shm/&lt;mon projet&gt;/cache  app/cache
+ln -s /run/shm/&lt;mon projet&gt;/logs  app/logs
+</code></p>
+
+<p>Le code n&#8217;est pas modifié. Donc pas de commit bizarre et pas de problème en Prod. Le seul souci est qu&#8217;il y a souvent un <code>.gitkeep</code> sur <code>cache</code> et <code>log</code> donc les <code>git stash</code> et autre se comporte un peu bizarrement.</p>
+
+<h3>des chiffres</h3>
+
+<p>J&#8217;ai pris un projet de mon boulot voici la différence pour les tests Behat</p>
+
+<pre><code class="">Avant
+49 scenarios (49 passed)
+396 steps (396 passed)
+5m12.80s (66.61Mb)
+
+Après
+49 scenarios (49 passed)
+396 steps (396 passed)
+0m23.74s (72.85Mb)
+</code></pre>
+
+<p>je suis passé de 5 minutes à 24 secondes. Les fixtures sur le SQLite sont plus rapides. Bref un gain de temps énorme.</p>
+
+<h2>Conclusion</h2>
+
+<p>Nous avons vu deux solutions.
+Un Post un peu bizarre, puisque c&#8217;est un collègue qui m&#8217;a montré l&#8217;astuce. J&#8217;avais envie d&#8217;écrire un post dessus. Merci à <a href="https://github.com/floyoops">lui</a></p>
+
+<h2>Des liens</h2>
+
+<ul>
+<li><a href="http://www.whitewashing.de/2013/08/19/speedup_symfony2_on_vagrant_boxes.html">le liens le plus cité</a></li>
+<li>sur Npm-itk en <a href="http://bibabox.fr/apache2-mpm-itk-utiliser-un-utiliser-un-utilisateur-different-pour-chaque-vhost/">français</a> ou en <a href="http://blog.stuartherbert.com/php/2008/04/19/using-mpm-itk-to-secure-a-shared-server/">anglais</a> les deux sont biens.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>
