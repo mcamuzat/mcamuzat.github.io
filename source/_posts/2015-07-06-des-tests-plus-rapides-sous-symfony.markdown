@@ -101,9 +101,9 @@ Si l'utilisateur *projet1* est compromis, il ne peux modifier que son home. Il y
 
 
 
-### Solution N°2 : Aucune modifaction du code.
+### Solution N°2 : Aucune modification du code.
 
-Nous allons tout simplement supprimer les répertoires cache et logs du projet et remplacer par un lien symbolique.
+Nous allons tout simplement supprimer les répertoires `cache` et `logs` du projet et remplacer par un lien symbolique.
 ```
 rm -rf app/cache
 ln -s /run/shm/<mon projet>/cache  app/cache
