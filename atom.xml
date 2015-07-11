@@ -4,7 +4,7 @@
   <title><![CDATA[Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-07-06T23:07:22+02:00</updated>
+  <updated>2015-07-11T23:49:32+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,98 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Les Quines]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/07/11/les-quines/"/>
+    <updated>2015-07-11T19:39:53+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/07/11/les-quines</id>
+    <content type="html"><![CDATA[<p>Aujourd&#8217;hui commençons par un petit programme</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>  <span class="c">#!/bin/sh</span>
+</span><span class='line'>  quine <span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="nb">echo</span> -e <span class="s2">&quot;#!/bin/sh\n$1&quot;</span>
+</span><span class='line'>  <span class="nb">echo</span> <span class="s2">&quot;quine &#39;$1&#39;&quot;</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  quine <span class="s1">&#39;quine () {</span>
+</span><span class='line'><span class="s1">  echo -e &quot;#!/bin/sh\\n$1&quot;</span>
+</span><span class='line'><span class="s1">  echo &quot;quine \047$1\047&quot;</span>
+</span><span class='line'><span class="s1">  }</span>
+</span><span class='line'><span class="s1">  &#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pouvez vous devinez que fais ce programme ?</p>
+
+<p>Une quine est un code donc la sortie est exactement son code-source.</p>
+
+<p>Cela ressemble à une exercice de programmation.</p>
+
+<p>Mais toute en quelque sorte peuvent se résumer à l&#8217;idée suivante.</p>
+
+<blockquote><p>Écrivez, puis écrivez entre guillemets et suivi d&#8217;un point, « Écrivez, puis écrivez entre guillemets et suivi d&#8217;un point, ».</p></blockquote>
+
+<p>Le code python suivant est une interprétation littérale.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='py'><span class='line'><span class="n">a</span><span class="o">=</span><span class="s">&#39;a=</span><span class="si">%r</span><span class="s">;print(a</span><span class="si">%%</span><span class="s">a)&#39;</span><span class="p">;</span><span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="o">%</span><span class="n">a</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>En php</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nv">$a</span><span class="o">=</span><span class="s1">&#39;&lt;?$a=%c%s%c;printf($a,39,$a,39);&#39;</span><span class="p">;</span><span class="nb">printf</span><span class="p">(</span><span class="nv">$a</span><span class="p">,</span><span class="mi">39</span><span class="p">,</span><span class="nv">$a</span><span class="p">,</span><span class="mi">39</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Seulement possible en php</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">echo</span> <span class="nb">file_get_contents</span><span class="p">(</span><span class="k">__FILE__</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>A quoi cela sert ?</h2>
+
+<p>On parle de code qui se réplique. Il existe une quine dans tout les langages de programmations complets(c&#8217;est à dire turing-complet). Une des applications les plus curieuse est l&#8217;injection de code malicieux dans les compilateurs. C&#8217;est un des papier les plus célèbre de Ken Thompson (Inventeur de B, Unix, UTF8, Go bref un monstre..). C&#8217;est un publication académique très facilement lisible et qui ne fait que trois pages. Il décrit une méthode d&#8217;injection dans le compilateur lui-même pour créer un compilateur infecté. Le plus bizarre dans cette histoire est que cette attaque est théorique. Mais personne n&#8217;y croyait. Il existe pourtant réellement un virus qui utilise cette faille.</p>
+
+<ul>
+<li><a href="https://www.ece.cmu.edu/~ganger/712.fall02/papers/p761-thompson.pdf">Reflections on Trusting Trust</a></li>
+<li><a href="https://lists.owasp.org/pipermail/owasp-cincinnati/2009-August/000187.html">la faille de sécurité</a></li>
+</ul>
+
+
+<h2>Des liens et bibliographie.</h2>
+
+<p>Il y a un chapitre complet dans le <a href="https://fr.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach_:_Les_Brins_d%27une_Guirlande_%C3%89ternelle">Gödel Escher Bach</a>
+quelques phrases issues de ce livre passionnant</p>
+
+<blockquote><p>&ldquo;est un fragment de phrase&rdquo; est un fragment de phrase</p>
+
+<p>&ldquo;se compose de cinq mots&rdquo; se compose de cinq mots</p>
+
+<p>&ldquo;Donne une fausseté si précédée d&#8217;elle-même entre guillemets&rdquo; Donne une fausseté si précédée d&#8217;elle-même entre guillemets.</p></blockquote>
+
+<p>Cette dernière est de <a href="https://en.wikipedia.org/wiki/Willard_Van_Orman_Quine">W. V. Quine</a> qui est la première personne à écrire dessus et qui donne le noms de quine.</p>
+
+<p>la plupart des exemples viens de l&#8217;article <a href="https://fr.wikipedia.org/wiki/Quine_%28informatique%29">quine</a> sur wikipedia. Voir aussi <a href="http://c2.com/cgi/wiki?QuineProgram">quine</a> sur c2.com</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Des Tests Behat Plus Rapides Sous Symfony]]></title>
@@ -139,9 +231,9 @@
 
 <p>Si l&#8217;utilisateur <em>projet1</em> est compromis, il ne peux modifier que son home. Il y a plus de risque avec l&#8217;utilisateur apache <code>www-data</code> qui peux modifier l&#8217;ensemble de projet dans le /www/var.</p>
 
-<h3>Solution N°2 : Aucune modifaction du code.</h3>
+<h3>Solution N°2 : Aucune modification du code.</h3>
 
-<p>Nous allons tout simplement supprimer les répertoires cache et logs du projet et remplacer par un lien symbolique.</p>
+<p>Nous allons tout simplement supprimer les répertoires <code>cache</code> et <code>logs</code> du projet et remplacer par un lien symbolique.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -3745,222 +3837,6 @@ On peut parfaitement imaginer un type document, et lui ajouter un visiteur <code
 <p>Nous continuerons avec le visiteur pattern dans un prochain post. Nous ajouterons un visiteur pour les expressions booléenes. puis nous ajouterons un visiteur pour des instructions. nous allons créer un mini-langage..</p>
 
 <p>Ce projet vient des notes que j&#8217;avais prise quand j&#8217;étais au CNAM sur le cours de Design-Pattern en Java. J&#8217;avais adoré!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Comprendre La Ligne De Commande De Vi]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/03/30/comprendre-la-ligne-de-commande-de-vi/"/>
-    <updated>2015-03-30T22:36:21+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/03/30/comprendre-la-ligne-de-commande-de-vi</id>
-    <content type="html"><![CDATA[<p>Sous Vi quand on appuie sur <code>:</code> on a la ligne de commande</p>
-
-<p>Tout le monde connaît</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>:wq // quitter et enregistrer
-</span><span class='line'>:q! // quitter sans enregistrer et sans confirmation !</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Mais en pratique il existe plein de commandes.</p>
-
-<p>Par exemple :</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>:1,10d </span></code></pre></td></tr></table></div></figure>
-
-
-<p>efface la ligne 1 à 10 (<code>d</code> = delete)</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>:1,10m 10</span></code></pre></td></tr></table></div></figure>
-
-
-<p>bouge les lignes de 1 à 10 de 10 ligne (ici <code>m</code> = move)</p>
-
-<p>le &ldquo;pattern&rdquo; est toujours le même</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>: (début, fin)action</span></code></pre></td></tr></table></div></figure>
-
-
-<table>
-<thead>
-<tr>
-<th> mouvements </th>
-<th style="text-align:center;"> traduction</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td> <code>1,10</code>      </td>
-<td style="text-align:center;"> entre la ligne 1 et  la ligne 1 à 10 </td>
-</tr>
-<tr>
-<td> <code>.,10</code>      </td>
-<td style="text-align:center;"> <code>.</code> signifie la ligne actuelle      </td>
-</tr>
-<tr>
-<td> <code>10,$</code> </td>
-<td style="text-align:center;"> <code>$</code> signifie la dernière ligne</td>
-</tr>
-<tr>
-<td> <code>/mot1/,/mot2/</code> </td>
-<td style="text-align:center;"> entre le <code>mot1</code> et le <code>mot2</code></td>
-</tr>
-<tr>
-<td> <code>., +5</code> </td>
-<td style="text-align:center;"> entre la ligne actuelle (<code>.</code>) et les 5 lignes suivantes</td>
-</tr>
-<tr>
-<td> <code>%</code> </td>
-<td style="text-align:center;"> tout le fichier</td>
-</tr>
-</tbody>
-</table>
-
-
-<p>quelques actions</p>
-
-<table>
-<thead>
-<tr>
-<th>racourcci</th>
-<th> traduction</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td> <code>d</code> </td>
-<td> comme <strong>d</strong>elete</td>
-</tr>
-<tr>
-<td> <code>j</code> </td>
-<td> comme <strong>j</strong>oin</td>
-</tr>
-<tr>
-<td><code>sort</code></td>
-<td> trier (sort) les lignes</td>
-</tr>
-<tr>
-<td><code>w</code></td>
-<td> pour enregistrer</td>
-</tr>
-<tr>
-<td><code>y</code></td>
-<td> comme yank</td>
-</tr>
-</tbody>
-</table>
-
-
-<h2>le plus connu substitute</h2>
-
-<p>vous avez souvent vu cette syntaxe dans les commits <code>s/mot1/mot2</code></p>
-
-<p>ici <code>s</code> signifie <strong>substitute</strong>.</p>
-
-<p>par exemple</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>:%s/mot1/mot2/g</span></code></pre></td></tr></table></div></figure>
-
-
-<p>va remplacer le mot 1 par le mot 2
-le <code>g</code> active le flag <code>global</code> et remplace si le mot apparait deux fois.</p>
-
-<p>par exemple</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$mot1 = $mot1 + 1;
-</span><span class='line'>
-</span><span class='line'>// s/mot1/mot2 
-</span><span class='line'>$mot2 = $mot1 + 1 ; // on ne change que le premier mot
-</span><span class='line'>
-</span><span class='line'>// s/mot1/mot2/g
-</span><span class='line'>$mot2 = $mot2 + 1 // tout les mots</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Encore un peu plus loin</h2>
-
-<p>la commande suivante permet de grouper les mots</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>:g/mot/ #donne toute les lignes contenant mot</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>g</code> ici signifie <strong>g</strong>roup</p>
-
-<p>On peut chaîner les differentes actions
-par exemple</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>:g/pattern/s/mot/mot2/g # toutes les lignes qui contiennent le pattern, remplace mot1 par mot2.
-</span><span class='line'>
-</span><span class='line'>:g/pattern/d # efface toute les lignes qui contiennent le pattern suivant
-</span><span class='line'>
-</span><span class='line'>:g/pattern/p # 'print toutes lignes qui contienne le pattern suivant</span></code></pre></td></tr></table></div></figure>
-
-
-<p>la derniere ligne est la plus connue. pattern est le plus souvent une <em>regex</em> donc la traduction <code>g/regex/p</code> ->donne la commande <code>grep</code> sous linux.</p>
-
-<p>en faite, toutes les commandes que j&#8217;ai données proviennent de <code>sed</code>. mais ce n&#8217;est pas un hasard. <code>vi</code> est l&#8217;abbreviation de <strong>V</strong>isual <strong>I</strong>nteraction of Sed. un <em>sed interactif</em>.</p>
-
-<p>J&#8217;espère que cela vous fera apprecier <code>sed</code> comme <code>vi</code>. on peut rester très longtemps sur toutes les commandes.</p>
-
-<p>j&#8217;avais expliqué dans un précédent articles les mouvements en mode normal sont</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Action + Nombre de fois + Mouvement
-</span><span class='line'>
-</span><span class='line'>Exemple:
-</span><span class='line'>d5w # *d*elete *5* word
-</span><span class='line'>yG  # copier jusqu'à la fin du fichier (G)
-</span><span class='line'>=4j # indenter (=) 4 lignes vers le bas 
-</span><span class='line'>di( # efface entre les parenthèses *d*elete *i*nside ( 
-</span><span class='line'>
-</span><span class='line'>Dans le mode commande
-</span><span class='line'>: début, fin action
-</span><span class='line'>
-</span><span class='line'>:%d # efface tout le fichier
-</span><span class='line'>:1,10y # copie dans le presse-papier la ligne 1 à 10
-</span><span class='line'>:%s/include_one/require_once/gc
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Il me reste à vous parler des buffers et des macros. et on aura presque fait le tour de la magie de <code>vi</code>.</p>
-
-<h2>une commande de la vrai vie</h2>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>:%s/\s\+$//</span></code></pre></td></tr></table></div></figure>
-
-
-<p>sur tout le fichier (<code>%</code>) remplace(<code>s</code>) un ou plus(<code>+</code>) espaces (<code>\s</code>) à la fin de la ligne (<code>$</code>) par du vide. cette commande supprime les espaces vides à la fin des lignes..</p>
 ]]></content>
   </entry>
   

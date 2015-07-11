@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Apache | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/apache/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-07-06T23:07:22+02:00</updated>
+  <updated>2015-07-11T23:49:32+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -106,9 +106,9 @@ Group &lt;mon user&gt;
 
 <p>Si l&#8217;utilisateur <em>projet1</em> est compromis, il ne peux modifier que son home. Il y a plus de risque avec l&#8217;utilisateur apache <code>www-data</code> qui peux modifier l&#8217;ensemble de projet dans le /www/var.</p>
 
-<h3>Solution N°2 : Aucune modifaction du code.</h3>
+<h3>Solution N°2 : Aucune modification du code.</h3>
 
-<p>Nous allons tout simplement supprimer les répertoires cache et logs du projet et remplacer par un lien symbolique.
+<p>Nous allons tout simplement supprimer les répertoires <code>cache</code> et <code>logs</code> du projet et remplacer par un lien symbolique.
 <code>
 rm -rf app/cache
 ln -s /run/shm/&lt;mon projet&gt;/cache  app/cache
