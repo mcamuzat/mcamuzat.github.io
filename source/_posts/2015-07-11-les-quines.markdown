@@ -3,7 +3,7 @@ layout: post
 title: "Les quines"
 date: 2015-07-11 19:39:53 +0200
 comments: true
-categories: "kata", "php", "livre" 
+categories: ["kata", "php", "livre"]
 ---
 
 Aujourd'hui commençons par un petit programme 
@@ -70,4 +70,5 @@ quelques phrases issues de ce livre passionnant
 
 Cette dernière est de [W. V. Quine](https://en.wikipedia.org/wiki/Willard_Van_Orman_Quine) qui est la première personne à écrire dessus et qui donne le noms de quine.
 
+la plupart des exemples viens de l'article [quine](https://fr.wikipedia.org/wiki/Quine_%28informatique%29) sur wikipedia. Voir aussi [quine](http://c2.com/cgi/wiki?QuineProgram) sur c2.com
 
