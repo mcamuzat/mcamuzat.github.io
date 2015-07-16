@@ -24,7 +24,7 @@ Aujourd'hui commençons par un petit programme
 
 Pouvez vous devinez que fais ce programme ?
 
-Une quine est un code donc la sortie est exactement son code-source. 
+Une quine est un code donc la sortie est exactement son code source. 
 
 Cela ressemble à une exercice de programmation.
 
@@ -52,7 +52,7 @@ echo file_get_contents(__FILE__);
 
 ## A quoi cela sert ?
 
-On parle de code qui se réplique. Il existe une quine dans tout les langages de programmations complets(c'est à dire turing-complet). Une des applications les plus curieuse est l'injection de code malicieux dans les compilateurs. C'est un des papier les plus célèbre de Ken Thompson (Inventeur de B, Unix, UTF8, Go bref un monstre..). C'est un publication académique très facilement lisible et qui ne fait que trois pages. Il décrit une méthode d'injection dans le compilateur lui-même pour créer un compilateur infecté. Le plus bizarre dans cette histoire est que cette attaque est théorique. Mais personne n'y croyait. Il existe pourtant réellement un virus qui utilise cette faille.
+On parle de code qui se réplique. Il existe une quine dans tout les langages de programmations complets(c'est à dire turing-complet). Une des applications les plus curieuses est l'injection de code malicieux dans les compilateurs. C'est un des papiers les plus célèbres de Ken Thompson (Inventeur de B, Unix, UTF8, Go bref un monstre..). C'est un publication académique très facilement lisible et qui ne fait que trois pages. Il décrit une méthode d'injection dans le compilateur lui-même pour créer un compilateur infecté. Le plus bizarre dans cette histoire est que cette attaque est théorique. Mais personne n'y croyait. Il existe pourtant réellement un virus qui utilise cette faille.
 
 * [Reflections on Trusting Trust](https://www.ece.cmu.edu/~ganger/712.fall02/papers/p761-thompson.pdf)
 * [la faille de sécurité](https://lists.owasp.org/pipermail/owasp-cincinnati/2009-August/000187.html)
@@ -70,5 +70,5 @@ quelques phrases issues de ce livre passionnant
 
 Cette dernière est de [W. V. Quine](https://en.wikipedia.org/wiki/Willard_Van_Orman_Quine) qui est la première personne à écrire dessus et qui donne le noms de quine.
 
-la plupart des exemples viens de l'article [quine](https://fr.wikipedia.org/wiki/Quine_%28informatique%29) sur wikipedia. Voir aussi [quine](http://c2.com/cgi/wiki?QuineProgram) sur c2.com
+la plupart des exemples viens de l'article [quine](https://fr.wikipedia.org/wiki/Quine_%28informatique%29) sur Wikipedia. Voir aussi [quine](http://c2.com/cgi/wiki?QuineProgram) sur c2.com
 
