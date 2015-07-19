@@ -18,7 +18,7 @@ Les conditions étaient :
 
 ## Processing Késako
 
-Processing est une variante de Java en plus simple. C'est un langage destiné à faire des oeuvres d'arts numériques. Il est souvent enseigné en école d'art. Il vient avec son propre éditeur. à noter que les Arduinos se programme aussi en processing.
+Processing est une variante de Java en plus simple. C'est un langage destiné à faire des oeuvres d'arts numériques. Il est souvent enseigné en école d'art. Il vient avec son propre éditeur. à noter que les [Arduinos](https://fr.wikipedia.org/wiki/Arduino) se programment aussi en processing.
 
 {% img center /images/processing.png 499 533 'Processing' 'Screenshot de processing avec son interface' %}
 
@@ -53,7 +53,7 @@ Appuyez sur la touche play
 
 {% img center /images/processing_exemple.png 535 375 'Processing' 'le résultat' %}
 
-Je viens de faire un petit painbrush. C'est assez facile d'obtenir un truc plutôt joli avec assez peu de ligne de code. Il y a des librairies toutes prêtes pour la video, webcam.
+Je viens de faire un petit painbrush. C'est assez facile d'obtenir un truc plutôt joli avec assez peu de lignes de code. Il y a des librairies toutes prêtes pour la video, webcam.
 
 Il y a de nombreux livres donc le [Visualizing Data](http://www.amazon.com/Visualizing-Data-Explaining-Processing-Environment/dp/0596514557). Pour 2007, le livre est impressionnant. On parle de traitement de donnée et acquisitions des données bien avant la mode du Big data. 
 
@@ -84,7 +84,7 @@ sh /usr/share/processing/processing-2.2.1/processing
 ```
 Vous devriez voir apparaitre l'interface
 
-faire marcher mon code:
+Faire marcher mon code:
  
  * Il faut utiliser la librairie Ess pour analyser le signal (marrant c'était déja vieux à l'époque)
  * Aller sur le site [suivant](http://www.tree-axis.com/Ess).
@@ -92,7 +92,7 @@ faire marcher mon code:
 
 ## Le code 
 
-Il est disponible [ici](https://github.com/mcamuzat/processing-car) sous Github. J'ai commenté la partie avec le Numchuck+Arduino (car peux de gens ont le matériel). A l'époque impossible de faire marcher la connection USB/Nunchuck sous Linux, j'ai passé la soutenance sous un vieux PC sous windows XP. Tout est mis dans le même fichier car j'avais pas trouver comment découper un projet. C'est d'ailleurs ce que je reproche un peu à Processing, c'est un langage simple pour débuter, mais faire un MVC ou un programme très complexe. Il faut quasiment tout refaire à la main. 
+Il est disponible [ici](https://github.com/mcamuzat/processing-car) sous Github. J'ai commenté la partie avec le Numchuck+Arduino (car peux de gens ont le matériel). A l'époque impossible de faire marcher la connection USB/Wiichuck sous Linux, j'ai passé la soutenance sous un vieux PC sous windows XP. Tout est mis dans le même fichier car j'avais pas trouver comment découper un projet. C'est d'ailleurs ce que je reproche un peu à Processing, c'est un langage simple pour débuter, mais faire un MVC ou un programme très complexe. Il faut quasiment tout refaire à la main. 
 
 ## Quelques liens
 
