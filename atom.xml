@@ -4,7 +4,7 @@
   <title><![CDATA[Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-07-19T19:06:39+02:00</updated>
+  <updated>2015-07-25T18:29:34+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,485 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Créer Son Dépôt Sous Packagist]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/07/24/creer-son-depot-sous-packagist/"/>
+    <updated>2015-07-24T17:50:58+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/07/24/creer-son-depot-sous-packagist</id>
+    <content type="html"><![CDATA[<h2>Introduction</h2>
+
+<p>J&#8217;avais montré dans le précédent <a href="http://mcamuzat.github.io/blog/2015/07/19/histogramme-et-ligne-de-commande/">Post</a>, une fonction qui permet de créer des histogrammes.</p>
+
+<p>J&#8217;ai décidé de la publier sous <a href="https://packagist.org/">Packagist</a>. Je n&#8217;avais jamais fais. Je vous propose de suivre mon cheminement</p>
+
+<ul>
+<li>Je mets au propre le fichier</li>
+<li>J&#8217;ajoute le <code>composer.json</code></li>
+<li>j&#8217;ajoute les tests unitaires</li>
+<li>Je crée le dépôt sur Github</li>
+<li>J&#8217;enregistre le dépôt sur Packagist</li>
+</ul>
+
+
+<h2>Industrialisation</h2>
+
+<p>Nous sommes partis du code suivant.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">spark</span><span class="p">(</span><span class="nv">$array</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$bars</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;▁&#39;</span><span class="p">,</span><span class="s1">&#39;▂&#39;</span><span class="p">,</span><span class="s1">&#39;▃&#39;</span><span class="p">,</span><span class="s1">&#39;▄&#39;</span><span class="p">,</span><span class="s1">&#39;▅&#39;</span><span class="p">,</span><span class="s1">&#39;▆&#39;</span><span class="p">,</span><span class="s1">&#39;▇&#39;</span><span class="p">,</span><span class="s1">&#39;█&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nv">$divide</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nv">$array</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$divide</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$divide</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="nv">$countBars</span> <span class="o">=</span> <span class="nb">count</span><span class="p">(</span><span class="nv">$bars</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>    <span class="nv">$out</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$array</span> <span class="k">as</span> <span class="nv">$tick</span><span class="p">)</span>
+</span><span class='line'>        <span class="nv">$out</span> <span class="o">.=</span> <span class="nv">$bars</span><span class="p">[</span><span class="nb">round</span><span class="p">((</span><span class="nv">$tick</span> <span class="o">/</span> <span class="nv">$divide</span><span class="p">)</span> <span class="o">*</span> <span class="nv">$countBars</span><span class="p">)];</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="nv">$out</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// si je n&#39;ai aucun argument ..</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="nv">$argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="c1">// recupère le flux d&#39;entrée</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nb">feof</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$str</span> <span class="o">.=</span> <span class="nb">fgets</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="c1">// explode laisse la derniere ligne vide.</span>
+</span><span class='line'>    <span class="c1">// d&#39;ou le array_filter</span>
+</span><span class='line'>    <span class="nx">spark</span><span class="p">(</span><span class="nb">array_filter</span><span class="p">(</span><span class="nb">explode</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nv">$str</span><span class="p">),</span><span class="s1">&#39;strlen&#39;</span><span class="p">));</span>
+</span><span class='line'>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$iDontCare</span> <span class="o">=</span><span class="nb">array_shift</span><span class="p">(</span><span class="nv">$argv</span><span class="p">);</span>
+</span><span class='line'><span class="nx">spark</span><span class="p">(</span><span class="nv">$argv</span><span class="p">);</span>
+</span><span class='line'><span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je vais découper cela en plusieurs fichiers et répertoires.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">.</span>
+</span><span class='line'><span class="nx">├──</span> <span class="nx">bin</span>
+</span><span class='line'><span class="nx">│  </span> <span class="nx">└──</span> <span class="nx">spark</span>
+</span><span class='line'><span class="nx">├──</span> <span class="nx">composer</span><span class="o">.</span><span class="nx">json</span>
+</span><span class='line'><span class="nx">├──</span> <span class="nx">LICENSE</span>
+</span><span class='line'><span class="nx">├──</span> <span class="nx">phpunit</span><span class="o">.</span><span class="nx">xml</span><span class="o">.</span><span class="nx">dist</span>
+</span><span class='line'><span class="nx">├──</span> <span class="nx">src</span>
+</span><span class='line'><span class="nx">│  </span> <span class="nx">└──</span> <span class="nx">Spark</span>
+</span><span class='line'><span class="nx">│  </span>     <span class="nx">└──</span> <span class="nx">Spark</span><span class="o">.</span><span class="nx">php</span>
+</span><span class='line'><span class="nx">└──</span> <span class="nx">tests</span>
+</span><span class='line'>    <span class="nx">├──</span> <span class="nx">bootstrap</span><span class="o">.</span><span class="nx">php</span>
+</span><span class='line'>    <span class="nx">└──</span> <span class="nx">Spark</span>
+</span><span class='line'>        <span class="nx">└──</span> <span class="nx">SparkTest</span><span class="o">.</span><span class="nx">php</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Voici <code>Spark.php</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">namespace</span> <span class="nx">Spark</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Spark</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="k">static</span> <span class="nv">$bars</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;▁&#39;</span><span class="p">,</span><span class="s1">&#39;▂&#39;</span><span class="p">,</span><span class="s1">&#39;▃&#39;</span><span class="p">,</span><span class="s1">&#39;▄&#39;</span><span class="p">,</span><span class="s1">&#39;▅&#39;</span><span class="p">,</span><span class="s1">&#39;▆&#39;</span><span class="p">,</span><span class="s1">&#39;▇&#39;</span><span class="p">,</span><span class="s1">&#39;█&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">spark</span><span class="p">(</span><span class="nv">$array</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$divide</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nv">$array</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$divide</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$divide</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="nv">$countTick</span> <span class="o">=</span> <span class="nb">count</span><span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="nv">$bars</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$out</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$array</span> <span class="k">as</span> <span class="nv">$tick</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$out</span> <span class="o">.=</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$bars</span><span class="p">[</span><span class="nb">round</span><span class="p">((</span><span class="nv">$tick</span> <span class="o">/</span> <span class="nv">$divide</span><span class="p">)</span> <span class="o">*</span> <span class="nv">$countTick</span><span class="p">)];</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$out</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Et le fichier <code>spark</code> dans le répertoire <code>bin</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="c1">#!/usr/bin/env php</span>
+</span><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">require_once</span> <span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">&#39;/../vendor/autoload.php&#39;</span><span class="p">;</span> <span class="c1">// Autoload files using Composer autoload</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Spark\Spark</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$iDontCare</span> <span class="o">=</span><span class="nb">array_shift</span><span class="p">(</span><span class="nv">$argv</span><span class="p">);</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="nv">$argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nb">feof</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$str</span> <span class="o">.=</span> <span class="nb">fgets</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="nx">Spark</span><span class="o">::</span><span class="na">spark</span><span class="p">(</span><span class="nb">array_filter</span><span class="p">(</span><span class="nb">explode</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nv">$str</span><span class="p">),</span><span class="s1">&#39;strlen&#39;</span><span class="p">));</span>
+</span><span class='line'>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">echo</span> <span class="nx">Spark</span><span class="o">::</span><span class="na">spark</span><span class="p">(</span><span class="nv">$argv</span><span class="p">);</span>
+</span><span class='line'><span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Le Composer.json</h2>
+
+<p><strong>Pour publier sur Packagist il faut un <code>composer.json</code></strong></p>
+
+<p>C&#8217;est plutôt simple en fait. Il suffit de lancer la commande <code>composer init</code>. Tout se fait de manière interactive.</p>
+
+<p>à la fin j&#8217;obtiens.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;mcamuzat/spark&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;description&quot;</span><span class="o">:</span> <span class="s2">&quot;histogram in command line. Clone of holman/spark&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;require-dev&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="s2">&quot;phpunit/phpunit&quot;</span><span class="o">:</span> <span class="s2">&quot;~4.0&quot;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s2">&quot;squizlabs/php_codesniffer&quot;</span><span class="o">:</span> <span class="s2">&quot;2.*&quot;</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="s2">&quot;license&quot;</span><span class="o">:</span> <span class="s2">&quot;MIT&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;authors&quot;</span><span class="o">:</span> <span class="p">[</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Marc Camuzat&quot;</span><span class="p">,</span>
+</span><span class='line'>            <span class="s2">&quot;email&quot;</span><span class="o">:</span> <span class="s2">&quot;marc.camuzat@gmail.com&quot;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">],</span>
+</span><span class='line'>    <span class="s2">&quot;minimum-stability&quot;</span><span class="o">:</span> <span class="s2">&quot;dev&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{},</span>
+</span><span class='line'>    <span class="s2">&quot;autoload&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="s2">&quot;psr-0&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>            <span class="s2">&quot;Spark&quot;</span><span class="o">:</span> <span class="s2">&quot;src/&quot;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="s2">&quot;bin-dir&quot;</span><span class="o">:</span> <span class="s2">&quot;bin&quot;</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="s2">&quot;bin&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;bin/spark&quot;</span><span class="p">]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je crée le Namespace et j&#8217;ajoute que j&#8217;ai un fichier à marquer comme exécutable de le répertoire <code>bin/spark</code>. Je n&#8217;ai aucune dépendance.</p>
+
+<h2>Ajoutons les tests.</h2>
+
+<p>Il faut un minimum de tests.</p>
+
+<p>Pour avoir des tests il faut 3 fichiers</p>
+
+<ul>
+<li>Un <code>phpunit.xml.dist</code></li>
+<li>Un <code>bootstrap.php</code> pour qui se borne à appeler l&#8217;autoload de composer</li>
+<li>Enfin un fichier de test</li>
+</ul>
+
+
+<p>Et installer PHPUnit (qui est déjà dans mon <code>composer.json</code>)</p>
+
+<p>Le <code>phpunit.xml.dist</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;phpunit</span> <span class="na">backupGlobals=</span><span class="s">&quot;false&quot;</span>
+</span><span class='line'>         <span class="na">backupStaticAttributes=</span><span class="s">&quot;false&quot;</span>
+</span><span class='line'>         <span class="na">colors=</span><span class="s">&quot;true&quot;</span>
+</span><span class='line'>         <span class="na">convertErrorsToExceptions=</span><span class="s">&quot;true&quot;</span>
+</span><span class='line'>         <span class="na">convertNoticesToExceptions=</span><span class="s">&quot;true&quot;</span>
+</span><span class='line'>         <span class="na">convertWarningsToExceptions=</span><span class="s">&quot;true&quot;</span>
+</span><span class='line'>         <span class="na">processIsolation=</span><span class="s">&quot;false&quot;</span>
+</span><span class='line'>         <span class="na">stopOnFailure=</span><span class="s">&quot;false&quot;</span>
+</span><span class='line'>         <span class="na">syntaxCheck=</span><span class="s">&quot;false&quot;</span>
+</span><span class='line'>         <span class="na">bootstrap=</span><span class="s">&quot;tests/bootstrap.php&quot;</span>
+</span><span class='line'><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;testsuites&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;testsuite</span> <span class="na">name=</span><span class="s">&quot;Spark Test Suite&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;directory&gt;</span>./tests/<span class="nt">&lt;/directory&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/testsuite&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/testsuites&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;filter&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;whitelist&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;directory&gt;</span>./src/<span class="nt">&lt;/directory&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/whitelist&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/filter&gt;</span>
+</span><span class='line'><span class="nt">&lt;/phpunit&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On appelle le <code>bootstrap.php</code> qui fait venir l&#8217;autoloader</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="nv">$loader</span> <span class="o">=</span> <span class="o">@</span><span class="k">include</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/../vendor/autoload.php&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$loader</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$loader</span> <span class="o">=</span> <span class="k">require</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/../../../../vendor/autoload.php&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Et enfin les tests</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">namespace</span> <span class="nx">Spark</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Spark\Spark</span><span class="p">;</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">SparkTest</span> <span class="k">extends</span> <span class="nx">\PHPUnit_Framework_TestCase</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">testItCreateAStringFromData</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$out</span> <span class="o">=</span> <span class="nx">Spark</span><span class="o">::</span><span class="na">spark</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">22</span><span class="p">,</span><span class="mi">13</span><span class="p">,</span><span class="mi">5</span><span class="p">));</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertEquals</span><span class="p">(</span><span class="s1">&#39;▁▃█▅▃&#39;</span><span class="p">,</span> <span class="nv">$out</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">testItDontCareifInputIsString</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$out</span> <span class="o">=</span> <span class="nx">Spark</span><span class="o">::</span><span class="na">spark</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="s2">&quot;4&quot;</span><span class="p">,</span><span class="s2">&quot;8&quot;</span><span class="p">));</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertEquals</span><span class="p">(</span><span class="s1">&#39;▃▅█&#39;</span><span class="p">,</span> <span class="nv">$out</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">testItWorkWithFloatNumber</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$out</span> <span class="o">=</span> <span class="nx">Spark</span><span class="o">::</span><span class="na">spark</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s2">&quot;0.2&quot;</span><span class="p">,</span><span class="s2">&quot;0.8&quot;</span><span class="p">,</span><span class="s2">&quot;0.4&quot;</span><span class="p">));</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertEquals</span><span class="p">(</span><span class="s1">&#39;▃█▅&#39;</span><span class="p">,</span> <span class="nv">$out</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">testItNotDivideBy0</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$out</span> <span class="o">=</span> <span class="nx">Spark</span><span class="o">::</span><span class="na">spark</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">));</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertEquals</span><span class="p">(</span><span class="s1">&#39;▁▁▁&#39;</span><span class="p">,</span> <span class="nv">$out</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Lançons les tests</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>bin/phpunit
+</span><span class='line'>PHPUnit 4.8-ge1cc585 by Sebastian Bergmann and contributors.
+</span><span class='line'>
+</span><span class='line'>....
+</span><span class='line'>
+</span><span class='line'>Time: <span class="m">722</span> ms, Memory: 4.50Mb
+</span><span class='line'>
+</span><span class='line'>OK <span class="o">(</span><span class="m">4</span> tests, <span class="m">4</span> assertions<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Publication</h2>
+
+<p>Je crée le dépôt sur <a href="https://github.com/mcamuzat/spark">GitHub</a> que je clone</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git clone mcamuzat/spark.git
+</span><span class='line'>git add .
+</span><span class='line'>git commit -m<span class="s2">&quot;initialize repo&quot;</span>
+</span><span class='line'>git push -u origin master
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je me suis inscris sur <a href="https://packagist.org/">Packagist</a>.</p>
+
+<p>Il suffit de cliquer sur <strong>Submit</strong></p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/packagist_ajout.png" width="600" height="258" title="Ajouter un dépôt sur Packagist" alt="Ajouter un dépôt sur packagist"></p>
+
+<p>Et de mettre l&#8217;url de Github. Et c&#8217;est tout !</p>
+
+<h2>Des liens</h2>
+
+<ul>
+<li>Le projet sur <a href="https://github.com/mcamuzat/spark">Github</a></li>
+<li>Le projet sur <a href="https://packagist.org/packages/mcamuzat/spark">Packagist</a></li>
+</ul>
+
+
+<h2>En conclusion</h2>
+
+<p>Il manque encore le <code>README</code> sur Github, car pour l&#8217;instant l&#8217;intérêt du programme est encore un peu mystérieux pour une personne extérieure.</p>
+
+<p>J&#8217;espère que si vous voulez créer votre propre librairie sur Packagist, ce tutoriel vous servira.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Histogramme Et Ligne De Commande]]></title>
@@ -2740,186 +3219,6 @@ Tout le livre est centré sur le programme de basic suivant qui donne l&#8217;im
 <p>Je n&#8217;avais jamais écris de boucle for sans corps(<code>{..}</code>).</p>
 
 <p>La documentation de PHP est plutôt claire sur le <a href="http://php.net/manual/fr/control-structures.for.php">for</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Docker Je Débute]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/04/12/docker-je-debute/"/>
-    <updated>2015-04-12T22:25:27+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/04/12/docker-je-debute</id>
-    <content type="html"><![CDATA[<h2>Docker</h2>
-
-<p>Suite à une présentation à une conférence. J&#8217;ai commencé à m&#8217;y mettre. J&#8217;écris ce post en tant que grand débutant..</p>
-
-<p>Docker est une solution de virtualisation d&#8217;instance, plus précisément de container. Il y a pas mal de différence avec les différentes visualisations de Virtual box/Xen/VmWare. On isole juste les process et le file-system. Ce qui fait que l&#8217;on consomme très peu de processeurs.</p>
-
-<h2>Installation</h2>
-
-<p>Installer docker n&#8217;est pas très compliqué sous ubuntu 14.04.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install docker.io
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Et c&#8217;est tout !</p>
-
-<p>Pour éviter de préfixer <code>sudo</code> à chaque commande il est plus facile d&#8217;ajouter son utilisateur au group docker.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo addgroup &lt;votre user&gt; docker
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Hello world sous docker</h2>
-
-<p>Lancer docker</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker run ubuntu:14.04 /bin/echo <span class="s1">&#39;Hello world&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Cette commande fait plusieurs choses:</p>
-
-<ul>
-<li>si l&#8217;image <code>ubuntu:14.04</code> n&#8217;existe pas, elle va la télécharger.</li>
-<li>Puis on lance le container</li>
-<li>Puis on exécute echo &lsquo;Hello world&rsquo;</li>
-</ul>
-
-
-<p>D&#8217;ailleurs si on relance la même commande, on constate que l&#8217;image est déjà sur le disque dur.</p>
-
-<p>la commande prend moins d&#8217;une seconde. Pourtant on a chargé un container et lancer une commande !</p>
-
-<p>Essayons la commande suivante</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker run ubuntu:14.04 - it /bin/bash
-</span><span class='line'>root@b2634b81c3dc:/#
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Nous avons un bash intéractif. <code>-i</code> mode interactif, et <code>-t</code> affiche un pseudo terminal</p>
-
-<p>Il faut comprendre que  dès que la commande principale est finie, l&#8217;instance aussi. Dans le cas <code>Echo 'Hello World'</code> la commande se finit de suite. Dans le cas de <code>/bin/bash</code> On spécifie le mode interactif. Donc l&#8217;instance continue tant que l&#8217;on a pas quitté le bash.</p>
-
-<p>Ouvrons un nouveau terminal</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker ps
-</span><span class='line'>CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-</span><span class='line'>b2634b81c3dc        ubuntu:14.04        /bin/bash           <span class="m">43</span> seconds ago      Up <span class="m">42</span> seconds                           sharp_archimedes
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On voit que mon image est toujours en cours.</p>
-
-<p>La commande docker ps affiche tout les containers allumés pour afficher tout les containers allumés pendant la session. C&#8217;est <code>dockers ps -a</code></p>
-
-<p>On peux inspecter une instance avec la commande</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker inspect sharp_archimedes
-</span><span class='line'>docker inspect b2634b81c3dc
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Cela renvoie un json.</p>
-
-<p>On peux aussi lister les images disponibles via la commande</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker images
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Vous voulez télécharger des images</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker pull centos
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Vous cherchez une images particulières</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker search php56
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>La liste des images disponibles est disponible sur <a href="https://hub.docker.com/">Docker Hub</a> . D&#8217;ailleurs Dockers est très couplé avec DockerHub. DockerHub est un le GitHub pour Docker. On peux très bien faire du Git sans GitHub. C&#8217;est la même chose pour docker.</p>
-
-<p>Docker et Git partage aussi la notion de commit et de push.</p>
-
-<p>relancons notre instance</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker run -it ubuntu:14.04 /bin/bash
-</span><span class='line'>root@f5882f7f608d:/#
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Installons un paquet au hasard</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install vim
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On quitte <code>Exit</code></p>
-
-<p>puis on commit</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo docker commit f5882f7f608do marc/vim
-</span><span class='line'>4f177bd27a9ff0f6dc2a830403925b5360bfe0b93d476f7fc3231110e7f71b1c
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Si je liste les images.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker images
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>je vois apparaitre mon <code>marc/vim</code></p>
-
-<p>Je peux ainsi réutiliser mon container ainsi</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo docker run -it marc/vim vim
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On peux ainsi se créer ses propres containers. Mais c&#8217;est un peu laborieux. Docker utilise des <code>DockerFile</code> pour automatiser le process. Cela fera un prochain post</p>
-
-<h2>Résumé des commandes</h2>
-
-<ul>
-<li><code>docker run -i -t ubuntu:14.10 /bin/bash</code> lance en mode interactif et un terminal avec la commande Bash.</li>
-<li><code>docker run -i -t ubuntu:14.10 'hello world'</code></li>
-<li><code>docker ps</code> liste les containers en cours.</li>
-<li><code>docker ps -a</code> liste tout les containers.</li>
-<li><code>docker images</code> liste toutes les images.</li>
-<li><code>docker pull centos</code> pour télécharger une image (tout les images officielles sont sur le <a href="https://hub.docker.com/">Hub</a></li>
-<li><code>docker inspect uuid</code> affiche les informations sur l&#8217;instance.</li>
-<li><code>docker commit uuid name</code>pour commiter.</li>
-</ul>
-
-
-<h2>Conclusion</h2>
-
-<p>Bon j&#8217;avoue que je débute depuis 2 jours.  Ce qui m&#8217;impressionne dans Docker c&#8217;est la vitesse (moins d&#8217;une seconde pour démarrer). C&#8217;est plutôt simple d&#8217;utilisation. La notion de commit a l&#8217;air sympa (Même si au fond c&#8217;est l&#8217;équivalent d&#8217;un snapshot sous vmware). J&#8217;espère pouvoir faire mon premier dépôt sous DockerHub bientôt.</p>
 ]]></content>
   </entry>
   

@@ -9,10 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Un petit utilitaire. J'ai reprogrammé en php un clone de spark. Un petit exemple est plus parlant 1
-2
-spark([1,2,3,4,4,5,6,1,2]); // ▂▃▅▆▆▇█▂▃
-spark &hellip;">
+  <meta name="description" content="Introduction J'avais montré dans le précédent Post, une fonction qui permet de créer des histogrammes. J'ai décidé de la publier sous Packagist. Je n &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +77,505 @@ spark &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/07/24/creer-son-depot-sous-packagist/">Créer Son Dépôt Sous Packagist</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-07-24T17:50:58+02:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>5:50 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Introduction</h2>
+
+<p>J&#8217;avais montré dans le précédent <a href="/blog/2015/07/19/histogramme-et-ligne-de-commande/">Post</a>, une fonction qui permet de créer des histogrammes.</p>
+
+<p>J&#8217;ai décidé de la publier sous <a href="https://packagist.org/">Packagist</a>. Je n&#8217;avais jamais fais. Je vous propose de suivre mon cheminement</p>
+
+<ul>
+<li>Je mets au propre le fichier</li>
+<li>J&#8217;ajoute le <code>composer.json</code></li>
+<li>j&#8217;ajoute les tests unitaires</li>
+<li>Je crée le dépôt sur Github</li>
+<li>J&#8217;enregistre le dépôt sur Packagist</li>
+</ul>
+
+
+<h2>Industrialisation</h2>
+
+<p>Nous sommes partis du code suivant.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">spark</span><span class="p">(</span><span class="nv">$array</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$bars</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;▁&#39;</span><span class="p">,</span><span class="s1">&#39;▂&#39;</span><span class="p">,</span><span class="s1">&#39;▃&#39;</span><span class="p">,</span><span class="s1">&#39;▄&#39;</span><span class="p">,</span><span class="s1">&#39;▅&#39;</span><span class="p">,</span><span class="s1">&#39;▆&#39;</span><span class="p">,</span><span class="s1">&#39;▇&#39;</span><span class="p">,</span><span class="s1">&#39;█&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nv">$divide</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nv">$array</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$divide</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$divide</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="nv">$countBars</span> <span class="o">=</span> <span class="nb">count</span><span class="p">(</span><span class="nv">$bars</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>    <span class="nv">$out</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$array</span> <span class="k">as</span> <span class="nv">$tick</span><span class="p">)</span>
+</span><span class='line'>        <span class="nv">$out</span> <span class="o">.=</span> <span class="nv">$bars</span><span class="p">[</span><span class="nb">round</span><span class="p">((</span><span class="nv">$tick</span> <span class="o">/</span> <span class="nv">$divide</span><span class="p">)</span> <span class="o">*</span> <span class="nv">$countBars</span><span class="p">)];</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="nv">$out</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// si je n&#39;ai aucun argument ..</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="nv">$argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="c1">// recupère le flux d&#39;entrée</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nb">feof</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$str</span> <span class="o">.=</span> <span class="nb">fgets</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="c1">// explode laisse la derniere ligne vide.</span>
+</span><span class='line'>    <span class="c1">// d&#39;ou le array_filter</span>
+</span><span class='line'>    <span class="nx">spark</span><span class="p">(</span><span class="nb">array_filter</span><span class="p">(</span><span class="nb">explode</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nv">$str</span><span class="p">),</span><span class="s1">&#39;strlen&#39;</span><span class="p">));</span>
+</span><span class='line'>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$iDontCare</span> <span class="o">=</span><span class="nb">array_shift</span><span class="p">(</span><span class="nv">$argv</span><span class="p">);</span>
+</span><span class='line'><span class="nx">spark</span><span class="p">(</span><span class="nv">$argv</span><span class="p">);</span>
+</span><span class='line'><span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je vais découper cela en plusieurs fichiers et répertoires.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">.</span>
+</span><span class='line'><span class="nx">├──</span> <span class="nx">bin</span>
+</span><span class='line'><span class="nx">│  </span> <span class="nx">└──</span> <span class="nx">spark</span>
+</span><span class='line'><span class="nx">├──</span> <span class="nx">composer</span><span class="o">.</span><span class="nx">json</span>
+</span><span class='line'><span class="nx">├──</span> <span class="nx">LICENSE</span>
+</span><span class='line'><span class="nx">├──</span> <span class="nx">phpunit</span><span class="o">.</span><span class="nx">xml</span><span class="o">.</span><span class="nx">dist</span>
+</span><span class='line'><span class="nx">├──</span> <span class="nx">src</span>
+</span><span class='line'><span class="nx">│  </span> <span class="nx">└──</span> <span class="nx">Spark</span>
+</span><span class='line'><span class="nx">│  </span>     <span class="nx">└──</span> <span class="nx">Spark</span><span class="o">.</span><span class="nx">php</span>
+</span><span class='line'><span class="nx">└──</span> <span class="nx">tests</span>
+</span><span class='line'>    <span class="nx">├──</span> <span class="nx">bootstrap</span><span class="o">.</span><span class="nx">php</span>
+</span><span class='line'>    <span class="nx">└──</span> <span class="nx">Spark</span>
+</span><span class='line'>        <span class="nx">└──</span> <span class="nx">SparkTest</span><span class="o">.</span><span class="nx">php</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Voici <code>Spark.php</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">namespace</span> <span class="nx">Spark</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Spark</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="k">static</span> <span class="nv">$bars</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;▁&#39;</span><span class="p">,</span><span class="s1">&#39;▂&#39;</span><span class="p">,</span><span class="s1">&#39;▃&#39;</span><span class="p">,</span><span class="s1">&#39;▄&#39;</span><span class="p">,</span><span class="s1">&#39;▅&#39;</span><span class="p">,</span><span class="s1">&#39;▆&#39;</span><span class="p">,</span><span class="s1">&#39;▇&#39;</span><span class="p">,</span><span class="s1">&#39;█&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="sd">/**</span>
+</span><span class='line'><span class="sd">     *</span>
+</span><span class='line'><span class="sd">     */</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">spark</span><span class="p">(</span><span class="nv">$array</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$divide</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nv">$array</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$divide</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$divide</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="nv">$countTick</span> <span class="o">=</span> <span class="nb">count</span><span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="nv">$bars</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$out</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$array</span> <span class="k">as</span> <span class="nv">$tick</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$out</span> <span class="o">.=</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$bars</span><span class="p">[</span><span class="nb">round</span><span class="p">((</span><span class="nv">$tick</span> <span class="o">/</span> <span class="nv">$divide</span><span class="p">)</span> <span class="o">*</span> <span class="nv">$countTick</span><span class="p">)];</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$out</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Et le fichier <code>spark</code> dans le répertoire <code>bin</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="c1">#!/usr/bin/env php</span>
+</span><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">require_once</span> <span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">&#39;/../vendor/autoload.php&#39;</span><span class="p">;</span> <span class="c1">// Autoload files using Composer autoload</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Spark\Spark</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$iDontCare</span> <span class="o">=</span><span class="nb">array_shift</span><span class="p">(</span><span class="nv">$argv</span><span class="p">);</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="nv">$argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nb">feof</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$str</span> <span class="o">.=</span> <span class="nb">fgets</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="nx">Spark</span><span class="o">::</span><span class="na">spark</span><span class="p">(</span><span class="nb">array_filter</span><span class="p">(</span><span class="nb">explode</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nv">$str</span><span class="p">),</span><span class="s1">&#39;strlen&#39;</span><span class="p">));</span>
+</span><span class='line'>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">echo</span> <span class="nx">Spark</span><span class="o">::</span><span class="na">spark</span><span class="p">(</span><span class="nv">$argv</span><span class="p">);</span>
+</span><span class='line'><span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Le Composer.json</h2>
+
+<p><strong>Pour publier sur Packagist il faut un <code>composer.json</code></strong></p>
+
+<p>C&#8217;est plutôt simple en fait. Il suffit de lancer la commande <code>composer init</code>. Tout se fait de manière interactive.</p>
+
+<p>à la fin j&#8217;obtiens.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;mcamuzat/spark&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;description&quot;</span><span class="o">:</span> <span class="s2">&quot;histogram in command line. Clone of holman/spark&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;require-dev&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="s2">&quot;phpunit/phpunit&quot;</span><span class="o">:</span> <span class="s2">&quot;~4.0&quot;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s2">&quot;squizlabs/php_codesniffer&quot;</span><span class="o">:</span> <span class="s2">&quot;2.*&quot;</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="s2">&quot;license&quot;</span><span class="o">:</span> <span class="s2">&quot;MIT&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;authors&quot;</span><span class="o">:</span> <span class="p">[</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Marc Camuzat&quot;</span><span class="p">,</span>
+</span><span class='line'>            <span class="s2">&quot;email&quot;</span><span class="o">:</span> <span class="s2">&quot;marc.camuzat@gmail.com&quot;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">],</span>
+</span><span class='line'>    <span class="s2">&quot;minimum-stability&quot;</span><span class="o">:</span> <span class="s2">&quot;dev&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{},</span>
+</span><span class='line'>    <span class="s2">&quot;autoload&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="s2">&quot;psr-0&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>            <span class="s2">&quot;Spark&quot;</span><span class="o">:</span> <span class="s2">&quot;src/&quot;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="s2">&quot;bin-dir&quot;</span><span class="o">:</span> <span class="s2">&quot;bin&quot;</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="s2">&quot;bin&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;bin/spark&quot;</span><span class="p">]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je crée le Namespace et j&#8217;ajoute que j&#8217;ai un fichier à marquer comme exécutable de le répertoire <code>bin/spark</code>. Je n&#8217;ai aucune dépendance.</p>
+
+<h2>Ajoutons les tests.</h2>
+
+<p>Il faut un minimum de tests.</p>
+
+<p>Pour avoir des tests il faut 3 fichiers</p>
+
+<ul>
+<li>Un <code>phpunit.xml.dist</code></li>
+<li>Un <code>bootstrap.php</code> pour qui se borne à appeler l&#8217;autoload de composer</li>
+<li>Enfin un fichier de test</li>
+</ul>
+
+
+<p>Et installer PHPUnit (qui est déjà dans mon <code>composer.json</code>)</p>
+
+<p>Le <code>phpunit.xml.dist</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;phpunit</span> <span class="na">backupGlobals=</span><span class="s">&quot;false&quot;</span>
+</span><span class='line'>         <span class="na">backupStaticAttributes=</span><span class="s">&quot;false&quot;</span>
+</span><span class='line'>         <span class="na">colors=</span><span class="s">&quot;true&quot;</span>
+</span><span class='line'>         <span class="na">convertErrorsToExceptions=</span><span class="s">&quot;true&quot;</span>
+</span><span class='line'>         <span class="na">convertNoticesToExceptions=</span><span class="s">&quot;true&quot;</span>
+</span><span class='line'>         <span class="na">convertWarningsToExceptions=</span><span class="s">&quot;true&quot;</span>
+</span><span class='line'>         <span class="na">processIsolation=</span><span class="s">&quot;false&quot;</span>
+</span><span class='line'>         <span class="na">stopOnFailure=</span><span class="s">&quot;false&quot;</span>
+</span><span class='line'>         <span class="na">syntaxCheck=</span><span class="s">&quot;false&quot;</span>
+</span><span class='line'>         <span class="na">bootstrap=</span><span class="s">&quot;tests/bootstrap.php&quot;</span>
+</span><span class='line'><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;testsuites&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;testsuite</span> <span class="na">name=</span><span class="s">&quot;Spark Test Suite&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;directory&gt;</span>./tests/<span class="nt">&lt;/directory&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/testsuite&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/testsuites&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;filter&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;whitelist&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;directory&gt;</span>./src/<span class="nt">&lt;/directory&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/whitelist&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/filter&gt;</span>
+</span><span class='line'><span class="nt">&lt;/phpunit&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On appelle le <code>bootstrap.php</code> qui fait venir l&#8217;autoloader</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="nv">$loader</span> <span class="o">=</span> <span class="o">@</span><span class="k">include</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/../vendor/autoload.php&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$loader</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$loader</span> <span class="o">=</span> <span class="k">require</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/../../../../vendor/autoload.php&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Et enfin les tests</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">namespace</span> <span class="nx">Spark</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Spark\Spark</span><span class="p">;</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">SparkTest</span> <span class="k">extends</span> <span class="nx">\PHPUnit_Framework_TestCase</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">testItCreateAStringFromData</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$out</span> <span class="o">=</span> <span class="nx">Spark</span><span class="o">::</span><span class="na">spark</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">22</span><span class="p">,</span><span class="mi">13</span><span class="p">,</span><span class="mi">5</span><span class="p">));</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertEquals</span><span class="p">(</span><span class="s1">&#39;▁▃█▅▃&#39;</span><span class="p">,</span> <span class="nv">$out</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">testItDontCareifInputIsString</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$out</span> <span class="o">=</span> <span class="nx">Spark</span><span class="o">::</span><span class="na">spark</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="s2">&quot;4&quot;</span><span class="p">,</span><span class="s2">&quot;8&quot;</span><span class="p">));</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertEquals</span><span class="p">(</span><span class="s1">&#39;▃▅█&#39;</span><span class="p">,</span> <span class="nv">$out</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">testItWorkWithFloatNumber</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$out</span> <span class="o">=</span> <span class="nx">Spark</span><span class="o">::</span><span class="na">spark</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s2">&quot;0.2&quot;</span><span class="p">,</span><span class="s2">&quot;0.8&quot;</span><span class="p">,</span><span class="s2">&quot;0.4&quot;</span><span class="p">));</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertEquals</span><span class="p">(</span><span class="s1">&#39;▃█▅&#39;</span><span class="p">,</span> <span class="nv">$out</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">testItNotDivideBy0</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$out</span> <span class="o">=</span> <span class="nx">Spark</span><span class="o">::</span><span class="na">spark</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">));</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertEquals</span><span class="p">(</span><span class="s1">&#39;▁▁▁&#39;</span><span class="p">,</span> <span class="nv">$out</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Lançons les tests</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>bin/phpunit
+</span><span class='line'>PHPUnit 4.8-ge1cc585 by Sebastian Bergmann and contributors.
+</span><span class='line'>
+</span><span class='line'>....
+</span><span class='line'>
+</span><span class='line'>Time: <span class="m">722</span> ms, Memory: 4.50Mb
+</span><span class='line'>
+</span><span class='line'>OK <span class="o">(</span><span class="m">4</span> tests, <span class="m">4</span> assertions<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Publication</h2>
+
+<p>Je crée le dépôt sur <a href="https://github.com/mcamuzat/spark">GitHub</a> que je clone</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git clone mcamuzat/spark.git
+</span><span class='line'>git add .
+</span><span class='line'>git commit -m<span class="s2">&quot;initialize repo&quot;</span>
+</span><span class='line'>git push -u origin master
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je me suis inscris sur <a href="https://packagist.org/">Packagist</a>.</p>
+
+<p>Il suffit de cliquer sur <strong>Submit</strong></p>
+
+<p><img class="center" src="/images/packagist_ajout.png" width="600" height="258" title="Ajouter un dépôt sur Packagist" alt="Ajouter un dépôt sur packagist"></p>
+
+<p>Et de mettre l&#8217;url de Github. Et c&#8217;est tout !</p>
+
+<h2>Des liens</h2>
+
+<ul>
+<li>Le projet sur <a href="https://github.com/mcamuzat/spark">Github</a></li>
+<li>Le projet sur <a href="https://packagist.org/packages/mcamuzat/spark">Packagist</a></li>
+</ul>
+
+
+<h2>En conclusion</h2>
+
+<p>Il manque encore le <code>README</code> sur Github, car pour l&#8217;instant l&#8217;intérêt du programme est encore un peu mystérieux pour une personne extérieure.</p>
+
+<p>J&#8217;espère que si vous voulez créer votre propre librairie sur Packagist, ce tutoriel vous servira.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1528,166 +2024,6 @@ je citerai:</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/05/18/go-hello-server/">Go Hello Server</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-05-18T23:00:46+02:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:00 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2> Introduction</h2>
-
-<p>Je continue mon apprentissage en go. Nous allons essayer de faire un hello world via une page web.</p>
-
-<p>L&#8217;exemple le plus simple de la <a href="https://gowalker.org/net/http#HandleFunc">documentation officielle</a>.</p>
-
-<h2>Mise en place</h2>
-
-<p>Je me place dans mon répertoire <code>go</code></p>
-
-<p>Je vais dans le répertoire <code>src/github.com/&lt;username&gt;/</code></p>
-
-<p>Je crée un répertoire <code>hello-server</code></p>
-
-<p>Dans ce répertoire je crée le fichier server.go</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">package</span> <span class="nx">main</span>
-</span><span class='line'>
-</span><span class='line'><span class="kn">import</span> <span class="p">(</span>
-</span><span class='line'>  <span class="s">&quot;io&quot;</span>
-</span><span class='line'>  <span class="s">&quot;net/http&quot;</span>
-</span><span class='line'>  <span class="s">&quot;log&quot;</span>
-</span><span class='line'><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// hello world, the web server</span>
-</span><span class='line'><span class="kd">func</span> <span class="nx">HelloServer</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">req</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">io</span><span class="p">.</span><span class="nx">WriteString</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="s">&quot;hello, world!\n&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">http</span><span class="p">.</span><span class="nx">HandleFunc</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">,</span> <span class="nx">HelloServer</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">err</span> <span class="o">:=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ListenAndServe</span><span class="p">(</span><span class="s">&quot;:12345&quot;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="s">&quot;ListenAndServe: &quot;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Il suffit pour tester de lancer</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="k">go</span> <span class="nx">run</span> <span class="nx">server</span><span class="p">.</span><span class="k">go</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Ou sinon dans le répertoire <code>src/github.com/&lt;username&gt;/hello-server</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="k">go</span> <span class="nx">install</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Dans votre répertoire <code>bin</code> vous avez un exécutable <code>hello-server</code></p>
-
-<p>si on reprend notre répertoire <code>go</code> avec le précédent post</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>.
-</span><span class='line'>├── bin
-</span><span class='line'>│   ├── hello
-</span><span class='line'>│   └── hello-server
-</span><span class='line'>└── src
-</span><span class='line'>    └── github.com
-</span><span class='line'>        └── mcamuzat
-</span><span class='line'>            ├── hello
-</span><span class='line'>            │   ├── hello.go
-</span><span class='line'>            │   ├── LICENSE
-</span><span class='line'>            │   └── README.md
-</span><span class='line'>            └── hello-server
-</span><span class='line'>                └── server.go
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Avec votre navigateur aller à l&#8217;adresse suivante <a href="http://localhost:12345/">http://localhost:12345/</a></p>
-
-<h3>Micro analyse</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>http.HandleFunc<span class="o">(</span><span class="s2">&quot;/&quot;</span>, HelloServer<span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On initialise un router qui associe à la route <code>/</code> (la route vide) un <em>callback</em> <code>HelloServer</code> (qui ne fait qu&#8217;un simple <code>hello world!</code>)</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>err :<span class="o">=</span> http.ListenAndServe<span class="o">(</span><span class="s2">&quot;:12345&quot;</span>, nil<span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On demande à go d&#8217;écouter le port <code>:12345</code></p>
-
-<p>Et il n&#8217;y a pas grand chose à dire d&#8217;autre.</p>
-
-<h2>En conclusion</h2>
-
-<p>Cela ressemble à beaucoup de micro-framework, en tant que développeur PHP je ne suis pas vraiment perdu.
-Je vais essayer de continuer un peu sur le serveur web (récupération des posts).</p>
-
-<p>L&#8217;avantage ici est que le fichier <code>hello-server</code> est exécutable et n&#8217;a besoin d&#8217;aucune dépendance (donc pas besoin de apache, PHP, etc..).</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -1703,6 +2039,10 @@ Je vais essayer de continuer un peu sur le serveur web (récupération des posts
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/07/24/creer-son-depot-sous-packagist/">Créer Son Dépôt Sous Packagist</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/07/19/histogramme-et-ligne-de-commande/">Histogramme Et Ligne De Commande</a>
       </li>
     
@@ -1716,10 +2056,6 @@ Je vais essayer de continuer un peu sur le serveur web (récupération des posts
     
       <li class="post">
         <a href="/blog/2015/07/06/des-tests-plus-rapides-sous-symfony/">Des Tests Behat Plus Rapides Sous Symfony</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/07/05/vim-et-debbuger/">Vim Et Debbuger</a>
       </li>
     
   </ul>
