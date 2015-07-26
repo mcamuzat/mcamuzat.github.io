@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>If Hemingway Wrote Javascript - Mon blog perso.</title>
+  <title>Mise en Place De Travis - Mon blog perso.</title>
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Je suis tombé un peu par hasard sur ce livre &ldquo;If Hemingway Wrote JavaScript&rdquo;. Cela part de l'idée que tout les auteurs ont un certain &hellip;">
+  <meta name="description" content="Introduction Après la création de la librairie, la création et la publication du package, je propose d'ajouter l'intégration continue avec Travis. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mcamuzat.github.io/blog/2015/06/21/if-hemingway-wrote-javascript/">
+  <link rel="canonical" href="http://mcamuzat.github.io/blog/2015/07/25/mise-en-place-de-travis/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Mon blog perso." type="application/atom+xml">
@@ -80,7 +80,7 @@
   
   <header>
     
-      <h1 class="entry-title">If Hemingway Wrote Javascript</h1>
+      <h1 class="entry-title">Mise en Place De Travis</h1>
     
     
       <p class="meta">
@@ -89,55 +89,61 @@
 
 
 
-<time class='entry-date' datetime='2015-06-21T19:06:54+02:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>7:06 pm</span></time>
+<time class='entry-date' datetime='2015-07-25T16:37:49+02:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>4:37 pm</span></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>Je suis tombé un peu par hasard sur ce livre &ldquo;If Hemingway Wrote JavaScript&rdquo;. Cela part de l&#8217;idée que tout les auteurs ont un certain style. Et que s&#8217;il devait programmer en javascript le résultat serait diffèrent. L&#8217;auteur est un expert du javascript.</p>
+<div class="entry-content"><h2>Introduction</h2>
 
-<p>On trouve dans les auteurs</p>
+<p>Après la création de la <a href="/blog/2015/07/19/histogramme-et-ligne-de-commande/">librairie</a>, la création et la publication du <a href="blog/2015/07/24/creer-son-depot-sous-packagist/">package</a>, je propose d&#8217;ajouter l&#8217;intégration continue avec Travis. Travis est gratuit pour les projets open-source. (L&#8217;url n&#8217;est d&#8217;ailleurs pas la même c&#8217;est travis-ci.org pour les projets publics, et travis-ci.com pour les projets privés)</p>
 
-<ul>
-<li>Ernest Hemingway</li>
-<li>William Shakespeare</li>
-<li>André Breton</li>
-<li>Roberto Bolaño</li>
-<li>Dan Brown</li>
-<li>Jack Kerouac</li>
-<li>Jane Austen</li>
-<li>Samuel Johnson</li>
-<li>Sir Arthur Conan Doyle</li>
-<li>James Joyce</li>
-<li>J.D. Salinger</li>
-<li>Tupac Shakur</li>
-<li>Virginia Woolf</li>
-<li>Geoffrey Chaucer</li>
-<li>Vladimir Nabokov</li>
-<li>Jorge Luis Borges</li>
-<li>Lewis Carroll</li>
-<li>Douglas Adams</li>
-<li>Charles Dickens</li>
-<li>David Foster Wallace</li>
-<li>Sylvia Plath</li>
-<li>Italo Calvino</li>
-<li>J.K. Rowling</li>
-<li>Arundhati Roy</li>
-<li>Franz Kafka</li>
-</ul>
+<h2>L&#8217;intégration continue.</h2>
+
+<p>Il faut bien entendu s&#8217;inscrire sur Travis. On s&#8217;authentifie grâce à son identifiant github.</p>
+
+<p>Nous allons rajouter le fichier <code>.travis.yml</code> dans notre dépôt.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">language</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">php</span>
+</span><span class='line'><span class="l-Scalar-Plain">install</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">composer install</span>
+</span><span class='line'><span class="l-Scalar-Plain">php</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">5.4</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">5.5</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">5.6</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">hhvm</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">nightly</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
-<p>Bien sur un livre en anglais implique plutôt de la littérature anglaise. Certain choix sont curieux Dan Brown (Da vinci code) entre Kerouac et Joyce, Voir Tupac (si si le rappeur). Je venais de lire le livre le plus connus de Borges.</p>
+<p>Quand je synchronise mes dépôts. Il suffit de cliquer sur le slider pour activé l&#8217;intégration continue.</p>
 
-<p>On trouve 7-8 implémentation du Fibonnaci et autre factorielle. Vous allez apprendre plein de trucs sur le javascript, bien que je doute que cela serve. L&#8217;auteur montre des utilisations de <code>with</code> ou l&#8217;atroce mais absolument correct <code>Function('return this/4').call(2*2)</code>. Il y a toutes les subtilités du javascript qui sont évoquées : Héritage, scope, hoisting, variable, etc..</p>
+<p><img class="center" src="/images/travis_choice.png" width="600" height="234" title="intégration continue" alt="Activée l"></p>
 
-<p>La présentation est classe. Je l&#8217;avais pas reconnu mais les dessins sont de Miran Lipovača. C&#8217;est l&#8217;auteur du magnifique <a href="http://learnyouahaskell.com">Learn You a Haskell for Great Good!</a> si vous ne connaissez pas foncer.</p>
+<p>On peux lire les logs, d&#8217;ailleurs on se rend compte que travis utilise Docker</p>
+
+<p><img class="center" src="/images/travis_log.png" width="600" height="405" title="Log de travis" alt="Log de travis"></p>
+
+<p>et voici le résultat</p>
+
+<p><img class="center" src="/images/travis_depot.png" width="600" height="320" title="Dashboard du projet" alt="Dashboard du projet"></p>
+
+<p>A chaque commit je lance un build. J&#8217;ai vraiment été très surpris par la simplicité de la mise en œuvre.</p>
 
 <h2>En conclusion</h2>
 
-<p>Un bouquin qui aime les écrivains et qui aime le javascript. Il vous faudra aimer un peu les deux pour apprécier le contenu. Je m&#8217;en sors pas trop mal, je connaissais la plupart des écrivains. Pour moi c&#8217;est une curiosité et j&#8217;adore ce genre de livre. J&#8217;aime beaucoup la présentation.</p>
+<p>On peux lancer un build sans passer par travis grâce à docker et <a href="https://github.com/jolicode/JoliCi">JoliCi</a>, Voir ce <a href="blog/2015/04/18/dockers-et-ci/">post</a> à la fin</p>
+
+<p>Dans le prochain article, nous allons parler de CodeSniffer.</p>
 </div>
 
 
@@ -153,12 +159,12 @@
 
 
 
-<time class='entry-date' datetime='2015-06-21T19:06:54+02:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>7:06 pm</span></time>
+<time class='entry-date' datetime='2015-07-25T16:37:49+02:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>4:37 pm</span></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/javascript/'>javascript</a>, <a class='category' href='/blog/categories/livre/'>livre</a>
+    <a class='category' href='/blog/categories/docker/'>docker</a>, <a class='category' href='/blog/categories/github/'>github</a>, <a class='category' href='/blog/categories/php/'>php</a>, <a class='category' href='/blog/categories/travis/'>travis</a>
   
 </span>
 
@@ -167,7 +173,7 @@
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mcamuzat.github.io/blog/2015/06/21/if-hemingway-wrote-javascript/" data-via="" data-counturl="http://mcamuzat.github.io/blog/2015/06/21/if-hemingway-wrote-javascript/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mcamuzat.github.io/blog/2015/07/25/mise-en-place-de-travis/" data-via="" data-counturl="http://mcamuzat.github.io/blog/2015/07/25/mise-en-place-de-travis/" >Tweet</a>
   
   
   
@@ -176,10 +182,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/05/30/copier-coller-dans-vim/" title="Previous Post: Copier Coller dans Vim">&laquo; Copier Coller dans Vim</a>
+        <a class="basic-alignment left" href="/blog/2015/07/24/creer-son-depot-sous-packagist/" title="Previous Post: Créer son dépôt sous Packagist">&laquo; Créer son dépôt sous Packagist</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2015/06/28/less-is-more-et-bash/" title="Next Post: Less is more et BASH">Less is more et BASH &raquo;</a>
       
     </p>
   </footer>

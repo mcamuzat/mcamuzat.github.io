@@ -4,7 +4,7 @@
   <title><![CDATA[Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-07-25T18:29:34+02:00</updated>
+  <updated>2015-07-26T16:54:46+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,62 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Mise en Place De Travis]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/07/25/mise-en-place-de-travis/"/>
+    <updated>2015-07-25T16:37:49+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/07/25/mise-en-place-de-travis</id>
+    <content type="html"><![CDATA[<h2>Introduction</h2>
+
+<p>Après la création de la <a href="http://mcamuzat.github.io/blog/2015/07/19/histogramme-et-ligne-de-commande/">librairie</a>, la création et la publication du <a href="blog/2015/07/24/creer-son-depot-sous-packagist/">package</a>, je propose d&#8217;ajouter l&#8217;intégration continue avec Travis. Travis est gratuit pour les projets open-source. (L&#8217;url n&#8217;est d&#8217;ailleurs pas la même c&#8217;est travis-ci.org pour les projets publics, et travis-ci.com pour les projets privés)</p>
+
+<h2>L&#8217;intégration continue.</h2>
+
+<p>Il faut bien entendu s&#8217;inscrire sur Travis. On s&#8217;authentifie grâce à son identifiant github.</p>
+
+<p>Nous allons rajouter le fichier <code>.travis.yml</code> dans notre dépôt.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">language</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">php</span>
+</span><span class='line'><span class="l-Scalar-Plain">install</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">composer install</span>
+</span><span class='line'><span class="l-Scalar-Plain">php</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">5.4</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">5.5</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">5.6</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">hhvm</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">nightly</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Quand je synchronise mes dépôts. Il suffit de cliquer sur le slider pour activé l&#8217;intégration continue.</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/travis_choice.png" width="600" height="234" title="intégration continue" alt="Activée l"></p>
+
+<p>On peux lire les logs, d&#8217;ailleurs on se rend compte que travis utilise Docker</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/travis_log.png" width="600" height="405" title="Log de travis" alt="Log de travis"></p>
+
+<p>et voici le résultat</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/travis_depot.png" width="600" height="320" title="Dashboard du projet" alt="Dashboard du projet"></p>
+
+<p>A chaque commit je lance un build. J&#8217;ai vraiment été très surpris par la simplicité de la mise en œuvre.</p>
+
+<h2>En conclusion</h2>
+
+<p>On peux lancer un build sans passer par travis grâce à docker et <a href="https://github.com/jolicode/JoliCi">JoliCi</a>, Voir ce <a href="blog/2015/04/18/dockers-et-ci/">post</a> à la fin</p>
+
+<p>Dans le prochain article, nous allons parler de CodeSniffer.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Créer Son Dépôt Sous Packagist]]></title>
@@ -558,7 +614,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>On utilise la variable <code>$argv</code> qui est le tableau de paramètres passer dans la ligne de commande. L&#8217;argument <code>$argv[0]</code>est le noms du programme, c&#8217;est pour cela que l&#8217;on fait un <code>array_shift</code> cela supprime la première valeur su tableau.</p>
+<p>On utilise la variable <code>$argv</code> qui est le tableau de paramètres passer dans la ligne de commande. L&#8217;argument <code>$argv[0]</code>est le nom du programme, c&#8217;est pour cela que l&#8217;on fait un <code>array_shift</code> cela supprime la première valeur du tableau.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -720,7 +776,7 @@
 <h2>Conclusion</h2>
 
 <p>J&#8217;avais besoin pour un futur article (le prochain ?) de cette fonction.
-La philosophie de Linux est de créer plein de petits programmes et que ceux-ci communiquent via une interface très simple et universelle qui est le fichier texte. ainsi aucune dépendance le programme 1 est en bash, le programme 2 est en C, le programme 3 est en PHP. et tout cela ne pose aucun problème.</p>
+La philosophie de Linux est de créer plein de petits programmes et que ceux-ci communiquent via une interface très simple et universelle qui est le fichier texte. Ainsi il n&#8217;y a aucune dépendance le programme 1 est en bash, le programme 2 est en C, le programme 3 est en PHP. Et tout cela ne pose aucun problème.</p>
 ]]></content>
   </entry>
   
@@ -3114,111 +3170,6 @@ pour simplifier je vais utiliser une autre distribution <a href="https://www.alp
 
 <p>Je me suis inspiré de la présentation suivante.
 <a href="http://slides.com/jeremyderusse/docker-dev#/5/2">http://slides.com/jeremyderusse/docker-dev#/5/2</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[10print]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/04/15/10print/"/>
-    <updated>2015-04-15T22:38:15+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/04/15/10print</id>
-    <content type="html"><![CDATA[<p>Je suis tombé un peu par hasard sur la critique du livre <a href="http://10print.org/">10 PRINT</a> , le pdf du livre est gratuit et plutôt joli, il parle de programmation, d&#8217;art et d&#8217;aléatoire.
-Tout le livre est centré sur le programme de basic suivant qui donne l&#8217;image de la couverture.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>10 PRINT CHR$(205.5+RND(1)); : GOTO 10
-</span><span class='line'>/\\\\\\//\\////\\/\/\/\//\///////\\/////\///\\/\\
-</span><span class='line'>\/\///\/\//\\//\\\/\\\/\///\\\\\\/\/\\\\\\/\\\/\\
-</span><span class='line'>\\////\/////\\\\\\\/\\\\\\\\\\\//////\/\/\\\\/\//
-</span><span class='line'>/\//\\\/\\\/\\///\\//\////\\/\/\//\\//\//\\/////\
-</span><span class='line'>///\\/\\\\///\\/\/////\\\/\\\///\//\\\\//\\//\//\
-</span><span class='line'>//\\\\//\\/\//\\//\///\\/////\///\/\//\/\//\//\\/
-</span><span class='line'>//\/\/\///\\\/\//\////\\\//\/\/\\\\\\//\\\\\///\/
-</span><span class='line'>//\\/\\\//\////\//\\\\\/\////\\\///\/\\/\//\\\///
-</span><span class='line'>//\//\/\\\\\//////\///\/\\\/\/\/\\//\\/\\\//\//\\
-</span><span class='line'>//\/\/\\\/\\/\/\////\//\\//\\//\/\///\/\/////\///
-</span><span class='line'>//\\//\\\/////\//\//\\/\\//\/\//\//\\/\//\\\\\//\</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Bon la police d&#8217;écriture ne rend pas vraiment justice au code.</p>
-
-<p>C&#8217;est possible de faire le même motif en PHP et en peu de code ?</p>
-
-<p>Une solution</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$out</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;\\&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="k">for</span><span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">){</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="nv">$out</span><span class="p">[</span><span class="nb">array_rand</span><span class="p">(</span><span class="nv">$out</span><span class="p">)];</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Attention <code>array_rand</code> renvoie la clé et non la valeur d&#8217;où le <code>$out[array_rand($out)]</code></p>
-
-<p>Et puis je me suis dit que array_rand ne sert pas à grand chose.</p>
-
-<p>Donc j&#8217;ai essayé</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$out</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;\\&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="k">for</span><span class="p">(</span><span class="nv">$i</span> <span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">){</span>
-</span><span class='line'> <span class="k">echo</span> <span class="nv">$out</span><span class="p">[</span><span class="nb">rand</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)];</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>pour générer des nombres aléatoire, il vaut mieux utiliser <code>mt_rand</code> qui d&#8217;après la documentation génère des nombres aléatoires plus intéressants (?). Pour des vrai nombres aléatoires pour les mots de passe,  on utilise des librairies voir cette <a href="http://blog.ircmaxell.com/2013/01/password-storage-talk-at-php-benelux-13.html">présentation</a>.</p>
-
-<p>Mais il est possible d&#8217;initialiser plus d&#8217;une constante dans la boucle for.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">for</span><span class="p">(</span><span class="nv">$i</span> <span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nv">$out</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;\\&#39;</span><span class="p">);</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">){</span>
-</span><span class='line'> <span class="k">echo</span> <span class="nv">$out</span><span class="p">[</span><span class="nb">mt_rand</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)];</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On peut aussi faire plus d&#8217;une action dans l&#8217;incrémentation.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">for</span><span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">$out</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;\\&#39;</span><span class="p">);</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">,</span> <span class="k">echo</span> <span class="nv">$out</span><span class="p">[</span><span class="nb">mt_rand</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
-</span><span class='line'><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On minimise les variables et la notation avec les <code>[]</code></p>
-
-<p>Nous obtenons le code suivant</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">for</span><span class="p">(</span><span class="nv">$i</span> <span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nv">$o</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;\\&#39;</span><span class="p">];</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">,</span> <span class="k">echo</span> <span class="nv">$o</span><span class="p">[</span><span class="nb">mt_rand</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)]);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Je n&#8217;avais jamais écris de boucle for sans corps(<code>{..}</code>).</p>
-
-<p>La documentation de PHP est plutôt claire sur le <a href="http://php.net/manual/fr/control-structures.for.php">for</a></p>
 ]]></content>
   </entry>
   

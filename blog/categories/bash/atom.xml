@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Bash | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/bash/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-07-25T18:29:34+02:00</updated>
+  <updated>2015-07-26T16:54:46+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -58,7 +58,7 @@ spark($argv);
 return 0;
 </code></p>
 
-<p>On utilise la variable <code>$argv</code> qui est le tableau de paramètres passer dans la ligne de commande. L&#8217;argument <code>$argv[0]</code>est le noms du programme, c&#8217;est pour cela que l&#8217;on fait un <code>array_shift</code> cela supprime la première valeur su tableau.</p>
+<p>On utilise la variable <code>$argv</code> qui est le tableau de paramètres passer dans la ligne de commande. L&#8217;argument <code>$argv[0]</code>est le nom du programme, c&#8217;est pour cela que l&#8217;on fait un <code>array_shift</code> cela supprime la première valeur du tableau.</p>
 
 <pre><code>php spark.php 0 30 55 80 33 150
 ▁▂▄▅▃█
@@ -164,7 +164,7 @@ $ git shortlog -s
 <h2>Conclusion</h2>
 
 <p>J&#8217;avais besoin pour un futur article (le prochain ?) de cette fonction.
-La philosophie de Linux est de créer plein de petits programmes et que ceux-ci communiquent via une interface très simple et universelle qui est le fichier texte. ainsi aucune dépendance le programme 1 est en bash, le programme 2 est en C, le programme 3 est en PHP. et tout cela ne pose aucun problème.</p>
+La philosophie de Linux est de créer plein de petits programmes et que ceux-ci communiquent via une interface très simple et universelle qui est le fichier texte. Ainsi il n&#8217;y a aucune dépendance le programme 1 est en bash, le programme 2 est en C, le programme 3 est en PHP. Et tout cela ne pose aucun problème.</p>
 ]]></content>
   </entry>
   

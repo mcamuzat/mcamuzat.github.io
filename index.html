@@ -9,7 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Introduction J'avais montré dans le précédent Post, une fonction qui permet de créer des histogrammes. J'ai décidé de la publier sous Packagist. Je n &hellip;">
+  <meta name="description" content="Introduction Après la création de la librairie, la création et la publication du package, je propose d'ajouter l'intégration continue avec Travis. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +77,82 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/07/25/mise-en-place-de-travis/">Mise en Place De Travis</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-07-25T16:37:49+02:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>4:37 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Introduction</h2>
+
+<p>Après la création de la <a href="/blog/2015/07/19/histogramme-et-ligne-de-commande/">librairie</a>, la création et la publication du <a href="blog/2015/07/24/creer-son-depot-sous-packagist/">package</a>, je propose d&#8217;ajouter l&#8217;intégration continue avec Travis. Travis est gratuit pour les projets open-source. (L&#8217;url n&#8217;est d&#8217;ailleurs pas la même c&#8217;est travis-ci.org pour les projets publics, et travis-ci.com pour les projets privés)</p>
+
+<h2>L&#8217;intégration continue.</h2>
+
+<p>Il faut bien entendu s&#8217;inscrire sur Travis. On s&#8217;authentifie grâce à son identifiant github.</p>
+
+<p>Nous allons rajouter le fichier <code>.travis.yml</code> dans notre dépôt.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">language</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">php</span>
+</span><span class='line'><span class="l-Scalar-Plain">install</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">composer install</span>
+</span><span class='line'><span class="l-Scalar-Plain">php</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">5.4</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">5.5</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">5.6</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">hhvm</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">nightly</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Quand je synchronise mes dépôts. Il suffit de cliquer sur le slider pour activé l&#8217;intégration continue.</p>
+
+<p><img class="center" src="/images/travis_choice.png" width="600" height="234" title="intégration continue" alt="Activée l"></p>
+
+<p>On peux lire les logs, d&#8217;ailleurs on se rend compte que travis utilise Docker</p>
+
+<p><img class="center" src="/images/travis_log.png" width="600" height="405" title="Log de travis" alt="Log de travis"></p>
+
+<p>et voici le résultat</p>
+
+<p><img class="center" src="/images/travis_depot.png" width="600" height="320" title="Dashboard du projet" alt="Dashboard du projet"></p>
+
+<p>A chaque commit je lance un build. J&#8217;ai vraiment été très surpris par la simplicité de la mise en œuvre.</p>
+
+<h2>En conclusion</h2>
+
+<p>On peux lancer un build sans passer par travis grâce à docker et <a href="https://github.com/jolicode/JoliCi">JoliCi</a>, Voir ce <a href="blog/2015/04/18/dockers-et-ci/">post</a> à la fin</p>
+
+<p>Dans le prochain article, nous allons parler de CodeSniffer.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -659,7 +735,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>On utilise la variable <code>$argv</code> qui est le tableau de paramètres passer dans la ligne de commande. L&#8217;argument <code>$argv[0]</code>est le noms du programme, c&#8217;est pour cela que l&#8217;on fait un <code>array_shift</code> cela supprime la première valeur su tableau.</p>
+<p>On utilise la variable <code>$argv</code> qui est le tableau de paramètres passer dans la ligne de commande. L&#8217;argument <code>$argv[0]</code>est le nom du programme, c&#8217;est pour cela que l&#8217;on fait un <code>array_shift</code> cela supprime la première valeur du tableau.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -821,7 +897,7 @@
 <h2>Conclusion</h2>
 
 <p>J&#8217;avais besoin pour un futur article (le prochain ?) de cette fonction.
-La philosophie de Linux est de créer plein de petits programmes et que ceux-ci communiquent via une interface très simple et universelle qui est le fichier texte. ainsi aucune dépendance le programme 1 est en bash, le programme 2 est en C, le programme 3 est en PHP. et tout cela ne pose aucun problème.</p>
+La philosophie de Linux est de créer plein de petits programmes et que ceux-ci communiquent via une interface très simple et universelle qui est le fichier texte. Ainsi il n&#8217;y a aucune dépendance le programme 1 est en bash, le programme 2 est en C, le programme 3 est en PHP. Et tout cela ne pose aucun problème.</p>
 </div>
   
   
@@ -1848,182 +1924,6 @@ Un Post un peu bizarre, puisque c&#8217;est un collègue qui m&#8217;a montré l
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/05/25/koan-et-programmation/">Koan Et Programmation</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-05-25T20:53:23+02:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>8:53 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Un koan est dixit wikipedia</p>
-
-<blockquote><blockquote><p>koan est une une brève anecdote ou un court échange entre un maître et son disciple, absurde, énigmatique ou paradoxal, ne sollicitant pas la logique ordinaire.</p></blockquote></blockquote>
-
-<p>Un exemple de Koan</p>
-
-<blockquote><blockquote><p>Quel est le son d’une seule main qui applaudit ?</p></blockquote></blockquote>
-
-<p>Il existe des Koan pour la programmation. Ce sont des mini problèmes pour s&#8217;initier à une technologie.</p>
-
-<h2>RubyKoan</h2>
-
-<p>Le plus connu et le premier est <a href="http://rubykoans.com/">RubyKoan</a>.</p>
-
-<p>Regardons ensemble la première utilisation.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd </span>koans
-</span><span class='line'>/home/marc/.rvm/rubies/ruby-2.2.0/bin/ruby path_to_enlightenment.rb
-</span><span class='line'>AboutAsserts#test_assert_truth has damaged your karma.
-</span><span class='line'>
-</span><span class='line'>The Master says:
-</span><span class='line'>  You have not yet reached enlightenment.
-</span><span class='line'>
-</span><span class='line'>The answers you seek...
-</span><span class='line'>  Failed assertion.
-</span><span class='line'>
-</span><span class='line'>Please meditate on the following code:
-</span><span class='line'>  /home/marc/prog/ruby_koans/koans/about_asserts.rb:10:in <span class="sb">`</span>test_assert_truth<span class="err">&#39;</span>
-</span><span class='line'>
-</span><span class='line'>mountains are merely mountains
-</span><span class='line'>your path thus far <span class="o">[</span>X_________________________________________________<span class="o">]</span> 0/282
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>J&#8217;ouvre le fichier <code>about_asserts.rb</code>.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#!/usr/bin/env ruby</span>
-</span><span class='line'><span class="c1"># -*- ruby -*-</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">require</span> <span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">__FILE__</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/neo&#39;</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">AboutAsserts</span> <span class="o">&lt;</span> <span class="no">Neo</span><span class="o">::</span><span class="no">Koan</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># We shall contemplate truth by testing reality, via asserts.</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">test_assert_truth</span>
-</span><span class='line'>    <span class="n">assert</span> <span class="kp">false</span>                <span class="c1"># This should be true</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Il suffit de changer le <code>false</code> en <code>true</code></p>
-
-<p>Relancons, On avance petit à petit et toutes les notions du ruby sont expliquées.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd </span>koans
-</span><span class='line'>/home/marc/.rvm/rubies/ruby-2.2.0/bin/ruby path_to_enlightenment.rb
-</span><span class='line'>AboutAsserts#test_assert_truth has expanded your awareness.
-</span><span class='line'>AboutAsserts#test_assert_with_message has damaged your karma.
-</span><span class='line'>
-</span><span class='line'>The Master says:
-</span><span class='line'>  You have not yet reached enlightenment.
-</span><span class='line'>  You are progressing. Excellent. <span class="m">1</span> completed.
-</span><span class='line'>
-</span><span class='line'>The answers you seek...
-</span><span class='line'>  This should be <span class="nb">true</span> -- Please fix this
-</span><span class='line'>
-</span><span class='line'>Please meditate on the following code:
-</span><span class='line'>  /home/marc/prog/ruby_koans/koans/about_asserts.rb:16:in <span class="sb">`</span>test_assert_with_message<span class="err">&#39;</span>
-</span><span class='line'>
-</span><span class='line'>learn the rules so you know how to <span class="nb">break </span>them properly
-</span><span class='line'>your path thus far <span class="o">[</span>.X________________________________________________<span class="o">]</span> 1/282
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>C&#8217;est un moyen facile et rapide pour apprendre un langage. Ceci dit j&#8217;ai personnellement fini les rubykoans. Mais 1 mois plus tard, j&#8217;étais incapable d&#8217;aligner une ligne de code en ruby. Faire passer les tests n&#8217;est pas très compliqué quelque soit le langage.</p>
-
-<p>Il y a aussi les Katas de programmation, Mais c&#8217;est plus un cahier des charges avec des tests d&#8217;acceptations (On parle de BDD) alors que les koan sont plutôt dans la notion d&#8217;unitaire.</p>
-
-<h2>Quelques Koan.</h2>
-
-<p>Bien sur les <a href="http://rubykoans.com/">RubyKoans</a> il existe une version <a href="http://koans.herokuapp.com/en/about_asserts">en ligne</a>.</p>
-
-<p>Les <a href="https://github.com/gregmalcolm/python_koans">python-koans</a> sont vraiment chouettes Il y a python 2.7 et python 3. Si les premiers problèmes sont faciles. Les derniers sont plutôt durs.</p>
-
-<p>En javascript on peux citer</p>
-
-<ul>
-<li><a href="https://github.com/mrdavidlaing/javascript-koans">javascript-koans</a></li>
-<li><a href="https://github.com/larrymyers/backbone-koans">backbone-koans</a></li>
-<li><a href="https://github.com/bjpbakker/angular-koans">angular-koans</a></li>
-</ul>
-
-
-<p>J&#8217;ai été un peu déçus de ne pas trouver des Koans en php. Cela reste très basique.
-je citerai:</p>
-
-<ul>
-<li><a href="https://github.com/TorontoPHPSoftwareCraftsmanship/PHPUnit-Koans">PHPUnit-koans</a></li>
-<li>et celui-ci par votre serviteur (mais c&#8217;était il y a bien longtemps) <a href="https://github.com/mcamuzat/PHPUnitRegexKoan">mcamuzat/PHPUnitRegexKoan</a></li>
-</ul>
-
-
-<h2>Conclusion</h2>
-
-<p>Je vous avais parler des <a href="/blog/2015/04/29/awesome-et-liste-de-liens/">awesome-list</a> et bien il existe une liste de <a href="https://github.com/ahmdrefat/awesome-koans">awesome-koans</a>.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -2039,6 +1939,10 @@ je citerai:</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/07/25/mise-en-place-de-travis/">Mise en Place De Travis</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/07/24/creer-son-depot-sous-packagist/">Créer Son Dépôt Sous Packagist</a>
       </li>
     
@@ -2052,10 +1956,6 @@ je citerai:</p>
     
       <li class="post">
         <a href="/blog/2015/07/11/les-quines/">Les Quines</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/07/06/des-tests-plus-rapides-sous-symfony/">Des Tests Behat Plus Rapides Sous Symfony</a>
       </li>
     
   </ul>

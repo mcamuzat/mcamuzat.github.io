@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Travis | Mon blog perso.]]></title>
+  <link href="http://mcamuzat.github.io/blog/categories/travis/atom.xml" rel="self"/>
+  <link href="http://mcamuzat.github.io/"/>
+  <updated>2015-07-26T16:54:46+02:00</updated>
+  <id>http://mcamuzat.github.io/</id>
+  <author>
+    <name><![CDATA[mcamuzat]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Mise en Place De Travis]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/07/25/mise-en-place-de-travis/"/>
+    <updated>2015-07-25T16:37:49+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/07/25/mise-en-place-de-travis</id>
+    <content type="html"><![CDATA[<h2>Introduction</h2>
+
+<p>Après la création de la <a href="/blog/2015/07/19/histogramme-et-ligne-de-commande/">librairie</a>, la création et la publication du <a href="blog/2015/07/24/creer-son-depot-sous-packagist/">package</a>, je propose d&#8217;ajouter l&#8217;intégration continue avec Travis. Travis est gratuit pour les projets open-source. (L&#8217;url n&#8217;est d&#8217;ailleurs pas la même c&#8217;est travis-ci.org pour les projets publics, et travis-ci.com pour les projets privés)</p>
+
+<h2>L&#8217;intégration continue.</h2>
+
+<p>Il faut bien entendu s&#8217;inscrire sur Travis. On s&#8217;authentifie grâce à son identifiant github.</p>
+
+<p>Nous allons rajouter le fichier <code>.travis.yml</code> dans notre dépôt.</p>
+
+<pre><code class="yml">language: php
+install: composer install
+php:
+  - 5.4
+  - 5.5
+  - 5.6
+  - hhvm
+  - nightly
+</code></pre>
+
+<p>Quand je synchronise mes dépôts. Il suffit de cliquer sur le slider pour activé l&#8217;intégration continue.</p>
+
+<p><img class="center" src="/images/travis_choice.png" width="600" height="234" title="&lsquo;Activer l'intégration continue&rsquo; &lsquo;Activée l'intégration continue&rsquo;" ></p>
+
+<p>On peux lire les logs, d&#8217;ailleurs on se rend compte que travis utilise Docker</p>
+
+<p><img class="center" src="/images/travis_log.png" width="600" height="405" title="&lsquo;Log de travis&rsquo; &lsquo;Log de travis&rsquo;" ></p>
+
+<p>et voici le résultat</p>
+
+<p><img class="center" src="/images/travis_depot.png" width="600" height="320" title="&lsquo;Dashboard du projet&rsquo; &lsquo;Dashboard du projet&rsquo;" ></p>
+
+<p>A chaque commit je lance un build. J&#8217;ai vraiment été très surpris par la simplicité de la mise en œuvre.</p>
+
+<h2>En conclusion</h2>
+
+<p>On peux lancer un build sans passer par travis grâce à docker et <a href="https://github.com/jolicode/JoliCi">JoliCi</a>, Voir ce <a href="blog/2015/04/18/dockers-et-ci/">post</a> à la fin</p>
+
+<p>Dans le prochain article, nous allons parler de CodeSniffer.</p>
+]]></content>
+  </entry>
+  
+</feed>
