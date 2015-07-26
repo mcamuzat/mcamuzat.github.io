@@ -48,7 +48,7 @@ spark($argv);
 return 0;
 ```
 
-On utilise la variable `$argv` qui est le tableau de paramètres passer dans la ligne de commande. L'argument `$argv[0]`est le noms du programme, c'est pour cela que l'on fait un `array_shift` cela supprime la première valeur su tableau.
+On utilise la variable `$argv` qui est le tableau de paramètres passer dans la ligne de commande. L'argument `$argv[0]`est le nom du programme, c'est pour cela que l'on fait un `array_shift` cela supprime la première valeur du tableau.
 
 ```
 php spark.php 0 30 55 80 33 150
@@ -156,4 +156,4 @@ On obtient
 ## Conclusion
 
 J'avais besoin pour un futur article (le prochain ?) de cette fonction.
-La philosophie de Linux est de créer plein de petits programmes et que ceux-ci communiquent via une interface très simple et universelle qui est le fichier texte. ainsi aucune dépendance le programme 1 est en bash, le programme 2 est en C, le programme 3 est en PHP. et tout cela ne pose aucun problème.
+La philosophie de Linux est de créer plein de petits programmes et que ceux-ci communiquent via une interface très simple et universelle qui est le fichier texte. Ainsi il n'y a aucune dépendance le programme 1 est en bash, le programme 2 est en C, le programme 3 est en PHP. Et tout cela ne pose aucun problème.
