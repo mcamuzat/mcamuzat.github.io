@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Symfony | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/symfony/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-07-26T17:08:34+02:00</updated>
+  <updated>2015-08-01T22:54:20+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,153 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[PHP Code Sniffer Mise en Place]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/08/01/php-code-sniffer-mise-en-place/"/>
+    <updated>2015-08-01T18:33:12+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/08/01/php-code-sniffer-mise-en-place</id>
+    <content type="html"><![CDATA[<h2>Qualité de code et php</h2>
+
+<p>Dans ce post nous allons voir les logiciels qui permettent de respecter les standards de code en PHP.</p>
+
+<p>En pratique il n&#8217;y en a que 2.</p>
+
+<ul>
+<li><a href="https://github.com/squizlabs/PHP_CodeSniffer">CodeSniffer</a></li>
+<li><a href="http://cs.sensiolabs.org/">PHP Coding Standards Fixer</a></li>
+</ul>
+
+
+<h2>CodeSniffer</h2>
+
+<p>Il y a différentes normes de codage :  les plus connus sont la <a href="http://www.php-fig.org/psr/psr-1/">psr-1</a> et la <a href="http://www.php-fig.org/psr/psr-2/">psr-2</a>. La psr-2 hérite de la psr-1. Mais certain Framework ont leur propres méthodes d&#8217;indentations. On peux personnaliser d&#8217;ailleurs les différentes règles. Les gouts et les couleurs de chacun sur le code est subjectif. L&#8217;intérêt de suivre les recommandations est que cela dépassionne le débat. Cela passe CodeSniffer ou cela ne passe pas. Pour participer au projet Open-source, il faut suivre la norme.</p>
+
+<p>La norme est pointilleuse sur les commentaires aussi. Si pas de commentaire pas de validation. On est quasiment forcer d&#8217;écrire la documentation. Cela a parfois un effet pervers ou le programmeur remplit sans trop réfléchir pour faire passer code sniffer.</p>
+
+<p>Très souvent on ajoute un <em>hook</em> sur les commits de git. Lorsque on commite, git déclenche le logiciel, si un des fichiers n&#8217;est pas valide CodeSniffer on refuse de commiter. C&#8217;est assez peu contraignant quand la codebase est déjà indentée. (quoique parfois cela tombe vraiment au mauvais moment).En général on vérifie seulement sur les fichiers modifiés. Re-indenter tout le projet est souvent trop compliqué, trop long et un peu suicidaire si vous avez des rebases et des merges.</p>
+
+<h2>Installation de CodeSniffer</h2>
+
+<p>Deux possibilités</p>
+
+<h3>Dans le projet</h3>
+
+<p>via une dépendance au projet en l&#8217;ajoutant dans le <code>composer.json</code></p>
+
+<pre><code class="json">{
+    "require-dev": {
+        "squizlabs/php_codesniffer": "2.*"
+    }
+}
+</code></pre>
+
+<p>Alors dans le projet
+<code>sh
+./vendor/bin/phpcs -h
+</code></p>
+
+<p>Personnellement je définie toujours un répertoire <code>bin</code> par défaut</p>
+
+<pre><code class="json">    "config": {
+        "bin-dir": "bin"
+    },
+</code></pre>
+
+<p>Ainsi la commande précédente devient</p>
+
+<pre><code class="sh">bin/phpcs 
+</code></pre>
+
+<h3>Installation globale</h3>
+
+<p>Soit l&#8217;installer de manière globale</p>
+
+<pre><code>composer global require "squizlabs/php_codesniffer=*"
+</code></pre>
+
+<p>Attention si vous utilisez Composer de manière globale ne pas oublier de rajouter dans votre <code>$PATH</code>
+<code>
+export PATH=~/.composer/vendor/bin:$PATH
+</code></p>
+
+<h3>Ajoutez les reglès symfony</h3>
+
+<p>par défaut phpcs vient avec les règles suivantes</p>
+
+<ul>
+<li><a href="http://www.php-fig.org/psr/psr-1/">psr-1</a></li>
+<li><a href="http://www.php-fig.org/psr/psr-2/">psr-2</a></li>
+<li><a href="https://github.com/squizlabs/PHP_CodeSniffer/tree/master/CodeSniffer/Standards/Squiz">Squiz</a></li>
+<li><a href="http://framework.zend.com/manual/1.12/fr/coding-standard.html">Zend</a></li>
+<li><a href="https://pear.php.net/manual/en/standards.php">Pear</a></li>
+<li><a href="https://github.com/squizlabs/PHP_CodeSniffer/tree/master/CodeSniffer/Standards/PHPCS">Phpcs</a></li>
+</ul>
+
+
+<p>Il manque Symfony..</p>
+
+<p>Voici une méthode simple (mais pas la méthode officielle) si vous voulez l&#8217;installer de manière globale. Je rajoute dans le répertoire <code>Standards</code> un répertoire <code>Symfony2</code></p>
+
+<pre><code>$ composer global require "squizlabs/php_codesniffer=*"
+$ cd ~/.composer/vendor/squizlabs/php_codesniffer/CodeSniffer/Standards
+$ git clone git@github.com:escapestudios/Symfony2-coding-standard.git Symfony2
+</code></pre>
+
+<p>On verifie que les règles symfony2 sont bien installées
+<code>
+phpcs -i
+</code></p>
+
+<p>Symfony2 en défaut. Ainsi pas besoin de préciser <code>--standard=Symfony2</code></p>
+
+<pre><code>phpcs --config-set default_standard Symfony2
+</code></pre>
+
+<h3>Php-cbf</h3>
+
+<p>Code sniffer est capable de corriger certaines fautes tout seul. Encore une fois essayer de faire au fur et à mesure. Le commit d&#8217;indentation avec 500 fichiers modifiés est un calvaire à gérer si vous faite des revues de codes ou pire un rebase.</p>
+
+<p>La syntaxe est la même que phpcs.
+<code>
+php-cbf src/
+</code></p>
+
+<h2>Php-cs-fixer</h2>
+
+<p>Écris par <a href="http://sensiolabs.com/">Sensio</a> les créateurs de <a href="http://symfony.com/">Symfony</a>. Ce logiciel fixe automatiquement l&#8217;indentation et différentes règles. L&#8217;avantage est qu&#8217;il est simple à installer pas besoin de cloner d&#8217;autre dépôt.</p>
+
+<h2>Avoir tout les outils via docker.</h2>
+
+<p>J&#8217;ai déjà présenté les différentes méthodes avec <a href="https://github.com/jolicode/docker-images/tree/master/languages/php/phaudit">phaudit</a> ans cette article <a href="/blog/2015/04/18/dockers-et-ci/">ici</a></p>
+
+<h2>Méthode par rapport à git</h2>
+
+<p>Pour lancer une vérification avant chaque commit
+Il suffit de créer un fichier <code>pre-commit.sh</code> dans le répertoire <code>.git/hook</code>. Il y a plein d&#8217;exemples sur le net. Je n&#8217;ai pas d&#8217;exemple à partager. Le code ne m&#8217;appartient plus..</p>
+
+<h2>Installation sous VIM.</h2>
+
+<p>C&#8217;est très simple Il faut installer le plugin <a href="https://github.com/scrooloose/syntastic">syntastic</a>. C&#8217;est un plugin qui gère un peu près tout les formats possibles.</p>
+
+<p>Code-sniffer doit être installé de manière <strong>globale</strong></p>
+
+<p>Il suffit de rajouter cette ligne dans votre <code>.vimrc</code></p>
+
+<pre><code>let g:syntastic_php_checkers=['php', 'phpcs']
+</code></pre>
+
+<p>A chaque fois que l&#8217;on enregistre le fichier, le plugin lance automatiquement d&#8217;abord <code>php</code> pour vérifier que le fichier est valide, puis <code>phpcs</code>.</p>
+
+<p>Le résultat est très intuitif on a une flèche <code>&gt;</code> à chaque ligne qui pose problème. Il suffit de passer le curseur pour connaitre l&#8217;erreur. Enfin un screenshot sera plus clair.</p>
+
+<p><img class="center" src="/images/syntastic.png" width="600" height="212" title="&lsquo;Screenshot de syntastic&rsquo; &lsquo;syntastic&rsquo;" ></p>
+
+<h2>Conclusion</h2>
+
+<p>Respecter la norme psr-2 ou autre n&#8217;est pas très compliqué, avec l&#8217;habitude c&#8217;est même plutôt facile. Il est plus facile de d&#8217;intervenir sur un code propre. Sur la mise en place, on a vu qu&#8217;il y a deux possibilités soit des warning dans le code soit une correction automatique. Je ne suis pas <em>fan</em> pas la correction automatique. Je ne veux pas que le logiciel prennent des décisions pour moi.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Des Tests Behat Plus Rapides Sous Symfony]]></title>
