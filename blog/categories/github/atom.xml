@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Github | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/github/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-08-01T22:54:20+02:00</updated>
+  <updated>2015-08-04T22:00:40+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,417 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Décorer PHPUnit Avec Les Listeners]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/08/04/decorer-phpunit-avec-les-listeners/"/>
+    <updated>2015-08-04T19:44:52+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/08/04/decorer-phpunit-avec-les-listeners</id>
+    <content type="html"><![CDATA[<h2>Des test unitaires plus jolis</h2>
+
+<p>Comme tout les programmeurs vous faites des tests unitaires. En php, On utilise souvent PHPUnit.
+quand je lance mes tests je vois cela.</p>
+
+<p><img class="center" src="/images/phpunit_screenshot.png" width="499" height="168" title="&lsquo;Screenshot de phpunit&rsquo; &lsquo;Mon terminal n'est pas triste..&rsquo;" ></p>
+
+<p>C&#8217;est un peu triste. Et encore j&#8217;ai activé la couleur !.</p>
+
+<p>il existe des variantes avec <code>--testdox</code></p>
+
+<pre><code class="sh">$ bin/phpunit --testdox
+PHPUnit 4.8-ge1cc585 by Sebastian Bergmann and contributors.
+
+Spark\Spark
+ [x] It creates a string from data
+ [x] It dont care if input is string
+ [x] It works with float number
+ [x] It s not divide by 0
+</code></pre>
+
+<p>C&#8217;est un peu mieux.</p>
+
+<p>Il existe aussi <code>--debug</code>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>PHPUnit 4.8-ge1cc585 by Sebastian Bergmann and contributors.&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Starting <span class="nb">test</span> <span class="p">&amp;</span>lsquo<span class="p">;</span>Spark<span class="se">\S</span>parkTest::testItCreatesAStringFromData<span class="p">&amp;</span>rsquo<span class="p">;</span>.
+</span><span class='line'>.
+</span><span class='line'>Starting <span class="nb">test</span> <span class="p">&amp;</span>lsquo<span class="p">;</span>Spark<span class="se">\S</span>parkTest::testItDontCareIfInputIsString<span class="p">&amp;</span>rsquo<span class="p">;</span>.
+</span><span class='line'>.
+</span><span class='line'>Starting <span class="nb">test</span> <span class="p">&amp;</span>lsquo<span class="p">;</span>Spark<span class="se">\S</span>parkTest::testItWorksWithFloatNumber<span class="p">&amp;</span>rsquo<span class="p">;</span>.
+</span><span class='line'>.
+</span><span class='line'>Starting <span class="nb">test</span> <span class="p">&amp;</span>lsquo<span class="p">;</span>Spark<span class="se">\S</span>parkTest::testItSNotDivideBy0<span class="p">&amp;</span>rsquo<span class="p">;</span>.
+</span><span class='line'>.&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Time: <span class="m">69</span> ms, Memory: 4.50Mb&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;OK <span class="o">(</span><span class="m">4</span> tests, <span class="m">4</span> assertions<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Mais on a un peu fait le tour</p>
+
+<h2>Les Listeners de PHPUnit</h2>
+
+<p>On peux surcharger l&#8217;affichage de PHPunit et cela grâce au listener.</p>
+
+<h3> Comment enregistrer un listener</h3>
+
+<p>Il suffit d&#8217;éditer <code>phpunit.xml</code> et de rajouter les lignes suivantes</p>
+
+<pre><code class="xml">  &lt;listeners&gt;
+    &lt;listener class="SparkListener" 
+        file="../src/un-projet-pro/FooBundle/Tests/Listener/SparkListener.php"&gt;
+    &lt;/listener&gt;
+  &lt;/listeners&gt;
+</code></pre>
+
+<h3>Comment implémenter un listener.</h3>
+
+<p>Le plus propre est d&#8217;implémenter tout les méthodes de l&#8217;interface</p>
+
+<pre><code class="php">&lt;?php
+
+class Monlistener implements PHPUnit_Framework_TestListener {
+    public function addError(PHPUnit_Framework_Test $test, Exception $e, $time) {}
+    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time) {}
+    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time) {}
+    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time) {}
+    public function startTest(PHPUnit_Framework_Test $test) {}
+    public function endTest(PHPUnit_Framework_Test $test, $time) {}
+    public function startTestSuite(PHPUnit_Framework_TestSuite $suite) {}
+    public function endTestSuite(PHPUnit_Framework_TestSuite $suite) {}
+
+}
+</code></pre>
+
+<p>Mais pour aujourd&#8217;hui, Je vais faire plus simple je vais hériter de la classe <code>PHPUnit_TextUI_ResultPrinter</code> si je n&#8217;ai pas envie de réécrire toutes les méthodes.</p>
+
+<h2>Plein d&#8217;utilisation de Listener</h2>
+
+<h3>Des statistiques sur les tests</h3>
+
+<p>Quel est le test qui prend le plus de temps ? Facile avec le Listener suivant.</p>
+
+<pre><code>&lt;?php
+class MaxListener extends PHPUnit_TextUI_ResultPrinter
+{
+    public $maxTime = 0;
+
+    private $suites = 0;
+    private $endedSuites = 0;
+    public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
+    {
+
+        $this-&gt;suites++;
+    }
+    public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
+    {
+        $this-&gt;endedSuites++;
+        if ($this-&gt;suites &gt; $this-&gt;endedSuites) {
+            return;
+        }
+        echo PHP_EOL;
+        echo "le test le plus long prend $this-&gt;maxTime seconde(s)";
+
+    }
+
+    public function endTest(PHPUnit_Framework_Test $test, $time)
+    {
+        $this-&gt;maxTime = max($time, $this-&gt;maxTime);
+    }
+}
+</code></pre>
+
+<p>Avec ma librairie que j&#8217;ai développé dans les <a href="/blog/2015/07/19/histogramme-et-ligne-de-commande/">posts</a> précédents.
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">use</span> <span class="nx">Spark\Spark</span><span class="p">;</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">SparkListener</span> <span class="k">extends</span> <span class="nx">PHPUnit_TextUI_ResultPrinter</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$suites</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$endedSuites</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">public</span> <span class="nv">$testTimes</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">public</span> <span class="k">function</span> <span class="nf">startTestSuite</span><span class="p">(</span><span class="nx">PHPUnit_Framework_TestSuite</span> <span class="nv">$suite</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">suites</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">endTestSuite</span><span class="p">(</span><span class="nx">PHPUnit_Framework_TestSuite</span> <span class="nv">$suite</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">endedSuites</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">suites</span> <span class="o">&amp;</span><span class="nx">gt</span><span class="p">;</span> <span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">endedSuites</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="nx">Spark</span><span class="o">::</span><span class="na">spark</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">testTimes</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">endTest</span><span class="p">(</span><span class="nx">PHPUnit_Framework_Test</span> <span class="nv">$test</span><span class="p">,</span> <span class="nv">$time</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">testTimes</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$time</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span>
+</span><span class='line'><span class="nx">Voici</span> <span class="nx">le</span> <span class="nx">résultat</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">bin</span><span class="o">/</span><span class="nx">phpunit</span> <span class="o">-</span><span class="nx">c</span> <span class="nx">build</span><span class="o">/</span><span class="nx">phpunit</span><span class="o">.</span><span class="nx">xml</span>
+</span><span class='line'><span class="nx">PHPUnit</span> <span class="mf">4.5</span><span class="o">.</span><span class="mi">1</span> <span class="nx">by</span> <span class="nx">Sebastian</span> <span class="nx">Bergmann</span> <span class="k">and</span> <span class="nx">contributors</span><span class="o">.&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">Configuration</span> <span class="nx">read</span> <span class="nx">from</span> <span class="o">/</span><span class="nx">home</span><span class="o">/</span><span class="nx">marc</span><span class="o">/</span><span class="nx">prog</span><span class="o">/</span><span class="nx">Un</span><span class="o">-</span><span class="nx">projet</span><span class="o">-</span><span class="nx">pro</span><span class="o">/</span><span class="nx">build</span><span class="o">/</span><span class="nx">phpunit</span><span class="o">.</span><span class="nx">xml</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">..</span>
+</span><span class='line'><span class="nx">█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▂▁▁▁▁▁▁▁▁▁▁▁▂▁▁▁▁▁▁▁▂▁▁▁▁▁▁▁▁</span>
+</span><span class='line'><span class="nx">le</span> <span class="nx">test</span> <span class="nx">le</span> <span class="nx">plus</span> <span class="nx">long</span> <span class="nx">prend</span> <span class="mf">0.2183518409729</span> <span class="nx">seconde</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">Time</span><span class="o">:</span> <span class="mi">971</span> <span class="nx">ms</span><span class="p">,</span> <span class="nx">Memory</span><span class="o">:</span> <span class="mf">17.25</span><span class="nx">Mb</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">OK</span> <span class="p">(</span><span class="mi">53</span> <span class="nx">tests</span><span class="p">,</span> <span class="mi">98</span> <span class="nx">assertions</span><span class="p">)</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span>
+</span><span class='line'><span class="c1">### Libérer de la mémoire</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">On</span> <span class="nx">peux</span> <span class="nx">libérer</span> <span class="nx">de</span> <span class="nx">la</span> <span class="nx">mémoire</span> <span class="nx">en</span> <span class="nx">mettant</span> <span class="nx">à</span> <span class="sb">`null`</span> <span class="nx">les</span> <span class="nx">mocks</span> <span class="nx">à</span> <span class="nx">la</span> <span class="nx">fin</span> <span class="nx">du</span> <span class="nx">test</span><span class="o">.</span> <span class="p">(</span><span class="nx">exemple</span> <span class="nx">trouvé</span> <span class="nx">sur</span> <span class="nx">github</span> <span class="p">[</span><span class="nx">mybuilder</span><span class="o">/</span><span class="nx">phpunit</span><span class="o">-</span><span class="nx">accelerator</span><span class="p">](</span><span class="nx">https</span><span class="o">://</span><span class="nx">github</span><span class="o">.</span><span class="nx">com</span><span class="o">/</span><span class="nx">mybuilder</span><span class="o">/</span><span class="nx">phpunit</span><span class="o">-</span><span class="nx">accelerator</span><span class="p">))</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">FreeListener</span> <span class="k">implements</span> <span class="nx">PHPUnit_Framework_TestListener</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// ..</span>
+</span><span class='line'>    <span class="c1">// les autres methodes vides.</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">endTest</span><span class="p">(</span><span class="nx">PHPUnit_Framework_Test</span> <span class="nv">$test</span><span class="p">,</span> <span class="nv">$time</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$refl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReflectionObject</span><span class="p">(</span><span class="nv">$test</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$refl</span><span class="o">-&gt;</span><span class="na">getProperties</span><span class="p">()</span> <span class="k">as</span> <span class="nv">$prop</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$prop</span><span class="o">-&gt;</span><span class="na">isStatic</span><span class="p">()</span> <span class="o">&amp;</span><span class="nx">amp</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">amp</span><span class="p">;</span> <span class="mi">0</span> <span class="o">!==</span> <span class="nb">strpos</span><span class="p">(</span><span class="nv">$prop</span><span class="o">-&gt;</span><span class="na">getDeclaringClass</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getName</span><span class="p">(),</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">PHPUnit_</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;))</span> <span class="p">{</span>
+</span><span class='line'>                <span class="nv">$prop</span><span class="o">-&gt;</span><span class="na">setAccessible</span><span class="p">(</span><span class="k">true</span><span class="p">);</span>
+</span><span class='line'>                <span class="nv">$prop</span><span class="o">-&gt;</span><span class="na">setValue</span><span class="p">(</span><span class="nv">$this</span><span class="p">,</span> <span class="k">null</span><span class="p">);</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>On pourrait faire cela sur un <code>tearDown()</code></p>
+
+<h3>Jouer des fixtures</h3>
+
+<p>Normalement il n&#8217;y a pas de fixture dans PHPUnit. Mais en pratique pour tester certaines méthodes dans les repository, ben il n&#8217;y pas beaucoup le choix.  On peux refaire la base, dropper le schéma, un truncate à chaque test ou <code>memory::sqlite</code>. Mais sur certaines bases de données, c&#8217;est un peu compliqué. Une solution est de vider la base entre chaque suites de tests. Une proposition</p>
+
+<pre><code class="php">class DBListener implements PHPUnit_Framework_TestListener
+{
+    // .. 
+    // les autres methodes vides.
+
+    public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
+    {
+        $this-&gt;truncateDb();
+    }
+
+    public function truncateDb() {
+        // vide la table..
+    }
+    public function fixtureDb() {
+        // joue les fixtures
+    }
+    public function startTest(PHPUnit_Framework_Test $test)
+    {
+        // si le nom du test contient truncate
+        if (strpos($test-&gt;getName(), 'truncate')) {
+            $this-&gt;truncateDB();
+        }
+        //
+        if (strpos($test-&gt;getName(), 'fixture')) {
+            $this-&gt;truncateDB();
+            $this-&gt;fixtureDB();
+        }
+    }
+}
+</code></pre>
+
+<p>Si le nom du test contient <code>truncate</code> et <code>fixture</code> alors on force le truncate et/ou fixture. Une autre possibilité est d&#8217;implémenter la méthode <code>setUpBeforeClass</code> dans le test. Cette méthode est jouée juste avant l&#8217;instantiation de la classe. C&#8217;est du statique, donc pas forcement la joie..</p>
+
+<pre><code>    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+        self::TruncateDB()
+
+    }
+</code></pre>
+
+<h3>Relancer les tests qui ne passent pas.</h3>
+
+<p>Pour le fun..</p>
+
+<pre><code>&lt;?php
+class FailureListener extends PHPUnit_TextUI_ResultPrinter
+{
+    private $suites = 0;
+    private $endedSuites = 0;
+    public $failTest = array();
+
+    public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
+    {
+        $this-&gt;suites++;
+    }
+
+    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time) {
+       $this-&gt;failTest[] = $test-&gt;getName();
+    }
+    public function startTest(PHPUnit_Framework_Test $test) {}
+
+    public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
+    {
+        $this-&gt;endedSuites++;
+        if ($this-&gt;suites &gt; $this-&gt;endedSuites) {
+            return;
+        }
+        $cli = implode('|', $this-&gt;failTest);
+        echo PHP_EOL . "Pour relancer seulement les tests qui ne passent pas ajoutez" . PHP_EOL;
+        echo "--filter '($cli)'";
+    }
+
+}
+</code></pre>
+
+<p>Le script en action.
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>bin/phpunit -c build/phpunit.xml
+</span><span class='line'>PHPUnit 4.5.1 by Sebastian Bergmann and contributors.&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Configuration <span class="nb">read </span>from /home/marc/prog/un-projet-pro/build/phpunit.xml&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;<span class="p">&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;</span>..F.F<span class="p">&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;</span>..
+</span><span class='line'>Pour relancer seulement les tests qui ne passent pas ajoutez
+</span><span class='line'><span class="p">&amp;</span>ndash<span class="p">;</span>filter <span class="p">&amp;</span>lsquo<span class="p">;</span><span class="o">(</span>testObjectNeedUpdate<span class="p">|</span>testUpdateObject<span class="o">)</span><span class="p">&amp;</span>rsquo<span class="p">;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Time: <span class="m">958</span> ms, Memory: 17.25Mb&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;
+</span><span class='line'>La seconde fois avec la commande qui va bien.
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;bin/phpunit -c build/phpunit.xml <span class="p">&amp;</span>ndash<span class="p">;</span>filter <span class="p">&amp;</span>lsquo<span class="p">;</span><span class="o">(</span>testObjectNeedUpdate<span class="p">|</span>testUpdateObject<span class="o">)</span><span class="p">&amp;</span>rsquo<span class="p">;</span>                     &lt;br/&gt;
+</span><span class='line'>PHPUnit 4.5.1 by Sebastian Bergmann and contributors.&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Configuration <span class="nb">read </span>from /home/marc/prog/un-projet-pro/build/phpunit.xml&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;FF&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Time: <span class="m">116</span> ms, Memory: 9.25Mb
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Conclusion</h2>
+
+<p>Il y a encore pas mal d&#8217;utilisation je pense au <a href="https://github.com/whatthejeff/nyancat-phpunit-resultprinter">nyan-cat</a> ! Ou l&#8217;utilisation avec des notifications sur le bureau par exemple <a href="https://github.com/llaville/phpunit-LoggerTestListener">ici</a>.</p>
+
+<p>La librairie <a href="https://packagist.org/packages/mcamuzat/spark">mcamuzat/spark</a> a été initialement fait pour ce post. J&#8217;ai passé finalement plus de temps sur la création de la librairie.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Mise en Place De Travis]]></title>
@@ -159,20 +570,21 @@ mkdir -p $GOPATH/src/github.com/&lt;votreusername&gt;/hello
 go install
 </code></p></li>
 <li><p>Nous pouvons vérifier que dans le répertoire <code>$HOME/go</code> il y a un dossier <code>bin/</code>
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$GOPATH/bin/hello
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$GOPATH</span>/bin/hello
 </span><span class='line'>hello world&lt;/p&gt;
 </span><span class='line'>
-</span><span class='line'>&lt;h1&gt;de manière plus simple puisque nous avons ajouter dans le path $GOPATH/bin&lt;/h1&gt;
+</span><span class='line'>&lt;h1&gt;de manière plus simple puisque nous avons ajouter dans le path <span class="nv">$GOPATH</span>/bin&lt;/h1&gt;
 </span><span class='line'>
 </span><span class='line'>&lt;p&gt;hello
-</span><span class='line'>hello world</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>hello world
+</span></code></pre></td></tr></table></div></figure>
 voici la structure finale</p></li>
 </ul>
 
