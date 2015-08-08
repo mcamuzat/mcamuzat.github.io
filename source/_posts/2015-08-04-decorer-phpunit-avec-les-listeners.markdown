@@ -11,7 +11,7 @@ categories: ["PHPUnit", "GitHub", "PHP", "QA"]
 Comme tout les programmeurs vous faites des tests unitaires. En php, On utilise souvent PHPUnit. 
 quand je lance mes tests je vois cela.
 
-{% img center /images/phpunit_screenshot.png 499 168 'Screenshot de phpunit' 'Mon terminal n'est pas triste..' %}
+{% img center /images/phpunit_screenshot.png 499 168 'Screenshot de phpunit' 'Mon terminal n\'est pas triste..' %}
 
 
 C'est un peu triste. Et encore j'ai activé la couleur !.
