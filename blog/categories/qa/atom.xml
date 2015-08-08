@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Qa | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/qa/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-08-04T22:00:40+02:00</updated>
+  <updated>2015-08-08T21:07:30+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -23,7 +23,7 @@
 <p>Comme tout les programmeurs vous faites des tests unitaires. En php, On utilise souvent PHPUnit.
 quand je lance mes tests je vois cela.</p>
 
-<p><img class="center" src="/images/phpunit_screenshot.png" width="499" height="168" title="&lsquo;Screenshot de phpunit&rsquo; &lsquo;Mon terminal n'est pas triste..&rsquo;" ></p>
+<p><img class="center" src="/images/phpunit_screenshot.png" width="499" height="168" title="&lsquo;Screenshot de phpunit&rsquo; &lsquo;Mon terminal n\'est pas triste..&rsquo;" ></p>
 
 <p>C&#8217;est un peu triste. Et encore j&#8217;ai activé la couleur !.</p>
 

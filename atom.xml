@@ -4,7 +4,7 @@
   <title><![CDATA[Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-08-04T22:00:40+02:00</updated>
+  <updated>2015-08-08T21:07:30+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,138 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Gmail Vim Mêmes Raccourcis]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/08/08/gmail-vim-memes-raccourcis/"/>
+    <updated>2015-08-08T18:52:17+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/08/08/gmail-vim-memes-raccourcis</id>
+    <content type="html"><![CDATA[<h2>Les raccourcis de Gmail ressemblent à vi.</h2>
+
+<p><em>Résumé : appuyer sur <code>?</code> dans gmail pour avoir le tableau complet, les raccourcis claviers suivant ne sont pas activés par défaut</em></p>
+
+<p>Le titre est un peu exagéré.. Je vais essayer de montrer que la <em>philosophie</em> est un peu la même.</p>
+
+<p>Mais sur Vi On utilise les flèches de direction <code>h</code>, <code>j</code>, <code>k</code>, <code>l</code> pour <code>gauche</code>, <code>bas</code>, <code>haut</code>, <code>droite</code> pour se déplacer (enfin surtout <code>j</code> et <code>k</code>). Et bien les touches <code>j</code>(bas)  et <code>k</code>(haut) marchent pareilles sous Gmail.</p>
+
+<p>Pour chercher sous Vi on utilise la touche <code>/</code> , essayez sous Gmail et vous aller directement dans la barre de recherche.</p>
+
+<h2>Une lettre = une idée..</h2>
+
+<p>Comme dans vi ou <code>w</code> signifie <strong>w</strong>ord, <code>d</code> signifie <strong>d</strong>elete, <code>u</code> <strong>u</strong>ndo on retrouve la même idée.</p>
+
+<p>Par exemple <code>c</code> est l&#8217;abréviation de <strong>c</strong>omposer.</p>
+
+<ul>
+<li><code>c</code> pour <strong>c</strong>ompose Nouveau message</li>
+<li><code>n</code> signifie <strong>n</strong>ext Message suivant</li>
+<li><code>p</code> signifie <strong>p</strong>revious Message précédent.</li>
+<li><code>r</code> pour reply <strong>r</strong>eply Répondre</li>
+<li><code>a</code> pour tous <strong>a</strong>ll. Repondre à tous</li>
+<li><code>f</code> pour transférer <strong>f</strong>orward.</li>
+<li><code>o</code> pour ouvrir le conversation.</li>
+</ul>
+
+
+<h2>La lettre en majuscule = la version minuscule en plus forte</h2>
+
+<p>Dans vi <code>i</code> insere du texte, <code>I</code> insere au début de la ligne, <code>a</code> ajoute du texte , <code>A</code> ajoute le texte à la fin de la ligne.</p>
+
+<ul>
+<li><code>C</code> compose un nouveau message dans une nouvelle fenêtre</li>
+<li><code>R</code> Répondre dans une nouvelle fenêtre</li>
+<li><code>A</code> Répondre à tous dans une nouvelle fenêtre.</li>
+<li><code>F</code> Transférer dans une nouvelle fenêtre.</li>
+</ul>
+
+
+<h2>Une lettre = un pictogramme.</h2>
+
+<p>Sous Vi certaine lettre sont des pictogrammes. Par exemple la touche <code>'</code> représente le marque page.</p>
+
+<p>Je n&#8217;ai encore jamais parlé des marques pages sous vi pour faire simple</p>
+
+<ul>
+<li>Ouvrez un fichier texte très long</li>
+<li>Allez vers le mileu du fichier  appuyer sur <code>m</code> puis <code>a</code></li>
+<li>Re-deplacez vous et appuyer sur <code>m</code> puis <code>b</code>.</li>
+<li>tapez <code>'a</code> vous ramene ou point a et <code>'b</code> au point b, <code>d'a</code> (effacer jusqu&#8217;au marque-page a)</li>
+</ul>
+
+
+<p><img class="center" src="http://mcamuzat.github.io/images/quote.png" width="431" height="174" title="Les marques-pages" alt="la guillement est le pictogramme du marque-page"></p>
+
+<p>La lettre <code>=</code> est le pictogramme de deux lignes indentées. Duand j&#8217;appuie sur <code>=</code> j&#8217;indente le texte.</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/indentation.png" width="600" height="276" title="Indentation" alt="Pour indenter on utilise la touche = "></p>
+
+<p>La lettre <code>z</code> correspond au repli de texte</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/repli.png" width="600" height="230" title="z = repli de texte ;" alt="Pour plier déplier le texte on utilise la touche z"></p>
+
+<ul>
+<li><code>z</code> + <code>c</code> pour replier (c = close)</li>
+<li><code>z</code> + <code>o</code> pour deplier (o = open)</li>
+<li><code>z</code> + <code>a</code> pour alterner.</li>
+</ul>
+
+
+<p><img class="center" src="http://mcamuzat.github.io/images/plier.png" width="595" height="214" title="z = repli de texte" alt="Pour plier déplier le texte on utilise la touche z"></p>
+
+<p>Sous gmail, c&#8217;est encore la même idée.  la touche <code>x</code> correspond à une checkbox. appuyer sur x pour sélectionner la conversation. le <code>#</code> correspond à supprimer, le <code>!</code> à SPAM!!!.</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/checkanddelete.png" width="543" height="193" title="'le x est le pictogramme d'un checkbox' 'Mon terminal`" ></p>
+
+<h2>Le cas de <code>*</code></h2>
+
+<p>Pour tout selectionner tout les fichiers textes on utilise la commande <code>*.txt</code></p>
+
+<ul>
+<li><code>*</code> puis <code>a</code> : Sélectionner toutes les conversations</li>
+<li><code>*</code> puis <code>n</code> : Désélectionner toutes les conversations</li>
+<li><code>*</code> puis <code>r</code> : Sélectionner les conversations lues</li>
+<li><code>*</code> puis <code>u</code> : Sélectionner les conversations non lues</li>
+<li><code>*</code> puis <code>s</code> : Sélectionner les conversations dont le suivi est activé</li>
+<li><code>*</code> puis <code>t</code> : Sélectionner les conversations dont le suivi n’est pas activé</li>
+</ul>
+
+
+<p>puis après:</p>
+
+<ul>
+<li><code>e</code> : Archiver</li>
+<li><code>m</code> : Ignorer la conversation</li>
+<li><code>!</code> : Signaler comme spam</li>
+<li><code>#</code> : Supprimer</li>
+<li><code>z</code> : Annuler la dernière action</li>
+<li><code>I</code> : Marquer comme lu</li>
+<li><code>U</code> : Marquer comme non lu</li>
+<li><code>+</code> ou <code>=</code> : Marquer comme important</li>
+<li><code>-</code> : Marquer comme non important</li>
+</ul>
+
+
+<h2>Une lettre = Un verbe</h2>
+
+<p>la lettre g signifie <strong>g</strong>o</p>
+
+<ul>
+<li><code>g</code> puis <code>i</code> : Ouvrir la boîte de réception (<strong>i</strong>nput)</li>
+<li><code>g</code> puis <code>s</code> : Ouvrir les conversations dont le suivi est activé</li>
+<li><code>g</code> puis <code>t</code> : Ouvrir le dossier &ldquo;Messages envoyés&rdquo;</li>
+<li><code>g</code> puis <code>d</code> : Ouvrir le dossier &ldquo;Brouillons&rdquo; (<strong>d</strong>raft)</li>
+<li><code>g</code> puis <code>a</code> : Ouvrir le dossier &ldquo;Tous les messages&rdquo;</li>
+<li><code>g</code> puis <code>c</code> : Ouvrir le dossier &ldquo;Contacts&rdquo;</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>A mon travail, on utilise Gmail, Je recois beaucoup de mail (BitBucket, Hipchat, Slack, Redmine, Jira, Wordpress, Meetup, Ovh). J&#8217;avoue que des que j&#8217;ai décidé de traiter les mails via raccourcis clavier, j&#8217;ai trouvé cela assez pratique.</p>
+
+<p>On peux retrouver un tableau qui résume tout en tapant &ldquo;?&rdquo; dans Gmail.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Décorer PHPUnit Avec Les Listeners]]></title>
@@ -23,7 +155,7 @@
 <p>Comme tout les programmeurs vous faites des tests unitaires. En php, On utilise souvent PHPUnit.
 quand je lance mes tests je vois cela.</p>
 
-<p><img class="center" src="http://mcamuzat.github.io/images/phpunit_screenshot.png" width="499" height="168" title="Screenshot de phpunit" alt="Mon terminal n"></p>
+<p><img class="center" src="http://mcamuzat.github.io/images/phpunit_screenshot.png" width="499" height="168" title="Screenshot de phpunit" alt="Mon terminal n\"></p>
 
 <p>C&#8217;est un peu triste. Et encore j&#8217;ai activé la couleur !.</p>
 
@@ -3259,242 +3391,6 @@ Un jeux video en prosgresSQL pur. Il y a même une histoire. C&#8217;est assez c
 <h2>Une conclusion</h2>
 
 <p>Si vous cherchez à vous former dans une techno, je crois que vous savez par où commencer.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Docker Et Dockerfile]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/04/26/docker-et-dockerfile/"/>
-    <updated>2015-04-26T19:44:44+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/04/26/docker-et-dockerfile</id>
-    <content type="html"><![CDATA[<h2>Introduction</h2>
-
-<p>Je continue dans mon exploration de Docker, aujourd&#8217;hui nous allons voir comment automatiser la création d&#8217;un container à l&#8217;aide d&#8217;un <code>Dockerfile</code>.</p>
-
-<p>Nous allons créer un container pour <a href="http://jonas.nitro.dk/tig/">tig</a>.. C&#8217;est un interface git qui marche sous un terminal. Pour moi, c&#8217;est un magnifique outil de travail. Je m&#8217;en sers très souvent (surtout la vue de status (touche <code>S</code>) puis <code>u</code> pour ajouter, <code>!</code> pour reverter, <code>C</code> pour commit, <code>e</code> pour lancer mon éditeur (Bien entendu Vim)</p>
-
-<p>Nous allons faire</p>
-
-<ul>
-<li>L&#8217;installation à la main</li>
-<li>Puis écrire le <code>Dockerfile</code> qui automatise la partie 1</li>
-<li>Optimiser un peu celui-ci en utilisant une autre distribution</li>
-<li>Faire des commit sous Github, puis sous DockerHub</li>
-</ul>
-
-
-<h2>Création du container à la main</h2>
-
-<p>Je commence avec une Ubuntu que je lance en mode interactif.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker run -it ubuntu:14.10
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Je mets à jour ma distribution</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>apt-get update
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>J&#8217;installe tig (il est dans les dépôts officiels)</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>apt-get install -y tig
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>A cause du <code>apt-get update</code> Ubuntu a téléchargé toutes les sources des dépôts dans le répertoire <code>var/lib/apt/lists/</code> pour ne pas alourdir le container je vais effacer celui-ci</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>rm -rf /var/lib/apt/lists/*
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Je lance <code>tig</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>root@0a475b7fbed7:/# tig
-</span><span class='line'>tig: Not a git repository
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Il n&#8217;y a pas de dépot git à la racine c&#8217;est normal.</p>
-
-<p>je quitte mon container et je liste</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker ps -a
-</span><span class='line'>CONTAINER ID        IMAGE                                         COMMAND                CREATED             STATUS                            PORTS                                                                         NAMES
-</span><span class='line'>0a475b7fbed7        ubuntu:14.10                                  <span class="s2">&quot;/bin/bash&quot;</span>            <span class="m">13</span> minutes ago      Exited <span class="o">(</span>130<span class="o">)</span> About a minute ago
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Je vais le committer.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker commit -m <span class="s2">&quot;add tig&quot;</span> -a <span class="s2">&quot;mcamuzat&quot;</span> admiring_yonath mcamuzat/tig:v1
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Je vais le relancer avec la commande suivante.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker run -t -i -v <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:/project mcamuzat/tig:v1
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>En gros j&#8217;ai crée un lien symbolique qui pointe le répertoire courant de mon ordinateur vers le répertoire <code>project</code> du container.</p>
-
-<p>je me place dans le répertoire project.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">cd</span> /project
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>et je lance tig</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>tig
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Si dans le répertoire courant il y a un dépôt git. Normalement l&#8217;interface de Tig apparait.</p>
-
-<p>Voila j&#8217;ai placé tig dans un container.</p>
-
-<h2>Automatisation via un DockerFile.</h2>
-
-<p>On se place dans un répertoire vide</p>
-
-<p>Je crée un fichier <code>DockerFile</code> avec le contenu suivant</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>FROM ubuntu:14.10
-</span><span class='line'>MAINTAINER Marc Camuzat &lt;marco@crans.org&gt;
-</span><span class='line'>RUN apt-get update <span class="se">\</span>
-</span><span class='line'>    <span class="o">&amp;&amp;</span> apt-get install -y mysql-client <span class="se">\</span>
-</span><span class='line'>    <span class="o">&amp;&amp;</span> rm -rf /var/lib/apt/lists/*
-</span><span class='line'>WORKDIR /project
-</span><span class='line'>VOLUME  /project
-</span><span class='line'>ENTRYPOINT <span class="o">[</span><span class="s2">&quot;tig&quot;</span><span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>WORKDIR</code> et <code>VOLUME</code> indique à Docker que le répertoire par défault est <code>project</code> et que l&#8217;on lance tig</p>
-
-<p>On va maintenant demander à docker de <em>builder</em> l&#8217;image à l&#8217;aide de la commande suivante</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker build -t mcamuzat/tig:v2 .
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On attend un peu.. Et on relance</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker run -t -i -v <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:/project mcamuzat/tig:v2
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>C&#8217;est beaucoup plus rapide.</p>
-
-<h2>Optimisons la taille.</h2>
-
-<p>Quand je liste mon image via la commande suivante</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>REPOSITORY              TAG                     IMAGE ID            CREATED             VIRTUAL SIZE
-</span><span class='line'>mcamuzat/tig            v2                      103a05c16a2b        <span class="m">3</span> minutes ago       234.6 MB
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Mon container fait 234 méga ! C&#8217;est beaucoup pour un simple utilitaire.
-pour simplifier je vais utiliser une autre distribution <a href="https://www.alpinelinux.org/">alpine-linux</a> (que je ne connaissais pas ..) et le dockerhub <a href="https://registry.hub.docker.com/u/gliderlabs/alpine/">suivant</a> qui réduit la distribution à 5 méga !</p>
-
-<p>Voici mon <code>DockerFile</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>FROM gliderlabs/alpine:3.1
-</span><span class='line'>RUN apk --update add tig
-</span><span class='line'>WORKDIR /project
-</span><span class='line'>VOLUME  /project
-</span><span class='line'>ENTRYPOINT <span class="o">[</span><span class="s2">&quot;tig&quot;</span><span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Je relance un build.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker build -t mcamuzat/tig:v3 .
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Maintenant mon container ne fait plus que 24 Méga !</p>
-
-<h2>Publions sous Github</h2>
-
-<p>Nous allons créer un nouveau dépôt avec un README.</p>
-
-<p>Que je vais cloner.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>git clone https://github.com/mcamuzat/tig-docker.git
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Je vais ajouter mon DockerFile, Commiter et Pusher</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>git add Dockerfile
-</span><span class='line'>git commit -m<span class="s2">&quot;initial commit&quot;</span>
-</span><span class='line'>git push origin master
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Et c&#8217;est tout.</p>
-
-<p>Résultat <a href="https://github.com/mcamuzat/tig-docker">ici</a></p>
-
-<h2>Publions sur DockerHub</h2>
-
-<p>Je pars du principe que vous avez un compte sur DockerHub.</p>
-
-<ul>
-<li>Cliquer sur le bouton <code>Add Repository-&gt;Automated Build</code></li>
-<li>choisir Github.</li>
-<li>Puis On va vous demander de relier votre compte DockerHub à Github.</li>
-<li>DockerHub va vous demander quel projet vous souhaitez builder automatiquement.</li>
-</ul>
-
-
-<p>Résultat <a href="https://registry.hub.docker.com/u/mcamuzat/tig/">ici</a></p>
-
-<h2>Conclusion</h2>
-
-<p>Le Dockerfile sert à automatiser la création d&#8217;image. il est plus simple de stocker le <code>Dockerfile</code> que le container (puisque Dockerhub s&#8217;occupe de faire build)</p>
-
-<p>J&#8217;ai crée mon premier dépôt. Ce n&#8217;est pas très compliqué. Dans un prochain article, je vais essayer d&#8217;expérimenter <code>docker compose</code>.</p>
 ]]></content>
   </entry>
   

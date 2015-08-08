@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Vim | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/vim/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-08-04T22:00:40+02:00</updated>
+  <updated>2015-08-08T21:07:30+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,138 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Gmail Vim Mêmes Raccourcis]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/08/08/gmail-vim-memes-raccourcis/"/>
+    <updated>2015-08-08T18:52:17+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/08/08/gmail-vim-memes-raccourcis</id>
+    <content type="html"><![CDATA[<h2>Les raccourcis de Gmail ressemblent à vi.</h2>
+
+<p><em>Résumé : appuyer sur <code>?</code> dans gmail pour avoir le tableau complet, les raccourcis claviers suivant ne sont pas activés par défaut</em></p>
+
+<p>Le titre est un peu exagéré.. Je vais essayer de montrer que la <em>philosophie</em> est un peu la même.</p>
+
+<p>Mais sur Vi On utilise les flèches de direction <code>h</code>, <code>j</code>, <code>k</code>, <code>l</code> pour <code>gauche</code>, <code>bas</code>, <code>haut</code>, <code>droite</code> pour se déplacer (enfin surtout <code>j</code> et <code>k</code>). Et bien les touches <code>j</code>(bas)  et <code>k</code>(haut) marchent pareilles sous Gmail.</p>
+
+<p>Pour chercher sous Vi on utilise la touche <code>/</code> , essayez sous Gmail et vous aller directement dans la barre de recherche.</p>
+
+<h2>Une lettre = une idée..</h2>
+
+<p>Comme dans vi ou <code>w</code> signifie <strong>w</strong>ord, <code>d</code> signifie <strong>d</strong>elete, <code>u</code> <strong>u</strong>ndo on retrouve la même idée.</p>
+
+<p>Par exemple <code>c</code> est l&#8217;abréviation de <strong>c</strong>omposer.</p>
+
+<ul>
+<li><code>c</code> pour <strong>c</strong>ompose Nouveau message</li>
+<li><code>n</code> signifie <strong>n</strong>ext Message suivant</li>
+<li><code>p</code> signifie <strong>p</strong>revious Message précédent.</li>
+<li><code>r</code> pour reply <strong>r</strong>eply Répondre</li>
+<li><code>a</code> pour tous <strong>a</strong>ll. Repondre à tous</li>
+<li><code>f</code> pour transférer <strong>f</strong>orward.</li>
+<li><code>o</code> pour ouvrir le conversation.</li>
+</ul>
+
+
+<h2>La lettre en majuscule = la version minuscule en plus forte</h2>
+
+<p>Dans vi <code>i</code> insere du texte, <code>I</code> insere au début de la ligne, <code>a</code> ajoute du texte , <code>A</code> ajoute le texte à la fin de la ligne.</p>
+
+<ul>
+<li><code>C</code> compose un nouveau message dans une nouvelle fenêtre</li>
+<li><code>R</code> Répondre dans une nouvelle fenêtre</li>
+<li><code>A</code> Répondre à tous dans une nouvelle fenêtre.</li>
+<li><code>F</code> Transférer dans une nouvelle fenêtre.</li>
+</ul>
+
+
+<h2>Une lettre = un pictogramme.</h2>
+
+<p>Sous Vi certaine lettre sont des pictogrammes. Par exemple la touche <code>'</code> représente le marque page.</p>
+
+<p>Je n&#8217;ai encore jamais parlé des marques pages sous vi pour faire simple</p>
+
+<ul>
+<li>Ouvrez un fichier texte très long</li>
+<li>Allez vers le mileu du fichier  appuyer sur <code>m</code> puis <code>a</code></li>
+<li>Re-deplacez vous et appuyer sur <code>m</code> puis <code>b</code>.</li>
+<li>tapez <code>'a</code> vous ramene ou point a et <code>'b</code> au point b, <code>d'a</code> (effacer jusqu&#8217;au marque-page a)</li>
+</ul>
+
+
+<p><img class="center" src="/images/quote.png" width="431" height="174" title="&lsquo;Les marques-pages&rsquo; &lsquo;la guillement est le pictogramme du marque-page&rsquo;" ></p>
+
+<p>La lettre <code>=</code> est le pictogramme de deux lignes indentées. Duand j&#8217;appuie sur <code>=</code> j&#8217;indente le texte.</p>
+
+<p><img class="center" src="/images/indentation.png" width="600" height="276" title="&lsquo;Indentation&rsquo; &lsquo;Pour indenter on utilise la touche = &rsquo;" ></p>
+
+<p>La lettre <code>z</code> correspond au repli de texte</p>
+
+<p><img class="center" src="/images/repli.png" width="600" height="230" title="&lsquo;z = repli de texte ;&rsquo; &lsquo;Pour plier déplier le texte on utilise la touche z&rsquo;" ></p>
+
+<ul>
+<li><code>z</code> + <code>c</code> pour replier (c = close)</li>
+<li><code>z</code> + <code>o</code> pour deplier (o = open)</li>
+<li><code>z</code> + <code>a</code> pour alterner.</li>
+</ul>
+
+
+<p><img class="center" src="/images/plier.png" width="595" height="214" title="&lsquo;z = repli de texte&rsquo; &lsquo;Pour plier déplier le texte on utilise la touche z&rsquo;" ></p>
+
+<p>Sous gmail, c&#8217;est encore la même idée.  la touche <code>x</code> correspond à une checkbox. appuyer sur x pour sélectionner la conversation. le <code>#</code> correspond à supprimer, le <code>!</code> à SPAM!!!.</p>
+
+<p><img class="center" src="/images/checkanddelete.png" width="543" height="193" title="&lsquo;le x est le pictogramme d'un checkbox&rsquo; &lsquo;Mon terminal`" ></p>
+
+<h2>Le cas de <code>*</code></h2>
+
+<p>Pour tout selectionner tout les fichiers textes on utilise la commande <code>*.txt</code></p>
+
+<ul>
+<li><code>*</code> puis <code>a</code> : Sélectionner toutes les conversations</li>
+<li><code>*</code> puis <code>n</code> : Désélectionner toutes les conversations</li>
+<li><code>*</code> puis <code>r</code> : Sélectionner les conversations lues</li>
+<li><code>*</code> puis <code>u</code> : Sélectionner les conversations non lues</li>
+<li><code>*</code> puis <code>s</code> : Sélectionner les conversations dont le suivi est activé</li>
+<li><code>*</code> puis <code>t</code> : Sélectionner les conversations dont le suivi n’est pas activé</li>
+</ul>
+
+
+<p>puis après:</p>
+
+<ul>
+<li><code>e</code> : Archiver</li>
+<li><code>m</code> : Ignorer la conversation</li>
+<li><code>!</code> : Signaler comme spam</li>
+<li><code>#</code> : Supprimer</li>
+<li><code>z</code> : Annuler la dernière action</li>
+<li><code>I</code> : Marquer comme lu</li>
+<li><code>U</code> : Marquer comme non lu</li>
+<li><code>+</code> ou <code>=</code> : Marquer comme important</li>
+<li><code>-</code> : Marquer comme non important</li>
+</ul>
+
+
+<h2>Une lettre = Un verbe</h2>
+
+<p>la lettre g signifie <strong>g</strong>o</p>
+
+<ul>
+<li><code>g</code> puis <code>i</code> : Ouvrir la boîte de réception (<strong>i</strong>nput)</li>
+<li><code>g</code> puis <code>s</code> : Ouvrir les conversations dont le suivi est activé</li>
+<li><code>g</code> puis <code>t</code> : Ouvrir le dossier &ldquo;Messages envoyés&rdquo;</li>
+<li><code>g</code> puis <code>d</code> : Ouvrir le dossier &ldquo;Brouillons&rdquo; (<strong>d</strong>raft)</li>
+<li><code>g</code> puis <code>a</code> : Ouvrir le dossier &ldquo;Tous les messages&rdquo;</li>
+<li><code>g</code> puis <code>c</code> : Ouvrir le dossier &ldquo;Contacts&rdquo;</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>A mon travail, on utilise Gmail, Je recois beaucoup de mail (BitBucket, Hipchat, Slack, Redmine, Jira, Wordpress, Meetup, Ovh). J&#8217;avoue que des que j&#8217;ai décidé de traiter les mails via raccourcis clavier, j&#8217;ai trouvé cela assez pratique.</p>
+
+<p>On peux retrouver un tableau qui résume tout en tapant &ldquo;?&rdquo; dans Gmail.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[PHP Code Sniffer Mise en Place]]></title>
@@ -515,101 +647,6 @@ vous pouvez sélectionnez avec la souris. Pour copier appuyer sur <code>y</code>
 
 
 <p>Nous reparlerons des registres avec les macros dans un prochain post.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Je Joue Donc Je Programme]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/05/04/je-joue-donc-je-programme/"/>
-    <updated>2015-05-04T22:32:00+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/05/04/je-joue-donc-je-programme</id>
-    <content type="html"><![CDATA[<p>Il existe des jeux vidéos pour apprendre à programmer. Voici quelques exemples.</p>
-
-<h2>VimAdventure</h2>
-
-<p><img class="center" src="/images/vimadventures.jpg" width="600" height="339" title="&lsquo;Vim adventure&rsquo; &lsquo;Vim adventure&rsquo;" >
-<a href="http://vim-adventures.com/">Vim adventure</a> permet d&#8217;apprendre les touches de Vim de manière ludique. Personnellement j&#8217;ai beaucoup joué à <a href="http://crawl.develz.org/wordpress/">Dungeon Crawl</a> qui utilise les touches <code>h</code>, <code>j</code>, <code>k</code>, <code>l</code></p>
-
-<h2>Ruby</h2>
-
-<p>Ruby warrior existe en deux versions:
-<img class="center" src="/images/ruby-warrior.png" width="600" height="288" title="&lsquo;Ruby warrior&rsquo; &lsquo;Ruby warrior&rsquo;" ></p>
-
-<p>En ligne de commande <a href="https://github.com/ryanb/ruby-warrior">ruby-warrior</a></p>
-
-<p>Le but est ici d&#8217;écrire L&#8217;AI du héros. Cela commence relativement simplement. Au début pas besoin de if, else, object mais les niveaux se corsent vraiment (je dirai que jusqu&#8217;au 6 c&#8217;est relativement tranquille)</p>
-
-<p>Depuis il existe une version web. Beaucoup plus accessible et jolie
-<a href="https://www.bloc.io/ruby-warrior#/">ruby-warrior</a></p>
-
-<h2>Javascript</h2>
-
-<h3>Untrusted</h3>
-
-<p><img class="center" src="/images/untrusted.jpg" width="600" height="339" title="&lsquo;Untrusted&rsquo; &lsquo;Untrusted&rsquo;" >
-pour passer les niveaux, il faut atteindre le terminal et commencer à hacker le js. C&#8217;est vraiment malin.
-<a href="http://alexnisnevich.github.io/untrusted/">untrusted</a></p>
-
-<h3>Elevator Saga</h3>
-
-<p><img class="center" src="/images/elevator-saga.png" width="600" height="288" title="&lsquo;Elevator Saga&rsquo; &lsquo;Elevator Saga&rsquo;" ></p>
-
-<p>Quoi de plus passionnant que simulation d&#8217;ascenseur.On passe assez facilement le niveau 1. Cela se complique vraiment avec le niveau deux et les objectifs.
-<a href="http://play.elevatorsaga.com/">elevator-saga</a></p>
-
-<h3>CodeCombat</h3>
-
-<p><a href="http://codecombat.com/">CodeCombat</a>
-Diriger un petit combattant, Un peu la même idée que ruby-warror, mais l&#8217;interface est très belle. Il y a du multi-joueurs</p>
-
-<h2>Multi-plateforme</h2>
-
-<p><img class="center" src="/images/codingame.jpg" width="600" height="375" title="&lsquo;Coding game&rsquo; &lsquo;Coding game&rsquo;" ></p>
-
-<p><a href="http://www.codingame.com">Codingame</a>. L&#8217;interface est magnifique, vous pouvez choisir le langage (il y a une vingtaine de langage PHP, Js, Haskell, Bash, C). les exercices sont assez variés. C&#8217;est plus des katas de programmation.</p>
-
-<h2>Le SQL</h2>
-
-<p><img class="center" src="/images/schemaverse.png" width="450" height="131" title="&lsquo;Schemaverse&rsquo; &lsquo;Schemaverse&rsquo;" ></p>
-
-<p><a href="https://schemaverse.com/">Schemaverse</a>
-Un jeux video en prosgresSQL pur. Il y a même une histoire. C&#8217;est assez compliqué.</p>
-
-<h2>Les Regex</h2>
-
-<ul>
-<li><a href="http://regexone.com/">regex one</a> Une bonne introduction.</li>
-<li><a href="https://regex.alf.nu/">regex.alf.nu</a>. Cela commence doucement, mais les dernières sont très très compliquées.</li>
-<li><a href="http://www.postcrashgames.com/finitris/">finitris</a>.Un vieux Jeux que j&#8217;avais noté, c&#8217;est dommage que la prise en main soit affreuse et que le zoom soit péter (control+molette est votre ami)</li>
-</ul>
-
-
-<h3>Des jeux Flash</h3>
-
-<p>Bon je sais que ce n&#8217;est pas super récent.</p>
-
-<p>Tout les jeux Zacktronics</p>
-
-<ul>
-<li><a href="http://www.zachtronics.com/spacechem/">SpaceChem</a> (payant et j&#8217;ai pas essayé).</li>
-<li><a href="http://www.zachtronics.com/kohctpyktop-engineer-of-the-people/">Kohctpyktop</a> quasiment injouable. mais c&#8217;est de cette facon que sont fait les portes logiques et les microprocesseurs.</li>
-<li><a href="http://www.zachtronics.com/the-codex-of-alchemical-engineering/">Codex of Alchemical Engineering</a> assembler des molécules.</li>
-<li><a href="http://www.zachtronics.com/ruckingenur-ii/">Ruckingenur</a> voila comment on fait du Reverse Engineering des circuits électroniques (sous windows).</li>
-</ul>
-
-
-<p>Et aussi</p>
-
-<ul>
-<li><a href="http://pleasingfungus.com/Manufactoria/">manufactoria</a> facbrique de robots et BDD (il suffit de faire passer le scénario).</li>
-</ul>
-
-
-<h2>En conclusion</h2>
-
-<p>j&#8217;ai vraiment beaucoup aimé et joué à <a href="http://alexnisnevich.github.io/untrusted/">untrusted</a> et <a href="https://www.bloc.io/ruby-warrior#/">ruby-warrior</a></p>
-
-<p>J&#8217;ai probablement oublié d&#8217;autres jeux.</p>
 ]]></content>
   </entry>
   
