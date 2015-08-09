@@ -9,7 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Introduction Je continue dans mon exploration de Docker, aujourd'hui nous allons voir comment automatiser la création d'un container à l'aide d'un &hellip;">
+  <meta name="description" content="Introduction Les développeurs aiment les liens. Il y a toujours un article à partager et/ou sauvegarder. Pour les sauvegarder, Personnelement j' &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +77,64 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/04/29/awesome-et-liste-de-liens/">Awesome Et Liste De Liens</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-04-29T22:15:34+02:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:15 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Introduction</h2>
+
+<p>Les développeurs aiment les liens. Il y a toujours un article à partager et/ou sauvegarder. Pour les sauvegarder, Personnelement j&#8217;utilisai un fichier texte ou j&#8217;ajoutai en favori dans mon navigateur (avec plus ou moins de bonheur au moment du changement d&#8217;ordinateur). Des gens ont décidé de versionner leurs listes de liens sur Github.  Cela s&#8217;appelle  <strong>Awesome</strong>-(la techno ou le thème que vous vous voulez)</p>
+
+<p>par exemple:</p>
+
+<ul>
+<li>PHP : <a href="https://github.com/ziadoz/awesome-php">awesome-php</a></li>
+<li>Symfony2 : <a href="https://github.com/EmanueleMinotto/awesome-symfony2">awesome-symfony2</a></li>
+<li>Docker : <a href="https://github.com/veggiemonk/awesome-docker">awesome-docker</a></li>
+<li>Les meilleurs cours en ligne : <a href="https://github.com/prakhar1989/awesome-courses">awesome-courses</a></li>
+<li>React : <a href="https://github.com/enaqx/awesome-react">awesome-react</a></li>
+<li>Sysadmin: <a href="https://github.com/kahun/awesome-sysadmin">awesome-sysadmin</a></li>
+<li>Web Performance Optimization:<a href="https://github.com/davidsonfellipe/awesome-wpo">awesome-wpo</a></li>
+<li>etc ..</li>
+</ul>
+
+
+<h2>Des listes qui contiennent des listes.</h2>
+
+<p>Ben oui la liste est longue. C&#8217;est pour cela qu&#8217;il existe une awesome-list de awesome</p>
+
+<ul>
+<li><a href="https://github.com/bayandin/awesome-awesomeness">awesome-awesomeness</a></li>
+</ul>
+
+
+<h2>Une conclusion</h2>
+
+<p>Si vous cherchez à vous former dans une techno, je crois que vous savez par où commencer.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2856,173 +2914,6 @@ par exemple</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/03/16/mapreduce-du-pauvre/">MapReduce Du Pauvre</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-03-16T22:41:41+01:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:41 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>MapReduce du pauvre.</h1>
-
-<h2>une commande linux</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>find -name <span class="s1">&#39;*.php&#39;</span> <span class="p">|</span> xargs -p <span class="m">4</span> grep <span class="s2">&quot;ma chaine de caractère&quot;</span> <span class="p">|</span> wc -l
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Cela ne se voit pas mais je viens de faire un map/reduce</p>
-
-<ul>
-<li>je prend tout les fichiers php</li>
-<li>je lance un grep avec le résultat que je passe à travers le pipe.</li>
-<li>puis je compte le nombre de résultats.</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>filter<span class="o">]</span> -&gt; <span class="o">[</span>map<span class="o">]</span> -&gt; <span class="o">[</span>reduce<span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ici l&#8217;astuce tient dans une astuces <code>xargs -p 4</code> qui ordonne à xargs d&#8217;utiliser 4 processeurs en parrallèle ! Donc qui me permet d&#8217;aller quatre fois plus vite. On comprend l&#8217;interet du map/reduce. Je peux <strong>dispatcher</strong> le travail sur plusieurs instances(ici processeurs). On retrouve ce fonctionnement dans beaucoup de logiciels actuels. L&#8217;avantage ici est que j&#8217;utilise linux et que je n&#8217;ai installé aucun programme et en multiprocesseur je fais pleinenement confiance au kernel de mon linux. Il existe aussi un programme <code>parallel</code> mais je ne m&#8217;en suis jamais servi.</p>
-
-<h2>En php ?</h2>
-
-<p>Il existe bien entendu les fonctions <code>array_map</code>, <code>array_filter</code>, <code>array_reduce</code> mais il ne sont pas spécialement plus rapide qu&#8217;une boucle foreach. Il existe un map pour les Collection de doctrine.</p>
-
-<p>je vais montrer que l&#8217;on peux écrires toute les opérations possibles avec &lsquo;array_reduce&rsquo;.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="k">function</span> mysum<span class="o">(</span><span class="nv">$array</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">return</span> array_reduce<span class="o">(</span><span class="nv">$array</span>, <span class="k">function</span><span class="o">(</span><span class="nv">$acc</span>, <span class="nv">$item</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$acc</span> +<span class="o">=</span> <span class="nv">$item</span><span class="p">;</span>
-</span><span class='line'>    <span class="o">})</span><span class="p">;</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'><span class="k">function</span> mymult<span class="o">(</span><span class="nv">$array</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">return</span> array_reduce<span class="o">(</span><span class="nv">$array</span>, <span class="k">function</span><span class="o">(</span><span class="nv">$acc</span>, <span class="nv">$item</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$acc</span> *<span class="o">=</span> <span class="nv">$item</span><span class="p">;</span>
-</span><span class='line'>    <span class="o">}</span>,1<span class="o">)</span><span class="p">;</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">function</span> mymax<span class="o">(</span><span class="nv">$array</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">return</span> array_reduce<span class="o">(</span><span class="nv">$array</span>, <span class="k">function</span><span class="o">(</span><span class="nv">$acc</span>, <span class="nv">$item</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">return</span> max<span class="o">(</span><span class="nv">$acc</span>, <span class="nv">$item</span><span class="o">)</span><span class="p">;</span>
-</span><span class='line'>    <span class="o">})</span><span class="p">;</span>
-</span><span class='line'><span class="o">}</span>// le min est un peu moins simple
-</span><span class='line'>
-</span><span class='line'><span class="k">function</span> map<span class="o">(</span><span class="nv">$function</span>, <span class="nv">$array</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">return</span> array_reduce<span class="o">(</span>
-</span><span class='line'>        <span class="nv">$array</span>,
-</span><span class='line'>        <span class="k">function</span> <span class="o">(</span><span class="nv">$acc</span>, <span class="nv">$input</span><span class="o">)</span> use <span class="o">(</span><span class="nv">$function</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>            <span class="nv">$acc</span><span class="o">[]</span> <span class="o">=</span> <span class="nv">$function</span><span class="o">(</span><span class="nv">$input</span><span class="o">)</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">return</span> <span class="nv">$acc</span><span class="p">;</span>
-</span><span class='line'>        <span class="o">})</span><span class="p">;</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">function</span> filter<span class="o">(</span><span class="nv">$function</span>, <span class="nv">$array</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">return</span> array_reduce<span class="o">(</span>
-</span><span class='line'>        <span class="nv">$array</span>,
-</span><span class='line'>        <span class="k">function</span> <span class="o">(</span><span class="nv">$acc</span>, <span class="nv">$input</span><span class="o">)</span> use <span class="o">(</span><span class="nv">$function</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>            <span class="k">if</span> <span class="o">(</span><span class="nv">$function</span><span class="o">(</span><span class="nv">$input</span><span class="o">))</span> <span class="o">{</span>
-</span><span class='line'>                <span class="nv">$acc</span><span class="o">[]</span> <span class="o">=</span> <span class="nv">$input</span><span class="p">;</span>
-</span><span class='line'>            <span class="o">}</span>
-</span><span class='line'>            <span class="k">return</span> <span class="nv">$acc</span><span class="p">;</span>
-</span><span class='line'>        <span class="o">})</span><span class="p">;</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">function</span> mycount<span class="o">(</span><span class="nv">$array</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">return</span> array_reduce<span class="o">(</span>
-</span><span class='line'>        <span class="nv">$array</span>,
-</span><span class='line'>        <span class="k">function</span> <span class="o">(</span><span class="nv">$acc</span>, <span class="nv">$input</span><span class="o">)</span>  <span class="o">{</span>
-</span><span class='line'>        <span class="k">return</span> ++<span class="nv">$acc</span><span class="p">;</span>
-</span><span class='line'><span class="o">}</span>,0<span class="o">)</span><span class="p">;</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$a</span> <span class="o">=</span> <span class="o">[</span>1,2,3,4,5<span class="o">]</span><span class="p">;</span>
-</span><span class='line'>var_dump<span class="o">(</span>mysum<span class="o">(</span><span class="nv">$a</span><span class="o">))</span><span class="p">;</span> // 15
-</span><span class='line'>var_dump<span class="o">(</span>mymult<span class="o">(</span><span class="nv">$a</span><span class="o">))</span><span class="p">;</span> // 120
-</span><span class='line'>var_dump<span class="o">(</span>mymax<span class="o">(</span><span class="nv">$a</span><span class="o">))</span><span class="p">;</span> // 5
-</span><span class='line'>var_dump<span class="o">(</span>mycount<span class="o">(</span><span class="nv">$a</span><span class="o">))</span><span class="p">;</span> // 5
-</span><span class='line'>var_dump<span class="o">(</span>map<span class="o">(</span><span class="k">function</span><span class="o">(</span><span class="nv">$input</span><span class="o">)</span> <span class="o">{</span> <span class="k">return</span> <span class="m">2</span> * <span class="nv">$input</span><span class="p">;</span><span class="o">}</span>, <span class="nv">$a</span><span class="o">))</span><span class="p">;</span> // <span class="o">[</span>2,4,6,8,10<span class="o">]</span>
-</span><span class='line'>var_dump<span class="o">(</span>filter<span class="o">(</span><span class="k">function</span><span class="o">(</span><span class="nv">$input</span><span class="o">)</span> <span class="o">{</span> <span class="k">return</span> <span class="o">(</span><span class="nv">$input</span> &gt; 4<span class="o">)</span><span class="p">;</span> <span class="o">}</span>, <span class="nv">$a</span><span class="o">))</span><span class="p">;</span> // <span class="o">[</span>6<span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Map et Reduce sont des fonctions un peu particulières, elle prenent comme argument des fonctions. On parle de fonctions d&#8217;ordre supérieure, parfois de functor (mais çà c&#8217;est une autre histoire ..)</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/4">&larr; Older</a>
@@ -3040,6 +2931,10 @@ par exemple</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/08/09/workshops-de-javascript/">Workshops De Javascript</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/08/08/gmail-vim-memes-raccourcis/">Gmail Vim Mêmes Raccourcis</a>
       </li>
     
@@ -3053,10 +2948,6 @@ par exemple</p>
     
       <li class="post">
         <a href="/blog/2015/07/25/mise-en-place-de-travis/">Mise en Place De Travis</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/07/24/creer-son-depot-sous-packagist/">Créer Son Dépôt Sous Packagist</a>
       </li>
     
   </ul>

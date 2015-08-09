@@ -4,7 +4,7 @@
   <title><![CDATA[Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-08-08T21:07:30+02:00</updated>
+  <updated>2015-08-09T18:24:17+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,286 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Workshops De Javascript]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/08/09/workshops-de-javascript/"/>
+    <updated>2015-08-09T16:44:33+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/08/09/workshops-de-javascript</id>
+    <content type="html"><![CDATA[<p><em>Et si on essayait un workshop&hellip;</em></p>
+
+<p>Les workshops de javascript sont des cours interactifs de javascript.</p>
+
+<h2>Installation</h2>
+
+<p>Pour installer le cours de Node.js c&#8217;est très simple. A condition d&#8217;avoir node.js installé.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>npm install -g learnyounode
+</span><span class='line'>learnyounode</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Voila ce que vous devriez voir.</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/workshop.png" width="585" height="397" title="screenshot de workshop" alt="On a un menu interactif"></p>
+
+<p>Lançons nous dans le premier exercice.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'> LEARN YOU THE NODE.JS FOR MUCH WIN!
+</span><span class='line'>─────────────────────────────────────
+</span><span class='line'> HELLO WORLD
+</span><span class='line'> Exercise 1 of 13
+</span><span class='line'>
+</span><span class='line'>Write a program that prints the text "HELLO WORLD" to the console (stdout).
+</span><span class='line'>
+</span><span class='line'>-------------------------------------------------------------------------------
+</span><span class='line'>
+</span><span class='line'>## HINTS
+</span><span class='line'>
+</span><span class='line'>To make a Node.js program, create a new file with a .js extension and start writing JavaScript! Execute your program by running it with the
+</span><span class='line'>node command. e.g.:
+</span><span class='line'>
+</span><span class='line'>    $ node program.js
+</span><span class='line'>
+</span><span class='line'>You can write to the console in the same way as in the browser:
+</span><span class='line'>
+</span><span class='line'>    console.log("text")
+</span><span class='line'>
+</span><span class='line'>When you are done, you must run:
+</span><span class='line'>
+</span><span class='line'>    $ learnyounode verify program.js
+</span><span class='line'>
+</span><span class='line'>to proceed. Your program will be tested, a report will be generated, and the lesson will be marked 'completed' if you are successful.
+</span><span class='line'>
+</span><span class='line'>-------------------------------------------------------------------------------
+</span><span class='line'>
+</span><span class='line'> » To print these instructions again, run: learnyounode print
+</span><span class='line'> » To execute your program in a test environment, run: learnyounode run program.js
+</span><span class='line'> » To verify your program, run: learnyounode verify program.js
+</span><span class='line'> » For help run: learnyounode help</span></code></pre></td></tr></table></div></figure>
+
+
+<p>donc je resume on me demande de programmer un **Hello world&#8221;.</p>
+
+<p>donc je crée un <code>hello.js</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;HELLO WORLD&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je peux tester celui-ci avec un programme de test avec la commande suivante</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>learnyounode run hello.js
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si je suis content du résultat alors je peux faire vérifier le programme par le logiciel.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>learnyounode verify program.js
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si le programme passe, le niveau est marquer comme <code>[COMPLETED]</code> et on peux passer au suivant.</p>
+
+<p>Bon l&#8217;étape 1 n&#8217;est pas très compliqué passons à l&#8217;étape 2.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'> LEARN YOU THE NODE.JS FOR MUCH WIN!
+</span><span class='line'>─────────────────────────────────────
+</span><span class='line'> BABY STEPS
+</span><span class='line'> Exercise <span class="m">2</span> of 13
+</span><span class='line'>
+</span><span class='line'>Write a program that accepts one or more numbers as <span class="nb">command</span>-line arguments and prints the sum of those numbers to the console <span class="o">(</span>stdout<span class="o">)</span>.
+</span><span class='line'>
+</span><span class='line'>-------------------------------------------------------------------------------
+</span><span class='line'>
+</span><span class='line'><span class="c">## HINTS</span>
+</span><span class='line'>
+</span><span class='line'>You can access <span class="nb">command</span>-line arguments via the global process object. The process object has an argv property which is an array containing the <span class="nb">complete command</span>-line. i.e. process.argv.
+</span><span class='line'>
+</span><span class='line'>To get started, write a program that simply contains:
+</span><span class='line'>
+</span><span class='line'>    console.log<span class="o">(</span>process.argv<span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>Run it with node program.js and some numbers as arguments. e.g:
+</span><span class='line'>
+</span><span class='line'>    <span class="nv">$ </span>node program.js <span class="m">1</span> <span class="m">2</span> 3
+</span><span class='line'>
+</span><span class='line'>In which <span class="k">case</span> the output would be an array looking something like:
+</span><span class='line'>
+</span><span class='line'>    <span class="o">[</span> <span class="s1">&#39;node&#39;</span>, <span class="s1">&#39;/path/to/your/program.js&#39;</span>, <span class="s1">&#39;1&#39;</span>, <span class="s1">&#39;2&#39;</span>, <span class="s1">&#39;3&#39;</span> <span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'>You<span class="s1">&#39;ll need to think about how to loop through the number arguments so  you can output just their sum. The first element of the process.argv array is always &#39;</span>node<span class="s1">&#39;, and the second element is always the path to your program.js file, so you need to start at the 3rd element (index 2), adding each item to the total until you reach the end of the array.</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">Also be aware that all elements of process.argv are strings and you may need to coerce them into numbers. You can do this by prefixing the property with + or passing it to Number(). e.g. +process.argv[2] or Number(process.argv[2]).</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">learnyounode will be supplying arguments to your program when you run learnyounode verify program.js so you don&#39;</span>t need to supply them yourself. To <span class="nb">test </span>your program without verifying it, you can invoke it with learnyounode run program.js. When you use run, you are invoking the <span class="nb">test </span>environment that learnyounode sets up <span class="k">for</span> each exercise.
+</span><span class='line'>
+</span><span class='line'>-------------------------------------------------------------------------------
+</span><span class='line'>
+</span><span class='line'> » To print these instructions again, run: learnyounode print
+</span><span class='line'> » To execute your program in a <span class="nb">test </span>environment, run: learnyounode run program.js
+</span><span class='line'> » To verify your program, run: learnyounode verify program.js
+</span><span class='line'> » For <span class="nb">help </span>run: learnyounode <span class="nb">help</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Donc il s&#8217;agit de créer un programme qui prend les nombres en entrée et faire la somme à la fin.</p>
+
+<p>Voici ma solution (atroce &hellip; )</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">;</span>
+</span><span class='line'><span class="nx">i</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
+</span><span class='line'><span class="nx">i</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span><span class="c1">// supprime les deux premiers arguments (&#39;node&#39;, &#39;programme.js&#39;)</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">i</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">){</span><span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">b</span><span class="p">)},</span><span class="mi">0</span><span class="p">));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Le logiciel donne une implémentation beaucoup plus simple(pas difficile)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>   <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+</span><span class='line'>      <span class="nx">result</span> <span class="o">+=</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Etc etc ..</p>
+
+<h2>Une liste de workshop.</h2>
+
+<p>Le site officiel donne la liste suivante en module de base.</p>
+
+<ul>
+<li><a href="https://www.github.com/sethvincent/javascripting">javascripting</a> Apprendre les bases du javascript.</li>
+<li><a href="https://www.github.com/jlord/git-it">git-it</a> pour apprendre Git et GitHub.</li>
+<li><a href="https://www.github.com/jesstelford/scope-chains-closures">Scope Chains &amp; Closures</a> Comprendre les scopes, les closures etc..</li>
+<li><a href="https://www.github.com/workshopper/learnyounode">learnyounode</a> les bases de node asynchronous i/o, http.</li>
+<li><a href="https://github.com/npm/how-to-npm">How to npm</a> Comment créer des modules Npm</li>
+<li><a href="https://www.github.com/substack/stream-adventure">stream-adventure</a> apprennez les streams et comment les composer avec <code>.pipe()</code>.</li>
+</ul>
+
+
+<h2>Mais il y en a plus.</h2>
+
+<p>On peux apprendre un peu près n&#8217;importe quel technologie en pratique.</p>
+
+<ul>
+<li><a href="https://github.com/timoxley/functional-javascript-workshop">Functional Javascript</a> : Base de la programmation fonctionnelle en javascript.</li>
+<li><a href="https://github.com/azat-co/expressworks">ExpressWorks</a>: Apprendre le framework Express.js.</li>
+<li><a href="https://github.com/stevekane/promise-it-wont-hurt">Promise It Won&rsquo;t Hurt</a>:  Apprendre les promesses pour les opération asynchrone.</li>
+<li><a href="https://github.com/bulkan/async-you">Async</a>:  La librairie Async.</li>
+<li><a href="https://github.com/sporto/planetproto">Planet Proto</a>:  Comprendre l&#8217;héritage prototypal.</li>
+<li><a href="https://github.com/finnp/test-anything">Test Anything</a>:  Comment tester son code</li>
+<li><a href="https://github.com/evanlucas/learnyoumongo">learnyoumongo</a>:  Débuter avec MongoDB et node.js</li>
+<li><a href="https://github.com/gl-modules/shader-school">Shader School</a>:  Comprendre les shaders.</li>
+<li><a href="https://github.com/othiym23/bug-clinic">Bug Clinic</a>:  Apprendre de nouveaux outils et debugger plus facilement.</li>
+<li><a href="https://github.com/alexmackey/IntroToWebGLWithThreeJS">Intro to WebGL</a>:  Débuter avec <a href="">three.js</a> et le WebGL.</li>
+<li><a href="https://github.com/mdunisch/lololodash">LololoDash</a>: Apprendre Lo-Dash (fork de underscore)</li>
+<li><a href="https://github.com/robertkowalski/learnyoucouchdb">learnyoucouchdb</a>:  Apprendre CouchDB.</li>
+<li><a href="https://github.com/tako-black/learnyoureact">learnyoureact</a>:  Apprenez React.js.</li>
+</ul>
+
+
+<h2>Des liens</h2>
+
+<ul>
+<li>le <a href="http://nodeschool.io">site officiel</a> et la version <a href="http://nodeschool.io/fr-fr/">française</a></li>
+<li>J&#8217;ai déjà parlé des <a href="http://mcamuzat.github.io/blog/2015/04/29/awesome-et-liste-de-liens/">awesome-list</a>. bien entendu elle existe pour les <a href="https://github.com/therebelrobot/awesome-workshopper">workshops</a>.</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>Vous voulez apprendre le js, react.js, écrire des tests je crois que vous savez par ou commencer.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Gmail Vim Mêmes Raccourcis]]></title>
@@ -71,9 +351,9 @@
 </ul>
 
 
-<p><img class="center" src="http://mcamuzat.github.io/images/quote.png" width="431" height="174" title="Les marques-pages" alt="la guillement est le pictogramme du marque-page"></p>
+<p><img class="center" src="http://mcamuzat.github.io/images/quote.png" width="431" height="174" title="Le guillement est une pictogramme de marques-pages" alt="le guillemet est le pictogramme du marque-page"></p>
 
-<p>La lettre <code>=</code> est le pictogramme de deux lignes indentées. Duand j&#8217;appuie sur <code>=</code> j&#8217;indente le texte.</p>
+<p>La lettre <code>=</code> est le pictogramme de deux lignes indentées. Quand j&#8217;appuie sur <code>=</code> j&#8217;indente le texte.</p>
 
 <p><img class="center" src="http://mcamuzat.github.io/images/indentation.png" width="600" height="276" title="Indentation" alt="Pour indenter on utilise la touche = "></p>
 
@@ -3353,44 +3633,6 @@ Un jeux video en prosgresSQL pur. Il y a même une histoire. C&#8217;est assez c
 <p>Si vous n&#8217;avez qu&#8217;un seul container docker-compose ne sert pas à grand chose. Mais si vous avez plusieurs containers. Cela ne vaux pas la peine de se priver. Docker-compose contient en fait la liste des container ainsi que leurs configurations si on devait les lancers en la ligne de commande.</p>
 
 <p>Dans le prochain post sur docker, je vais tenter <code>docker-machine</code>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Awesome Et Liste De Liens]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/04/29/awesome-et-liste-de-liens/"/>
-    <updated>2015-04-29T22:15:34+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/04/29/awesome-et-liste-de-liens</id>
-    <content type="html"><![CDATA[<h2>Introduction</h2>
-
-<p>Les développeurs aiment les liens. Il y a toujours un article à partager et/ou sauvegarder. Pour les sauvegarder, Personnelement j&#8217;utilisai un fichier texte ou j&#8217;ajoutai en favori dans mon navigateur (avec plus ou moins de bonheur au moment du changement d&#8217;ordinateur). Des gens ont décidé de versionner leurs listes de liens sur Github.  Cela s&#8217;appelle  <strong>Awesome</strong>-(la techno ou le thème que vous vous voulez)</p>
-
-<p>par exemple:</p>
-
-<ul>
-<li>PHP : <a href="https://github.com/ziadoz/awesome-php">awesome-php</a></li>
-<li>Symfony2 : <a href="https://github.com/EmanueleMinotto/awesome-symfony2">awesome-symfony2</a></li>
-<li>Docker : <a href="https://github.com/veggiemonk/awesome-docker">awesome-docker</a></li>
-<li>Les meilleurs cours en ligne : <a href="https://github.com/prakhar1989/awesome-courses">awesome-courses</a></li>
-<li>React : <a href="https://github.com/enaqx/awesome-react">awesome-react</a></li>
-<li>Sysadmin: <a href="https://github.com/kahun/awesome-sysadmin">awesome-sysadmin</a></li>
-<li>Web Performance Optimization:<a href="https://github.com/davidsonfellipe/awesome-wpo">awesome-wpo</a></li>
-<li>etc ..</li>
-</ul>
-
-
-<h2>Des listes qui contiennent des listes.</h2>
-
-<p>Ben oui la liste est longue. C&#8217;est pour cela qu&#8217;il existe une awesome-list de awesome</p>
-
-<ul>
-<li><a href="https://github.com/bayandin/awesome-awesomeness">awesome-awesomeness</a></li>
-</ul>
-
-
-<h2>Une conclusion</h2>
-
-<p>Si vous cherchez à vous former dans une techno, je crois que vous savez par où commencer.</p>
 ]]></content>
   </entry>
   

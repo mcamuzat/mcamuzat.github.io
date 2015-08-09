@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Javascript | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/javascript/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-08-08T21:07:30+02:00</updated>
+  <updated>2015-08-09T18:24:17+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -14,35 +14,134 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Processing Et Souvenir]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/07/17/processing-et-souvenir/"/>
-    <updated>2015-07-17T22:52:27+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/07/17/processing-et-souvenir</id>
-    <content type="html"><![CDATA[<p><img class="center" src="/images/voiture.png" width="499" height="300" title="&lsquo;Vrooum!!&rsquo; &lsquo;Screenshot du programme avec le micro&rsquo;" ></p>
+    <title type="html"><![CDATA[Workshops De Javascript]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/08/09/workshops-de-javascript/"/>
+    <updated>2015-08-09T16:44:33+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/08/09/workshops-de-javascript</id>
+    <content type="html"><![CDATA[<p><em>Et si on essayait un workshop&hellip;</em></p>
 
-<p>Aujourd&#8217;hui, je ressors un vieux code que j&#8217;avais écris pour le CNAM. Le sujet était faire que l&#8217;image à l&#8217;écran bouge quand on parle dans un microphone. Mais pas d&#8217;animation à la Winamp (j&#8217;ai des vieilles références :-) ou le player de Windows. J&#8217;avais donc programmé une voiture sur un circuit, pour le réalisme j&#8217;avais connecté un Wii-chuck via un Arduino pour faire le volant. Imaginez une personne avec un Wiichuk et un micro en train de faire &ldquo;Vrrrooum&rdquo; et vous aurez un idée de ma soutenance (qui s&#8217;est bien passée d&#8217;ailleurs).</p>
+<p>Les workshops de javascript sont des cours interactifs de javascript.</p>
 
-<p>Les conditions étaient :</p>
+<h2>Installation</h2>
 
-<ul>
-<li>Utiliser un Micro</li>
-<li>La langage imposé est Processing</li>
-</ul>
+<p>Pour installer le cours de Node.js c&#8217;est très simple. A condition d&#8217;avoir node.js installé.</p>
 
-
-<h2>Processing Késako</h2>
-
-<p>Processing est une variante de Java en plus simple. C&#8217;est un langage destiné à faire des oeuvres d&#8217;arts numériques. Il est souvent enseigné en école d&#8217;art. Il vient avec son propre éditeur. à noter que les <a href="https://fr.wikipedia.org/wiki/Arduino">Arduinos</a> se programment aussi en processing.</p>
-
-<p><img class="center" src="/images/processing.png" width="499" height="533" title="&lsquo;Processing&rsquo; &lsquo;Screenshot de processing avec son interface&rsquo;" ></p>
-
-<p>Il suffit d&#8217;implémenter deux méthodes :</p>
-
-<pre><code>void setup() // sera appelé à l'initialisation
-void draw() // sera appellé 30 à 50 fois par seconde
+<pre><code>npm install -g learnyounode
+learnyounode
 </code></pre>
 
-<p>Un exemple très simple
+<p>Voila ce que vous devriez voir.</p>
+
+<p><img class="center" src="/images/workshop.png" width="585" height="397" title="&lsquo;screenshot de workshop&rsquo; &lsquo;On a un menu interactif&rsquo;" ></p>
+
+<p>Lançons nous dans le premier exercice.</p>
+
+<pre><code>
+ LEARN YOU THE NODE.JS FOR MUCH WIN!
+─────────────────────────────────────
+ HELLO WORLD
+ Exercise 1 of 13
+
+Write a program that prints the text "HELLO WORLD" to the console (stdout).
+
+-------------------------------------------------------------------------------
+
+## HINTS
+
+To make a Node.js program, create a new file with a .js extension and start writing JavaScript! Execute your program by running it with the
+node command. e.g.:
+
+    $ node program.js
+
+You can write to the console in the same way as in the browser:
+
+    console.log("text")
+
+When you are done, you must run:
+
+    $ learnyounode verify program.js
+
+to proceed. Your program will be tested, a report will be generated, and the lesson will be marked 'completed' if you are successful.
+
+-------------------------------------------------------------------------------
+
+ » To print these instructions again, run: learnyounode print
+ » To execute your program in a test environment, run: learnyounode run program.js
+ » To verify your program, run: learnyounode verify program.js
+ » For help run: learnyounode help
+</code></pre>
+
+<p>donc je resume on me demande de programmer un **Hello world&#8221;.</p>
+
+<p>donc je crée un <code>hello.js</code></p>
+
+<pre><code class="js">console.log('HELLO WORLD');
+</code></pre>
+
+<p>Je peux tester celui-ci avec un programme de test avec la commande suivante
+<code>sh
+$ learnyounode run hello.js
+</code></p>
+
+<p>Si je suis content du résultat alors je peux faire vérifier le programme par le logiciel.</p>
+
+<pre><code class="sh">$ learnyounode verify program.js
+</code></pre>
+
+<p>Si le programme passe, le niveau est marquer comme <code>[COMPLETED]</code> et on peux passer au suivant.</p>
+
+<p>Bon l&#8217;étape 1 n&#8217;est pas très compliqué passons à l&#8217;étape 2.</p>
+
+<pre><code> LEARN YOU THE NODE.JS FOR MUCH WIN!
+─────────────────────────────────────
+ BABY STEPS
+ Exercise 2 of 13
+
+Write a program that accepts one or more numbers as command-line arguments and prints the sum of those numbers to the console (stdout).
+
+-------------------------------------------------------------------------------
+
+## HINTS
+
+You can access command-line arguments via the global process object. The process object has an argv property which is an array containing the complete command-line. i.e. process.argv.
+
+To get started, write a program that simply contains:
+
+    console.log(process.argv)
+
+Run it with node program.js and some numbers as arguments. e.g:
+
+    $ node program.js 1 2 3
+
+In which case the output would be an array looking something like:
+
+    [ 'node', '/path/to/your/program.js', '1', '2', '3' ]
+
+You'll need to think about how to loop through the number arguments so  you can output just their sum. The first element of the process.argv array is always 'node', and the second element is always the path to your program.js file, so you need to start at the 3rd element (index 2), adding each item to the total until you reach the end of the array.
+
+Also be aware that all elements of process.argv are strings and you may need to coerce them into numbers. You can do this by prefixing the property with + or passing it to Number(). e.g. +process.argv[2] or Number(process.argv[2]).
+
+learnyounode will be supplying arguments to your program when you run learnyounode verify program.js so you don't need to supply them yourself. To test your program without verifying it, you can invoke it with learnyounode run program.js. When you use run, you are invoking the test environment that learnyounode sets up for each exercise.
+
+-------------------------------------------------------------------------------
+
+ » To print these instructions again, run: learnyounode print
+ » To execute your program in a test environment, run: learnyounode run program.js
+ » To verify your program, run: learnyounode verify program.js
+ » For help run: learnyounode help
+</code></pre>
+
+<p>Donc il s&#8217;agit de créer un programme qui prend les nombres en entrée et faire la somme à la fin.</p>
+
+<p>Voici ma solution (atroce &hellip; )</p>
+
+<pre><code class="js">var i = process.argv;
+i.shift(); 
+i.shift();// supprime les deux premiers arguments ('node', 'programme.js')
+console.log(i.reduce(function(a,b){return a + Number(b)},0));
+</code></pre>
+
+<p>Le logiciel donne une implémentation beaucoup plus simple(pas difficile)
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
@@ -58,22 +157,190 @@ void draw() // sera appellé 30 à 50 fois par seconde
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
 <span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="n">size</span><span class="o">(</span><span class="mi">640</span><span class="o">,</span> <span class="mi">360</span><span class="o">);</span> <span class="c1">//j&#39;initialise la taille 640*</span>
-</span><span class='line'>  <span class="n">stroke</span><span class="o">(</span><span class="mi">255</span><span class="o">);</span> <span class="c1">// le trait est blanc</span>
-</span><span class='line'>  <span class="n">fill</span><span class="o">(</span><span class="mi">255</span><span class="o">);</span> <span class="c1">// remplissage de blanc</span>
-</span><span class='line'>  <span class="n">background</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span> <span class="c1">// couleur de fond blanche&lt;/p&gt;</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>   <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="mi">0</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span> <span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">result</span> <span class="o">+=</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kt">void</span> <span class="nf">draw</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="c1">// si la souris est appuyer</span>
-</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">mousePressed</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>     <span class="c1">// ellipse x, y ,hauteur, largeur</span>
-</span><span class='line'>    <span class="n">ellipse</span><span class="o">(</span><span class="n">mouseX</span><span class="o">,</span> <span class="n">mouseY</span><span class="o">,</span> <span class="mi">5</span><span class="o">,</span> <span class="mi">5</span><span class="o">);</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="err">```</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">Etc</span> <span class="nx">etc</span> <span class="p">..</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">h2</span><span class="o">&gt;</span><span class="nx">Une</span> <span class="nx">liste</span> <span class="nx">de</span> <span class="nx">workshop</span><span class="p">.</span><span class="o">&lt;</span><span class="err">/h2&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">Le</span> <span class="nx">site</span> <span class="nx">officiel</span> <span class="nx">donne</span> <span class="nx">la</span> <span class="nx">liste</span> <span class="nx">suivante</span> <span class="nx">en</span> <span class="nx">module</span> <span class="nx">de</span> <span class="nx">base</span><span class="p">.</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">ul</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;https://www.github.com/sethvincent/javascripting&quot;</span><span class="o">&gt;</span><span class="nx">javascripting</span><span class="o">&lt;</span><span class="err">/a&gt; Apprendre les bases du javascript.&lt;/li&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;https://www.github.com/jlord/git-it&quot;</span><span class="o">&gt;</span><span class="nx">git</span><span class="o">-</span><span class="nx">it</span><span class="o">&lt;</span><span class="err">/a&gt; pour apprendre Git et GitHub.&lt;/li&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;https://www.github.com/jesstelford/scope-chains-closures&quot;</span><span class="o">&gt;</span><span class="nx">Scope</span> <span class="nx">Chains</span> <span class="o">&amp;</span><span class="nx">amp</span><span class="p">;</span> <span class="nx">Closures</span><span class="o">&lt;</span><span class="err">/a&gt; Comprendre les scopes, les closures etc..&lt;/li&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;https://www.github.com/workshopper/learnyounode&quot;</span><span class="o">&gt;</span><span class="nx">learnyounode</span><span class="o">&lt;</span><span class="err">/a&gt; les bases de node asynchronous i/o, http.&lt;/li&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;https://github.com/npm/how-to-npm&quot;</span><span class="o">&gt;</span><span class="nx">How</span> <span class="nx">to</span> <span class="nx">npm</span><span class="o">&lt;</span><span class="err">/a&gt; Comment créer des modules Npm&lt;/li&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;https://www.github.com/substack/stream-adventure&quot;</span><span class="o">&gt;</span><span class="nx">stream</span><span class="o">-</span><span class="nx">adventure</span><span class="o">&lt;</span><span class="err">/a&gt; apprennez les streams et comment les composer avec &lt;code&gt;.pipe()&lt;/code&gt;.&lt;/li&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/ul&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">h2</span><span class="o">&gt;</span><span class="nx">Mais</span> <span class="nx">il</span> <span class="nx">y</span> <span class="nx">en</span> <span class="nx">a</span> <span class="nx">plus</span><span class="p">.</span><span class="o">&lt;</span><span class="err">/h2&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">On</span> <span class="nx">peux</span> <span class="nx">apprendre</span> <span class="nx">un</span> <span class="nx">peu</span> <span class="nx">pr</span><span class="err">è</span><span class="nx">s</span> <span class="nx">n</span><span class="s1">&#39;importe quel technologie en pratique.&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">&lt;ul&gt;</span>
+</span><span class='line'><span class="s1">&lt;li&gt;&lt;a href=&quot;https://github.com/timoxley/functional-javascript-workshop&quot;&gt;Functional Javascript&lt;/a&gt; : Base de la programmation fonctionnelle en javascript.&lt;/li&gt;</span>
+</span><span class='line'><span class="s1">&lt;li&gt;&lt;a href=&quot;https://github.com/azat-co/expressworks&quot;&gt;ExpressWorks&lt;/a&gt;: Apprendre le framework Express.js.&lt;/li&gt;</span>
+</span><span class='line'><span class="s1">&lt;li&gt;&lt;a href=&quot;https://github.com/stevekane/promise-it-wont-hurt&quot;&gt;Promise It Won&amp;rsquo;t Hurt&lt;/a&gt;:  Apprendre les promesses pour les opération asynchrone.&lt;/li&gt;</span>
+</span><span class='line'><span class="s1">&lt;li&gt;&lt;a href=&quot;https://github.com/bulkan/async-you&quot;&gt;Async&lt;/a&gt;:  La librairie Async.&lt;/li&gt;</span>
+</span><span class='line'><span class="s1">&lt;li&gt;&lt;a href=&quot;https://github.com/sporto/planetproto&quot;&gt;Planet Proto&lt;/a&gt;:  Comprendre l&#39;</span><span class="nx">h</span><span class="err">é</span><span class="nx">ritage</span> <span class="nx">prototypal</span><span class="p">.</span><span class="o">&lt;</span><span class="err">/li&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;https://github.com/finnp/test-anything&quot;</span><span class="o">&gt;</span><span class="nx">Test</span> <span class="nx">Anything</span><span class="o">&lt;</span><span class="err">/a&gt;:  Comment tester son code&lt;/li&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;https://github.com/evanlucas/learnyoumongo&quot;</span><span class="o">&gt;</span><span class="nx">learnyoumongo</span><span class="o">&lt;</span><span class="err">/a&gt;:  Débuter avec MongoDB et node.js&lt;/li&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;https://github.com/gl-modules/shader-school&quot;</span><span class="o">&gt;</span><span class="nx">Shader</span> <span class="nx">School</span><span class="o">&lt;</span><span class="err">/a&gt;:  Comprendre les shaders.&lt;/li&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;https://github.com/othiym23/bug-clinic&quot;</span><span class="o">&gt;</span><span class="nx">Bug</span> <span class="nx">Clinic</span><span class="o">&lt;</span><span class="err">/a&gt;:  Apprendre de nouveaux outils et debugger plus facilement.&lt;/li&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;https://github.com/alexmackey/IntroToWebGLWithThreeJS&quot;</span><span class="o">&gt;</span><span class="nx">Intro</span> <span class="nx">to</span> <span class="nx">WebGL</span><span class="o">&lt;</span><span class="err">/a&gt;:  Débuter avec &lt;a href=&quot;&quot;&gt;three.js&lt;/a&gt; et le WebGL.&lt;/li&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;https://github.com/mdunisch/lololodash&quot;</span><span class="o">&gt;</span><span class="nx">LololoDash</span><span class="o">&lt;</span><span class="err">/a&gt;: Apprendre Lo-Dash (fork de underscore)&lt;/li&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;https://github.com/robertkowalski/learnyoucouchdb&quot;</span><span class="o">&gt;</span><span class="nx">learnyoucouchdb</span><span class="o">&lt;</span><span class="err">/a&gt;:  Apprendre CouchDB.&lt;/li&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;https://github.com/tako-black/learnyoureact&quot;</span><span class="o">&gt;</span><span class="nx">learnyoureact</span><span class="o">&lt;</span><span class="err">/a&gt;:  Apprenez React.js.&lt;/li&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/ul&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">h2</span><span class="o">&gt;</span><span class="nx">Des</span> <span class="nx">liens</span><span class="o">&lt;</span><span class="err">/h2&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">ul</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;</span><span class="nx">le</span> <span class="o">&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;http://nodeschool.io&quot;</span><span class="o">&gt;</span><span class="nx">site</span> <span class="nx">officiel</span><span class="o">&lt;</span><span class="sr">/a&gt; et la version &lt;a href=&quot;http:/</span><span class="o">/</span><span class="nx">nodeschool</span><span class="p">.</span><span class="nx">io</span><span class="o">/</span><span class="nx">fr</span><span class="o">-</span><span class="nx">fr</span><span class="o">/</span><span class="s2">&quot;&gt;française&lt;/a&gt;&lt;/li&gt;</span>
+</span><span class='line'><span class="s2">&lt;li&gt;J&#39;ai déjà parlé des &lt;a href=&quot;</span><span class="o">/</span><span class="nx">blog</span><span class="o">/</span><span class="mi">2015</span><span class="o">/</span><span class="mi">04</span><span class="o">/</span><span class="mi">29</span><span class="o">/</span><span class="nx">awesome</span><span class="o">-</span><span class="nx">et</span><span class="o">-</span><span class="nx">liste</span><span class="o">-</span><span class="nx">de</span><span class="o">-</span><span class="nx">liens</span><span class="o">/</span><span class="s2">&quot;&gt;awesome-list&lt;/a&gt;. bien entendu elle existe pour les &lt;a href=&quot;</span><span class="nx">https</span><span class="o">:</span><span class="c1">//github.com/therebelrobot/awesome-workshopper&quot;&gt;workshops&lt;/a&gt;.&lt;/li&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/ul&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">h2</span><span class="o">&gt;</span><span class="nx">Conclusion</span><span class="o">&lt;</span><span class="err">/h2&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">Vous</span> <span class="nx">voulez</span> <span class="nx">apprendre</span> <span class="nx">le</span> <span class="nx">js</span><span class="p">,</span> <span class="nx">react</span><span class="p">.</span><span class="nx">js</span><span class="p">,</span> <span class="err">é</span><span class="nx">crire</span> <span class="nx">des</span> <span class="nx">tests</span> <span class="nx">je</span> <span class="nx">crois</span> <span class="nx">que</span> <span class="nx">vous</span> <span class="nx">savez</span> <span class="nx">par</span> <span class="nx">ou</span> <span class="nx">commencer</span><span class="p">.</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'><span class="p">]]</span><span class="o">&gt;&lt;</span><span class="err">/content&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="err">/entry&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="o">&lt;</span><span class="nx">entry</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="nx">title</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;html&quot;</span><span class="o">&gt;&lt;!</span><span class="p">[</span><span class="nx">CDATA</span><span class="p">[</span><span class="nx">Processing</span> <span class="nx">Et</span> <span class="nx">Souvenir</span><span class="p">]]</span><span class="o">&gt;&lt;</span><span class="err">/title&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="nx">link</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;http://mcamuzat.github.io/blog/2015/07/17/processing-et-souvenir/&quot;</span><span class="o">/&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="nx">updated</span><span class="o">&gt;</span><span class="mi">2015</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">17</span><span class="nx">T22</span><span class="o">:</span><span class="mi">52</span><span class="o">:</span><span class="mi">27</span><span class="o">+</span><span class="mi">02</span><span class="o">:</span><span class="mi">00</span><span class="o">&lt;</span><span class="err">/updated&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="nx">id</span><span class="o">&gt;</span><span class="nx">http</span><span class="o">:</span><span class="c1">//mcamuzat.github.io/blog/2015/07/17/processing-et-souvenir&lt;/id&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="nx">content</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;html&quot;</span><span class="o">&gt;&lt;!</span><span class="p">[</span><span class="nx">CDATA</span><span class="p">[</span><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">{</span><span class="o">%</span> <span class="nx">img</span> <span class="nx">center</span> <span class="o">/</span><span class="nx">images</span><span class="o">/</span><span class="nx">voiture</span><span class="p">.</span><span class="nx">png</span> <span class="mi">499</span> <span class="mi">300</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">Vrooum</span><span class="o">!!&amp;</span><span class="nx">rsquo</span><span class="p">;</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">Screenshot</span> <span class="nx">du</span> <span class="nx">programme</span> <span class="nx">avec</span> <span class="nx">le</span> <span class="nx">micro</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;</span> <span class="o">%</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">Aujourd</span><span class="s1">&#39;hui, je ressors un vieux code que j&#39;</span><span class="nx">avais</span> <span class="err">é</span><span class="nx">cris</span> <span class="nx">pour</span> <span class="nx">le</span> <span class="nx">CNAM</span><span class="p">.</span> <span class="nx">Le</span> <span class="nx">sujet</span> <span class="err">é</span><span class="nx">tait</span> <span class="nx">faire</span> <span class="nx">que</span> <span class="nx">l</span><span class="s1">&#39;image à l&#39;</span><span class="err">é</span><span class="nx">cran</span> <span class="nx">bouge</span> <span class="nx">quand</span> <span class="nx">on</span> <span class="nx">parle</span> <span class="nx">dans</span> <span class="nx">un</span> <span class="nx">microphone</span><span class="p">.</span> <span class="nx">Mais</span> <span class="nx">pas</span> <span class="nx">d</span><span class="s1">&#39;animation à la Winamp (j&#39;</span><span class="nx">ai</span> <span class="nx">des</span> <span class="nx">vieilles</span> <span class="nx">r</span><span class="err">é</span><span class="nx">f</span><span class="err">é</span><span class="nx">rences</span> <span class="o">:-</span><span class="p">)</span> <span class="nx">ou</span> <span class="nx">le</span> <span class="nx">player</span> <span class="nx">de</span> <span class="nx">Windows</span><span class="p">.</span> <span class="nx">J</span><span class="s1">&#39;avais donc programmé une voiture sur un circuit, pour le réalisme j&#39;</span><span class="nx">avais</span> <span class="nx">connect</span><span class="err">é</span> <span class="nx">un</span> <span class="nx">Wii</span><span class="o">-</span><span class="nx">chuck</span> <span class="nx">via</span> <span class="nx">un</span> <span class="nx">Arduino</span> <span class="nx">pour</span> <span class="nx">faire</span> <span class="nx">le</span> <span class="nx">volant</span><span class="p">.</span> <span class="nx">Imaginez</span> <span class="nx">une</span> <span class="nx">personne</span> <span class="nx">avec</span> <span class="nx">un</span> <span class="nx">Wiichuk</span> <span class="nx">et</span> <span class="nx">un</span> <span class="nx">micro</span> <span class="nx">en</span> <span class="nx">train</span> <span class="nx">de</span> <span class="nx">faire</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">Vrrrooum</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;</span> <span class="nx">et</span> <span class="nx">vous</span> <span class="nx">aurez</span> <span class="nx">un</span> <span class="nx">id</span><span class="err">é</span><span class="nx">e</span> <span class="nx">de</span> <span class="nx">ma</span> <span class="nx">soutenance</span> <span class="p">(</span><span class="nx">qui</span> <span class="nx">s</span><span class="s1">&#39;est bien passée d&#39;</span><span class="nx">ailleurs</span><span class="p">).</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">Les</span> <span class="nx">conditions</span> <span class="err">é</span><span class="nx">taient</span> <span class="o">:&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">ul</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;</span><span class="nx">Utiliser</span> <span class="nx">un</span> <span class="nx">Micro</span><span class="o">&lt;</span><span class="err">/li&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;</span><span class="nx">La</span> <span class="nx">langage</span> <span class="nx">impos</span><span class="err">é</span> <span class="nx">est</span> <span class="nx">Processing</span><span class="o">&lt;</span><span class="err">/li&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/ul&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">h2</span><span class="o">&gt;</span><span class="nx">Processing</span> <span class="nx">K</span><span class="err">é</span><span class="nx">sako</span><span class="o">&lt;</span><span class="err">/h2&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">Processing</span> <span class="nx">est</span> <span class="nx">une</span> <span class="nx">variante</span> <span class="nx">de</span> <span class="nx">Java</span> <span class="nx">en</span> <span class="nx">plus</span> <span class="nx">simple</span><span class="p">.</span> <span class="nx">C</span><span class="s1">&#39;est un langage destiné à faire des oeuvres d&#39;</span><span class="nx">arts</span> <span class="nx">num</span><span class="err">é</span><span class="nx">riques</span><span class="p">.</span> <span class="nx">Il</span> <span class="nx">est</span> <span class="nx">souvent</span> <span class="nx">enseign</span><span class="err">é</span> <span class="nx">en</span> <span class="err">é</span><span class="nx">cole</span> <span class="nx">d</span><span class="s1">&#39;art. Il vient avec son propre éditeur. à noter que les &lt;a href=&quot;https://fr.wikipedia.org/wiki/Arduino&quot;&gt;Arduinos&lt;/a&gt; se programment aussi en processing.&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">&lt;p&gt;<img class="center" src="/images/processing.png" width="499" height="533" title="&amp;lsquo;Processing&amp;rsquo; &amp;lsquo;Screenshot de processing avec son interface&amp;rsquo;" >&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">&lt;p&gt;Il suffit d&#39;</span><span class="nx">impl</span><span class="err">é</span><span class="nx">menter</span> <span class="nx">deux</span> <span class="nx">m</span><span class="err">é</span><span class="nx">thodes</span> <span class="o">:&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">void</span> <span class="nx">setup</span><span class="p">()</span> <span class="c1">// sera appelé à l&#39;initialisation</span>
+</span><span class='line'><span class="k">void</span> <span class="nx">draw</span><span class="p">()</span> <span class="c1">// sera appellé 30 à 50 fois par seconde</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">Un</span> <span class="nx">exemple</span> <span class="nx">tr</span><span class="err">è</span><span class="nx">s</span> <span class="nx">simple</span>
+</span></code></pre></td></tr></table></div></figure> java
+void setup() {
+  size(640, 360); //j&#8217;initialise la taille 640*
+  stroke(255); // le trait est blanc
+  fill(255); // remplissage de blanc
+  background(0); // couleur de fond blanche</p>
+
+<p>}</p>
+
+<p>void draw() {
+  // si la souris est appuyer
+  if (mousePressed) {
+     // ellipse x, y ,hauteur, largeur
+    ellipse(mouseX, mouseY, 5, 5);
+  }
+}
+&#8220;`</p>
 
 <p>Appuyez sur la touche play</p>
 
