@@ -50,9 +50,9 @@ Je n'ai encore jamais parlé des marques pages sous vi pour faire simple
  * Re-deplacez vous et appuyer sur `m` puis `b`.
  * tapez `'a` vous ramene ou point a et `'b` au point b, `d'a` (effacer jusqu'au marque-page a) 
 
-{% img center /images/quote.png 431 174 'Les marques-pages' 'la guillement est le pictogramme du marque-page' %}
+{% img center /images/quote.png 431 174 'Le guillement est une pictogramme de marques-pages' 'le guillemet est le pictogramme du marque-page' %}
 
-La lettre `=` est le pictogramme de deux lignes indentées. Duand j'appuie sur `=` j'indente le texte.
+La lettre `=` est le pictogramme de deux lignes indentées. Quand j'appuie sur `=` j'indente le texte.
 
 {% img center /images/indentation.png 600 276 'Indentation' 'Pour indenter on utilise la touche = ' %}
 
