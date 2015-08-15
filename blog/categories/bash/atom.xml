@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Bash | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/bash/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-08-09T18:24:17+02:00</updated>
+  <updated>2015-08-15T23:07:17+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,74 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Git Un Peu De Fun]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/08/15/git-un-peu-de-fun/"/>
+    <updated>2015-08-15T21:35:25+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/08/15/git-un-peu-de-fun</id>
+    <content type="html"><![CDATA[<p>Il est possible de faire des commits qui clignotent avec la commande suivante.</p>
+
+<pre><code class="sh">git commit --all-empty -m "^[[5m Bonjour ^[[0"
+</code></pre>
+
+<p><strong>Attention</strong> le caractère <code>^[</code> est la touche <code>Escape</code> (on parle de caractère d&#8217;échappement). Il n&#8217;est pas très simple à taper. Il faut appuyer sur <code>Ctrl+v</code> puis <code>&lt;ESC&gt;</code></p>
+
+<p>Bienvenue dans le monde du terminal et du ANSI. Il existe de véritable oeuvre d&#8217;art juste en mode texte. Et dans le temps les fichiers pirates contenaient souvent des fichiers textes avec Logo et présentation de la team.</p>
+
+<p>On peut rajouter des trucs plus rigolos</p>
+
+<pre><code class="sh">git commit --allow-empty -F &lt;(curl https://raw.githubusercontent.com/thiderman/doge/master/doge/static/doge.txt)
+</code></pre>
+
+<h2>Tout les terminaux ne sont pas égaux.</h2>
+
+<p>Voici un gif animé de mes commits</p>
+
+<p>{% img center /images/outgnome.gif 554 410 &lsquo;So meme&rsquo; &lsquo;So meme&rsquo; %}</p>
+
+<p>Cela ne clignote pas beaucoup sur <code>gnometerminal</code> essayons avec  Xterm</p>
+
+<p>{% img center /images/outxterm.gif 585 397 &lsquo;Gif animé&rsquo; &lsquo;On a un menu interactif&rsquo; %}</p>
+
+<p>C&#8217;est un peu mieux.</p>
+
+<h2>Mais peux-ton commiter si on a rien à commiter</h2>
+
+<p>Avec la commande <code>--allow-empty</code> c&#8217;est parfaitement possible.</p>
+
+<p>Mais a quoi cela sert ?</p>
+
+<ul>
+<li>A mettre des annotations</li>
+<li>A distinguer différentes parties</li>
+</ul>
+
+
+<h2>On se connait et paranoia ?</h2>
+
+<p>Dans une ligne de commande (aucun danger).
+<code>
+ssh whoami.filippo.io
+</code></p>
+
+<p>Le résultat est surprenant. Le logiciel me reconnait immédiatement (nom et prénom).</p>
+
+<p>{% img center /images/clesssh.png 600 392 &lsquo;Je ne donne aucun login, pourtant le logiciel me reconnait&rsquo; &lsquo;On se connait&rsquo; %}</p>
+
+<p>Tout cela vient du fait que lorsque on se connecte en ssh, on envoie toujours sa clé publique.. Et la clé publique de mon ordinateur est connue, car je l&#8217;utilise pour me connecter sur github, pour éviter de renseigner à chaque fois mon mot de passe des que je commite. D&#8217;ailleurs votre clé publique est ici en <code>https://github.com/&lt;mon.compte&gt;.keys</code></p>
+
+<h2>Conclusion</h2>
+
+<ul>
+<li>Le contenu vient d&#8217;un post sur <a href="https://news.ycombinator.com/item?id=10058967">hacker-news</a>.</li>
+<li>pour le ANSI il y a des exemples magnifique sur <a href="http://blocktronics.org/">blocktronics</a> et aussi <a href="http://sixteencolors.net/">sixteencolors</a></li>
+</ul>
+
+
+<p>Voici quelques utilisations de git, cela ne sert pas à grand chose on est d&#8217;accord..</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Histogramme Et Ligne De Commande]]></title>
@@ -86,16 +154,13 @@ while (!feof(STDIN)) {
 chmod +x htmlentities.php
 </code>
 Des exemples
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ echo &lsquo;énergie&rsquo; | ./htmlentities.php&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;&eacute;nergie&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;$ cat file.txt | ./htmlentities</span></code></pre></td></tr></table></div></figure></p>
+&#8220;`
+$ echo &lsquo;énergie&rsquo; | ./htmlentities.php</p>
+
+<p>&eacute;nergie</p>
+
+<p>$ cat file.txt | ./htmlentities
+&#8220;`</p>
 
 <p>Ce qui est cool c&#8217;est que l&#8217;on peux chainer les opérateur.</p>
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Xdebug | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/xdebug/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-08-09T18:24:17+02:00</updated>
+  <updated>2015-08-15T23:07:17+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -101,7 +101,7 @@ Il y a des plugins Firefox et Chrome qui s&#8217;occupe de cela.</p>
 
 <h3>Liste des raccourcis claviers</h3>
 
-<p><img class="center" src="/images/VDebug.png" width="600" height="375" title="&lsquo;Vdebug&rsquo; &lsquo;Screenshot de VDebug&rsquo;" ></p>
+<p>{% img center /images/VDebug.png 600 375 &lsquo;Vdebug&rsquo; &lsquo;Screenshot de VDebug&rsquo; %}</p>
 
 <ul>
 <li><code>&lt;F5&gt;</code>: start/run (to next breakpoint/end of script)</li>
@@ -141,7 +141,7 @@ Il y a des plugins Firefox et Chrome qui s&#8217;occupe de cela.</p>
 
 <h2>DBGPavim</h2>
 
-<p><img class="center" src="/images/DBGPAVIM.png" width="600" height="375" title="&lsquo;DBGPavim&rsquo; &lsquo;Screenshot de DBGPavim&rsquo;" ></p>
+<p>{% img center /images/DBGPAVIM.png 600 375 &lsquo;DBGPavim&rsquo; &lsquo;Screenshot de DBGPavim&rsquo; %}</p>
 
 <p>Ce plugin résout les deux problèmes de Vdebug (aucune limitation de temps, démarre au premier point d&#8217;arrêt). Je le trouve moins intuitif. Mais il est visiblement plus puissant, il gère plusieurs sessions.</p>
 
@@ -170,28 +170,22 @@ git submodule add git://github.com/brookhong/DBGPavim.git bundle/DBGPavim
 <p>Ajouter cette ligne à votre <code>.vimrc</code></p>
 
 <p>par <a href="https://github.com/gmarik/Vundle.vim">Vundle</a>
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Bundle &ldquo;joonty/vdebug&rdquo;&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;ou&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Bundle &lsquo;brookhong/DBGPavim&rsquo;</span></code></pre></td></tr></table></div></figure></p>
+&#8220;`
+Bundle &ldquo;joonty/vdebug&rdquo;</p>
+
+<h1>ou</h1>
+
+<p>Bundle &lsquo;brookhong/DBGPavim&rsquo;
+&#8220;`</p>
 
 <p>par <a href="https://github.com/Shougo/neobundle.vim">NeoBundle</a> :
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>NeoBundle &ldquo;joonty/vdebug&rdquo;&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;ou&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;NeoBundle &lsquo;brookhong/DBGPavim&rsquo;</span></code></pre></td></tr></table></div></figure></p>
+&#8220;`
+NeoBundle &ldquo;joonty/vdebug&rdquo;</p>
+
+<h1>ou</h1>
+
+<p>NeoBundle &lsquo;brookhong/DBGPavim&rsquo;
+&#8220;`</p>
 
 <h2>En conclusion</h2>
 

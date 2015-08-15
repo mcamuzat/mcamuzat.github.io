@@ -4,7 +4,7 @@
   <title><![CDATA[Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-08-09T18:24:17+02:00</updated>
+  <updated>2015-08-15T23:01:59+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,82 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Git Un Peu De Fun]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/08/15/git-un-peu-de-fun/"/>
+    <updated>2015-08-15T21:35:25+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/08/15/git-un-peu-de-fun</id>
+    <content type="html"><![CDATA[<p>Il est possible de faire des commits qui clignotent avec la commande suivante.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git commit --all-empty -m <span class="s2">&quot;^[[5m Bonjour ^[[0&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Attention</strong> le caractère <code>^[</code> est la touche <code>Escape</code> (on parle de caractère d&#8217;échappement). Il n&#8217;est pas très simple à taper. Il faut appuyer sur <code>Ctrl+v</code> puis <code>&lt;ESC&gt;</code></p>
+
+<p>Bienvenue dans le monde du terminal et du ANSI. Il existe de véritable oeuvre d&#8217;art juste en mode texte. Et dans le temps les fichiers pirates contenaient souvent des fichiers textes avec Logo et présentation de la team.</p>
+
+<p>On peut rajouter des trucs plus rigolos</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git commit --allow-empty -F &lt;<span class="o">(</span>curl https://raw.githubusercontent.com/thiderman/doge/master/doge/static/doge.txt<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Tout les terminaux ne sont pas égaux.</h2>
+
+<p>Voici un gif animé de mes commits</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/outgnome.gif" width="554" height="410" title="So meme" alt="So meme"></p>
+
+<p>Cela ne clignote pas beaucoup sur <code>gnometerminal</code> essayons avec  Xterm</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/outxterm.gif" width="585" height="397" title="Gif animé" alt="On a un menu interactif"></p>
+
+<p>C&#8217;est un peu mieux.</p>
+
+<h2>Mais peux-ton commiter si on a rien à commiter</h2>
+
+<p>Avec la commande <code>--allow-empty</code> c&#8217;est parfaitement possible.</p>
+
+<p>Mais a quoi cela sert ?</p>
+
+<ul>
+<li>A mettre des annotations</li>
+<li>A distinguer différentes parties</li>
+</ul>
+
+
+<h2>On se connait et paranoia ?</h2>
+
+<p>Dans une ligne de commande (aucun danger).</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>ssh whoami.filippo.io
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>Le résultat est surprenant. Le logiciel me reconnait immédiatement (nom et prénom).</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/clesssh.png" width="600" height="392" title="Je ne donne aucun login, pourtant le logiciel me reconnait" alt="On se connait"></p>
+
+<p>Tout cela vient du fait que lorsque on se connecte en ssh, on envoie toujours sa clé publique.. Et la clé publique de mon ordinateur est connue, car je l&#8217;utilise pour me connecter sur github, pour éviter de renseigner à chaque fois mon mot de passe des que je commite. D&#8217;ailleurs votre clé publique est ici en <code>https://github.com/&lt;mon.compte&gt;.keys</code></p>
+
+<h2>Conclusion</h2>
+
+<ul>
+<li>Le contenu vient d&#8217;un post sur <a href="https://news.ycombinator.com/item?id=10058967">hacker-news</a>.</li>
+<li>pour le ANSI il y a des exemples magnifique sur <a href="http://blocktronics.org/">blocktronics</a> et aussi <a href="http://sixteencolors.net/">sixteencolors</a></li>
+</ul>
+
+
+<p>Voici quelques utilisations de git, cela ne sert pas à grand chose on est d&#8217;accord..</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Workshops De Javascript]]></title>
@@ -3498,141 +3574,6 @@ Un jeux video en prosgresSQL pur. Il y a même une histoire. C&#8217;est assez c
 <p>j&#8217;ai vraiment beaucoup aimé et joué à <a href="http://alexnisnevich.github.io/untrusted/">untrusted</a> et <a href="https://www.bloc.io/ruby-warrior#/">ruby-warrior</a></p>
 
 <p>J&#8217;ai probablement oublié d&#8217;autres jeux.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Docker-compose]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/05/03/docker-compose/"/>
-    <updated>2015-05-03T21:33:31+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/05/03/docker-compose</id>
-    <content type="html"><![CDATA[<h2>Docker-compose</h2>
-
-<p>Dans le post précèdent sur docker, j&#8217;avais expliqué comment automatiser la création des containers grâce au <code>Dockerfile</code> aujourd&#8217;hui je vais expliquer <code>docker-compose</code></p>
-
-<h2>Intro.</h2>
-
-<p>Dans un projet, il n&#8217;y a rarement qu&#8217;une seule instance. Voir il peut y avoir plusieurs fronts et une seule base de donnée. docker-compose est la justement pour organiser cela.</p>
-
-<p>Par exemple le <code>docker-compose.yml</code> suivant:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">web</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">php:5.6-apache</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">links</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">db:db</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">volumes</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">.:/var/www/html</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">db</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">postgres</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On déclare deux type de containers le container type <strong>web</strong> et le container de type <strong>db</strong>. à noter la ligne <code>links</code> qui fait que le container web partage/vois le container db</p>
-
-<p>Il suffit de faire <code>docker-compose up</code> (comme un <code>vagrant up</code>)  pour automatiquement lancer deux containers. un container web avec une image php-5.6, et un container avec PostGresSQL</p>
-
-<h2>Installation</h2>
-
-<p>Il existe deux façons de l&#8217;installer soit passer par <code>pip</code> (pip est l&#8217;équivalent de <code>npm</code> pour le python).</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo pip install -U docker-compose
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Ou de passer par curl</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>curl -L https://github.com/docker/compose/releases/download/1.2.0/docker-compose-<span class="sb">`</span>uname -s<span class="sb">`</span>-<span class="sb">`</span>uname -m<span class="sb">`</span> &gt; /usr/local/bin/docker-compose
-</span><span class='line'>chmod +x /usr/local/bin/docker-compose
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Quelques commandes</h2>
-
-<p>Lancer les containers en mode démon (<code>-d</code>)</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker-compose up -d
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Cela crée deux containers</p>
-
-<p>Que l&#8217;on peux surveiller grâce à la commande suivante</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker-compose ps
-</span><span class='line'>    Name                   Command               State    Ports
-</span><span class='line'>-----------------------------------------------------------------
-</span><span class='line'>compose_db_1    /docker-entrypoint.sh postgres   Up      5432/tcp
-</span><span class='line'>compose_web_1   apache2-foreground               Up      80/tcp
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On peux voir les logs</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker-compose logs
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Plus intéressant on peux rajouter des containers..</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker-compose scale <span class="nv">web</span><span class="o">=</span>3
-</span><span class='line'>Creating compose_web_2...
-</span><span class='line'>Creating compose_web_3...
-</span><span class='line'>Starting compose_web_2...
-</span><span class='line'>Starting compose_web_3...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Si je re-liste mes containers</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker-compose ps
-</span><span class='line'>    Name                   Command               State    Ports
-</span><span class='line'>-----------------------------------------------------------------
-</span><span class='line'>compose_db_1    /docker-entrypoint.sh postgres   Up      5432/tcp
-</span><span class='line'>compose_web_1   apache2-foreground               Up      80/tcp
-</span><span class='line'>compose_web_2   apache2-foreground               Up      80/tcp
-</span><span class='line'>compose_web_3   apache2-foreground               Up      80/tcp
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Je viens de multiplier par 3 le nombre de container en une simple commande et sans stopper le système.</p>
-
-<h2>Conclusion</h2>
-
-<p>Si vous n&#8217;avez qu&#8217;un seul container docker-compose ne sert pas à grand chose. Mais si vous avez plusieurs containers. Cela ne vaux pas la peine de se priver. Docker-compose contient en fait la liste des container ainsi que leurs configurations si on devait les lancers en la ligne de commande.</p>
-
-<p>Dans le prochain post sur docker, je vais tenter <code>docker-machine</code>.</p>
 ]]></content>
   </entry>
   

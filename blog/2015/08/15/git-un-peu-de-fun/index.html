@@ -5,11 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Php en Mode Interactif - Mon blog perso.</title>
+  <title>Git Un Peu De Fun - Mon blog perso.</title>
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Je me baladai sous Github Et je suis tombé sur ce dépôt https://github.com/borisrepl/boris (en fait c'est un des dépôts les plus actifs de ce mois &hellip;">
+  <meta name="description" content="Il est possible de faire des commits qui clignotent avec la commande suivante. 1
+git commit --all-empty -m &quot;^[[5m Bonjour ^[[0&quot; Attention &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mcamuzat.github.io/blog/2015/03/08/php-en-mode-interactif/">
+  <link rel="canonical" href="http://mcamuzat.github.io/blog/2015/08/15/git-un-peu-de-fun/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Mon blog perso." type="application/atom+xml">
@@ -80,7 +81,7 @@
   
   <header>
     
-      <h1 class="entry-title">Php en Mode Interactif</h1>
+      <h1 class="entry-title">Git Un Peu De Fun</h1>
     
     
       <p class="meta">
@@ -89,61 +90,81 @@
 
 
 
-<time class='entry-date' datetime='2015-03-08T19:24:57+01:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:24 pm</span></time>
+<time class='entry-date' datetime='2015-08-15T21:35:25+02:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>9:35 pm</span></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>Je me baladai sous Github</p>
-
-<p>Et je suis tombé sur ce dépôt</p>
-
-<p><a href="https://github.com/borisrepl/boris">https://github.com/borisrepl/boris</a></p>
-
-<p>(en fait c&#8217;est un des dépôts les plus actifs de ce mois pour Php)</p>
-
-<p>C&#8217;est vraiment cool</p>
-
-<p>Bien entendu il existe déjà un mode interactif sous Php</p>
+<div class="entry-content"><p>Il est possible de faire des commits qui clignotent avec la commande suivante.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>php -a
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git commit --all-empty -m <span class="s2">&quot;^[[5m Bonjour ^[[0&quot;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>On peux le refaire en encore moins de ligne.</p>
+<p><strong>Attention</strong> le caractère <code>^[</code> est la touche <code>Escape</code> (on parle de caractère d&#8217;échappement). Il n&#8217;est pas très simple à taper. Il faut appuyer sur <code>Ctrl+v</code> puis <code>&lt;ESC&gt;</code></p>
 
-<p>Explication : La documentation parle de REPL.
-c&#8217;est l&#8217;abréviation de <strong>R</strong>ead <strong>E</strong>val <strong>P</strong>rint <strong>L</strong>oop</p>
+<p>Bienvenue dans le monde du terminal et du ANSI. Il existe de véritable oeuvre d&#8217;art juste en mode texte. Et dans le temps les fichiers pirates contenaient souvent des fichiers textes avec Logo et présentation de la team.</p>
 
-<p>et voici comment on peut l&#8217;implémenter (difficile de faire plus simple)</p>
+<p>On peut rajouter des trucs plus rigolos</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="k">while</span> <span class="o">(</span><span class="nb">true</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>  <span class="nb">echo eval</span><span class="o">(</span>fgets<span class="o">(</span>STDIN<span class="o">))</span><span class="p">;</span>
-</span><span class='line'><span class="o">}</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git commit --allow-empty -F &lt;<span class="o">(</span>curl https://raw.githubusercontent.com/thiderman/doge/master/doge/static/doge.txt<span class="o">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p> avec les commentaires</p>
+<h2>Tout les terminaux ne sont pas égaux.</h2>
+
+<p>Voici un gif animé de mes commits</p>
+
+<p><img class="center" src="/images/outgnome.gif" width="554" height="410" title="So meme" alt="So meme"></p>
+
+<p>Cela ne clignote pas beaucoup sur <code>gnometerminal</code> essayons avec  Xterm</p>
+
+<p><img class="center" src="/images/outxterm.gif" width="585" height="397" title="Gif animé" alt="On a un menu interactif"></p>
+
+<p>C&#8217;est un peu mieux.</p>
+
+<h2>Mais peux-ton commiter si on a rien à commiter</h2>
+
+<p>Avec la commande <code>--allow-empty</code> c&#8217;est parfaitement possible.</p>
+
+<p>Mais a quoi cela sert ?</p>
+
+<ul>
+<li>A mettre des annotations</li>
+<li>A distinguer différentes parties</li>
+</ul>
+
+
+<h2>On se connait et paranoia ?</h2>
+
+<p>Dans une ligne de commande (aucun danger).</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="k">while</span> <span class="o">(</span><span class="nb">true</span><span class="o">)</span>/*Loop*/ <span class="o">{</span>
-</span><span class='line'>  <span class="nb">echo</span> /*Print*/ <span class="nb">eval</span><span class="o">(</span>/*Read*/ fgets<span class="o">(</span>STDIN<span class="o">))</span><span class="p">;</span>
-</span><span class='line'><span class="o">}</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>ssh whoami.filippo.io
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Read Eval Print Loop. le nom donne le programme.</p>
+<p></p>
 
-<p>C&#8217;est une technique qui marche avec un peu tout les langages.
-voir <a href="http://repl.it">http://repl.it</a></p>
+<p>Le résultat est surprenant. Le logiciel me reconnait immédiatement (nom et prénom).</p>
+
+<p><img class="center" src="/images/clesssh.png" width="600" height="392" title="Je ne donne aucun login, pourtant le logiciel me reconnait" alt="On se connait"></p>
+
+<p>Tout cela vient du fait que lorsque on se connecte en ssh, on envoie toujours sa clé publique.. Et la clé publique de mon ordinateur est connue, car je l&#8217;utilise pour me connecter sur github, pour éviter de renseigner à chaque fois mon mot de passe des que je commite. D&#8217;ailleurs votre clé publique est ici en <code>https://github.com/&lt;mon.compte&gt;.keys</code></p>
+
+<h2>Conclusion</h2>
+
+<ul>
+<li>Le contenu vient d&#8217;un post sur <a href="https://news.ycombinator.com/item?id=10058967">hacker-news</a>.</li>
+<li>pour le ANSI il y a des exemples magnifique sur <a href="http://blocktronics.org/">blocktronics</a> et aussi <a href="http://sixteencolors.net/">sixteencolors</a></li>
+</ul>
+
+
+<p>Voici quelques utilisations de git, cela ne sert pas à grand chose on est d&#8217;accord..</p>
 </div>
 
 
@@ -159,12 +180,12 @@ voir <a href="http://repl.it">http://repl.it</a></p>
 
 
 
-<time class='entry-date' datetime='2015-03-08T19:24:57+01:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:24 pm</span></time>
+<time class='entry-date' datetime='2015-08-15T21:35:25+02:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>9:35 pm</span></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/php/'>php</a>
+    <a class='category' href='/blog/categories/bash/'>bash</a>, <a class='category' href='/blog/categories/git/'>git</a>, <a class='category' href='/blog/categories/github/'>github</a>
   
 </span>
 
@@ -173,7 +194,7 @@ voir <a href="http://repl.it">http://repl.it</a></p>
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mcamuzat.github.io/blog/2015/03/08/php-en-mode-interactif/" data-via="" data-counturl="http://mcamuzat.github.io/blog/2015/03/08/php-en-mode-interactif/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mcamuzat.github.io/blog/2015/08/15/git-un-peu-de-fun/" data-via="" data-counturl="http://mcamuzat.github.io/blog/2015/08/15/git-un-peu-de-fun/" >Tweet</a>
   
   
   
@@ -182,10 +203,8 @@ voir <a href="http://repl.it">http://repl.it</a></p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/03/08/comprendre-les-raccourcis-claviers-de-vi-slash-vim/" title="Previous Post: Comprendre les raccourcis claviers de vi/vim">&laquo; Comprendre les raccourcis claviers de vi/vim</a>
+        <a class="basic-alignment left" href="/blog/2015/08/09/workshops-de-javascript/" title="Previous Post: Workshops de javascript">&laquo; Workshops de javascript</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2015/03/16/mapreduce-du-pauvre/" title="Next Post: MapReduce du pauvre">MapReduce du pauvre &raquo;</a>
       
     </p>
   </footer>
