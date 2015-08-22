@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Vim | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/vim/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-08-15T23:07:17+02:00</updated>
+  <updated>2015-08-22T20:57:20+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -71,15 +71,15 @@
 </ul>
 
 
-<p>{% img center /images/quote.png 431 174 &lsquo;Le guillement est une pictogramme de marques-pages&rsquo; &lsquo;le guillemet est le pictogramme du marque-page&rsquo; %}</p>
+<p><img class="center" src="/images/quote.png" width="431" height="174" title="&lsquo;Le guillement est une pictogramme de marques-pages&rsquo; &lsquo;le guillemet est le pictogramme du marque-page&rsquo;" ></p>
 
 <p>La lettre <code>=</code> est le pictogramme de deux lignes indentées. Quand j&#8217;appuie sur <code>=</code> j&#8217;indente le texte.</p>
 
-<p>{% img center /images/indentation.png 600 276 &lsquo;Indentation&rsquo; &lsquo;Pour indenter on utilise la touche = &rsquo; %}</p>
+<p><img class="center" src="/images/indentation.png" width="600" height="276" title="&lsquo;Indentation&rsquo; &lsquo;Pour indenter on utilise la touche = &rsquo;" ></p>
 
 <p>La lettre <code>z</code> correspond au repli de texte</p>
 
-<p>{% img center /images/repli.png 600 230 &lsquo;z = repli de texte ;&rsquo; &lsquo;Pour plier déplier le texte on utilise la touche z&rsquo; %}</p>
+<p><img class="center" src="/images/repli.png" width="600" height="230" title="&lsquo;z = repli de texte ;&rsquo; &lsquo;Pour plier déplier le texte on utilise la touche z&rsquo;" ></p>
 
 <ul>
 <li><code>z</code> + <code>c</code> pour replier (c = close)</li>
@@ -88,11 +88,11 @@
 </ul>
 
 
-<p>{% img center /images/plier.png 595 214 &lsquo;z = repli de texte&rsquo; &lsquo;Pour plier déplier le texte on utilise la touche z&rsquo; %}</p>
+<p><img class="center" src="/images/plier.png" width="595" height="214" title="&lsquo;z = repli de texte&rsquo; &lsquo;Pour plier déplier le texte on utilise la touche z&rsquo;" ></p>
 
 <p>Sous gmail, c&#8217;est encore la même idée.  la touche <code>x</code> correspond à une checkbox. appuyer sur x pour sélectionner la conversation. le <code>#</code> correspond à supprimer, le <code>!</code> à SPAM!!!.</p>
 
-<p>{% img center /images/checkanddelete.png 543 193 &lsquo;le x est le pictogramme d&#8217;un checkbox&rsquo; &lsquo;Mon terminal` %}</p>
+<p><img class="center" src="/images/checkanddelete.png" width="543" height="193" title="&lsquo;le x est le pictogramme d'un checkbox&rsquo; &lsquo;Mon terminal`" ></p>
 
 <h2>Le cas de <code>*</code></h2>
 
@@ -284,7 +284,7 @@ Il suffit de créer un fichier <code>pre-commit.sh</code> dans le répertoire <c
 
 <p>Le résultat est très intuitif on a une flèche <code>&gt;</code> à chaque ligne qui pose problème. Il suffit de passer le curseur pour connaitre l&#8217;erreur. Enfin un screenshot sera plus clair.</p>
 
-<p>{% img center /images/syntastic.png 600 212 &lsquo;Screenshot de syntastic&rsquo; &lsquo;syntastic&rsquo; %}</p>
+<p><img class="center" src="/images/syntastic.png" width="600" height="212" title="&lsquo;Screenshot de syntastic&rsquo; &lsquo;syntastic&rsquo;" ></p>
 
 <h2>Conclusion</h2>
 
@@ -380,7 +380,7 @@ Il y a des plugins Firefox et Chrome qui s&#8217;occupe de cela.</p>
 
 <h3>Liste des raccourcis claviers</h3>
 
-<p>{% img center /images/VDebug.png 600 375 &lsquo;Vdebug&rsquo; &lsquo;Screenshot de VDebug&rsquo; %}</p>
+<p><img class="center" src="/images/VDebug.png" width="600" height="375" title="&lsquo;Vdebug&rsquo; &lsquo;Screenshot de VDebug&rsquo;" ></p>
 
 <ul>
 <li><code>&lt;F5&gt;</code>: start/run (to next breakpoint/end of script)</li>
@@ -420,7 +420,7 @@ Il y a des plugins Firefox et Chrome qui s&#8217;occupe de cela.</p>
 
 <h2>DBGPavim</h2>
 
-<p>{% img center /images/DBGPAVIM.png 600 375 &lsquo;DBGPavim&rsquo; &lsquo;Screenshot de DBGPavim&rsquo; %}</p>
+<p><img class="center" src="/images/DBGPAVIM.png" width="600" height="375" title="&lsquo;DBGPavim&rsquo; &lsquo;Screenshot de DBGPavim&rsquo;" ></p>
 
 <p>Ce plugin résout les deux problèmes de Vdebug (aucune limitation de temps, démarre au premier point d&#8217;arrêt). Je le trouve moins intuitif. Mais il est visiblement plus puissant, il gère plusieurs sessions.</p>
 
@@ -449,22 +449,28 @@ git submodule add git://github.com/brookhong/DBGPavim.git bundle/DBGPavim
 <p>Ajouter cette ligne à votre <code>.vimrc</code></p>
 
 <p>par <a href="https://github.com/gmarik/Vundle.vim">Vundle</a>
-&#8220;`
-Bundle &ldquo;joonty/vdebug&rdquo;</p>
-
-<h1>ou</h1>
-
-<p>Bundle &lsquo;brookhong/DBGPavim&rsquo;
-&#8220;`</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Bundle &ldquo;joonty/vdebug&rdquo;&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;ou&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Bundle &lsquo;brookhong/DBGPavim&rsquo;</span></code></pre></td></tr></table></div></figure></p>
 
 <p>par <a href="https://github.com/Shougo/neobundle.vim">NeoBundle</a> :
-&#8220;`
-NeoBundle &ldquo;joonty/vdebug&rdquo;</p>
-
-<h1>ou</h1>
-
-<p>NeoBundle &lsquo;brookhong/DBGPavim&rsquo;
-&#8220;`</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>NeoBundle &ldquo;joonty/vdebug&rdquo;&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;ou&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;NeoBundle &lsquo;brookhong/DBGPavim&rsquo;</span></code></pre></td></tr></table></div></figure></p>
 
 <h2>En conclusion</h2>
 

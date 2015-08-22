@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Docker | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/docker/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-08-15T23:07:17+02:00</updated>
+  <updated>2015-08-22T20:57:20+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -152,7 +152,7 @@ Il suffit de créer un fichier <code>pre-commit.sh</code> dans le répertoire <c
 
 <p>Le résultat est très intuitif on a une flèche <code>&gt;</code> à chaque ligne qui pose problème. Il suffit de passer le curseur pour connaitre l&#8217;erreur. Enfin un screenshot sera plus clair.</p>
 
-<p>{% img center /images/syntastic.png 600 212 &lsquo;Screenshot de syntastic&rsquo; &lsquo;syntastic&rsquo; %}</p>
+<p><img class="center" src="/images/syntastic.png" width="600" height="212" title="&lsquo;Screenshot de syntastic&rsquo; &lsquo;syntastic&rsquo;" ></p>
 
 <h2>Conclusion</h2>
 
@@ -187,15 +187,15 @@ php:
 
 <p>Quand je synchronise mes dépôts. Il suffit de cliquer sur le slider pour activé l&#8217;intégration continue.</p>
 
-<p>{% img center /images/travis_choice.png 600 234 &lsquo;Activer l&#8217;intégration continue&rsquo; &lsquo;Activée l&#8217;intégration continue&rsquo; %}</p>
+<p><img class="center" src="/images/travis_choice.png" width="600" height="234" title="&lsquo;Activer l'intégration continue&rsquo; &lsquo;Activée l'intégration continue&rsquo;" ></p>
 
 <p>On peux lire les logs, d&#8217;ailleurs on se rend compte que travis utilise Docker</p>
 
-<p>{% img center /images/travis_log.png 600 405 &lsquo;Log de travis&rsquo; &lsquo;Log de travis&rsquo; %}</p>
+<p><img class="center" src="/images/travis_log.png" width="600" height="405" title="&lsquo;Log de travis&rsquo; &lsquo;Log de travis&rsquo;" ></p>
 
 <p>et voici le résultat</p>
 
-<p>{% img center /images/travis_depot.png 600 320 &lsquo;Dashboard du projet&rsquo; &lsquo;Dashboard du projet&rsquo; %}</p>
+<p><img class="center" src="/images/travis_depot.png" width="600" height="320" title="&lsquo;Dashboard du projet&rsquo; &lsquo;Dashboard du projet&rsquo;" ></p>
 
 <p>A chaque commit je lance un build. J&#8217;ai vraiment été très surpris par la simplicité de la mise en œuvre.</p>
 
@@ -306,15 +306,20 @@ mkdir -p $GOPATH/src/github.com/&lt;votreusername&gt;/hello
 go install
 </code></p></li>
 <li><p>Nous pouvons vérifier que dans le répertoire <code>$HOME/go</code> il y a un dossier <code>bin/</code>
-&#8220;`
-$GOPATH/bin/hello
-hello world</p>
-
-<h1>de manière plus simple puisque nous avons ajouter dans le path $GOPATH/bin</h1>
-
-<p>hello
-hello world
-&#8220;`
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$GOPATH/bin/hello
+</span><span class='line'>hello world&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;de manière plus simple puisque nous avons ajouter dans le path $GOPATH/bin&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;hello
+</span><span class='line'>hello world</span></code></pre></td></tr></table></div></figure>
 voici la structure finale</p></li>
 </ul>
 
@@ -521,17 +526,24 @@ chmod +x /usr/local/bin/docker-compose
 <p>Cela crée deux containers</p>
 
 <p>Que l&#8217;on peux surveiller grâce à la commande suivante
-&#8220;`
-docker-compose ps</p>
-
-<pre><code>Name                   Command               State    Ports   
-</code></pre>
-
-<hr />
-
-<p>compose_db_1    /docker-entrypoint.sh postgres   Up      5432/tcp
-compose_web_1   apache2-foreground               Up      80/tcp<br/>
-&#8220;`</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>docker-compose ps&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;Name                   Command               State    Ports   
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;hr /&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;compose_db_1    /docker-entrypoint.sh postgres   Up      5432/tcp
+</span><span class='line'>compose_web_1   apache2-foreground               Up      80/tcp&lt;br/&gt;</span></code></pre></td></tr></table></div></figure></p>
 
 <p>On peux voir les logs
 <code>
@@ -548,19 +560,28 @@ Starting compose_web_3...
 </code></pre>
 
 <p>Si je re-liste mes containers
-&#8220;`
-docker-compose ps</p>
-
-<pre><code>Name                   Command               State    Ports   
-</code></pre>
-
-<hr />
-
-<p>compose_db_1    /docker-entrypoint.sh postgres   Up      5432/tcp
-compose_web_1   apache2-foreground               Up      80/tcp <br/>
-compose_web_2   apache2-foreground               Up      80/tcp <br/>
-compose_web_3   apache2-foreground               Up      80/tcp
-&#8220;`</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>docker-compose ps&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;Name                   Command               State    Ports   
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;hr /&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;compose_db_1    /docker-entrypoint.sh postgres   Up      5432/tcp
+</span><span class='line'>compose_web_1   apache2-foreground               Up      80/tcp &lt;br/&gt;
+</span><span class='line'>compose_web_2   apache2-foreground               Up      80/tcp &lt;br/&gt;
+</span><span class='line'>compose_web_3   apache2-foreground               Up      80/tcp</span></code></pre></td></tr></table></div></figure></p>
 
 <p>Je viens de multiplier par 3 le nombre de container en une simple commande et sans stopper le système.</p>
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Git | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/git/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-08-15T23:07:17+02:00</updated>
+  <updated>2015-08-22T20:57:20+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -36,11 +36,11 @@
 
 <p>Voici un gif animé de mes commits</p>
 
-<p>{% img center /images/outgnome.gif 554 410 &lsquo;So meme&rsquo; &lsquo;So meme&rsquo; %}</p>
+<p><img class="center" src="/images/outgnome.gif" width="554" height="410" title="&lsquo;So meme&rsquo; &lsquo;So meme&rsquo;" ></p>
 
 <p>Cela ne clignote pas beaucoup sur <code>gnometerminal</code> essayons avec  Xterm</p>
 
-<p>{% img center /images/outxterm.gif 585 397 &lsquo;Gif animé&rsquo; &lsquo;On a un menu interactif&rsquo; %}</p>
+<p><img class="center" src="/images/outxterm.gif" width="585" height="397" title="&lsquo;Gif animé&rsquo; &lsquo;On a un menu interactif&rsquo;" ></p>
 
 <p>C&#8217;est un peu mieux.</p>
 
@@ -65,7 +65,7 @@ ssh whoami.filippo.io
 
 <p>Le résultat est surprenant. Le logiciel me reconnait immédiatement (nom et prénom).</p>
 
-<p>{% img center /images/clesssh.png 600 392 &lsquo;Je ne donne aucun login, pourtant le logiciel me reconnait&rsquo; &lsquo;On se connait&rsquo; %}</p>
+<p><img class="center" src="/images/clesssh.png" width="600" height="392" title="&lsquo;Je ne donne aucun login, pourtant le logiciel me reconnait&rsquo; &lsquo;On se connait&rsquo;" ></p>
 
 <p>Tout cela vient du fait que lorsque on se connecte en ssh, on envoie toujours sa clé publique.. Et la clé publique de mon ordinateur est connue, car je l&#8217;utilise pour me connecter sur github, pour éviter de renseigner à chaque fois mon mot de passe des que je commite. D&#8217;ailleurs votre clé publique est ici en <code>https://github.com/&lt;mon.compte&gt;.keys</code></p>
 

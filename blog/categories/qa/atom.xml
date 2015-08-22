@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Qa | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/qa/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-08-15T23:07:17+02:00</updated>
+  <updated>2015-08-22T20:57:20+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,287 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[QuickCheck Une Autre Façon De Tester]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/08/22/quickcheck-une-autre-facon-de-tester/"/>
+    <updated>2015-08-22T19:01:42+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/08/22/quickcheck-une-autre-facon-de-tester</id>
+    <content type="html"><![CDATA[<h2>Introduction</h2>
+
+<p>Nous allons voir ensemble, une nouvelle façon de faire des tests. Nous allons installer utiliser un projet <a href="https://github.com/steos/php-quickcheck">php-quickcheck</a>. L&#8217;idée ici n&#8217;est pas d&#8217;écrire des tests, mais demander au logiciel de les générer.</p>
+
+<h2>Installation.</h2>
+
+<p>Nous allons créer le <code>composer.json</code> suivant.</p>
+
+<pre><code class="json">{
+  "require": {
+    "steos/php-quickcheck": "dev-master"
+  }
+}
+</code></pre>
+
+<p>Puis créer un fichier <code>test.php</code>.</p>
+
+<pre><code class="php">
+require_once __DIR__ . '/vendor/autoload.php'; // Autoload files using Composer autoload
+
+use QCheck\Generator as Gen;
+use QCheck\Quick;
+</code></pre>
+
+<p>Un petit <code>composer install</code>. Et tout est en place.</p>
+
+<h2>Exemple N°1</h2>
+
+<h3>Affirmation</h3>
+
+<p>Je vais essayer de prouver que <code>array_merge($list1, $list2) == $list1 + $list2</code> (<strong>ce qui est faux</strong>)</p>
+
+<p>Je l&#8217;écris dans la fonction suivante</p>
+
+<pre><code class="php">function isEqual(array $list1, array $list2) {
+    return (array_merge($list1, $list2) == $list1 + $list2);
+}
+</code></pre>
+
+<h3>Mise en place et contre-exemple.</h3>
+
+<p>Voici le code</p>
+
+<pre><code class="php">$test = Gen::forAll(
+    [Gen::ints()-&gt;intoArrays(), Gen::ints()-&gt;intoArrays()], isEqual
+ );
+</code></pre>
+
+<p><code>Gen::ints()-&gt;intoArrays()</code> génère des array avec une taille aléatoire <code>[0, 1], [-15,0,5], ..</code> que  je vais passer à la fonction <code>isEqual</code></p>
+
+<pre><code>print_r(Quick::check(102, $test, ['echo' =&gt; true]));
+</code></pre>
+
+<p>Je vais lancer 102 fois mon test.</p>
+
+<p>Voici ce que me dit le programme dès que je lance.</p>
+
+<pre><code>..F
+Array
+(
+    [result] =&gt; 
+    [seed] =&gt; 1440263990644
+    [failing_size] =&gt; 2
+    [num_tests] =&gt; 3
+    [fail] =&gt; Array
+        (
+            [0] =&gt; Array
+                (
+                    [0] =&gt; 1
+                )
+
+            [1] =&gt; Array
+                (
+                    [0] =&gt; -2
+                    [1] =&gt; 1
+                )
+
+        )
+
+    [shrunk] =&gt; Array
+        (
+            [nodes_visited] =&gt; 9
+            [depth] =&gt; 3
+            [result] =&gt; 
+            [smallest] =&gt; Array
+                (
+                    [0] =&gt; Array
+                        (
+                            [0] =&gt; 0
+                        )
+
+                    [1] =&gt; Array
+                        (
+                            [0] =&gt; 0
+                        )
+
+                )
+
+        )
+
+)
+</code></pre>
+
+<p>Le résultat est intéressant, Le logiciel a essayé 3 fois, au troisième essai l&#8217;exemple <code>([1], [-2,1])</code> donne un cas qui ne marche pas.</p>
+
+<p>Vérifions avec <code>php -a</code></p>
+
+<pre><code class="">php &gt; var_dump(array_merge([1], [-2,1]));
+array(3) {
+  [0] =&gt;
+  int(1)
+  [1] =&gt;
+  int(-2)
+  [2] =&gt;
+  int(1)
+}
+php &gt; var_dump([1] + [-2,1]);
+array(2) {
+  [0] =&gt;
+  int(1)
+  [1] =&gt;
+  int(1)
+}
+</code></pre>
+
+<p>Effectivement.. Mais il y a mieux. Le logiciel a fais un <em>shrunk</em>, c&#8217;est à dire qu&#8217;il a calculé le plus petit exemple possible qui est <code>([0], [0])</code>.</p>
+
+<p>Donc la librairie me donne tort et en plus me donne le contre-exemple.</p>
+
+<h2>Exemple N°2</h2>
+
+<h3>Affirmation</h3>
+
+<p>J&#8217;affirme que <code>(sort (array) == sort(sort(array))</code> que en gros cela ne sert à rien de trier deux fois un array.</p>
+
+<h3>Mise en place</h3>
+
+<pre><code>$test2 = Gen::forAll(
+    [Gen::ints()-&gt;intoArrays()],
+    function ($list) {
+        $lista = $list;
+        $listb = $list;
+        sort($lista);
+        sort($listb);
+        sort($listb);
+        return ($lista == $listb);
+    }
+  );
+
+print_r(Quick::check(101, $test2, ['echo' =&gt; true]));
+</code></pre>
+
+<p>Je lance le logiciel</p>
+
+<pre><code>.....................................................................................................Array
+(
+    [result] =&gt; 1
+    [num_tests] =&gt; 101
+    [seed] =&gt; 1440265001108
+)
+</code></pre>
+
+<p>Le logiciel semble d&#8217;accord. Il a fait 101 tests, mais il n&#8217;a pas trouvé de contre-exemple.</p>
+
+<h2>Exemple N°3</h2>
+
+<p>Nous allons encoder en <code>run legth encoding</code> qui est l&#8217;actuel encodage des fichiers bitmaps.</p>
+
+<p>Quelque exemples:
+<code>
+Input: WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWBWWWWWWWWWWWWWW
+Output: 12W1B12W3B24W1B14W
+</code></p>
+
+<p>Il y a <code>12W</code> puis <code>1B</code> etc .. je compresse ma chaîne de caractères.</p>
+
+<p>Dans l&#8217;autre sens
+<code>
+Input: 12W1B12W3B24W1B14W
+Output: WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWBWWWWWWWWWWWWWW
+</code></p>
+
+<p>Voici une implémentation en php</p>
+
+<pre><code class="php">function encode($str) {
+    return preg_replace_callback(
+        '/(.)\1+/',
+        function($m) {
+            return sprintf('%s%s', strlen($m[0]), $m[1]);
+        },
+        $str
+    );
+};
+function decode($str) {
+    return preg_replace_callback(
+        '/(\d+)(\D)/',
+        function($m) {
+            return str_repeat($m[2], $m[1]);
+        },
+         $str
+     );
+}
+</code></pre>
+
+<p>Mon implémentation est correcte, mais il y a un petit souci. Pouvez vous deviner le souci de mon programme.</p>
+
+<p>A priori <code>$input == decode(encode($input))</code></p>
+
+<h3>Mise en place.</h3>
+
+<pre><code class="php">$test3 = Gen::forAll(
+    [Gen::alphaNumStrings()],
+    function ($string) {
+      return ($string == decode(encode($string)));
+    }
+);
+print_r(Quick::check(101, $test2, ['echo' =&gt; true]));
+</code></pre>
+
+<p>Le logiciel ne tarde pas à trouver le souci</p>
+
+<pre><code>.....F
+Array
+(
+    [result] =&gt; 
+    [seed] =&gt; 1440265916923
+    [failing_size] =&gt; 5
+    [num_tests] =&gt; 6
+    [fail] =&gt; Array
+        (
+            [0] =&gt; G67k}
+        )
+
+    [shrunk] =&gt; Array
+        (
+            [nodes_visited] =&gt; 34
+            [depth] =&gt; 7
+            [result] =&gt; 
+            [smallest] =&gt; Array
+                (
+                    [0] =&gt; 0 
+                )
+
+        )
+
+)
+</code></pre>
+
+<p>La chaîne de caractère <code>"G67k"</code> ne marche pas, et en fait la chaîne <code>"0"</code> tout cours ne marche pas.</p>
+
+<h2>Conclusion des 3 exemples.</h2>
+
+<ul>
+<li>Je n&#8217;ai pas écris de test. C&#8217;est le logiciel qui génère les tests.</li>
+<li>Les tests sont aléatoires. Par exemple si j&#8217;avais limité à 5 tests l&#8217;exemple 3 pourrait passer.</li>
+<li>Si le code ne passe pas le logiciel est capable de <em>réduire</em> jusqu&#8217;à trouver un contre-exemple ici la chaine <code>"0"</code> ou l&#8217;entrée <code>([0],[0])</code></li>
+<li>Un autre cas, dans le dernier exemple, j&#8217;ai pris un générateur de texte qui prend des chiffres et des lettres, si j&#8217;avais pris un générateur de lettre seulement comme <code>gen::alphaString</code>. Le test passerait sans problème.</li>
+</ul>
+
+
+<p>Ce type de logiciel s&#8217;appelle le <a href="https://en.wikipedia.org/wiki/QuickCheck">QuickCheck</a> du nom du premier logiciel en <a href="https://en.wikipedia.org/wiki/Haskell_%28programming_language%29">Haskell</a>. Ce sont des tests aléatoires.</p>
+
+<p>Il existe deux portage en php.</p>
+
+<ul>
+<li><a href="https://github.com/giorgiosironi/eris">eris</a></li>
+<li><a href="https://github.com/steos/php-quickcheck">php-quickcheck</a></li>
+</ul>
+
+
+<p>Il y a le même problème que les tests unitaires: Quand les tests unitaires ne passent pas,  il y a un problème. Mais des tests unitaires qui passent ne prouve pas forcement que le logiciel est correct. Néanmoins cette méthode qui génère des milliers de tests donne des résultats assez intéressants. La capacité a trouvé automatiquement un contre-exemple (s&#8217;il y a un contre-exemple) est vraiment un plus.</p>
+
+<p>Cela n&#8217;a pas été évident d&#8217;écrire ce post. J&#8217;ai eu un peu de mal à trouver un exemple pertinent. Je me suis inspiré des exemples de <a href="https://github.com/DRMacIver/hypothesis">hypothesis</a>. L&#8217;implémentation du RLE viens de <a href="http://rosettacode.org/wiki/Run-length_encoding">rosetta</a> mais l&#8217;exemple en php est obsolète (la regex <code>/../e</code> php5.5 n&#8217;en veux pas). J&#8217;ai retraduis le code.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Décorer PHPUnit Avec Les Listeners]]></title>
@@ -23,7 +304,7 @@
 <p>Comme tout les programmeurs vous faites des tests unitaires. En php, On utilise souvent PHPUnit.
 quand je lance mes tests je vois cela.</p>
 
-<p>{% img center /images/phpunit_screenshot.png 499 168 &lsquo;Screenshot de phpunit&rsquo; &lsquo;Mon terminal n&#39;est pas triste..&rsquo; %}</p>
+<p><img class="center" src="/images/phpunit_screenshot.png" width="499" height="168" title="&lsquo;Screenshot de phpunit&rsquo; &lsquo;Mon terminal n\'est pas triste..&rsquo;" ></p>
 
 <p>C&#8217;est un peu triste. Et encore j&#8217;ai activé la couleur !.</p>
 
@@ -42,22 +323,35 @@ Spark\Spark
 <p>C&#8217;est un peu mieux.</p>
 
 <p>Il existe aussi <code>--debug</code>
-&#8220;` sh
-PHPUnit 4.8-ge1cc585 by Sebastian Bergmann and contributors.</p>
-
-<p>Starting test &lsquo;Spark\SparkTest::testItCreatesAStringFromData&rsquo;.
-.
-Starting test &lsquo;Spark\SparkTest::testItDontCareIfInputIsString&rsquo;.
-.
-Starting test &lsquo;Spark\SparkTest::testItWorksWithFloatNumber&rsquo;.
-.
-Starting test &lsquo;Spark\SparkTest::testItSNotDivideBy0&rsquo;.
-.</p>
-
-<p>Time: 69 ms, Memory: 4.50Mb</p>
-
-<p>OK (4 tests, 4 assertions)
-&#8220;`</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>PHPUnit 4.8-ge1cc585 by Sebastian Bergmann and contributors.&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Starting <span class="nb">test</span> <span class="p">&amp;</span>lsquo<span class="p">;</span>Spark<span class="se">\S</span>parkTest::testItCreatesAStringFromData<span class="p">&amp;</span>rsquo<span class="p">;</span>.
+</span><span class='line'>.
+</span><span class='line'>Starting <span class="nb">test</span> <span class="p">&amp;</span>lsquo<span class="p">;</span>Spark<span class="se">\S</span>parkTest::testItDontCareIfInputIsString<span class="p">&amp;</span>rsquo<span class="p">;</span>.
+</span><span class='line'>.
+</span><span class='line'>Starting <span class="nb">test</span> <span class="p">&amp;</span>lsquo<span class="p">;</span>Spark<span class="se">\S</span>parkTest::testItWorksWithFloatNumber<span class="p">&amp;</span>rsquo<span class="p">;</span>.
+</span><span class='line'>.
+</span><span class='line'>Starting <span class="nb">test</span> <span class="p">&amp;</span>lsquo<span class="p">;</span>Spark<span class="se">\S</span>parkTest::testItSNotDivideBy0<span class="p">&amp;</span>rsquo<span class="p">;</span>.
+</span><span class='line'>.&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Time: <span class="m">69</span> ms, Memory: 4.50Mb&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;OK <span class="o">(</span><span class="m">4</span> tests, <span class="m">4</span> assertions<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure></p>
 
 <p>Mais on a un peu fait le tour</p>
 
@@ -134,76 +428,143 @@ class MaxListener extends PHPUnit_TextUI_ResultPrinter
 </code></pre>
 
 <p>Avec ma librairie que j&#8217;ai développé dans les <a href="/blog/2015/07/19/histogramme-et-ligne-de-commande/">posts</a> précédents.
-&#8220;` php
-use Spark\Spark;
-class SparkListener extends PHPUnit_TextUI_ResultPrinter
-{
-    private $suites = 0;
-    private $endedSuites = 0;
-    public $testTimes = array();</p>
-
-<pre><code>public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
-{
-    $this-&gt;suites++;
-}
-public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
-{
-    $this-&gt;endedSuites++;
-    if ($this-&gt;suites &gt; $this-&gt;endedSuites) {
-        return;
-    }
-    echo "\n";
-    echo Spark::spark($this-&gt;testTimes);
-
-}
-
-public function endTest(PHPUnit_Framework_Test $test, $time)
-{
-    $this-&gt;testTimes[] = $time;
-}
-</code></pre>
-
-<p>}</p>
-
-<pre><code>
-Voici le résultat
-</code></pre>
-
-<p>bin/phpunit -c build/phpunit.xml
-PHPUnit 4.5.1 by Sebastian Bergmann and contributors.</p>
-
-<p>Configuration read from /home/marc/prog/Un-projet-pro/build/phpunit.xml</p>
-
-<p>&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;..
-█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▂▁▁▁▁▁▁▁▁▁▁▁▂▁▁▁▁▁▁▁▂▁▁▁▁▁▁▁▁
-le test le plus long prend 0.2183518409729 seconde(s)</p>
-
-<p>Time: 971 ms, Memory: 17.25Mb</p>
-
-<p>OK (53 tests, 98 assertions)</p>
-
-<pre><code>
-### Libérer de la mémoire
-
-On peux libérer de la mémoire en mettant à `null` les mocks à la fin du test. (exemple trouvé sur github [mybuilder/phpunit-accelerator](https://github.com/mybuilder/phpunit-accelerator))
-</code></pre>
-
-<p>class FreeListener implements PHPUnit_Framework_TestListener
-{
-    // ..
-    // les autres methodes vides.
-    public function endTest(PHPUnit_Framework_Test $test, $time)
-    {
-        $refl = new ReflectionObject($test);
-        foreach ($refl->getProperties() as $prop) {
-            if (!$prop->isStatic() &amp;&amp; 0 !== strpos($prop->getDeclaringClass()->getName(), &lsquo;PHPUnit_&rsquo;)) {
-                $prop->setAccessible(true);
-                $prop->setValue($this, null);
-            }
-        }
-    }
-}
-&#8220;`</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">use</span> <span class="nx">Spark\Spark</span><span class="p">;</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">SparkListener</span> <span class="k">extends</span> <span class="nx">PHPUnit_TextUI_ResultPrinter</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$suites</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$endedSuites</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">public</span> <span class="nv">$testTimes</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">public</span> <span class="k">function</span> <span class="nf">startTestSuite</span><span class="p">(</span><span class="nx">PHPUnit_Framework_TestSuite</span> <span class="nv">$suite</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">suites</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">endTestSuite</span><span class="p">(</span><span class="nx">PHPUnit_Framework_TestSuite</span> <span class="nv">$suite</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">endedSuites</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">suites</span> <span class="o">&amp;</span><span class="nx">gt</span><span class="p">;</span> <span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">endedSuites</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="nx">Spark</span><span class="o">::</span><span class="na">spark</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">testTimes</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">endTest</span><span class="p">(</span><span class="nx">PHPUnit_Framework_Test</span> <span class="nv">$test</span><span class="p">,</span> <span class="nv">$time</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">testTimes</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$time</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span>
+</span><span class='line'><span class="nx">Voici</span> <span class="nx">le</span> <span class="nx">résultat</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">bin</span><span class="o">/</span><span class="nx">phpunit</span> <span class="o">-</span><span class="nx">c</span> <span class="nx">build</span><span class="o">/</span><span class="nx">phpunit</span><span class="o">.</span><span class="nx">xml</span>
+</span><span class='line'><span class="nx">PHPUnit</span> <span class="mf">4.5</span><span class="o">.</span><span class="mi">1</span> <span class="nx">by</span> <span class="nx">Sebastian</span> <span class="nx">Bergmann</span> <span class="k">and</span> <span class="nx">contributors</span><span class="o">.&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">Configuration</span> <span class="nx">read</span> <span class="nx">from</span> <span class="o">/</span><span class="nx">home</span><span class="o">/</span><span class="nx">marc</span><span class="o">/</span><span class="nx">prog</span><span class="o">/</span><span class="nx">Un</span><span class="o">-</span><span class="nx">projet</span><span class="o">-</span><span class="nx">pro</span><span class="o">/</span><span class="nx">build</span><span class="o">/</span><span class="nx">phpunit</span><span class="o">.</span><span class="nx">xml</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span><span class="o">..</span>
+</span><span class='line'><span class="nx">█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▂▁▁▁▁▁▁▁▁▁▁▁▂▁▁▁▁▁▁▁▂▁▁▁▁▁▁▁▁</span>
+</span><span class='line'><span class="nx">le</span> <span class="nx">test</span> <span class="nx">le</span> <span class="nx">plus</span> <span class="nx">long</span> <span class="nx">prend</span> <span class="mf">0.2183518409729</span> <span class="nx">seconde</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">Time</span><span class="o">:</span> <span class="mi">971</span> <span class="nx">ms</span><span class="p">,</span> <span class="nx">Memory</span><span class="o">:</span> <span class="mf">17.25</span><span class="nx">Mb</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">OK</span> <span class="p">(</span><span class="mi">53</span> <span class="nx">tests</span><span class="p">,</span> <span class="mi">98</span> <span class="nx">assertions</span><span class="p">)</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span>
+</span><span class='line'><span class="c1">### Libérer de la mémoire</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">On</span> <span class="nx">peux</span> <span class="nx">libérer</span> <span class="nx">de</span> <span class="nx">la</span> <span class="nx">mémoire</span> <span class="nx">en</span> <span class="nx">mettant</span> <span class="nx">à</span> <span class="sb">`null`</span> <span class="nx">les</span> <span class="nx">mocks</span> <span class="nx">à</span> <span class="nx">la</span> <span class="nx">fin</span> <span class="nx">du</span> <span class="nx">test</span><span class="o">.</span> <span class="p">(</span><span class="nx">exemple</span> <span class="nx">trouvé</span> <span class="nx">sur</span> <span class="nx">github</span> <span class="p">[</span><span class="nx">mybuilder</span><span class="o">/</span><span class="nx">phpunit</span><span class="o">-</span><span class="nx">accelerator</span><span class="p">](</span><span class="nx">https</span><span class="o">://</span><span class="nx">github</span><span class="o">.</span><span class="nx">com</span><span class="o">/</span><span class="nx">mybuilder</span><span class="o">/</span><span class="nx">phpunit</span><span class="o">-</span><span class="nx">accelerator</span><span class="p">))</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">FreeListener</span> <span class="k">implements</span> <span class="nx">PHPUnit_Framework_TestListener</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// ..</span>
+</span><span class='line'>    <span class="c1">// les autres methodes vides.</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">endTest</span><span class="p">(</span><span class="nx">PHPUnit_Framework_Test</span> <span class="nv">$test</span><span class="p">,</span> <span class="nv">$time</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$refl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReflectionObject</span><span class="p">(</span><span class="nv">$test</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$refl</span><span class="o">-&gt;</span><span class="na">getProperties</span><span class="p">()</span> <span class="k">as</span> <span class="nv">$prop</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$prop</span><span class="o">-&gt;</span><span class="na">isStatic</span><span class="p">()</span> <span class="o">&amp;</span><span class="nx">amp</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">amp</span><span class="p">;</span> <span class="mi">0</span> <span class="o">!==</span> <span class="nb">strpos</span><span class="p">(</span><span class="nv">$prop</span><span class="o">-&gt;</span><span class="na">getDeclaringClass</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getName</span><span class="p">(),</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">PHPUnit_</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;))</span> <span class="p">{</span>
+</span><span class='line'>                <span class="nv">$prop</span><span class="o">-&gt;</span><span class="na">setAccessible</span><span class="p">(</span><span class="k">true</span><span class="p">);</span>
+</span><span class='line'>                <span class="nv">$prop</span><span class="o">-&gt;</span><span class="na">setValue</span><span class="p">(</span><span class="nv">$this</span><span class="p">,</span> <span class="k">null</span><span class="p">);</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></p>
 
 <p>On pourrait faire cela sur un <code>tearDown()</code></p>
 
@@ -288,31 +649,53 @@ class FailureListener extends PHPUnit_TextUI_ResultPrinter
 </code></pre>
 
 <p>Le script en action.
-&#8220;` sh
-bin/phpunit -c build/phpunit.xml
-PHPUnit 4.5.1 by Sebastian Bergmann and contributors.</p>
-
-<p>Configuration read from /home/marc/prog/un-projet-pro/build/phpunit.xml</p>
-
-<p>&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;..F.F&hellip;&hellip;&hellip;..
-Pour relancer seulement les tests qui ne passent pas ajoutez
-&ndash;filter &lsquo;(testObjectNeedUpdate|testUpdateObject)&rsquo;</p>
-
-<p>Time: 958 ms, Memory: 17.25Mb</p>
-
-<pre><code>
-La seconde fois avec la commande qui va bien.
-</code></pre>
-
-<p>bin/phpunit -c build/phpunit.xml &ndash;filter &lsquo;(testObjectNeedUpdate|testUpdateObject)&rsquo;                     <br/>
-PHPUnit 4.5.1 by Sebastian Bergmann and contributors.</p>
-
-<p>Configuration read from /home/marc/prog/un-projet-pro/build/phpunit.xml</p>
-
-<p>FF</p>
-
-<p>Time: 116 ms, Memory: 9.25Mb
-&#8220;`</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>bin/phpunit -c build/phpunit.xml
+</span><span class='line'>PHPUnit 4.5.1 by Sebastian Bergmann and contributors.&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Configuration <span class="nb">read </span>from /home/marc/prog/un-projet-pro/build/phpunit.xml&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;<span class="p">&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;</span>..F.F<span class="p">&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;&amp;</span>hellip<span class="p">;</span>..
+</span><span class='line'>Pour relancer seulement les tests qui ne passent pas ajoutez
+</span><span class='line'><span class="p">&amp;</span>ndash<span class="p">;</span>filter <span class="p">&amp;</span>lsquo<span class="p">;</span><span class="o">(</span>testObjectNeedUpdate<span class="p">|</span>testUpdateObject<span class="o">)</span><span class="p">&amp;</span>rsquo<span class="p">;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Time: <span class="m">958</span> ms, Memory: 17.25Mb&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;
+</span><span class='line'>La seconde fois avec la commande qui va bien.
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;bin/phpunit -c build/phpunit.xml <span class="p">&amp;</span>ndash<span class="p">;</span>filter <span class="p">&amp;</span>lsquo<span class="p">;</span><span class="o">(</span>testObjectNeedUpdate<span class="p">|</span>testUpdateObject<span class="o">)</span><span class="p">&amp;</span>rsquo<span class="p">;</span>                     &lt;br/&gt;
+</span><span class='line'>PHPUnit 4.5.1 by Sebastian Bergmann and contributors.&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Configuration <span class="nb">read </span>from /home/marc/prog/un-projet-pro/build/phpunit.xml&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;FF&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Time: <span class="m">116</span> ms, Memory: 9.25Mb
+</span></code></pre></td></tr></table></div></figure></p>
 
 <h2>Conclusion</h2>
 

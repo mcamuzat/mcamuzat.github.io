@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Docker-compose | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/docker-compose/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-08-15T23:07:17+02:00</updated>
+  <updated>2015-08-22T20:57:20+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -66,17 +66,24 @@ chmod +x /usr/local/bin/docker-compose
 <p>Cela crée deux containers</p>
 
 <p>Que l&#8217;on peux surveiller grâce à la commande suivante
-&#8220;`
-docker-compose ps</p>
-
-<pre><code>Name                   Command               State    Ports   
-</code></pre>
-
-<hr />
-
-<p>compose_db_1    /docker-entrypoint.sh postgres   Up      5432/tcp
-compose_web_1   apache2-foreground               Up      80/tcp<br/>
-&#8220;`</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>docker-compose ps&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;Name                   Command               State    Ports   
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;hr /&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;compose_db_1    /docker-entrypoint.sh postgres   Up      5432/tcp
+</span><span class='line'>compose_web_1   apache2-foreground               Up      80/tcp&lt;br/&gt;</span></code></pre></td></tr></table></div></figure></p>
 
 <p>On peux voir les logs
 <code>
@@ -93,19 +100,28 @@ Starting compose_web_3...
 </code></pre>
 
 <p>Si je re-liste mes containers
-&#8220;`
-docker-compose ps</p>
-
-<pre><code>Name                   Command               State    Ports   
-</code></pre>
-
-<hr />
-
-<p>compose_db_1    /docker-entrypoint.sh postgres   Up      5432/tcp
-compose_web_1   apache2-foreground               Up      80/tcp <br/>
-compose_web_2   apache2-foreground               Up      80/tcp <br/>
-compose_web_3   apache2-foreground               Up      80/tcp
-&#8220;`</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>docker-compose ps&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;Name                   Command               State    Ports   
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;hr /&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;compose_db_1    /docker-entrypoint.sh postgres   Up      5432/tcp
+</span><span class='line'>compose_web_1   apache2-foreground               Up      80/tcp &lt;br/&gt;
+</span><span class='line'>compose_web_2   apache2-foreground               Up      80/tcp &lt;br/&gt;
+</span><span class='line'>compose_web_3   apache2-foreground               Up      80/tcp</span></code></pre></td></tr></table></div></figure></p>
 
 <p>Je viens de multiplier par 3 le nombre de container en une simple commande et sans stopper le système.</p>
 

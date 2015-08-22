@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Composer | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/composer/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-08-15T23:07:17+02:00</updated>
+  <updated>2015-08-22T20:57:20+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -283,7 +283,7 @@ git push -u origin master
 
 <p>Il suffit de cliquer sur <strong>Submit</strong></p>
 
-<p>{% img center /images/packagist_ajout.png 600 258 &lsquo;Ajouter un dépôt sur Packagist&rsquo; &lsquo;Ajouter un dépôt sur packagist&rsquo; %}</p>
+<p><img class="center" src="/images/packagist_ajout.png" width="600" height="258" title="&lsquo;Ajouter un dépôt sur Packagist&rsquo; &lsquo;Ajouter un dépôt sur packagist&rsquo;" ></p>
 
 <p>Et de mettre l&#8217;url de Github. Et c&#8217;est tout !</p>
 

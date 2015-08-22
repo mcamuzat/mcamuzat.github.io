@@ -4,7 +4,7 @@
   <title><![CDATA[Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-08-15T23:01:59+02:00</updated>
+  <updated>2015-08-22T20:57:20+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,449 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[QuickCheck Une Autre Façon De Tester]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/08/22/quickcheck-une-autre-facon-de-tester/"/>
+    <updated>2015-08-22T19:01:42+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/08/22/quickcheck-une-autre-facon-de-tester</id>
+    <content type="html"><![CDATA[<h2>Introduction</h2>
+
+<p>Nous allons voir ensemble, une nouvelle façon de faire des tests. Nous allons installer utiliser un projet <a href="https://github.com/steos/php-quickcheck">php-quickcheck</a>. L&#8217;idée ici n&#8217;est pas d&#8217;écrire des tests, mais demander au logiciel de les générer.</p>
+
+<h2>Installation.</h2>
+
+<p>Nous allons créer le <code>composer.json</code> suivant.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nt">&quot;require&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;steos/php-quickcheck&quot;</span><span class="p">:</span> <span class="s2">&quot;dev-master&quot;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Puis créer un fichier <code>test.php</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">require_once</span> <span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">&#39;/vendor/autoload.php&#39;</span><span class="p">;</span> <span class="c1">// Autoload files using Composer autoload</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">QCheck\Generator</span> <span class="k">as</span> <span class="nx">Gen</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">QCheck\Quick</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Un petit <code>composer install</code>. Et tout est en place.</p>
+
+<h2>Exemple N°1</h2>
+
+<h3>Affirmation</h3>
+
+<p>Je vais essayer de prouver que <code>array_merge($list1, $list2) == $list1 + $list2</code> (<strong>ce qui est faux</strong>)</p>
+
+<p>Je l&#8217;écris dans la fonction suivante</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">isEqual</span><span class="p">(</span><span class="k">array</span> <span class="nv">$list1</span><span class="p">,</span> <span class="k">array</span> <span class="nv">$list2</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span><span class="nb">array_merge</span><span class="p">(</span><span class="nv">$list1</span><span class="p">,</span> <span class="nv">$list2</span><span class="p">)</span> <span class="o">==</span> <span class="nv">$list1</span> <span class="o">+</span> <span class="nv">$list2</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Mise en place et contre-exemple.</h3>
+
+<p>Voici le code</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$test</span> <span class="o">=</span> <span class="nx">Gen</span><span class="o">::</span><span class="na">forAll</span><span class="p">(</span>
+</span><span class='line'>    <span class="p">[</span><span class="nx">Gen</span><span class="o">::</span><span class="na">ints</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">intoArrays</span><span class="p">(),</span> <span class="nx">Gen</span><span class="o">::</span><span class="na">ints</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">intoArrays</span><span class="p">()],</span> <span class="nx">isEqual</span>
+</span><span class='line'> <span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>Gen::ints()-&gt;intoArrays()</code> génère des array avec une taille aléatoire <code>[0, 1], [-15,0,5], ..</code> que  je vais passer à la fonction <code>isEqual</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nb">print_r</span><span class="p">(</span><span class="nx">Quick</span><span class="o">::</span><span class="na">check</span><span class="p">(</span><span class="mi">102</span><span class="p">,</span> <span class="nv">$test</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;echo&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">]));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je vais lancer 102 fois mon test.</p>
+
+<p>Voici ce que me dit le programme dès que je lance.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">..</span><span class="nx">F</span>
+</span><span class='line'><span class="k">Array</span>
+</span><span class='line'><span class="p">(</span>
+</span><span class='line'>    <span class="p">[</span><span class="nx">result</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="p">[</span><span class="nx">seed</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">1440263990644</span>
+</span><span class='line'>    <span class="p">[</span><span class="nx">failing_size</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">2</span>
+</span><span class='line'>    <span class="p">[</span><span class="nx">num_tests</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">3</span>
+</span><span class='line'>    <span class="p">[</span><span class="nx">fail</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
+</span><span class='line'>        <span class="p">(</span>
+</span><span class='line'>            <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
+</span><span class='line'>                <span class="p">(</span>
+</span><span class='line'>                    <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">1</span>
+</span><span class='line'>                <span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
+</span><span class='line'>                <span class="p">(</span>
+</span><span class='line'>                    <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="o">-</span><span class="mi">2</span>
+</span><span class='line'>                    <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">1</span>
+</span><span class='line'>                <span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">[</span><span class="nx">shrunk</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
+</span><span class='line'>        <span class="p">(</span>
+</span><span class='line'>            <span class="p">[</span><span class="nx">nodes_visited</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">9</span>
+</span><span class='line'>            <span class="p">[</span><span class="nx">depth</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">3</span>
+</span><span class='line'>            <span class="p">[</span><span class="nx">result</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>            <span class="p">[</span><span class="nx">smallest</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
+</span><span class='line'>                <span class="p">(</span>
+</span><span class='line'>                    <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
+</span><span class='line'>                        <span class="p">(</span>
+</span><span class='line'>                            <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">0</span>
+</span><span class='line'>                        <span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>                    <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
+</span><span class='line'>                        <span class="p">(</span>
+</span><span class='line'>                            <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">0</span>
+</span><span class='line'>                        <span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Le résultat est intéressant, Le logiciel a essayé 3 fois, au troisième essai l&#8217;exemple <code>([1], [-2,1])</code> donne un cas qui ne marche pas.</p>
+
+<p>Vérifions avec <code>php -a</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">php</span> <span class="o">&gt;</span> <span class="nb">var_dump</span><span class="p">(</span><span class="nb">array_merge</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]));</span>
+</span><span class='line'><span class="k">array</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>  <span class="nx">int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>  <span class="nx">int</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>  <span class="nx">int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nx">php</span> <span class="o">&gt;</span> <span class="nb">var_dump</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]);</span>
+</span><span class='line'><span class="k">array</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>  <span class="nx">int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>  <span class="nx">int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Effectivement.. Mais il y a mieux. Le logiciel a fais un <em>shrunk</em>, c&#8217;est à dire qu&#8217;il a calculé le plus petit exemple possible qui est <code>([0], [0])</code>.</p>
+
+<p>Donc la librairie me donne tort et en plus me donne le contre-exemple.</p>
+
+<h2>Exemple N°2</h2>
+
+<h3>Affirmation</h3>
+
+<p>J&#8217;affirme que <code>(sort (array) == sort(sort(array))</code> que en gros cela ne sert à rien de trier deux fois un array.</p>
+
+<h3>Mise en place</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$test2</span> <span class="o">=</span> <span class="nx">Gen</span><span class="o">::</span><span class="na">forAll</span><span class="p">(</span>
+</span><span class='line'>    <span class="p">[</span><span class="nx">Gen</span><span class="o">::</span><span class="na">ints</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">intoArrays</span><span class="p">()],</span>
+</span><span class='line'>    <span class="k">function</span> <span class="p">(</span><span class="nv">$list</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$lista</span> <span class="o">=</span> <span class="nv">$list</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$listb</span> <span class="o">=</span> <span class="nv">$list</span><span class="p">;</span>
+</span><span class='line'>        <span class="nb">sort</span><span class="p">(</span><span class="nv">$lista</span><span class="p">);</span>
+</span><span class='line'>        <span class="nb">sort</span><span class="p">(</span><span class="nv">$listb</span><span class="p">);</span>
+</span><span class='line'>        <span class="nb">sort</span><span class="p">(</span><span class="nv">$listb</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">return</span> <span class="p">(</span><span class="nv">$lista</span> <span class="o">==</span> <span class="nv">$listb</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">print_r</span><span class="p">(</span><span class="nx">Quick</span><span class="o">::</span><span class="na">check</span><span class="p">(</span><span class="mi">101</span><span class="p">,</span> <span class="nv">$test2</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;echo&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">]));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je lance le logiciel</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">.....................................................................................................</span><span class="k">Array</span>
+</span><span class='line'><span class="p">(</span>
+</span><span class='line'>    <span class="p">[</span><span class="nx">result</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">1</span>
+</span><span class='line'>    <span class="p">[</span><span class="nx">num_tests</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">101</span>
+</span><span class='line'>    <span class="p">[</span><span class="nx">seed</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">1440265001108</span>
+</span><span class='line'><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Le logiciel semble d&#8217;accord. Il a fait 101 tests, mais il n&#8217;a pas trouvé de contre-exemple.</p>
+
+<h2>Exemple N°3</h2>
+
+<p>Nous allons encoder en <code>run legth encoding</code> qui est l&#8217;actuel encodage des fichiers bitmaps.</p>
+
+<p>Quelque exemples:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">Input</span><span class="o">:</span> <span class="nx">WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWBWWWWWWWWWWWWWW</span>
+</span><span class='line'><span class="nx">Output</span><span class="o">:</span> <span class="mi">12</span><span class="nx">W1B12W3B24W1B14W</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il y a <code>12W</code> puis <code>1B</code> etc .. je compresse ma chaîne de caractères.</p>
+
+<p>Dans l&#8217;autre sens</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">Input</span><span class="o">:</span> <span class="mi">12</span><span class="nx">W1B12W3B24W1B14W</span>
+</span><span class='line'><span class="nx">Output</span><span class="o">:</span> <span class="nx">WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWBWWWWWWWWWWWWWW</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Voici une implémentation en php</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">encode</span><span class="p">(</span><span class="nv">$str</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">preg_replace_callback</span><span class="p">(</span>
+</span><span class='line'>        <span class="s1">&#39;/(.)\1+/&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="k">function</span><span class="p">(</span><span class="nv">$m</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="nb">sprintf</span><span class="p">(</span><span class="s1">&#39;%s%s&#39;</span><span class="p">,</span> <span class="nb">strlen</span><span class="p">(</span><span class="nv">$m</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nv">$m</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span><span class='line'>        <span class="p">},</span>
+</span><span class='line'>        <span class="nv">$str</span>
+</span><span class='line'>    <span class="p">);</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'><span class="k">function</span> <span class="nf">decode</span><span class="p">(</span><span class="nv">$str</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">preg_replace_callback</span><span class="p">(</span>
+</span><span class='line'>        <span class="s1">&#39;/(\d+)(\D)/&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="k">function</span><span class="p">(</span><span class="nv">$m</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="nb">str_repeat</span><span class="p">(</span><span class="nv">$m</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nv">$m</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span><span class='line'>        <span class="p">},</span>
+</span><span class='line'>         <span class="nv">$str</span>
+</span><span class='line'>     <span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Mon implémentation est correcte, mais il y a un petit souci. Pouvez vous deviner le souci de mon programme.</p>
+
+<p>A priori <code>$input == decode(encode($input))</code></p>
+
+<h3>Mise en place.</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$test3</span> <span class="o">=</span> <span class="nx">Gen</span><span class="o">::</span><span class="na">forAll</span><span class="p">(</span>
+</span><span class='line'>    <span class="p">[</span><span class="nx">Gen</span><span class="o">::</span><span class="na">alphaNumStrings</span><span class="p">()],</span>
+</span><span class='line'>    <span class="k">function</span> <span class="p">(</span><span class="nv">$string</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="p">(</span><span class="nv">$string</span> <span class="o">==</span> <span class="nx">decode</span><span class="p">(</span><span class="nx">encode</span><span class="p">(</span><span class="nv">$string</span><span class="p">)));</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">);</span>
+</span><span class='line'><span class="nb">print_r</span><span class="p">(</span><span class="nx">Quick</span><span class="o">::</span><span class="na">check</span><span class="p">(</span><span class="mi">101</span><span class="p">,</span> <span class="nv">$test2</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;echo&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">]));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Le logiciel ne tarde pas à trouver le souci</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">.....</span><span class="nx">F</span>
+</span><span class='line'><span class="k">Array</span>
+</span><span class='line'><span class="p">(</span>
+</span><span class='line'>    <span class="p">[</span><span class="nx">result</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="p">[</span><span class="nx">seed</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">1440265916923</span>
+</span><span class='line'>    <span class="p">[</span><span class="nx">failing_size</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">5</span>
+</span><span class='line'>    <span class="p">[</span><span class="nx">num_tests</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">6</span>
+</span><span class='line'>    <span class="p">[</span><span class="nx">fail</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
+</span><span class='line'>        <span class="p">(</span>
+</span><span class='line'>            <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="nx">G67k</span><span class="p">}</span>
+</span><span class='line'>        <span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">[</span><span class="nx">shrunk</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
+</span><span class='line'>        <span class="p">(</span>
+</span><span class='line'>            <span class="p">[</span><span class="nx">nodes_visited</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">34</span>
+</span><span class='line'>            <span class="p">[</span><span class="nx">depth</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">7</span>
+</span><span class='line'>            <span class="p">[</span><span class="nx">result</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>            <span class="p">[</span><span class="nx">smallest</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="k">Array</span>
+</span><span class='line'>                <span class="p">(</span>
+</span><span class='line'>                    <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="mi">0</span>
+</span><span class='line'>                <span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>La chaîne de caractère <code>"G67k"</code> ne marche pas, et en fait la chaîne <code>"0"</code> tout cours ne marche pas.</p>
+
+<h2>Conclusion des 3 exemples.</h2>
+
+<ul>
+<li>Je n&#8217;ai pas écris de test. C&#8217;est le logiciel qui génère les tests.</li>
+<li>Les tests sont aléatoires. Par exemple si j&#8217;avais limité à 5 tests l&#8217;exemple 3 pourrait passer.</li>
+<li>Si le code ne passe pas le logiciel est capable de <em>réduire</em> jusqu&#8217;à trouver un contre-exemple ici la chaine <code>"0"</code> ou l&#8217;entrée <code>([0],[0])</code></li>
+<li>Un autre cas, dans le dernier exemple, j&#8217;ai pris un générateur de texte qui prend des chiffres et des lettres, si j&#8217;avais pris un générateur de lettre seulement comme <code>gen::alphaString</code>. Le test passerait sans problème.</li>
+</ul>
+
+
+<p>Ce type de logiciel s&#8217;appelle le <a href="https://en.wikipedia.org/wiki/QuickCheck">QuickCheck</a> du nom du premier logiciel en <a href="https://en.wikipedia.org/wiki/Haskell_%28programming_language%29">Haskell</a>. Ce sont des tests aléatoires.</p>
+
+<p>Il existe deux portage en php.</p>
+
+<ul>
+<li><a href="https://github.com/giorgiosironi/eris">eris</a></li>
+<li><a href="https://github.com/steos/php-quickcheck">php-quickcheck</a></li>
+</ul>
+
+
+<p>Il y a le même problème que les tests unitaires: Quand les tests unitaires ne passent pas,  il y a un problème. Mais des tests unitaires qui passent ne prouve pas forcement que le logiciel est correct. Néanmoins cette méthode qui génère des milliers de tests donne des résultats assez intéressants. La capacité a trouvé automatiquement un contre-exemple (s&#8217;il y a un contre-exemple) est vraiment un plus.</p>
+
+<p>Cela n&#8217;a pas été évident d&#8217;écrire ce post. J&#8217;ai eu un peu de mal à trouver un exemple pertinent. Je me suis inspiré des exemples de <a href="https://github.com/DRMacIver/hypothesis">hypothesis</a>. L&#8217;implémentation du RLE viens de <a href="http://rosettacode.org/wiki/Run-length_encoding">rosetta</a> mais l&#8217;exemple en php est obsolète (la regex <code>/../e</code> php5.5 n&#8217;en veux pas). J&#8217;ai retraduis le code.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Git Un Peu De Fun]]></title>
@@ -3479,101 +3922,6 @@ L&#8217;avantage de cette méthode est que tout le monde utilise la même iso vi
 
 
 <p>Dans un prochain post nous allons essayer de voir docker-swarm.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Je Joue Donc Je Programme]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/05/04/je-joue-donc-je-programme/"/>
-    <updated>2015-05-04T22:32:00+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/05/04/je-joue-donc-je-programme</id>
-    <content type="html"><![CDATA[<p>Il existe des jeux vidéos pour apprendre à programmer. Voici quelques exemples.</p>
-
-<h2>VimAdventure</h2>
-
-<p><img class="center" src="http://mcamuzat.github.io/images/vimadventures.jpg" width="600" height="339" title="Vim adventure" alt="Vim adventure">
-<a href="http://vim-adventures.com/">Vim adventure</a> permet d&#8217;apprendre les touches de Vim de manière ludique. Personnellement j&#8217;ai beaucoup joué à <a href="http://crawl.develz.org/wordpress/">Dungeon Crawl</a> qui utilise les touches <code>h</code>, <code>j</code>, <code>k</code>, <code>l</code></p>
-
-<h2>Ruby</h2>
-
-<p>Ruby warrior existe en deux versions:
-<img class="center" src="http://mcamuzat.github.io/images/ruby-warrior.png" width="600" height="288" title="Ruby warrior" alt="Ruby warrior"></p>
-
-<p>En ligne de commande <a href="https://github.com/ryanb/ruby-warrior">ruby-warrior</a></p>
-
-<p>Le but est ici d&#8217;écrire L&#8217;AI du héros. Cela commence relativement simplement. Au début pas besoin de if, else, object mais les niveaux se corsent vraiment (je dirai que jusqu&#8217;au 6 c&#8217;est relativement tranquille)</p>
-
-<p>Depuis il existe une version web. Beaucoup plus accessible et jolie
-<a href="https://www.bloc.io/ruby-warrior#/">ruby-warrior</a></p>
-
-<h2>Javascript</h2>
-
-<h3>Untrusted</h3>
-
-<p><img class="center" src="http://mcamuzat.github.io/images/untrusted.jpg" width="600" height="339" title="Untrusted" alt="Untrusted">
-pour passer les niveaux, il faut atteindre le terminal et commencer à hacker le js. C&#8217;est vraiment malin.
-<a href="http://alexnisnevich.github.io/untrusted/">untrusted</a></p>
-
-<h3>Elevator Saga</h3>
-
-<p><img class="center" src="http://mcamuzat.github.io/images/elevator-saga.png" width="600" height="288" title="Elevator Saga" alt="Elevator Saga"></p>
-
-<p>Quoi de plus passionnant que simulation d&#8217;ascenseur.On passe assez facilement le niveau 1. Cela se complique vraiment avec le niveau deux et les objectifs.
-<a href="http://play.elevatorsaga.com/">elevator-saga</a></p>
-
-<h3>CodeCombat</h3>
-
-<p><a href="http://codecombat.com/">CodeCombat</a>
-Diriger un petit combattant, Un peu la même idée que ruby-warror, mais l&#8217;interface est très belle. Il y a du multi-joueurs</p>
-
-<h2>Multi-plateforme</h2>
-
-<p><img class="center" src="http://mcamuzat.github.io/images/codingame.jpg" width="600" height="375" title="Coding game" alt="Coding game"></p>
-
-<p><a href="http://www.codingame.com">Codingame</a>. L&#8217;interface est magnifique, vous pouvez choisir le langage (il y a une vingtaine de langage PHP, Js, Haskell, Bash, C). les exercices sont assez variés. C&#8217;est plus des katas de programmation.</p>
-
-<h2>Le SQL</h2>
-
-<p><img class="center" src="http://mcamuzat.github.io/images/schemaverse.png" width="450" height="131" title="Schemaverse" alt="Schemaverse"></p>
-
-<p><a href="https://schemaverse.com/">Schemaverse</a>
-Un jeux video en prosgresSQL pur. Il y a même une histoire. C&#8217;est assez compliqué.</p>
-
-<h2>Les Regex</h2>
-
-<ul>
-<li><a href="http://regexone.com/">regex one</a> Une bonne introduction.</li>
-<li><a href="https://regex.alf.nu/">regex.alf.nu</a>. Cela commence doucement, mais les dernières sont très très compliquées.</li>
-<li><a href="http://www.postcrashgames.com/finitris/">finitris</a>.Un vieux Jeux que j&#8217;avais noté, c&#8217;est dommage que la prise en main soit affreuse et que le zoom soit péter (control+molette est votre ami)</li>
-</ul>
-
-
-<h3>Des jeux Flash</h3>
-
-<p>Bon je sais que ce n&#8217;est pas super récent.</p>
-
-<p>Tout les jeux Zacktronics</p>
-
-<ul>
-<li><a href="http://www.zachtronics.com/spacechem/">SpaceChem</a> (payant et j&#8217;ai pas essayé).</li>
-<li><a href="http://www.zachtronics.com/kohctpyktop-engineer-of-the-people/">Kohctpyktop</a> quasiment injouable. mais c&#8217;est de cette facon que sont fait les portes logiques et les microprocesseurs.</li>
-<li><a href="http://www.zachtronics.com/the-codex-of-alchemical-engineering/">Codex of Alchemical Engineering</a> assembler des molécules.</li>
-<li><a href="http://www.zachtronics.com/ruckingenur-ii/">Ruckingenur</a> voila comment on fait du Reverse Engineering des circuits électroniques (sous windows).</li>
-</ul>
-
-
-<p>Et aussi</p>
-
-<ul>
-<li><a href="http://pleasingfungus.com/Manufactoria/">manufactoria</a> facbrique de robots et BDD (il suffit de faire passer le scénario).</li>
-</ul>
-
-
-<h2>En conclusion</h2>
-
-<p>j&#8217;ai vraiment beaucoup aimé et joué à <a href="http://alexnisnevich.github.io/untrusted/">untrusted</a> et <a href="https://www.bloc.io/ruby-warrior#/">ruby-warrior</a></p>
-
-<p>J&#8217;ai probablement oublié d&#8217;autres jeux.</p>
 ]]></content>
   </entry>
   
