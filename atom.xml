@@ -4,7 +4,7 @@
   <title><![CDATA[Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-08-22T20:57:20+02:00</updated>
+  <updated>2015-08-23T18:53:48+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,176 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Halt Compiler : Twig Et Php Dans Le Même Fichier]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/08/23/halt-compiler-twig-et-php-dans-le-meme-fichier/"/>
+    <updated>2015-08-23T17:20:41+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/08/23/halt-compiler-twig-et-php-dans-le-meme-fichier</id>
+    <content type="html"><![CDATA[<h2>Introduction</h2>
+
+<p>je vais parler de l&#8217;instruction <code>__halt_compiler()</code>.</p>
+
+<p>Cette instruction arrête l&#8217;interprétation du PHP. Instruction inutile ? Pas vraiment..</p>
+
+<p>Pour ce faire je vais montrer un exemple ou je vais mixer un fichier php et un fichier <a href="http://twig.sensiolabs.org/">twig</a> ensemble.</p>
+
+<h2>L&#8217;instruction <code>__halt_compiler()</code></h2>
+
+<p>D&#8217;après php.net</p>
+
+<blockquote><p>Stoppe l&#8217;exécution du compilateur. Ceci peut être très utile pour embarquer des données dans des scripts PHP, comme des fichiers d&#8217;installation.
+L&#8217;octet de la position du début des données peut être déterminé par la constante <code>__COMPILER_HALT_OFFSET__</code> qui n&#8217;est définie que s&#8217;il y a une fonction <code>__halt_compiler()</code> présente dans le fichier.</p></blockquote>
+
+<h2>Une première expérimentation</h2>
+
+<p>Soit le fichier php suivant :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">echo</span> <span class="s1">&#39;salut la compagnie!!&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="nb">__halt_compiler</span><span class="p">();</span>
+</span><span class='line'><span class="k">echo</span> <span class="s2">&quot;j&#39;apparais pas&quot;</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Comme prévue deuxième ligne ne s&#8217;affiche pas.</p>
+
+<h2>Une seconde expérimentation.</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="nv">$txt</span> <span class="o">=</span> <span class="nb">file_get_contents</span><span class="p">(</span><span class="k">__FILE__</span><span class="p">,</span> <span class="k">false</span><span class="p">,</span> <span class="k">null</span><span class="p">,</span> <span class="nx">__COMPILER_HALT_OFFSET__</span><span class="p">);</span>
+</span><span class='line'><span class="k">echo</span> <span class="nb">strtoupper</span><span class="p">(</span><span class="nv">$txt</span><span class="p">);</span>
+</span><span class='line'><span class="nb">__halt_compiler</span><span class="p">();</span>
+</span><span class='line'><span class="nx">Bonjour</span> <span class="nx">tout</span> <span class="nx">le</span> <span class="nx">monde</span><span class="o">!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>La constante <code>__FILE__</code> représente le fichier actuelle, la constante <code>__COMPILER_HALT_OFFSET__</code> représente la position de l&#8217;instruction <code>__halt_compiler()</code>. On récupère le texte qui ne s&#8217;affiche pas.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>BONJOUR TOUT LE MONDE!
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Mettre le fichier php et le fichier de template twig dans le même fichier</h2>
+
+<p>Un exemple un peu théorique car pas très optimisé.</p>
+
+<p>J&#8217;ai besoin de twig, voici le <code>composer.json</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>   <span class="nt">&quot;require&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nt">&quot;twig/twig&quot;</span><span class="p">:</span> <span class="s2">&quot;^1.20&quot;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>Voici mon programme.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">require_once</span> <span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">&#39;/vendor/autoload.php&#39;</span><span class="p">;</span> <span class="c1">// Autoload files using Composer autoload</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">function</span> <span class="nf">get_halt_data</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">file_get_contents</span><span class="p">(</span><span class="k">__FILE__</span><span class="p">,</span> <span class="k">false</span><span class="p">,</span> <span class="k">null</span><span class="p">,</span> <span class="nx">__COMPILER_HALT_OFFSET__</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$loader</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Twig_Loader_Array</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>    <span class="s1">&#39;index&#39;</span> <span class="o">=&gt;</span> <span class="nx">get_halt_data</span><span class="p">()));</span>
+</span><span class='line'><span class="nv">$twig</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Twig_Environment</span><span class="p">(</span><span class="nv">$loader</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">echo</span> <span class="nv">$twig</span><span class="o">-&gt;</span><span class="na">render</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Fabien&#39;</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">__halt_compiler</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">hello</span> <span class="p">{</span><span class="nx">\</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="nx">\</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>hello fabien
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Désolé pour les <code>{\{</code> sinon cela n&#8217;apparait pas sur le code.</p>
+
+<p>C&#8217;est relativement inefficace. Il doit avoir moyen de faire un peu plus propre en profitant du cache.</p>
+
+<p>Comme annoncé dans le titre , j&#8217;ai dans le même fichier le php et le template twig.</p>
+
+<h3>Un exemple plus concret <code>composer.phar</code></h3>
+
+<p>Ouvrons pour voir le fichier <code>composer.phar</code></p>
+
+<p>Voici ce que je vois. Nous retrouvons notre instruction du jour.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">...</span>
+</span><span class='line'><span class="nx">Phar</span><span class="o">::</span><span class="na">mapPhar</span><span class="p">(</span><span class="s1">&#39;composer.phar&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nb">define</span><span class="p">(</span><span class="s1">&#39;COMPOSER_DEV_WARNING_TIME&#39;</span><span class="p">,</span> <span class="mi">1445255994</span><span class="p">);</span>
+</span><span class='line'><span class="k">require</span> <span class="s1">&#39;phar://composer.phar/bin/composer&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">__HALT_COMPILER</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">.. </span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Les fichiers <code>.phar</code> en pratique n&#8217;utilise que cette astuce. Je connais assez peu.</p>
+
+<h2>Conclusion</h2>
+
+<ul>
+<li>Sur l&#8217;utilisation en template. Il y a le projet <a href="https://github.com/bobthecow/mustache.php">mustache.php</a> vous ne devriez pas être perdu avec le loader <a href="https://github.com/bobthecow/mustache.php/wiki/Template-Loading#inline-loader">suivant</a></li>
+<li>Sur l&#8217;utilisation de string dans un template twig, la lecture de cet <a href="https://techpunch.co.uk/development/render-string-twig-template-symfony2">article</a> est très bien.</li>
+<li>Sur les <code>.phar</code> la <a href="http://php.net/manual/en/phar.mapphar.php">documentation officielle</a> semble un bon début.</li>
+</ul>
+
+
+<p>Je vais essayer de continuer à parler d&#8217;autres instructions et structures peu connues (par exemple <code>__invoke</code> ou les <code>SplHeap</code>).</p>
+
+<p>Merci de m&#8217;avoir lu.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[QuickCheck Une Autre Façon De Tester]]></title>
@@ -3793,135 +3963,6 @@ Je vais essayer de continuer un peu sur le serveur web (récupération des posts
 <p>Nous avons d&#8217;installer Go.</p>
 
 <p>Je viens juste de m&#8217;y mettre, Je ne sais pas encore ce que la suite nous réserve..</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Docker-machine]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/05/09/docker-machine/"/>
-    <updated>2015-05-09T18:29:45+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/05/09/docker-machine</id>
-    <content type="html"><![CDATA[<h2>Introduction</h2>
-
-<p>Nous allons voir <a href="https://docs.docker.com/machine/">docker-machine</a>. Docker-machine permet de simplifier l&#8217;installation/gestion/déploiement de Docker.</p>
-
-<h2>Installation</h2>
-
-<p>Tout d&#8217;abord il faut connaitre votre architecture <code>x86_64</code>ou <code>i386</code>.</p>
-
-<p>La commande classique est <code>uname -a</code>.</p>
-
-<p>Puis télécharger l&#8217;exécutable via <code>curl</code></p>
-
-<p>Sous linux.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>curl -L https://github.com/docker/machine/releases/download/v0.2.0/docker-machine_linux-amd64 &gt; docker-machine
-</span><span class='line'>sudo mv docker-machine /usr/local/bin/docker-machine
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Puis le marquer comme exécutable.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo chmod +x /usr/local/bin/docker-machine
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Testons notre application.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker-machine -v
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Enfin vous avez besoin d&#8217;avoir <a href="https://www.virtualbox.org/wiki/Downloads">Virtual-Box</a></p>
-
-<h2>Mise en route.</h2>
-
-<p>Voici la commande pour tout lancer</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker-machine create --driver virtualbox dev
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Cette ligne demande à docker-machine de créer une environnement que l&#8217;on appelle <strong>dev</strong> qui sera sur Virtual-box.
-docker-machine va télécharger une iso (boot2docker) contenant docker. Et lancer Virtualbox.</p>
-
-<p>Jusqu&#8217;à maintenant on avait installé docker sur notre ordi local.
-Ici on installe docker sur une VM.
-Toutes les commandes seront passer de manière transparente à la machine virtuelle.
-L&#8217;avantage de cette méthode est que tout le monde utilise la même iso virtuelle (boot2docker). Il n&#8217;y a moins le risque du &ldquo;chez moi ça marche&rdquo; qui est une remarque au combien rageante.</p>
-
-<p>Je veux travailler sur mon environnement de dev</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">eval</span> <span class="s2">&quot;$(docker-machine env dev)&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Toutes mes commandes sont directement envoyées sur la vm à distance</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker run busybox <span class="nb">echo </span>hello
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Je peux rajouter un environnement (ici <strong>prod</strong>)</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker-machine create --driver amazon prod --les options qui vont bien..
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Il suffit de changer l&#8217;environnement pour automatiquement déployer sur Amazon.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">eval</span> <span class="s2">&quot;$(docker-machine env prod)&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Plein de drivers sont fournis:</p>
-
-<ul>
-<li><a href="https://docs.docker.com/machine/#amazon-web-services">Amazon Web Services</a></li>
-<li><a href="https://docs.docker.com/machine/#digital-ocean">Digital Ocean</a></li>
-<li><a href="https://docs.docker.com/machine/#google-compute-engine">Google Compute Engine</a></li>
-<li><a href="https://docs.docker.com/machine/#ibm-softlayer">IBM Softlayer</a></li>
-<li><a href="https://docs.docker.com/machine/#microsoft-azure">Microsoft Azure</a></li>
-<li><a href="https://docs.docker.com/machine/#microsoft-hyper-v">Microsoft Hyper-V</a></li>
-<li><a href="https://docs.docker.com/machine/#openstack">Openstack</a></li>
-<li><a href="https://docs.docker.com/machine/#rackspace">Rackspace</a></li>
-<li><a href="https://docs.docker.com/machine/#oracle-virtualbox">Oracle VirtualBox</a></li>
-<li><a href="https://docs.docker.com/machine/#vmware-fusion">VMware Fusion</a></li>
-<li><a href="https://docs.docker.com/machine/#vmware-vcloud-air">VMware vCloud Air</a></li>
-<li><a href="https://docs.docker.com/machine/#vmware-vsphere">VMware vSphere</a></li>
-</ul>
-
-
-<h2>L&#8217;avantage de docker-machine</h2>
-
-<ul>
-<li>Simplifie l&#8217;installation. il n&#8217;y a que docker-machine à installer. Arès docker-machine s&#8217;occupe de tout installer. (il installe docker sur un vm/instance)</li>
-<li>Simplifie le déploiement, il suffit de changer l&#8217;environnement</li>
-<li>Enfin il s&#8217;interface avec docker-swarm (qui permet de gérer plusieurs nodes de Dockers).</li>
-</ul>
-
-
-<h2>En conclusion</h2>
-
-<p>Le slogan &ldquo;a way to get from zero to Docker&rdquo; est plutôt juste.</p>
-
-<ul>
-<li>Cela simplifie beaucoup l&#8217;installation sous windows (pas testé :-)).</li>
-<li>Et harmonise les environnements de dev (tout le monde utilise la même iso)</li>
-<li>Facilite le déploiement. Il n&#8217;y a pas a se soucier si c&#8217;est du Amazon/OpenStack/Azure..</li>
-</ul>
-
-
-<p>Dans un prochain post nous allons essayer de voir docker-swarm.</p>
 ]]></content>
   </entry>
   
