@@ -1,0 +1,450 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Array_walk, Array_map, Array_walk_recursive - Mon blog perso.</title>
+  <meta name="author" content="mcamuzat">
+
+  
+  <meta name="description" content="Une question que l'on m'a posé. Quel instruction je n'ai jamais jamais réussi à utiliser dans php ? Dans le sens jamais trouvé d'utilisation pratique &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mcamuzat.github.io/blog/2015/08/26/array-walk/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Mon blog perso." type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-60315965-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Mon blog perso.</a></h1>
+  
+    <h2>Un simple blog PHP/Linux/Programmation/Docker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="mcamuzat.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Array_walk, Array_map, Array_walk_recursive</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-08-26T22:30:55+02:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:30 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Une question que l&#8217;on m&#8217;a posé.</p>
+
+<p>Quel instruction je n&#8217;ai jamais jamais réussi à utiliser dans php ? Dans le sens jamais trouvé d&#8217;utilisation pratique.</p>
+
+<p>Ma réponse est un <code>array_recursive_walk()</code> et dans la même idée les <code>RecursiveIteratorIterator</code></p>
+
+<p>Et puis on m&#8217;a demander la différence entre un <code>array_walk</code> et un <code>array_map</code>.</p>
+
+<h2><code>array_map</code></h2>
+
+<p>Voici quelques exemples</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="c1">// via un array_map</span>
+</span><span class='line'><span class="nv">$array</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="s1">&#39;two&#39;</span><span class="p">,</span> <span class="s1">&#39;three&#39;</span><span class="p">]</span>
+</span><span class='line'><span class="nv">$out</span> <span class="o">=</span> <span class="nb">array_map</span><span class="p">(</span><span class="nx">uc_first</span><span class="p">,</span> <span class="nv">$array</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>array_map</code> ne touche pas le tableau original.</p>
+
+<p>En fait <code>array_map</code> fait exactement ceci.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$out</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="s1">&#39;one&#39;</span><span class="p">),</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="s1">&#39;two&#39;</span><span class="p">),</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="s1">&#39;three&#39;</span><span class="p">)</span> <span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>De manière générale</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nb">array_map</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$a</span><span class="p">),[</span><span class="nx">a</span> <span class="p">,</span><span class="nx">b</span><span class="p">,</span> <span class="o">..</span><span class="p">,</span><span class="nx">z</span><span class="p">])</span>
+</span><span class='line'><span class="p">[</span><span class="k">function</span><span class="p">(</span><span class="nx">a</span><span class="p">),</span> <span class="k">function</span><span class="p">(</span><span class="nx">b</span><span class="p">),</span> <span class="k">function</span><span class="p">(</span><span class="nx">c</span><span class="p">),</span> <span class="o">..</span> <span class="k">function</span><span class="p">(</span><span class="nx">z</span><span class="p">)]</span><span class="o">.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>On renvoie un tableau de la <strong>même</strong> taille.</li>
+<li>la fonction appelé doit contenir un <strong>return</strong></li>
+<li>C&#8217;est de la programmation fonctionnelle (c&#8217;est le <strong>map</strong> de <strong>Map</strong>Reduce).</li>
+<li>On ne connais pas l&#8217;index (que l&#8217;on pourrai récupérer dans un <code>foreach($array as $key =&gt; $value)</code>).</li>
+</ul>
+
+
+<h2><code>Array_walk</code></h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$array</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="s1">&#39;two&#39;</span><span class="p">,</span> <span class="s1">&#39;three&#39;</span><span class="p">]</span>
+</span><span class='line'><span class="k">function</span> <span class="nf">toMaj</span><span class="p">(</span><span class="o">&amp;</span><span class="nv">$input</span><span class="p">,</span> <span class="nv">$key</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// ucfirst give error with 2 arguments</span>
+</span><span class='line'>    <span class="nv">$input</span> <span class="o">=</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="nv">$input</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nb">array_walk</span><span class="p">(</span><span class="nv">$array</span><span class="p">,</span> <span class="s1">&#39;toMaj&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$array</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Constatons:</p>
+
+<ul>
+<li>Je passe par référence <code>&amp;input</code>.</li>
+<li>Donc je n&#8217;ai pas besoin de <code>return</code>.</li>
+<li>Donc nous sommes dans du <strong>procédural</strong>. (ce qui n&#8217;est pas forcément un défaut)</li>
+<li>J&#8217;ai économisé une variable</li>
+<li>On est obligé d&#8217;écrire des fonctions à deux arguments certaines fonctions comme <code>ucfirst</code> refusent d&#8217;avoir plusieurs arguments.</li>
+<li>Par contre, on connait l&#8217;index (<code>$key</code>) mais impossible de le modifier.</li>
+<li><code>array_walk</code> renvoie <code>true</code> or <code>false</code> ce qui n&#8217;aide pas beaucoup</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$array</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="s1">&#39;two&#39;</span><span class="p">,</span> <span class="s1">&#39;three&#39;</span><span class="p">]</span>
+</span><span class='line'><span class="k">function</span> <span class="nf">toMaj</span><span class="p">(</span><span class="o">&amp;</span><span class="nv">$input</span><span class="p">,</span> <span class="nv">$key</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$input</span> <span class="o">=</span> <span class="nv">$key</span><span class="o">.</span><span class="s1">&#39; : &#39;</span><span class="nb">ucfirst</span><span class="p">(</span><span class="nv">$input</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nb">array_walk</span><span class="p">(</span><span class="nv">$array</span><span class="p">,</span> <span class="s1">&#39;toMaj&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$array</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pour résumer
+les deux fonctions ont un peu près le même résultat.</p>
+
+<ul>
+<li><code>array_walk</code> prend un array et remplace chaque valeurs par Fonction(valeur).</li>
+<li><code>array_map</code> prend un array et recrée un array de la même taille.</li>
+</ul>
+
+
+<h2>Le <code>Array_recursive_walk</code></h2>
+
+<p>Un exemple de code.</p>
+
+<p>Je voulais faire un <code>CamelCase</code> -> <code>snake_case</code> mais comme le <code>array_walk</code> impossible de modifier les clés des index.</p>
+
+<p>Soit l&#8217;exemple suivant</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$array</span> <span class="o">=</span>  <span class="p">[</span><span class="s2">&quot;Tortue-ninja&quot;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s2">&quot;leonardo&quot;</span> <span class="p">,</span> <span class="s2">&quot;donatello&quot;</span><span class="p">,</span> <span class="s2">&quot;michelangelo&quot;</span><span class="p">,</span><span class="s2">&quot;raphael&quot;</span><span class="p">],</span> <span class="s2">&quot;Mechant&quot;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s2">&quot;shredder&quot;</span><span class="p">,</span> <span class="s2">&quot;krang&quot;</span><span class="p">]];</span>
+</span><span class='line'><span class="nb">array_walk_recursive</span><span class="p">(</span><span class="nv">$array</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="o">&amp;</span><span class="nv">$item</span><span class="p">,</span> <span class="nv">$key</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$key</span> <span class="o">===</span> <span class="s2">&quot;Tortue-ninja&quot;</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">echo</span> <span class="s1">&#39;Cowabunga!&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="nv">$item</span> <span class="o">=</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="nv">$item</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$array</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Le programme n&#8217;affiche pas de <code>Cowabunga</code>, mais j&#8217;ai mis en majuscule toutes les valeurs.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">array</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="s1">&#39;Tortue-ninja&#39;</span> <span class="o">=&gt;</span>
+</span><span class='line'>  <span class="k">array</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="s2">&quot;Leonardo&quot;</span>
+</span><span class='line'>    <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span> <span class="s2">&quot;Donatello&quot;</span>
+</span><span class='line'>    <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span> <span class="s2">&quot;Michelangelo&quot;</span>
+</span><span class='line'>    <span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="s2">&quot;Raphael&quot;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="s1">&#39;mechant&#39;</span> <span class="o">=&gt;</span>
+</span><span class='line'>  <span class="k">array</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="s2">&quot;Shredder&quot;</span>
+</span><span class='line'>    <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="s2">&quot;Krang&quot;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On ne passe jamais sur le clé : <code>Tortue-ninja</code>, d&#8217;ailleurs la documentation est claire</p>
+
+<blockquote><p>Toute clé qui est associée à un tableau n&#8217;est pas passée à la fonction de rappel.</p></blockquote>
+
+<p>Un vrai exemple</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'>    <span class="nb">array_walk_recursive</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="o">&amp;</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span> <span class="nx">instanceof</span> <span class="nx">\Traversable</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$value</span> <span class="o">=</span> <span class="nb">iterator_to_array</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>`</p>
+
+<p>Un exemple que l&#8217;on retrouve dans <a href="">PHPUnit</a> et <a href="">Symfony2</a></p>
+
+<p>On veut logger des objets en les serialisant en Json. Certain objects (comme les ArrayCollection et autres..) sont <em>Traversables</em> (c&#8217;est à dire qu&#8217;il possède un Iterateur (On implémente <code>current</code>, <code>next</code>, <code>rewind</code>, <code>valid</code>). En php il est possible de transformer les Itérateurs en Array avec l&#8217;instruction <code>iterator_to_array()</code>. ainsi on transforme l&#8217;objet en Array pour avoir plus d&#8217;information.</p>
+
+<h2>En conclusion</h2>
+
+<p>Donc je n&#8217;ai jamais réussi à écrire un <code>array_walk_recursive</code> mais au moins j&#8217;ai réussi à écrire un post dessus.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mcamuzat</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-08-26T22:30:55+02:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:30 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/php/'>php</a>, <a class='category' href='/blog/categories/phpunit/'>phpunit</a>, <a class='category' href='/blog/categories/symfony/'>symfony</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mcamuzat.github.io/blog/2015/08/26/array-walk/" data-via="" data-counturl="http://mcamuzat.github.io/blog/2015/08/26/array-walk/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/08/23/halt-compiler-twig-et-php-dans-le-meme-fichier/" title="Previous Post: halt compiler : twig et php dans le même fichier">&laquo; halt compiler : twig et php dans le même fichier</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/08/29/stacks-structures-meconnues/" title="Next Post: les stacks des structures méconnues">les stacks des structures méconnues &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/08/29/stacks-structures-meconnues/">Les Stacks Des Structures Méconnues</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/26/array-walk/">Array_walk, Array_map, Array_walk_recursive</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/23/halt-compiler-twig-et-php-dans-le-meme-fichier/">Halt Compiler : Twig Et Php Dans Le Même Fichier</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/22/quickcheck-une-autre-facon-de-tester/">QuickCheck Une Autre Façon De Tester</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/15/git-un-peu-de-fun/">Git Un Peu De Fun</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/mcamuzat">@mcamuzat</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'mcamuzat',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - mcamuzat -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

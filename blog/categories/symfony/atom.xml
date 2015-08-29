@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Symfony | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/symfony/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-08-23T18:53:48+02:00</updated>
+  <updated>2015-08-29T22:36:52+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,160 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Array_walk, Array_map, Array_walk_recursive]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/08/26/array-walk/"/>
+    <updated>2015-08-26T22:30:55+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/08/26/array-walk</id>
+    <content type="html"><![CDATA[<p>Une question que l&#8217;on m&#8217;a posé.</p>
+
+<p>Quel instruction je n&#8217;ai jamais jamais réussi à utiliser dans php ? Dans le sens jamais trouvé d&#8217;utilisation pratique.</p>
+
+<p>Ma réponse est un <code>array_recursive_walk()</code> et dans la même idée les <code>RecursiveIteratorIterator</code></p>
+
+<p>Et puis on m&#8217;a demander la différence entre un <code>array_walk</code> et un <code>array_map</code>.</p>
+
+<h2><code>array_map</code></h2>
+
+<p>Voici quelques exemples</p>
+
+<pre><code class="php">// via un array_map
+$array = ['one', 'two', 'three']
+$out = array_map(uc_first, $array);
+</code></pre>
+
+<p><code>array_map</code> ne touche pas le tableau original.</p>
+
+<p>En fait <code>array_map</code> fait exactement ceci.</p>
+
+<pre><code>$out = [ ucfirst('one'), ucfirst('two'), ucfirst('three') ];
+</code></pre>
+
+<p>De manière générale</p>
+
+<pre><code>array_map(function($a),[a ,b, ..,z]) 
+[function(a), function(b), function(c), .. function(z)].
+</code></pre>
+
+<ul>
+<li>On renvoie un tableau de la <strong>même</strong> taille.</li>
+<li>la fonction appelé doit contenir un <strong>return</strong></li>
+<li>C&#8217;est de la programmation fonctionnelle (c&#8217;est le <strong>map</strong> de <strong>Map</strong>Reduce).</li>
+<li>On ne connais pas l&#8217;index (que l&#8217;on pourrai récupérer dans un <code>foreach($array as $key =&gt; $value)</code>).</li>
+</ul>
+
+
+<h2><code>Array_walk</code></h2>
+
+<pre><code class="php">$array = ['one', 'two', 'three']
+function toMaj(&amp;$input, $key) {
+    // ucfirst give error with 2 arguments
+    $input = ucfirst($input);
+}
+array_walk($array, 'toMaj');
+var_dump($array);
+</code></pre>
+
+<p>Constatons:</p>
+
+<ul>
+<li>Je passe par référence <code>&amp;input</code>.</li>
+<li>Donc je n&#8217;ai pas besoin de <code>return</code>.</li>
+<li>Donc nous sommes dans du <strong>procédural</strong>. (ce qui n&#8217;est pas forcément un défaut)</li>
+<li>J&#8217;ai économisé une variable</li>
+<li>On est obligé d&#8217;écrire des fonctions à deux arguments certaines fonctions comme <code>ucfirst</code> refusent d&#8217;avoir plusieurs arguments.</li>
+<li>Par contre, on connait l&#8217;index (<code>$key</code>) mais impossible de le modifier.</li>
+<li><code>array_walk</code> renvoie <code>true</code> or <code>false</code> ce qui n&#8217;aide pas beaucoup</li>
+</ul>
+
+
+<pre><code>$array = ['one', 'two', 'three']
+function toMaj(&amp;$input, $key) {
+    $input = $key.' : 'ucfirst($input);
+}
+array_walk($array, 'toMaj');
+var_dump($array);
+</code></pre>
+
+<p>Pour résumer
+les deux fonctions ont un peu près le même résultat.</p>
+
+<ul>
+<li><code>array_walk</code> prend un array et remplace chaque valeurs par Fonction(valeur).</li>
+<li><code>array_map</code> prend un array et recrée un array de la même taille.</li>
+</ul>
+
+
+<h2>Le <code>Array_recursive_walk</code></h2>
+
+<p>Un exemple de code.</p>
+
+<p>Je voulais faire un <code>CamelCase</code> -> <code>snake_case</code> mais comme le <code>array_walk</code> impossible de modifier les clés des index.</p>
+
+<p>Soit l&#8217;exemple suivant</p>
+
+<pre><code class="php">$array =  ["Tortue-ninja" =&gt; ["leonardo" , "donatello", "michelangelo","raphael"], "Mechant" =&gt; ["shredder", "krang"]];
+array_walk_recursive($array, function(&amp;$item, $key) {
+    if ($key === "Tortue-ninja") {
+        echo 'Cowabunga!';
+    }
+    $item = ucfirst($item);
+});
+
+var_dump($array);
+</code></pre>
+
+<p>Le programme n&#8217;affiche pas de <code>Cowabunga</code>, mais j&#8217;ai mis en majuscule toutes les valeurs.</p>
+
+<pre><code>array(2) {
+  'Tortue-ninja' =&gt;
+  array(4) {
+    [0] =&gt;
+    string(8) "Leonardo"
+    [1] =&gt;
+    string(9) "Donatello"
+    [2] =&gt;
+    string(12) "Michelangelo"
+    [3] =&gt;
+    string(7) "Raphael"
+  }
+  'mechant' =&gt;
+  array(2) {
+    [0] =&gt;
+    string(8) "Shredder"
+    [1] =&gt;
+    string(5) "Krang"
+  }
+}
+</code></pre>
+
+<p>On ne passe jamais sur le clé : <code>Tortue-ninja</code>, d&#8217;ailleurs la documentation est claire</p>
+
+<blockquote><p>Toute clé qui est associée à un tableau n&#8217;est pas passée à la fonction de rappel.</p></blockquote>
+
+<p>Un vrai exemple
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'>    <span class="nb">array_walk_recursive</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="o">&amp;</span><span class="nx">amp</span><span class="p">;</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span> <span class="nx">instanceof</span> <span class="nx">\Traversable</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$value</span> <span class="o">=</span> <span class="nb">iterator_to_array</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>`</p>
+
+<p>Un exemple que l&#8217;on retrouve dans <a href="">PHPUnit</a> et <a href="">Symfony2</a></p>
+
+<p>On veut logger des objets en les serialisant en Json. Certain objects (comme les ArrayCollection et autres..) sont <em>Traversables</em> (c&#8217;est à dire qu&#8217;il possède un Iterateur (On implémente <code>current</code>, <code>next</code>, <code>rewind</code>, <code>valid</code>). En php il est possible de transformer les Itérateurs en Array avec l&#8217;instruction <code>iterator_to_array()</code>. ainsi on transforme l&#8217;objet en Array pour avoir plus d&#8217;information.</p>
+
+<h2>En conclusion</h2>
+
+<p>Donc je n&#8217;ai jamais réussi à écrire un <code>array_walk_recursive</code> mais au moins j&#8217;ai réussi à écrire un post dessus.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[PHP Code Sniffer Mise en Place]]></title>
