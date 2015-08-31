@@ -9,7 +9,13 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Introduction Je vais parler de SplStack une structure de donnée qui fait partie de La SPL (pour Standart PHP Librairie). Nous allons voir trois &hellip;">
+  <meta name="description" content="Soit le fichier texte suivant: 1
+2
+3
+4
+5
+6 * Alpha * Foxtrot * Charlie * Delta * Echo * Bravo Dans VIM il suffit de taper. 1
+:%sort ou :%!sort Pour &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +83,196 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/31/lancer-des-commandes-dans-vim/">Lancer Des Commandes Dans Vim</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-08-31T23:49:17+02:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>11:49 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Soit le fichier texte suivant:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> * Alpha
+</span><span class='line'> * Foxtrot
+</span><span class='line'> * Charlie
+</span><span class='line'> * Delta
+</span><span class='line'> * Echo 
+</span><span class='line'> * Bravo</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Dans VIM il suffit de taper.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:%sort ou :%!sort</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pour obtenir</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> * Alpha
+</span><span class='line'> * Bravo
+</span><span class='line'> * Charlie
+</span><span class='line'> * Delta
+</span><span class='line'> * Echo 
+</span><span class='line'> * Foxtrot</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On peux aussi lancer plein de commandes amusantes</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> * Doublon
+</span><span class='line'> * Pas unique
+</span><span class='line'> * Doublon
+</span><span class='line'> * 
+</span><span class='line'> * ...</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>!sort | uniq -c | tr "[A-Z]" "[a-z]"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pour ceux qui ne se rappelle plus trop les commandes de Bash</p>
+
+<ul>
+<li><code>sort</code> trie le texte</li>
+<li><code>uniq -c</code> prend toute les valeurs et les comptes c&#8217;est l&#8217;équivalent d&#8217;un <code>GROUP BY</code> en SQL</li>
+<li><code>tr</code> est l&#8217;abréviation de <strong>tr</strong>anspose je remplace les lettres en <code>[A-Z]</code> par leur équivalent en minuscule.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  1  * 
+</span><span class='line'>  1  * ...
+</span><span class='line'>  2  * doublon
+</span><span class='line'>  1  * pas unique</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si vous sélectionnez le texte avec <code>v</code> et que vous appuyer sur <code>:</code></p>
+
+<p>Alors vous devez voir la commande suivante</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:'&lt;,'&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>et Ajoutez la commande que vous allez appliquer à la sélection. Par exemple <code>:'&lt;,'&gt;!sort</code></p>
+
+<p>Plus rigolo. On peux appeler des langages que l&#8217;on veut dans VIM</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span> <span class="k">echo</span> <span class="s2">&quot;bonjour&quot;</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Tapez <code>!!</code>
+vous devriez voir apparaître</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">:.!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Compléter avec <code>:.!php</code></p>
+
+<p>votre texte va se remplacer</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">bonjour</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cela marche aussi avec python</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">print</span> <span class="s">&quot;olleh&quot;</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Avec le curseur sur la ligne, appuyer sur <code>!!</code> puis ajoutez <code>:.!python</code></p>
+
+<p>La ligne devient</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">hello</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Exécuter une commande Bash depuis VIM</h2>
+
+<p>La commande suivante</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">php</span> <span class="n">app</span><span class="o">/</span><span class="n">console</span> <span class="n">cache</span><span class="p">:</span><span class="n">clear</span> <span class="o">--</span><span class="n">env</span><span class="o">=</span><span class="n">prod</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si vous voulez exécuter la commande mais ne pas modifiez la ligne.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="p">:</span><span class="o">.</span><span class="n">w</span> <span class="err">!</span><span class="n">bash</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>C&#8217;est un peu moins simple.</p>
+
+<ul>
+<li><code>:.</code> représente la ligne actuelle.</li>
+<li><code>w</code> représente une écriture</li>
+<li><code>!bash</code> via Bash.</li>
+</ul>
+
+
+<p>La documentation de VIM <code>:help :w_c</code></p>
+
+<h2>en résumé</h2>
+
+<ul>
+<li>Si vous voulez appliquer votre commande sur tout le fichier <code>:%!commande</code></li>
+<li>S vous voulez juste la ligne <code>:.!commande</code> ou tapez <code>!!</code>.</li>
+<li>Si vous voulez sur une sélection <code>v</code> ou <code>V</code> puis <code>:</code> vous deviez voir ceci <code>:'&lt;,'&gt;</code>, ajoutez la commande souhaitée.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2891,82 +3087,6 @@ Il suffit de créer un fichier <code>pre-commit.sh</code> dans le répertoire <c
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/07/25/mise-en-place-de-travis/">Mise en Place De Travis</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-07-25T16:37:49+02:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>4:37 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Introduction</h2>
-
-<p>Après la création de la <a href="/blog/2015/07/19/histogramme-et-ligne-de-commande/">librairie</a>, la création et la publication du <a href="blog/2015/07/24/creer-son-depot-sous-packagist/">package</a>, je propose d&#8217;ajouter l&#8217;intégration continue avec Travis. Travis est gratuit pour les projets open-source. (L&#8217;url n&#8217;est d&#8217;ailleurs pas la même c&#8217;est travis-ci.org pour les projets publics, et travis-ci.com pour les projets privés)</p>
-
-<h2>L&#8217;intégration continue.</h2>
-
-<p>Il faut bien entendu s&#8217;inscrire sur Travis. On s&#8217;authentifie grâce à son identifiant github.</p>
-
-<p>Nous allons rajouter le fichier <code>.travis.yml</code> dans notre dépôt.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">language</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">php</span>
-</span><span class='line'><span class="l-Scalar-Plain">install</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">composer install</span>
-</span><span class='line'><span class="l-Scalar-Plain">php</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">5.4</span>
-</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">5.5</span>
-</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">5.6</span>
-</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">hhvm</span>
-</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">nightly</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Quand je synchronise mes dépôts. Il suffit de cliquer sur le slider pour activé l&#8217;intégration continue.</p>
-
-<p><img class="center" src="/images/travis_choice.png" width="600" height="234" title="intégration continue" alt="Activée l"></p>
-
-<p>On peux lire les logs, d&#8217;ailleurs on se rend compte que travis utilise Docker</p>
-
-<p><img class="center" src="/images/travis_log.png" width="600" height="405" title="Log de travis" alt="Log de travis"></p>
-
-<p>et voici le résultat</p>
-
-<p><img class="center" src="/images/travis_depot.png" width="600" height="320" title="Dashboard du projet" alt="Dashboard du projet"></p>
-
-<p>A chaque commit je lance un build. J&#8217;ai vraiment été très surpris par la simplicité de la mise en œuvre.</p>
-
-<h2>En conclusion</h2>
-
-<p>On peux lancer un build sans passer par travis grâce à docker et <a href="https://github.com/jolicode/JoliCi">JoliCi</a>, Voir ce <a href="blog/2015/04/18/dockers-et-ci/">post</a> à la fin</p>
-
-<p>Dans le prochain article, nous allons parler de CodeSniffer.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -2982,6 +3102,10 @@ Il suffit de créer un fichier <code>pre-commit.sh</code> dans le répertoire <c
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/08/31/lancer-des-commandes-dans-vim/">Lancer Des Commandes Dans Vim</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/08/29/stacks-structures-meconnues/">Les Stacks Des Structures Méconnues</a>
       </li>
     
@@ -2995,10 +3119,6 @@ Il suffit de créer un fichier <code>pre-commit.sh</code> dans le répertoire <c
     
       <li class="post">
         <a href="/blog/2015/08/22/quickcheck-une-autre-facon-de-tester/">QuickCheck Une Autre Façon De Tester</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/15/git-un-peu-de-fun/">Git Un Peu De Fun</a>
       </li>
     
   </ul>

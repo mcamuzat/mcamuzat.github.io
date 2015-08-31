@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-08-29T22:36:52+02:00</updated>
+  <updated>2015-08-31T23:54:34+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,134 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Lancer Des Commandes Dans Vim]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/08/31/lancer-des-commandes-dans-vim/"/>
+    <updated>2015-08-31T23:49:17+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/08/31/lancer-des-commandes-dans-vim</id>
+    <content type="html"><![CDATA[<p>Soit le fichier texte suivant:</p>
+
+<pre><code class=""> * Alpha
+ * Foxtrot
+ * Charlie
+ * Delta
+ * Echo 
+ * Bravo
+</code></pre>
+
+<p>Dans VIM il suffit de taper.</p>
+
+<pre><code class="">:%sort ou :%!sort
+</code></pre>
+
+<p>Pour obtenir
+<code>
+ * Alpha
+ * Bravo
+ * Charlie
+ * Delta
+ * Echo
+ * Foxtrot
+</code></p>
+
+<p>On peux aussi lancer plein de commandes amusantes</p>
+
+<pre><code> * Doublon
+ * Pas unique
+ * Doublon
+ * 
+ * ...
+</code></pre>
+
+<pre><code>!sort | uniq -c | tr "[A-Z]" "[a-z]"
+</code></pre>
+
+<p>Pour ceux qui ne se rappelle plus trop les commandes de Bash</p>
+
+<ul>
+<li><code>sort</code> trie le texte</li>
+<li><code>uniq -c</code> prend toute les valeurs et les comptes c&#8217;est l&#8217;équivalent d&#8217;un <code>GROUP BY</code> en SQL</li>
+<li><code>tr</code> est l&#8217;abréviation de <strong>tr</strong>anspose je remplace les lettres en <code>[A-Z]</code> par leur équivalent en minuscule.</li>
+</ul>
+
+
+<pre><code>      1  * 
+      1  * ...
+      2  * doublon
+      1  * pas unique
+</code></pre>
+
+<p>Si vous sélectionnez le texte avec <code>v</code> et que vous appuyer sur <code>:</code></p>
+
+<p>Alors vous devez voir la commande suivante
+<code>
+:'&lt;,'&gt;
+</code>
+et Ajoutez la commande que vous allez appliquer à la sélection. Par exemple <code>:'&lt;,'&gt;!sort</code></p>
+
+<p>Plus rigolo. On peux appeler des langages que l&#8217;on veut dans VIM</p>
+
+<pre><code class="php">&lt;?php echo "bonjour";
+</code></pre>
+
+<p>Tapez <code>!!</code>
+vous devriez voir apparaître
+<code>
+:.!
+</code>
+Compléter avec <code>:.!php</code></p>
+
+<p>votre texte va se remplacer
+<code>
+bonjour
+</code></p>
+
+<p>Cela marche aussi avec python</p>
+
+<pre><code class="python">print "olleh"[::-1]
+</code></pre>
+
+<p>Avec le curseur sur la ligne, appuyer sur <code>!!</code> puis ajoutez <code>:.!python</code></p>
+
+<p>La ligne devient</p>
+
+<pre><code class="">hello
+</code></pre>
+
+<h2>Exécuter une commande Bash depuis VIM</h2>
+
+<p>La commande suivante</p>
+
+<pre><code>php app/console cache:clear --env=prod
+</code></pre>
+
+<p>Si vous voulez exécuter la commande mais ne pas modifiez la ligne.</p>
+
+<pre><code>:.w !bash
+</code></pre>
+
+<p>C&#8217;est un peu moins simple.</p>
+
+<ul>
+<li><code>:.</code> représente la ligne actuelle.</li>
+<li><code>w</code> représente une écriture</li>
+<li><code>!bash</code> via Bash.</li>
+</ul>
+
+
+<p>La documentation de VIM <code>:help :w_c</code></p>
+
+<h2>en résumé</h2>
+
+<ul>
+<li>Si vous voulez appliquer votre commande sur tout le fichier <code>:%!commande</code></li>
+<li>S vous voulez juste la ligne <code>:.!commande</code> ou tapez <code>!!</code>.</li>
+<li>Si vous voulez sur une sélection <code>v</code> ou <code>V</code> puis <code>:</code> vous deviez voir ceci <code>:'&lt;,'&gt;</code>, ajoutez la commande souhaitée.</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Histogramme Et Ligne De Commande]]></title>
@@ -432,189 +560,6 @@ eval "$(docker-machine env prod)"
 
 
 <p>Dans un prochain post nous allons essayer de voir docker-swarm.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Docker Et Dockerfile]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/04/26/docker-et-dockerfile/"/>
-    <updated>2015-04-26T19:44:44+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/04/26/docker-et-dockerfile</id>
-    <content type="html"><![CDATA[<h2>Introduction</h2>
-
-<p>Je continue dans mon exploration de Docker, aujourd&#8217;hui nous allons voir comment automatiser la création d&#8217;un container à l&#8217;aide d&#8217;un <code>Dockerfile</code>.</p>
-
-<p>Nous allons créer un container pour <a href="http://jonas.nitro.dk/tig/">tig</a>.. C&#8217;est un interface git qui marche sous un terminal. Pour moi, c&#8217;est un magnifique outil de travail. Je m&#8217;en sers très souvent (surtout la vue de status (touche <code>S</code>) puis <code>u</code> pour ajouter, <code>!</code> pour reverter, <code>C</code> pour commit, <code>e</code> pour lancer mon éditeur (Bien entendu Vim)</p>
-
-<p>Nous allons faire</p>
-
-<ul>
-<li>L&#8217;installation à la main</li>
-<li>Puis écrire le <code>Dockerfile</code> qui automatise la partie 1</li>
-<li>Optimiser un peu celui-ci en utilisant une autre distribution</li>
-<li>Faire des commit sous Github, puis sous DockerHub</li>
-</ul>
-
-
-<h2>Création du container à la main</h2>
-
-<p>Je commence avec une Ubuntu que je lance en mode interactif.</p>
-
-<pre><code class="sh">docker run -it ubuntu:14.10
-</code></pre>
-
-<p>Je mets à jour ma distribution
-<code>
-apt-get update
-</code></p>
-
-<p>J&#8217;installe tig (il est dans les dépôts officiels)</p>
-
-<pre><code class="sh">apt-get install -y tig
-</code></pre>
-
-<p>A cause du <code>apt-get update</code> Ubuntu a téléchargé toutes les sources des dépôts dans le répertoire <code>var/lib/apt/lists/</code> pour ne pas alourdir le container je vais effacer celui-ci
-<code>
-rm -rf /var/lib/apt/lists/*
-</code></p>
-
-<p>Je lance <code>tig</code>
-<code>
-root@0a475b7fbed7:/# tig
-tig: Not a git repository
-</code></p>
-
-<p>Il n&#8217;y a pas de dépot git à la racine c&#8217;est normal.</p>
-
-<p>je quitte mon container et je liste</p>
-
-<pre><code>docker ps -a
-CONTAINER ID        IMAGE                                         COMMAND                CREATED             STATUS                            PORTS                                                                         NAMES
-0a475b7fbed7        ubuntu:14.10                                  "/bin/bash"            13 minutes ago      Exited (130) About a minute ago
-</code></pre>
-
-<p>Je vais le committer.
-<code>
-docker commit -m "add tig" -a "mcamuzat" admiring_yonath mcamuzat/tig:v1
-</code></p>
-
-<p>Je vais le relancer avec la commande suivante.
-<code>
-docker run -t -i -v `pwd`:/project mcamuzat/tig:v1
-</code></p>
-
-<p>En gros j&#8217;ai crée un lien symbolique qui pointe le répertoire courant de mon ordinateur vers le répertoire <code>project</code> du container.</p>
-
-<p>je me place dans le répertoire project.
-<code>
-cd /project
-</code></p>
-
-<p>et je lance tig
-<code>
-tig
-</code></p>
-
-<p>Si dans le répertoire courant il y a un dépôt git. Normalement l&#8217;interface de Tig apparait.</p>
-
-<p>Voila j&#8217;ai placé tig dans un container.</p>
-
-<h2>Automatisation via un DockerFile.</h2>
-
-<p>On se place dans un répertoire vide</p>
-
-<p>Je crée un fichier <code>DockerFile</code> avec le contenu suivant</p>
-
-<pre><code>FROM ubuntu:14.10
-MAINTAINER Marc Camuzat &lt;marco@crans.org&gt;
-RUN apt-get update \
-    &amp;&amp; apt-get install -y mysql-client \
-    &amp;&amp; rm -rf /var/lib/apt/lists/*
-WORKDIR /project
-VOLUME  /project
-ENTRYPOINT ["tig"]
-</code></pre>
-
-<p><code>WORKDIR</code> et <code>VOLUME</code> indique à Docker que le répertoire par défault est <code>project</code> et que l&#8217;on lance tig</p>
-
-<p>On va maintenant demander à docker de <em>builder</em> l&#8217;image à l&#8217;aide de la commande suivante</p>
-
-<pre><code>docker build -t mcamuzat/tig:v2 .
-</code></pre>
-
-<p>On attend un peu.. Et on relance
-<code>
-docker run -t -i -v `pwd`:/project mcamuzat/tig:v2
-</code></p>
-
-<p>C&#8217;est beaucoup plus rapide.</p>
-
-<h2>Optimisons la taille.</h2>
-
-<p>Quand je liste mon image via la commande suivante</p>
-
-<pre><code>REPOSITORY              TAG                     IMAGE ID            CREATED             VIRTUAL SIZE
-mcamuzat/tig            v2                      103a05c16a2b        3 minutes ago       234.6 MB
-</code></pre>
-
-<p>Mon container fait 234 méga ! C&#8217;est beaucoup pour un simple utilitaire.
-pour simplifier je vais utiliser une autre distribution <a href="https://www.alpinelinux.org/">alpine-linux</a> (que je ne connaissais pas ..) et le dockerhub <a href="https://registry.hub.docker.com/u/gliderlabs/alpine/">suivant</a> qui réduit la distribution à 5 méga !</p>
-
-<p>Voici mon <code>DockerFile</code></p>
-
-<pre><code>FROM gliderlabs/alpine:3.1
-RUN apk --update add tig
-WORKDIR /project
-VOLUME  /project
-ENTRYPOINT ["tig"]
-</code></pre>
-
-<p>Je relance un build.</p>
-
-<pre><code>docker build -t mcamuzat/tig:v3 .
-</code></pre>
-
-<p>Maintenant mon container ne fait plus que 24 Méga !</p>
-
-<h2>Publions sous Github</h2>
-
-<p>Nous allons créer un nouveau dépôt avec un README.</p>
-
-<p>Que je vais cloner.
-<code>
-git clone https://github.com/mcamuzat/tig-docker.git
-</code></p>
-
-<p>Je vais ajouter mon DockerFile, Commiter et Pusher
-<code>
-git add Dockerfile
-git commit -m"initial commit"
-git push origin master
-</code></p>
-
-<p>Et c&#8217;est tout.</p>
-
-<p>Résultat <a href="https://github.com/mcamuzat/tig-docker">ici</a></p>
-
-<h2>Publions sur DockerHub</h2>
-
-<p>Je pars du principe que vous avez un compte sur DockerHub.</p>
-
-<ul>
-<li>Cliquer sur le bouton <code>Add Repository-&gt;Automated Build</code></li>
-<li>choisir Github.</li>
-<li>Puis On va vous demander de relier votre compte DockerHub à Github.</li>
-<li>DockerHub va vous demander quel projet vous souhaitez builder automatiquement.</li>
-</ul>
-
-
-<p>Résultat <a href="https://registry.hub.docker.com/u/mcamuzat/tig/">ici</a></p>
-
-<h2>Conclusion</h2>
-
-<p>Le Dockerfile sert à automatiser la création d&#8217;image. il est plus simple de stocker le <code>Dockerfile</code> que le container (puisque Dockerhub s&#8217;occupe de faire build)</p>
-
-<p>J&#8217;ai crée mon premier dépôt. Ce n&#8217;est pas très compliqué. Dans un prochain article, je vais essayer d&#8217;expérimenter <code>docker compose</code>.</p>
 ]]></content>
   </entry>
   

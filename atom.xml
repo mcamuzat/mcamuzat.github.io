@@ -4,7 +4,7 @@
   <title><![CDATA[Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-08-29T22:36:52+02:00</updated>
+  <updated>2015-08-31T23:54:34+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,176 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Lancer Des Commandes Dans Vim]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/08/31/lancer-des-commandes-dans-vim/"/>
+    <updated>2015-08-31T23:49:17+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/08/31/lancer-des-commandes-dans-vim</id>
+    <content type="html"><![CDATA[<p>Soit le fichier texte suivant:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> * Alpha
+</span><span class='line'> * Foxtrot
+</span><span class='line'> * Charlie
+</span><span class='line'> * Delta
+</span><span class='line'> * Echo 
+</span><span class='line'> * Bravo</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Dans VIM il suffit de taper.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:%sort ou :%!sort</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pour obtenir</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> * Alpha
+</span><span class='line'> * Bravo
+</span><span class='line'> * Charlie
+</span><span class='line'> * Delta
+</span><span class='line'> * Echo 
+</span><span class='line'> * Foxtrot</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On peux aussi lancer plein de commandes amusantes</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> * Doublon
+</span><span class='line'> * Pas unique
+</span><span class='line'> * Doublon
+</span><span class='line'> * 
+</span><span class='line'> * ...</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>!sort | uniq -c | tr "[A-Z]" "[a-z]"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pour ceux qui ne se rappelle plus trop les commandes de Bash</p>
+
+<ul>
+<li><code>sort</code> trie le texte</li>
+<li><code>uniq -c</code> prend toute les valeurs et les comptes c&#8217;est l&#8217;équivalent d&#8217;un <code>GROUP BY</code> en SQL</li>
+<li><code>tr</code> est l&#8217;abréviation de <strong>tr</strong>anspose je remplace les lettres en <code>[A-Z]</code> par leur équivalent en minuscule.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  1  * 
+</span><span class='line'>  1  * ...
+</span><span class='line'>  2  * doublon
+</span><span class='line'>  1  * pas unique</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si vous sélectionnez le texte avec <code>v</code> et que vous appuyer sur <code>:</code></p>
+
+<p>Alors vous devez voir la commande suivante</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:'&lt;,'&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>et Ajoutez la commande que vous allez appliquer à la sélection. Par exemple <code>:'&lt;,'&gt;!sort</code></p>
+
+<p>Plus rigolo. On peux appeler des langages que l&#8217;on veut dans VIM</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span> <span class="k">echo</span> <span class="s2">&quot;bonjour&quot;</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Tapez <code>!!</code>
+vous devriez voir apparaître</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">:.!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Compléter avec <code>:.!php</code></p>
+
+<p>votre texte va se remplacer</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">bonjour</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cela marche aussi avec python</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">print</span> <span class="s">&quot;olleh&quot;</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Avec le curseur sur la ligne, appuyer sur <code>!!</code> puis ajoutez <code>:.!python</code></p>
+
+<p>La ligne devient</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">hello</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Exécuter une commande Bash depuis VIM</h2>
+
+<p>La commande suivante</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">php</span> <span class="n">app</span><span class="o">/</span><span class="n">console</span> <span class="n">cache</span><span class="p">:</span><span class="n">clear</span> <span class="o">--</span><span class="n">env</span><span class="o">=</span><span class="n">prod</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si vous voulez exécuter la commande mais ne pas modifiez la ligne.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="p">:</span><span class="o">.</span><span class="n">w</span> <span class="err">!</span><span class="n">bash</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>C&#8217;est un peu moins simple.</p>
+
+<ul>
+<li><code>:.</code> représente la ligne actuelle.</li>
+<li><code>w</code> représente une écriture</li>
+<li><code>!bash</code> via Bash.</li>
+</ul>
+
+
+<p>La documentation de VIM <code>:help :w_c</code></p>
+
+<h2>en résumé</h2>
+
+<ul>
+<li>Si vous voulez appliquer votre commande sur tout le fichier <code>:%!commande</code></li>
+<li>S vous voulez juste la ligne <code>:.!commande</code> ou tapez <code>!!</code>.</li>
+<li>Si vous voulez sur une sélection <code>v</code> ou <code>V</code> puis <code>:</code> vous deviez voir ceci <code>:'&lt;,'&gt;</code>, ajoutez la commande souhaitée.</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Les Stacks Des Structures Méconnues]]></title>
@@ -4289,162 +4459,6 @@ Un Post un peu bizarre, puisque c&#8217;est un collègue qui m&#8217;a montré l
 
 
 <p>Nous reparlerons des registres avec les macros dans un prochain post.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Koan Et Programmation]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/05/25/koan-et-programmation/"/>
-    <updated>2015-05-25T20:53:23+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/05/25/koan-et-programmation</id>
-    <content type="html"><![CDATA[<p>Un koan est dixit wikipedia</p>
-
-<blockquote><blockquote><p>koan est une une brève anecdote ou un court échange entre un maître et son disciple, absurde, énigmatique ou paradoxal, ne sollicitant pas la logique ordinaire.</p></blockquote></blockquote>
-
-<p>Un exemple de Koan</p>
-
-<blockquote><blockquote><p>Quel est le son d’une seule main qui applaudit ?</p></blockquote></blockquote>
-
-<p>Il existe des Koan pour la programmation. Ce sont des mini problèmes pour s&#8217;initier à une technologie.</p>
-
-<h2>RubyKoan</h2>
-
-<p>Le plus connu et le premier est <a href="http://rubykoans.com/">RubyKoan</a>.</p>
-
-<p>Regardons ensemble la première utilisation.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd </span>koans
-</span><span class='line'>/home/marc/.rvm/rubies/ruby-2.2.0/bin/ruby path_to_enlightenment.rb
-</span><span class='line'>AboutAsserts#test_assert_truth has damaged your karma.
-</span><span class='line'>
-</span><span class='line'>The Master says:
-</span><span class='line'>  You have not yet reached enlightenment.
-</span><span class='line'>
-</span><span class='line'>The answers you seek...
-</span><span class='line'>  Failed assertion.
-</span><span class='line'>
-</span><span class='line'>Please meditate on the following code:
-</span><span class='line'>  /home/marc/prog/ruby_koans/koans/about_asserts.rb:10:in <span class="sb">`</span>test_assert_truth<span class="err">&#39;</span>
-</span><span class='line'>
-</span><span class='line'>mountains are merely mountains
-</span><span class='line'>your path thus far <span class="o">[</span>X_________________________________________________<span class="o">]</span> 0/282
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>J&#8217;ouvre le fichier <code>about_asserts.rb</code>.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#!/usr/bin/env ruby</span>
-</span><span class='line'><span class="c1"># -*- ruby -*-</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">require</span> <span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">__FILE__</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/neo&#39;</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">AboutAsserts</span> <span class="o">&lt;</span> <span class="no">Neo</span><span class="o">::</span><span class="no">Koan</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># We shall contemplate truth by testing reality, via asserts.</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">test_assert_truth</span>
-</span><span class='line'>    <span class="n">assert</span> <span class="kp">false</span>                <span class="c1"># This should be true</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Il suffit de changer le <code>false</code> en <code>true</code></p>
-
-<p>Relancons, On avance petit à petit et toutes les notions du ruby sont expliquées.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd </span>koans
-</span><span class='line'>/home/marc/.rvm/rubies/ruby-2.2.0/bin/ruby path_to_enlightenment.rb
-</span><span class='line'>AboutAsserts#test_assert_truth has expanded your awareness.
-</span><span class='line'>AboutAsserts#test_assert_with_message has damaged your karma.
-</span><span class='line'>
-</span><span class='line'>The Master says:
-</span><span class='line'>  You have not yet reached enlightenment.
-</span><span class='line'>  You are progressing. Excellent. <span class="m">1</span> completed.
-</span><span class='line'>
-</span><span class='line'>The answers you seek...
-</span><span class='line'>  This should be <span class="nb">true</span> -- Please fix this
-</span><span class='line'>
-</span><span class='line'>Please meditate on the following code:
-</span><span class='line'>  /home/marc/prog/ruby_koans/koans/about_asserts.rb:16:in <span class="sb">`</span>test_assert_with_message<span class="err">&#39;</span>
-</span><span class='line'>
-</span><span class='line'>learn the rules so you know how to <span class="nb">break </span>them properly
-</span><span class='line'>your path thus far <span class="o">[</span>.X________________________________________________<span class="o">]</span> 1/282
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>C&#8217;est un moyen facile et rapide pour apprendre un langage. Ceci dit j&#8217;ai personnellement fini les rubykoans. Mais 1 mois plus tard, j&#8217;étais incapable d&#8217;aligner une ligne de code en ruby. Faire passer les tests n&#8217;est pas très compliqué quelque soit le langage.</p>
-
-<p>Il y a aussi les Katas de programmation, Mais c&#8217;est plus un cahier des charges avec des tests d&#8217;acceptations (On parle de BDD) alors que les koan sont plutôt dans la notion d&#8217;unitaire.</p>
-
-<h2>Quelques Koan.</h2>
-
-<p>Bien sur les <a href="http://rubykoans.com/">RubyKoans</a> il existe une version <a href="http://koans.herokuapp.com/en/about_asserts">en ligne</a>.</p>
-
-<p>Les <a href="https://github.com/gregmalcolm/python_koans">python-koans</a> sont vraiment chouettes Il y a python 2.7 et python 3. Si les premiers problèmes sont faciles. Les derniers sont plutôt durs.</p>
-
-<p>En javascript on peux citer</p>
-
-<ul>
-<li><a href="https://github.com/mrdavidlaing/javascript-koans">javascript-koans</a></li>
-<li><a href="https://github.com/larrymyers/backbone-koans">backbone-koans</a></li>
-<li><a href="https://github.com/bjpbakker/angular-koans">angular-koans</a></li>
-</ul>
-
-
-<p>J&#8217;ai été un peu déçus de ne pas trouver des Koans en php. Cela reste très basique.
-je citerai:</p>
-
-<ul>
-<li><a href="https://github.com/TorontoPHPSoftwareCraftsmanship/PHPUnit-Koans">PHPUnit-koans</a></li>
-<li>et celui-ci par votre serviteur (mais c&#8217;était il y a bien longtemps) <a href="https://github.com/mcamuzat/PHPUnitRegexKoan">mcamuzat/PHPUnitRegexKoan</a></li>
-</ul>
-
-
-<h2>Conclusion</h2>
-
-<p>Je vous avais parler des <a href="http://mcamuzat.github.io/blog/2015/04/29/awesome-et-liste-de-liens/">awesome-list</a> et bien il existe une liste de <a href="https://github.com/ahmdrefat/awesome-koans">awesome-koans</a>.</p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Vim | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/vim/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-08-29T22:36:52+02:00</updated>
+  <updated>2015-08-31T23:54:34+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,134 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Lancer Des Commandes Dans Vim]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/08/31/lancer-des-commandes-dans-vim/"/>
+    <updated>2015-08-31T23:49:17+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/08/31/lancer-des-commandes-dans-vim</id>
+    <content type="html"><![CDATA[<p>Soit le fichier texte suivant:</p>
+
+<pre><code class=""> * Alpha
+ * Foxtrot
+ * Charlie
+ * Delta
+ * Echo 
+ * Bravo
+</code></pre>
+
+<p>Dans VIM il suffit de taper.</p>
+
+<pre><code class="">:%sort ou :%!sort
+</code></pre>
+
+<p>Pour obtenir
+<code>
+ * Alpha
+ * Bravo
+ * Charlie
+ * Delta
+ * Echo
+ * Foxtrot
+</code></p>
+
+<p>On peux aussi lancer plein de commandes amusantes</p>
+
+<pre><code> * Doublon
+ * Pas unique
+ * Doublon
+ * 
+ * ...
+</code></pre>
+
+<pre><code>!sort | uniq -c | tr "[A-Z]" "[a-z]"
+</code></pre>
+
+<p>Pour ceux qui ne se rappelle plus trop les commandes de Bash</p>
+
+<ul>
+<li><code>sort</code> trie le texte</li>
+<li><code>uniq -c</code> prend toute les valeurs et les comptes c&#8217;est l&#8217;équivalent d&#8217;un <code>GROUP BY</code> en SQL</li>
+<li><code>tr</code> est l&#8217;abréviation de <strong>tr</strong>anspose je remplace les lettres en <code>[A-Z]</code> par leur équivalent en minuscule.</li>
+</ul>
+
+
+<pre><code>      1  * 
+      1  * ...
+      2  * doublon
+      1  * pas unique
+</code></pre>
+
+<p>Si vous sélectionnez le texte avec <code>v</code> et que vous appuyer sur <code>:</code></p>
+
+<p>Alors vous devez voir la commande suivante
+<code>
+:'&lt;,'&gt;
+</code>
+et Ajoutez la commande que vous allez appliquer à la sélection. Par exemple <code>:'&lt;,'&gt;!sort</code></p>
+
+<p>Plus rigolo. On peux appeler des langages que l&#8217;on veut dans VIM</p>
+
+<pre><code class="php">&lt;?php echo "bonjour";
+</code></pre>
+
+<p>Tapez <code>!!</code>
+vous devriez voir apparaître
+<code>
+:.!
+</code>
+Compléter avec <code>:.!php</code></p>
+
+<p>votre texte va se remplacer
+<code>
+bonjour
+</code></p>
+
+<p>Cela marche aussi avec python</p>
+
+<pre><code class="python">print "olleh"[::-1]
+</code></pre>
+
+<p>Avec le curseur sur la ligne, appuyer sur <code>!!</code> puis ajoutez <code>:.!python</code></p>
+
+<p>La ligne devient</p>
+
+<pre><code class="">hello
+</code></pre>
+
+<h2>Exécuter une commande Bash depuis VIM</h2>
+
+<p>La commande suivante</p>
+
+<pre><code>php app/console cache:clear --env=prod
+</code></pre>
+
+<p>Si vous voulez exécuter la commande mais ne pas modifiez la ligne.</p>
+
+<pre><code>:.w !bash
+</code></pre>
+
+<p>C&#8217;est un peu moins simple.</p>
+
+<ul>
+<li><code>:.</code> représente la ligne actuelle.</li>
+<li><code>w</code> représente une écriture</li>
+<li><code>!bash</code> via Bash.</li>
+</ul>
+
+
+<p>La documentation de VIM <code>:help :w_c</code></p>
+
+<h2>en résumé</h2>
+
+<ul>
+<li>Si vous voulez appliquer votre commande sur tout le fichier <code>:%!commande</code></li>
+<li>S vous voulez juste la ligne <code>:.!commande</code> ou tapez <code>!!</code>.</li>
+<li>Si vous voulez sur une sélection <code>v</code> ou <code>V</code> puis <code>:</code> vous deviez voir ceci <code>:'&lt;,'&gt;</code>, ajoutez la commande souhaitée.</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Gmail Vim Mêmes Raccourcis]]></title>
@@ -567,86 +695,6 @@ h,j,k,l les directions
 <li><a href="http://www.emacswiki.org/emacs/Evil">evil-mode</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Copier Coller Dans Vim]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/05/30/copier-coller-dans-vim/"/>
-    <updated>2015-05-30T23:23:37+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/05/30/copier-coller-dans-vim</id>
-    <content type="html"><![CDATA[<h2>Pour commencer : comment sélectionner sous vim</h2>
-
-<h3>solution n°1 : utiliser la souris</h3>
-
-<p>tapez :
-<code>bash
-set mouse=a
-</code>
-vous pouvez sélectionnez avec la souris. Pour copier appuyer sur <code>y</code> comme <strong>y</strong>ank</p>
-
-<h3>solution n°2 : utiliser le mode visuel</h3>
-
-<p>avec la touche <code>v</code> ou <code>V</code> pour utiliser la ligne entière. Puis les flèches ou les <a href="/blog/2015/03/08/comprendre-les-raccourcis-claviers-de-vi-slash-vim/">mouvements</a></p>
-
-<h3>solution n°3 : utiliser les touches mouvements</h3>
-
-<p>Quelques exemples:</p>
-
-<ul>
-<li><code>y3w</code> copier trois mots (<strong>y</strong>ank <strong>3</strong> words)</li>
-<li><code>yG</code> copier jusqu&#8217;à la fin du fichier (<strong>y</strong>ank fin</li>
-<li><code>y5j</code> copier 5 lignes vers le bas (<strong>y</strong> <strong>5</strong> lignes vers le bas <code>j</code>)</li>
-<li><code>yi(</code> pour copier le texte entre parenthèse (<strong>y</strong>ank <strong>i</strong>nside <code>(</code>)</li>
-</ul>
-
-
-<p>Pour coller on utilise la touche <code>p</code> pour <strong>p</strong>aste ou <code>P</code> (colle avant le curseur)</p>
-
-<h2>Les presse-papiers sous vi ou les registres</h2>
-
-<p>La notion de presse-papier est appelle registre dans Vi.</p>
-
-<p>Pour voir l&#8217;état des registres (et si il ne fallait retenir qu&#8217;une seule commande..)</p>
-
-<pre><code class="bash">:register ou :reg
-</code></pre>
-
-<p>Vous devez voir quelques choses dans le genre:</p>
-
-<pre><code>"" dernier texte )
-"0 dernier texte copié
-... les dix derniers textes copiés
-"9 ..  
-"a contenu du registre "a" (s'il existe)
-...
-"% noms du fichier
-". dernier texte inséré
-"/ dernier texte recherché
-": derniere commande.
-</code></pre>
-
-<ul>
-<li>Pour coller le texte contenue dans le registre <code>a</code> il faut taper<code>"ap</code> pour le registre <code>"a</code> + <code>p</code> paste.</li>
-<li>Pour copier le texte dans le registre a c&#8217;est <code>"ay</code></li>
-<li>Avec les mouvements de vi <code>"ay3w</code> dans le registre a (<code>"a</code>) copier (<code>y</code> comme <em>yank</em>) 3 mots (3w pour 3 words).</li>
-</ul>
-
-
-<p>Un registre intéressant le registre <code>+</code> ou le registre <code>*</code> les deux registres sont associés au clipboard de Linux ou celui de windows.</p>
-
-<h2>Pour résumer</h2>
-
-<ul>
-<li>Pour voir les registres. Il suffit de taper <code>:register</code>.</li>
-<li>Pour coller un registre c&#8217;est <code>"&lt;nom du registre&gt;p</code>.</li>
-<li>Pour copier c&#8217;est <code>"&lt;nom du registre&gt;y(+mouvement)</code>.</li>
-<li>Le registre <code>+</code> est le presse-papier de windows ou linux. Pour copier/coller du presse-papier il suffit de taper <code>"+p</code> et <code>"+y</code>.</li>
-<li>On a 26 presse-papiers de <code>a</code> à <code>z</code> personnellement j&#8217;en ai rarement utilisé plus de deux registres en même temps.</li>
-</ul>
-
-
-<p>Nous reparlerons des registres avec les macros dans un prochain post.</p>
 ]]></content>
   </entry>
   
