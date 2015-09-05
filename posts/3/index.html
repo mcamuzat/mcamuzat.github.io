@@ -9,7 +9,8 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Un koan est dixit wikipedia koan est une une brève anecdote ou un court échange entre un maître et son disciple, absurde, énigmatique ou paradoxal, &hellip;">
+  <meta name="description" content="Pour commencer : comment sélectionner sous vim solution n°1 : utiliser la souris tapez : 1
+set mouse=a vous pouvez sélectionnez avec la souris. Pour &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +78,122 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/05/30/copier-coller-dans-vim/">Copier Coller Dans Vim</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-05-30T23:23:37+02:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:23 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Pour commencer : comment sélectionner sous vim</h2>
+
+<h3>solution n°1 : utiliser la souris</h3>
+
+<p>tapez :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">set </span><span class="nv">mouse</span><span class="o">=</span>a
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>vous pouvez sélectionnez avec la souris. Pour copier appuyer sur <code>y</code> comme <strong>y</strong>ank</p>
+
+<h3>solution n°2 : utiliser le mode visuel</h3>
+
+<p>avec la touche <code>v</code> ou <code>V</code> pour utiliser la ligne entière. Puis les flèches ou les <a href="/blog/2015/03/08/comprendre-les-raccourcis-claviers-de-vi-slash-vim/">mouvements</a></p>
+
+<h3>solution n°3 : utiliser les touches mouvements</h3>
+
+<p>Quelques exemples:</p>
+
+<ul>
+<li><code>y3w</code> copier trois mots (<strong>y</strong>ank <strong>3</strong> words)</li>
+<li><code>yG</code> copier jusqu&#8217;à la fin du fichier (<strong>y</strong>ank fin</li>
+<li><code>y5j</code> copier 5 lignes vers le bas (<strong>y</strong> <strong>5</strong> lignes vers le bas <code>j</code>)</li>
+<li><code>yi(</code> pour copier le texte entre parenthèse (<strong>y</strong>ank <strong>i</strong>nside <code>(</code>)</li>
+</ul>
+
+
+<p>Pour coller on utilise la touche <code>p</code> pour <strong>p</strong>aste ou <code>P</code> (colle avant le curseur)</p>
+
+<h2>Les presse-papiers sous vi ou les registres</h2>
+
+<p>La notion de presse-papier est appelle registre dans Vi.</p>
+
+<p>Pour voir l&#8217;état des registres (et si il ne fallait retenir qu&#8217;une seule commande..)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>:register ou :reg
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Vous devez voir quelques choses dans le genre:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="s2">&quot;&quot;</span> dernier texte <span class="o">)</span>
+</span><span class='line'><span class="s2">&quot;0 dernier texte copié</span>
+</span><span class='line'><span class="s2">... les dix derniers textes copiés</span>
+</span><span class='line'><span class="s2">&quot;</span><span class="m">9</span> ..
+</span><span class='line'><span class="s2">&quot;a contenu du registre &quot;</span>a<span class="s2">&quot; (s&#39;il existe)</span>
+</span><span class='line'><span class="s2">...</span>
+</span><span class='line'><span class="s2">&quot;</span>% noms du fichier
+</span><span class='line'><span class="s2">&quot;. dernier texte inséré</span>
+</span><span class='line'><span class="s2">&quot;</span>/ dernier texte recherché
+</span><span class='line'><span class="err">&quot;</span>: derniere commande.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Pour coller le texte contenue dans le registre <code>a</code> il faut taper<code>"ap</code> pour le registre <code>"a</code> + <code>p</code> paste.</li>
+<li>Pour copier le texte dans le registre a c&#8217;est <code>"ay</code></li>
+<li>Avec les mouvements de vi <code>"ay3w</code> dans le registre a (<code>"a</code>) copier (<code>y</code> comme <em>yank</em>) 3 mots (3w pour 3 words).</li>
+</ul>
+
+
+<p>Un registre intéressant le registre <code>+</code> ou le registre <code>*</code> les deux registres sont associés au clipboard de Linux ou celui de windows.</p>
+
+<h2>Pour résumer</h2>
+
+<ul>
+<li>Pour voir les registres. Il suffit de taper <code>:register</code>.</li>
+<li>Pour coller un registre c&#8217;est <code>"&lt;nom du registre&gt;p</code>.</li>
+<li>Pour copier c&#8217;est <code>"&lt;nom du registre&gt;y(+mouvement)</code>.</li>
+<li>Le registre <code>+</code> est le presse-papier de windows ou linux. Pour copier/coller du presse-papier il suffit de taper <code>"+p</code> et <code>"+y</code>.</li>
+<li>On a 26 presse-papiers de <code>a</code> à <code>z</code> personnellement j&#8217;en ai rarement utilisé plus de deux registres en même temps.</li>
+</ul>
+
+
+<p>Nous reparlerons des registres avec les macros dans un prochain post.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1465,333 +1582,6 @@ pour simplifier je vais utiliser une autre distribution <a href="https://www.alp
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/04/18/dockers-et-ci/">Docker Et CI</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-04-18T18:13:48+02:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:13 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Introduction</h2>
-
-<p>je continue sur ma découverte de Docker. Je vais parler de deux containers</p>
-
-<ul>
-<li><a href="https://github.com/jolicode/docker-images/tree/master/languages/php/phaudit">phaudit</a>  pour faire de la qualité de code</li>
-<li><a href="https://github.com/jolicode/JoliCi">JoliCi</a> pour l&#8217;intégration continu</li>
-</ul>
-
-
-<h2>Faire de la qualité avec Docker</h2>
-
-<p>Il y a un container fourni par <a href="https://github.com/jolicode/docker-images/tree/master/languages/php/phaudit">phaudit</a> qui contient déjà des outils pour auditer le code.</p>
-
-<p>Voici la ligne de commande pour l&#8217;installer</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>docker pull jolicode/phaudit</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Et je me place dans mon répertoire projet</p>
-
-<h3>Listes des programmes</h3>
-
-<ul>
-<li><a href="http://github.com/sebastianbergmann/phploc">PHPLoc</a> <code>phploc</code> donne le nombre de ligne, le nombre de classes etc ..</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>docker run -t -i -v `pwd`:/project jolicode/phaudit phploc src
-</span><span class='line'>Directories                                         10
-</span><span class='line'>Files                                               91
-</span><span class='line'>
-</span><span class='line'>Size
-</span><span class='line'>  Lines of Code (LOC)                             7295
-</span><span class='line'>  Comment Lines of Code (CLOC)                    3228 (44.25%)
-</span><span class='line'>  Non-Comment Lines of Code (NCLOC)               4067 (55.75%)
-</span><span class='line'>  Logical Lines of Code (LLOC)                     774 (10.61%)
-</span><span class='line'>    Classes                                        711 (91.86%)
-</span><span class='line'>      Average Class Length                           8
-</span><span class='line'>        Minimum Class Length                         0
-</span><span class='line'>        Maximum Class Length                        67
-</span><span class='line'>      Average Method Length                          1
-</span><span class='line'>        Minimum Method Length                        0
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><a href="http://phpmd.org/">PHP Mess Detector</a> <code>phpmd</code> donne un retour sur la qualité du code (nommage des variables etc..)</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>phaudit phpmd . text naming
-</span><span class='line'>/project/src/Allmy/Protocol/LineReceiver.php:38   Avoid variables with short names like $b. Configured minimum length is 3.
-</span><span class='line'>/project/src/Allmy/Reactor/StreamSelectReactor.php:32 Avoid variables with short names like $id. Configured minimum length is 3.
-</span><span class='line'>/project/src/Allmy/Reactor/StreamSelectReactor.php:43 Avoid variables with short names like $id. Configured minimum length is 3.
-</span><span class='line'>/project/src/Allmy/Reactor/StreamSelectReactor.php:53 Avoid variables with short names like $id. Configured minimum length is 3.
-</span><span class='line'>...
-</span><span class='line'>...</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><a href="http://pear.php.net/PHP_CodeSniffer">PHP_CodeSniffer</a>  <code>phpcs</code> erreur de convention de code (Psr-..) et  <code>phpcbf</code>pour les fixer automatiquement</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>docker run -t -i -v `pwd`:/project jolicode/phaudit phpcs src/Allmy/Reactor/StreamSelectReactor.php
-</span><span class='line'>FILE: /project/src/Allmy/Reactor/StreamSelectReactor.php
-</span><span class='line'>----------------------------------------------------------------------
-</span><span class='line'>FOUND 85 ERRORS AND 3 WARNINGS AFFECTING 63 LINES
-</span><span class='line'>----------------------------------------------------------------------
-</span><span class='line'>   2 | ERROR   | [ ] Missing file doc comment
-</span><span class='line'>  11 | ERROR   | [ ] Missing class doc comment
-</span><span class='line'>  15 | ERROR   | [ ] Private member variable "timers" must be
-</span><span class='line'>.....
-</span><span class='line'>.....
-</span><span class='line'>.....
-</span><span class='line'> 275 | ERROR   | [ ] Parameter tags must be grouped together in a doc
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><a href="http://github.com/sebastianbergmann/phpcpd">PHP Copy/Paste Detector</a> <code>phpcpd</code> détecte les copier/coller</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>
-</span><span class='line'>docker run -t -i -v `pwd`:/project jolicode/phaudit phpcpd src
-</span><span class='line'>Found 2 exact clones with 101 duplicated lines in 4 files:
-</span><span class='line'>
-</span><span class='line'>  -   /project/src/Allmy/Stream/Factory.php:9-53
-</span><span class='line'>  /project/src/Allmy/Internet/Factory.php:9-53
-</span><span class='line'> 
-</span><span class='line'>  -   /project/src/Allmy/Transport/TcpServer.php:9-66
-</span><span class='line'>  /project/src/Allmy/Socket/Server.php:9-66
-</span><span class='line'> 
-</span><span class='line'>1.38% duplicated lines out of 7295 total lines of code.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>d&#8217;autre commandes que je connais un peu moins</p>
-
-<ul>
-<li><p><a href="http://pdepend.org/">PHP_Depend</a> <code>pdepend</code> donnes des analyses, dépendences, complexités etc..</p></li>
-<li><p><a href="http://github.com/sebastianbergmann/phpdcd">PHP Dead Code Detector</a> <code>phpdcd</code> détecte le code qui semble ne pas servir.</p></li>
-<li><p><a href="http://www.phpmetrics.org/">PhpMetrics</a> <code>phpmetrics</code> donnes des métriques (Je ne connais pas)</p></li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>docker run -t -i -v `pwd`:/project jolicode/phaudit phpmetrics --report-cli .</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><a href="http://cs.sensiolabs.org/">PHP Coding Standards Fixer</a> as <code>php-cs-fixer</code> une autre commandes pour fixer le code par <a href="http://cs.sensiolabs.org/">Sensio</a></li>
-</ul>
-
-
-<p>L&#8217;astuce est de se créer l&#8217;alias suivant</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>alias phaudit="docker run --rm -ti \
-</span><span class='line'>    -v \`pwd\`:/project \
-</span><span class='line'>    jolicode/phaudit"</span></code></pre></td></tr></table></div></figure>
-
-
-<p>alors les lignes de commandes précédentes deviennent plus simple</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>phaudit phpmd . text naming</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Tester sur toutes les versions de php</h2>
-
-<p>Fait par la même équipe.</p>
-
-<p>il est possible de faire une intégration continue en local. Il va lancer les builds en testant toutes versions de php spécifié dans un fichier <code>yml</code>.</p>
-
-<p>L&#8217;installation est très simple il suffit de télécharger le <code>.phar</code> à l&#8217;url <a href="https://github.com/jolicode/JoliCi/releases">suivante</a></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>wget url du fichier phar</span></code></pre></td></tr></table></div></figure>
-
-
-<p>il faut créer un fichier <code>.travis.yml</code> voici les lignes à ajouter pour un projet en php</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">language</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">php</span>
-</span><span class='line'><span class="l-Scalar-Plain">php</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="p-Indicator">-</span> <span class="s">&quot;5.5&quot;</span>
-</span><span class='line'>  <span class="p-Indicator">-</span> <span class="s">&quot;5.4&quot;</span>
-</span><span class='line'>  <span class="p-Indicator">-</span> <span class="s">&quot;5.3&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>puis la commande suivante:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">php jolici.phar run</span>
-</span><span class='line'><span class="l-Scalar-Plain">Creating builds...</span>
-</span><span class='line'><span class="l-Scalar-Plain">3 builds created</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">Running job php = 5.5</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">PHPUnit 3.7.38 by Sebastian Bergmann.</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">Configuration read from /home/project/phpunit.xml.dist</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">......</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">Time</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">106 ms, Memory</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">3.50Mb</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">OK (6 tests, 34 assertions)</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">Running job php = 5.4</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">PHPUnit 3.7.38 by Sebastian Bergmann.</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">Configuration read from /home/project/phpunit.xml.dist</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">......</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">Time</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">131 ms, Memory</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">3.50Mb</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">OK (6 tests, 34 assertions)</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">Running job php = 5.3</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">PHPUnit 3.7.38 by Sebastian Bergmann.</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">Configuration read from /home/project/phpunit.xml.dist</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">......</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">Time</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">7 ms, Memory</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">6.25Mb</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">OK (6 tests, 34 assertions)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>En ajoutant un fichier <code>.yml</code> et sans installer aucune version de php, je peux tester sur trois plateformes mon code. C&#8217;est vraiment impressionnant.</p>
-
-<h2>Conclusion</h2>
-
-<p>Nous avons vus ensemble deux applications très simples qui permettent d&#8217;intégrer Docker dans notre workflow.</p>
-
-<p>Merci à l&#8217;équipe <a href="http://jolicode.com/">JoliCode</a>  pour ces deux outils.</p>
-
-<p>Je me suis inspiré de la présentation suivante.
-<a href="http://slides.com/jeremyderusse/docker-dev#/5/2">http://slides.com/jeremyderusse/docker-dev#/5/2</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/4">&larr; Older</a>
@@ -1809,6 +1599,10 @@ pour simplifier je vais utiliser une autre distribution <a href="https://www.alp
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/09/05/les-promises-et-php-via-react/">Les Promises Et Php via React</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/08/31/lancer-des-commandes-dans-vim/">Lancer Des Commandes Dans Vim</a>
       </li>
     
@@ -1822,10 +1616,6 @@ pour simplifier je vais utiliser une autre distribution <a href="https://www.alp
     
       <li class="post">
         <a href="/blog/2015/08/23/halt-compiler-twig-et-php-dans-le-meme-fichier/">Halt Compiler : Twig Et Php Dans Le Même Fichier</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/22/quickcheck-une-autre-facon-de-tester/">QuickCheck Une Autre Façon De Tester</a>
       </li>
     
   </ul>

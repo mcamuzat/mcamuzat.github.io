@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Php | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/php/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-08-31T23:54:34+02:00</updated>
+  <updated>2015-09-05T20:17:58+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,235 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Les Promises Et Php via React]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/09/05/les-promises-et-php-via-react/"/>
+    <updated>2015-09-05T19:10:10+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/09/05/les-promises-et-php-via-react</id>
+    <content type="html"><![CDATA[<p>Les promises sont une alternative plus puissante au Callback. Relativement peu connues au début. Elle sont maintenant en standard dans beaucoup de langage javascript ES6, python 3.2, java. Où via des librairies comme <a href="https://github.com/reactphp/promise">react/promise</a> pour php</p>
+
+<p>Une promise représente une valeur donc le résultat n&#8217;est pas encore connu.
+Quand le résultat est connu,  la promise a 3 états possibles</p>
+
+<ul>
+<li><strong>Pending</strong> ou <strong>Unfulfillled</strong>  en Attente..</li>
+<li><strong>Resolved</strong> ou <strong>fulfillled</strong>  Succès</li>
+<li><strong>Rejected</strong> ou <strong>Failed</strong>  Erreur.</li>
+</ul>
+
+
+<p>Un <em>Deffered</em> représente un travail qui n&#8217;est pas encore fini. Donc un <em>Deferred</em> possède une promise (une valeur pas encore connues).</p>
+
+<p>Quand la valeur est connue, la promesse utilise un <em>handler</em> (en général <code>-&gt;then()</code>) qui lui-même renvoie une promise. L&#8217;intérêt est que les promises sont chainables.</p>
+
+<p>Mais essayons quelques exemples qui seront un peu plus parlant.</p>
+
+<p>Pour ce faire nous allons d&#8217;abord installer <a href="https://github.com/reactphp/promise">react/promises</a></p>
+
+<pre><code class="php">&lt;?php
+require __DIR__.'/vendor/autoload.php';
+
+// On crée un travail
+$deferred = new React\Promise\Deferred();
+
+// On veux la promise
+$promise  = $deferred-&gt;promise()-&gt;then(
+    function () { echo "tout va bien \n"; },
+    function () { echo "tout va mal \n"; },
+    function () { echo "j'attends\n "; }
+);
+
+
+// Le travail est un succes, on résoud la promise
+$deferred-&gt;resolve(); 
+</code></pre>
+
+<p>Voici ce que j&#8217;obtiens si je lance le programme.</p>
+
+<pre><code class="php">tout va bien
+</code></pre>
+
+<p>Si je remplace <code>$deferred-&gt;resolve()</code> par <code>$deferred-&gt;reject()</code>. Le travail n&#8217;as pas marché. J&#8217;obtiens</p>
+
+<pre><code class="php">Tout va mal
+</code></pre>
+
+<p>La syntaxe de <code>then</code> est</p>
+
+<pre><code class="php">then(callable $onFulfilled = null, callable $onRejected = null, callable $onProgress = null)
+</code></pre>
+
+<ul>
+<li>Si l&#8217;action est un succès, On résous la promise en appelant la fonction <code>$onFulfilled</code>.</li>
+<li>L&#8217;action n&#8217;est pas bonne, On rejette la promise avec <code>$onRejected</code>.</li>
+<li>Si l&#8217;action est en cours , On appelle <code>$onProgress</code>.</li>
+</ul>
+
+
+<p>A noter qu&#8217;une promise une fois qu&#8217;elle est résolue ou rejetée ne peut plus être réutilisée sauf dans le cas du <code>pending</code></p>
+
+<pre><code class="php">$promise-&gt;notify();
+$promise-&gt;notify();
+$promise-&gt;notify();
+$promise-&gt;resolve();
+</code></pre>
+
+<p>Le résultat</p>
+
+<pre><code class="">j'attends
+j'attends
+j'attends
+tout va bien
+</code></pre>
+
+<p>Pour l&#8217;instant rien de bien compliqué. On peut chainer les promises</p>
+
+<pre><code class="php ">$promise  = $deferred-&gt;promise()-&gt;then(
+    function () { echo "action 1 ok\n"; }
+)-&gt;then(
+    function () { echo "action 2 ok\n";}
+)-&gt;then(
+   function () { echo "action 3 ok\n";},
+   function () { echo "une des actions n'est pas ok..\n";}
+);
+
+$deferred-&gt;resolve();
+</code></pre>
+
+<p>Le résultat
+<code>
+action 1 ok
+action 2 ok
+action 3 ok
+</code></p>
+
+<p>Essayons avec <code>deffered-&gt;reject()</code></p>
+
+<p>Le résultat</p>
+
+<pre><code>une des actions n'est pas ok..
+</code></pre>
+
+<p>Ajoutons un exception à la deuxième étape.
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$promise</span>  <span class="o">=</span> <span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">promise</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
+</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">action</span> <span class="mi">1</span> <span class="nx">ok\n</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;;</span> <span class="p">}</span>
+</span><span class='line'><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
+</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">throw</span> <span class="k">new</span> <span class="nx">Exception</span><span class="p">();}</span>
+</span><span class='line'><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
+</span><span class='line'>   <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">action</span> <span class="mi">3</span> <span class="nx">ok\n</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;;},</span>
+</span><span class='line'>   <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">une</span> <span class="nx">des</span> <span class="nx">actions</span> <span class="nx">n</span><span class="s1">&#39;est pas ok..\n&amp;rdquo;;}</span>
+</span><span class='line'><span class="s1">);&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">&lt;pre&gt;&lt;code&gt;</span>
+</span><span class='line'><span class="s1">Le résultat</span>
+</span><span class='line'><span class="s1">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">&lt;p&gt;action 1 ok</span>
+</span><span class='line'><span class="s1">une des actions n&#39;</span><span class="nx">est</span> <span class="nx">pas</span> <span class="nx">ok</span><span class="o">..</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Ajoutons une exception dans le premier, et ajoutons un cas pour gérer l&#8217;erreur
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$promise</span>  <span class="o">=</span> <span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">promise</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
+</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">throw</span> <span class="k">new</span> <span class="nx">\Exception</span><span class="p">();</span> <span class="p">}</span>
+</span><span class='line'><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
+</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">action</span> <span class="mi">2</span> <span class="nx">ok\n</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;;},</span>
+</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">l</span><span class="s1">&#39;action 1 pas ok mais on continue..\n&amp;rdquo;;}</span>
+</span><span class='line'><span class="s1">)-&gt;then(</span>
+</span><span class='line'><span class="s1">   function () { echo &amp;ldquo;action 3 ok\n&amp;rdquo;;},</span>
+</span><span class='line'><span class="s1">   function () { echo &amp;ldquo;une des actions n&#39;</span><span class="nx">est</span> <span class="nx">pas</span> <span class="nx">ok</span><span class="o">..</span><span class="nx">\n</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;;}</span>
+</span><span class='line'><span class="p">);</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">resolve</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Le résultat
+<code>
+l'action 1 pas ok mais on continue..
+action 3 ok
+</code></p>
+
+<p>Si on veux que l&#8217;erreur de l&#8217;action 1 se propage deux possibilités..</p>
+
+<ul>
+<li>supprimer le callback d&#8217;erreur de l&#8217;action 2</li>
+<li>Ou relancer l&#8217;exception</li>
+</ul>
+
+
+<pre><code>$promise  = $deferred-&gt;promise()-&gt;then(
+    function () { throw new \Exception(); }
+)-&gt;then(
+    function () { echo "action 2 ok\n";},
+    function () { echo "l'action 1 pas ok et on stop le processus"; throw new \Exception();}
+)-&gt;then(
+   function () { echo "action 3 ok\n";},
+   function () { echo "une des actions n'est pas ok..\n";}
+);
+</code></pre>
+
+<p>Ce qui est intéressant dans les promises c&#8217;est que le code équivalent en procédural est pas génial.
+<code>
+ $result = doAction1();
+try {
+    $result = doAction1();
+    if ($result) {
+        $result2 = doAction2($result);
+        if ($result2) {
+            $result3 = doAction3($result3);
+            return $result3;
+        } else {
+            throw new Exception();
+        }
+    } else {
+        throw New Exception();
+    }
+} catch (..){
+    echo "une des actions n'est pas ok"
+}
+</code></p>
+
+<p>Devient
+<code>
+    $result = $doAction1()
+        -&gt;then(function($result1){doAction2($result1);})
+        -&gt;then(
+            function($result2){doAction3($result2);},
+            function() {echo "une des actions n'est pas ok"}
+        );
+</code></p>
+
+<p>C&#8217;est mieux non ?</p>
+
+<p>Dans un prochain article nous nous utiliserons ce que nous avons appris avec <a href="http://guzzle.readthedocs.org/en/latest/">Guzzle</a>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Lancer Des Commandes Dans Vim]]></title>
@@ -793,287 +1022,6 @@ __HALT_COMPILER(); ?&gt;
 <p>Je vais essayer de continuer à parler d&#8217;autres instructions et structures peu connues (par exemple <code>__invoke</code> ou les <code>SplHeap</code>).</p>
 
 <p>Merci de m&#8217;avoir lu.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[QuickCheck Une Autre Façon De Tester]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/08/22/quickcheck-une-autre-facon-de-tester/"/>
-    <updated>2015-08-22T19:01:42+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/08/22/quickcheck-une-autre-facon-de-tester</id>
-    <content type="html"><![CDATA[<h2>Introduction</h2>
-
-<p>Nous allons voir ensemble, une nouvelle façon de faire des tests. Nous allons installer utiliser un projet <a href="https://github.com/steos/php-quickcheck">php-quickcheck</a>. L&#8217;idée ici n&#8217;est pas d&#8217;écrire des tests, mais demander au logiciel de les générer.</p>
-
-<h2>Installation.</h2>
-
-<p>Nous allons créer le <code>composer.json</code> suivant.</p>
-
-<pre><code class="json">{
-  "require": {
-    "steos/php-quickcheck": "dev-master"
-  }
-}
-</code></pre>
-
-<p>Puis créer un fichier <code>test.php</code>.</p>
-
-<pre><code class="php">
-require_once __DIR__ . '/vendor/autoload.php'; // Autoload files using Composer autoload
-
-use QCheck\Generator as Gen;
-use QCheck\Quick;
-</code></pre>
-
-<p>Un petit <code>composer install</code>. Et tout est en place.</p>
-
-<h2>Exemple N°1</h2>
-
-<h3>Affirmation</h3>
-
-<p>Je vais essayer de prouver que <code>array_merge($list1, $list2) == $list1 + $list2</code> (<strong>ce qui est faux</strong>)</p>
-
-<p>Je l&#8217;écris dans la fonction suivante</p>
-
-<pre><code class="php">function isEqual(array $list1, array $list2) {
-    return (array_merge($list1, $list2) == $list1 + $list2);
-}
-</code></pre>
-
-<h3>Mise en place et contre-exemple.</h3>
-
-<p>Voici le code</p>
-
-<pre><code class="php">$test = Gen::forAll(
-    [Gen::ints()-&gt;intoArrays(), Gen::ints()-&gt;intoArrays()], isEqual
- );
-</code></pre>
-
-<p><code>Gen::ints()-&gt;intoArrays()</code> génère des array avec une taille aléatoire <code>[0, 1], [-15,0,5], ..</code> que  je vais passer à la fonction <code>isEqual</code></p>
-
-<pre><code>print_r(Quick::check(102, $test, ['echo' =&gt; true]));
-</code></pre>
-
-<p>Je vais lancer 102 fois mon test.</p>
-
-<p>Voici ce que me dit le programme dès que je lance.</p>
-
-<pre><code>..F
-Array
-(
-    [result] =&gt; 
-    [seed] =&gt; 1440263990644
-    [failing_size] =&gt; 2
-    [num_tests] =&gt; 3
-    [fail] =&gt; Array
-        (
-            [0] =&gt; Array
-                (
-                    [0] =&gt; 1
-                )
-
-            [1] =&gt; Array
-                (
-                    [0] =&gt; -2
-                    [1] =&gt; 1
-                )
-
-        )
-
-    [shrunk] =&gt; Array
-        (
-            [nodes_visited] =&gt; 9
-            [depth] =&gt; 3
-            [result] =&gt; 
-            [smallest] =&gt; Array
-                (
-                    [0] =&gt; Array
-                        (
-                            [0] =&gt; 0
-                        )
-
-                    [1] =&gt; Array
-                        (
-                            [0] =&gt; 0
-                        )
-
-                )
-
-        )
-
-)
-</code></pre>
-
-<p>Le résultat est intéressant, Le logiciel a essayé 3 fois, au troisième essai l&#8217;exemple <code>([1], [-2,1])</code> donne un cas qui ne marche pas.</p>
-
-<p>Vérifions avec <code>php -a</code></p>
-
-<pre><code class="">php &gt; var_dump(array_merge([1], [-2,1]));
-array(3) {
-  [0] =&gt;
-  int(1)
-  [1] =&gt;
-  int(-2)
-  [2] =&gt;
-  int(1)
-}
-php &gt; var_dump([1] + [-2,1]);
-array(2) {
-  [0] =&gt;
-  int(1)
-  [1] =&gt;
-  int(1)
-}
-</code></pre>
-
-<p>Effectivement.. Mais il y a mieux. Le logiciel a fais un <em>shrunk</em>, c&#8217;est à dire qu&#8217;il a calculé le plus petit exemple possible qui est <code>([0], [0])</code>.</p>
-
-<p>Donc la librairie me donne tort et en plus me donne le contre-exemple.</p>
-
-<h2>Exemple N°2</h2>
-
-<h3>Affirmation</h3>
-
-<p>J&#8217;affirme que <code>(sort (array) == sort(sort(array))</code> que en gros cela ne sert à rien de trier deux fois un array.</p>
-
-<h3>Mise en place</h3>
-
-<pre><code>$test2 = Gen::forAll(
-    [Gen::ints()-&gt;intoArrays()],
-    function ($list) {
-        $lista = $list;
-        $listb = $list;
-        sort($lista);
-        sort($listb);
-        sort($listb);
-        return ($lista == $listb);
-    }
-  );
-
-print_r(Quick::check(101, $test2, ['echo' =&gt; true]));
-</code></pre>
-
-<p>Je lance le logiciel</p>
-
-<pre><code>.....................................................................................................Array
-(
-    [result] =&gt; 1
-    [num_tests] =&gt; 101
-    [seed] =&gt; 1440265001108
-)
-</code></pre>
-
-<p>Le logiciel semble d&#8217;accord. Il a fait 101 tests, mais il n&#8217;a pas trouvé de contre-exemple.</p>
-
-<h2>Exemple N°3</h2>
-
-<p>Nous allons encoder en <code>run legth encoding</code> qui est l&#8217;actuel encodage des fichiers bitmaps.</p>
-
-<p>Quelque exemples:
-<code>
-Input: WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWBWWWWWWWWWWWWWW
-Output: 12W1B12W3B24W1B14W
-</code></p>
-
-<p>Il y a <code>12W</code> puis <code>1B</code> etc .. je compresse ma chaîne de caractères.</p>
-
-<p>Dans l&#8217;autre sens
-<code>
-Input: 12W1B12W3B24W1B14W
-Output: WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWBWWWWWWWWWWWWWW
-</code></p>
-
-<p>Voici une implémentation en php</p>
-
-<pre><code class="php">function encode($str) {
-    return preg_replace_callback(
-        '/(.)\1+/',
-        function($m) {
-            return sprintf('%s%s', strlen($m[0]), $m[1]);
-        },
-        $str
-    );
-};
-function decode($str) {
-    return preg_replace_callback(
-        '/(\d+)(\D)/',
-        function($m) {
-            return str_repeat($m[2], $m[1]);
-        },
-         $str
-     );
-}
-</code></pre>
-
-<p>Mon implémentation est correcte, mais il y a un petit souci. Pouvez vous deviner le souci de mon programme.</p>
-
-<p>A priori <code>$input == decode(encode($input))</code></p>
-
-<h3>Mise en place.</h3>
-
-<pre><code class="php">$test3 = Gen::forAll(
-    [Gen::alphaNumStrings()],
-    function ($string) {
-      return ($string == decode(encode($string)));
-    }
-);
-print_r(Quick::check(101, $test2, ['echo' =&gt; true]));
-</code></pre>
-
-<p>Le logiciel ne tarde pas à trouver le souci</p>
-
-<pre><code>.....F
-Array
-(
-    [result] =&gt; 
-    [seed] =&gt; 1440265916923
-    [failing_size] =&gt; 5
-    [num_tests] =&gt; 6
-    [fail] =&gt; Array
-        (
-            [0] =&gt; G67k}
-        )
-
-    [shrunk] =&gt; Array
-        (
-            [nodes_visited] =&gt; 34
-            [depth] =&gt; 7
-            [result] =&gt; 
-            [smallest] =&gt; Array
-                (
-                    [0] =&gt; 0 
-                )
-
-        )
-
-)
-</code></pre>
-
-<p>La chaîne de caractère <code>"G67k"</code> ne marche pas, et en fait la chaîne <code>"0"</code> tout cours ne marche pas.</p>
-
-<h2>Conclusion des 3 exemples.</h2>
-
-<ul>
-<li>Je n&#8217;ai pas écris de test. C&#8217;est le logiciel qui génère les tests.</li>
-<li>Les tests sont aléatoires. Par exemple si j&#8217;avais limité à 5 tests l&#8217;exemple 3 pourrait passer.</li>
-<li>Si le code ne passe pas le logiciel est capable de <em>réduire</em> jusqu&#8217;à trouver un contre-exemple ici la chaine <code>"0"</code> ou l&#8217;entrée <code>([0],[0])</code></li>
-<li>Un autre cas, dans le dernier exemple, j&#8217;ai pris un générateur de texte qui prend des chiffres et des lettres, si j&#8217;avais pris un générateur de lettre seulement comme <code>gen::alphaString</code>. Le test passerait sans problème.</li>
-</ul>
-
-
-<p>Ce type de logiciel s&#8217;appelle le <a href="https://en.wikipedia.org/wiki/QuickCheck">QuickCheck</a> du nom du premier logiciel en <a href="https://en.wikipedia.org/wiki/Haskell_%28programming_language%29">Haskell</a>. Ce sont des tests aléatoires.</p>
-
-<p>Il existe deux portage en php.</p>
-
-<ul>
-<li><a href="https://github.com/giorgiosironi/eris">eris</a></li>
-<li><a href="https://github.com/steos/php-quickcheck">php-quickcheck</a></li>
-</ul>
-
-
-<p>Il y a le même problème que les tests unitaires: Quand les tests unitaires ne passent pas,  il y a un problème. Mais des tests unitaires qui passent ne prouve pas forcement que le logiciel est correct. Néanmoins cette méthode qui génère des milliers de tests donne des résultats assez intéressants. La capacité a trouvé automatiquement un contre-exemple (s&#8217;il y a un contre-exemple) est vraiment un plus.</p>
-
-<p>Cela n&#8217;a pas été évident d&#8217;écrire ce post. J&#8217;ai eu un peu de mal à trouver un exemple pertinent. Je me suis inspiré des exemples de <a href="https://github.com/DRMacIver/hypothesis">hypothesis</a>. L&#8217;implémentation du RLE viens de <a href="http://rosettacode.org/wiki/Run-length_encoding">rosetta</a> mais l&#8217;exemple en php est obsolète (la regex <code>/../e</code> php5.5 n&#8217;en veux pas). J&#8217;ai retraduis le code.</p>
 ]]></content>
   </entry>
   
