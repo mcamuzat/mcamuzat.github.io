@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Php | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/php/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-09-05T20:17:58+02:00</updated>
+  <updated>2015-09-06T19:49:54+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,321 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[PHP Yield Les Générateurs]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/09/06/php-yield-les-generateurs/"/>
+    <updated>2015-09-06T19:06:48+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/09/06/php-yield-les-generateurs</id>
+    <content type="html"><![CDATA[<p>Nous allons voir une nouveauté de PHP 5.5 l&#8217;instruction <strong>yield</strong></p>
+
+<p>Cela permet de mettre en place ce qu&#8217;on appelle les générateurs.</p>
+
+<h2>Un premier exemple</h2>
+
+<p>Regardons un exemple ensemble</p>
+
+<pre><code class="php">&lt;?php
+function generateAnimal() {
+    echo "Je suis dans le générateur\n";
+    yield "Panda";
+    echo "Je suis retourné dans le générateur\n";
+    yield "Lama";
+    echo "je suis de retour\n";
+    yield "Alpaga";
+    echo "plus de d'animaux\n";
+}
+
+$generator = generateAnimal();
+foreach ($generator as $value) {
+    echo "j'ai reçu $value \n";
+}
+</code></pre>
+
+<p>Voici le résultat</p>
+
+<pre><code>j'ai reçu Panda 
+Je suis retourné dans le générateur
+j'ai reçu Lama 
+je suis de retour
+j'ai reçu Alpaga 
+plus de d'animaux
+</code></pre>
+
+<p>D&#8217;abord un générateur se comporte comme un iterator. C&#8217;est grâce à cela que je peux faire un <code>foreach</code>.</p>
+
+<p>Je vais refaire pas à pas avec des commentaires.</p>
+
+<h3>premier passage</h3>
+
+<pre><code class="php">&lt;?php
+function generateAnimal() {
+    echo "Je suis dans le générateur\n";
+    yield "Panda"; // Je retourne ici 
+        echo "Je suis retourné dans le générateur\n";
+    yield "Lama";
+        echo "je suis de retour\n";
+    yield "Alpaga";
+    echo "plus de d'animaux\n";
+}
+
+
+$generator = generateAnimal();
+
+echo $generator-&gt;current();
+// "je suis dans le générateur
+// $value = "Panda"
+</code></pre>
+
+<h3>Itération suivante</h3>
+
+<p>En fait le générateur reste en suspens, <code>yield</code> est un pseudo <code>return</code> (enfin c&#8217;est comme cela que je l&#8217;ai compris)</p>
+
+<pre><code class="php">&lt;?php
+function generateAnimal() {
+    echo "Je suis dans le générateur\n";
+    yield "Panda"; // Je suis reste ici .. je continue 
+    echo "Je suis retourné dans le générateur\n";
+    yield "Lama"; // je m'arrete à nouveau 
+    echo "je suis de retour\n";
+    yield "Alpaga";
+    echo "plus d'animaux\n";
+}
+
+
+$generator-&gt;next() // On récupère la valeur suivante
+echo $generator-&gt;current();
+// "je suis retourné dans le générateur
+// "Lama"
+</code></pre>
+
+<h3>Troisième itération</h3>
+
+<pre><code class="php">&lt;?php
+function generateAnimal() {
+    echo "Je suis dans le générateur\n";
+    yield "Panda";
+    echo "Je suis retourné dans le générateur\n";
+    yield "Lama"; // je me suis arrété ici 
+    echo "je suis de retour\n";
+    yield "Alpaga"; // je retourne .. 
+    echo "plus d'animaux\n";
+}
+
+
+$generator-&gt;next() // On récupère la valeur suivante
+echo $generator-&gt;current();
+// Je suis de retour
+// "Alpaga"
+</code></pre>
+
+<h3>Dernière Itération</h3>
+
+<p>Nous y sommes presque..</p>
+
+<pre><code class="php">&lt;?php
+function generateAnimal() {
+    echo "Je suis dans le générateur\n";
+    yield "Panda";
+    echo "Je suis retourné dans le générateur\n";
+    yield "Lama";  
+    echo "je suis de retour\n";
+    yield "Alpaga"; // je me suis arréte ici
+    echo "plus d'animaux\n"; //pas de yield je renvoie null..
+}
+
+$generator-&gt;next() // On récupère la valeur suivante
+echo $generator-&gt;current();
+// Plus d'animaux 
+// il n'y a rien car echo null;
+</code></pre>
+
+<p>Une fois qu&#8217;un générateur a fini, on ne peux le réutiliser</p>
+
+<pre><code class="php">foreach ($generator as $value) {
+    echo "j'ai reçu $value \n";
+}
+
+foreach ($generator as $value) {
+    echo "j'ai reçu $value \n";
+}
+</code></pre>
+
+<p>J&#8217;obtiens</p>
+
+<pre><code class="">PHP Fatal error:  Uncaught exception 'Exception' with message 'Cannot traverse an already closed generator' in /home/marc/yield.php:16
+</code></pre>
+
+<h2>Quel est l&#8217;intérêt ?</h2>
+
+<p>Admettons que je veux faire un <code>foreach</code> sur un tableau d&#8217;un millions de lignes.</p>
+
+<p>Pour faire un Array de 1 Million de valeurs ce n&#8217;est pas très compliqué. Une instruction suffit.</p>
+
+<pre><code class="php">range(1000000) = [1,2,3,4,...,1000000];
+</code></pre>
+
+<p>Mais cela prend un peu de mémoire. Utilisons notre générateur de manière sympathique</p>
+
+<pre><code class="php">function xrange($min, $max) {
+  for ($i = $min; $i &lt; $max; $i++) yield $i;
+}
+
+foreach (xrange(1,1000000) as $value) {
+   echo $value;
+}
+</code></pre>
+
+<p>l&#8217;énorme avantage est que je n&#8217;ai pas besoin de générer un array de 1 Millions de lignes, je génère valeur par valeur. Si la fonction est appelle deux fois je ne génère que deux valeurs. L&#8217;occupation en mémoire est faible. Les valeurs sont instanciées <em>paresseusements</em>.</p>
+
+<h3>Un exemple encore plus concret.</h3>
+
+<p>Pour lire un fichier:</p>
+
+<pre><code class="php ">function getLinesFromFile($fileName) {
+    $fileHandle = fopen($fileName, 'r');
+    while (false !== $line = fgets($fileHandle)) {
+        yield $line;
+    }
+    fclose($fileHandle);
+}
+$lines = getLinesFromFile($fileName);
+foreach ($lines as $line) {
+    // do something with $line
+}
+</code></pre>
+
+<p>Ce code a plusieurs avantages.</p>
+
+<ul>
+<li>On va chercher la ligne à la demande.</li>
+<li>Il y a une couche d&#8217;abstraction entre la lecture et le programme principale.</li>
+</ul>
+
+
+<h3>Un petit quizz</h3>
+
+<p>Pouvez vous deviner la fonction suivante ?</p>
+
+<pre><code>function mystere() {
+    $last = 0;
+    $current = 1;
+    yield 1;
+    while (true) {
+        list($current, $last) = array($current + $last, $current);
+        yield $current;
+    }
+}
+
+$count = 0;
+foreach (mystere() as $value) {
+    $count++;
+    echo $value . "\n";
+    if ($count &gt; 10) {
+        break;
+        // pas cool la boucle infinie
+    }
+}
+</code></pre>
+
+<h2>Un mise au point</h2>
+
+<p>Les générateurs se comporte comme des itérateurs, mais pour implémenter un <a href="http://php.net/manual/fr/class.iterator.php">iterator</a> il faut implémenter l&#8217;interface suivante.</p>
+
+<pre><code class="php "> Iterator extends Traversable {
+/* Méthodes */
+abstract public mixed current ( void )
+abstract public scalar key ( void )
+abstract public void next ( void )
+abstract public void rewind ( void )
+abstract public boolean valid ( void )
+}
+</code></pre>
+
+<p>Par exemple pour l&#8217;exemple du fichier (je recopie la doc de php)</p>
+
+<pre><code class="php">class LineIterator implements Iterator {
+    protected $fileHandle;
+
+    protected $line;
+    protected $i;
+
+    public function __construct($fileName) {
+        if (!$this-&gt;fileHandle = fopen($fileName, 'r')) {
+            throw new RuntimeException('Impossible d\'ouvrir le fichier : "' . $fileName . '"');
+        }
+    }
+
+    public function rewind() {
+        fseek($this-&gt;fileHandle, 0);
+        $this-&gt;line = fgets($this-&gt;fileHandle);
+        $this-&gt;i = 0;
+    }
+
+    public function valid() {
+        return false !== $this-&gt;line;
+    }
+
+    public function current() {
+        return $this-&gt;line;
+    }
+
+    public function key() {
+        return $this-&gt;i;
+    }
+
+    public function next() {
+        if (false !== $this-&gt;line) {
+            $this-&gt;line = fgets($this-&gt;fileHandle);
+            $this-&gt;i++;
+        }
+    }
+
+    public function __destruct() {
+        fclose($this-&gt;fileHandle);
+    }
+}
+</code></pre>
+
+<p>L&#8217;implémentation en générateur.</p>
+
+<pre><code class="php">function getLinesFromFile($fileName) {
+    if (!$fileHandle = fopen($fileName, 'r')) {
+        throw new RuntimeException('Impossible d\'ouvrir le fichier : "' . $fileName . '"');
+    }
+
+    while (false !== $line = fgets($fileHandle)) {
+        yield $line;
+    }
+
+    fclose($fileHandle);
+}
+</code></pre>
+
+<p>C&#8217;est quand même plus simple.</p>
+
+<h2>En conclusion.</h2>
+
+<p>Cela existe aussi dans les autres langages</p>
+
+<p>On trouve l&#8217;instruction <code>yield</code> surtout dans python</p>
+
+<pre><code class="python">def countdown(n):
+    while n &gt; 0:
+        yield n
+        n -= 1
+
+for x in countdown(10):
+    print 'depart dans %s' % x
+</code></pre>
+
+<p>La référence est ce <a href="http://www.dabeaz.com/generators/">site</a> , Il existe une <a href="http://www.youtube.com/watch?v=5-qadlG7tWo">video</a> (<strong>3 heures !!!</strong>)</p>
+
+<p>Cela existe aussi dans <a href="http://www.tutorialspoint.com/ruby/ruby_blocks.htm">ruby</a>, <a href="https://msdn.microsoft.com/fr-fr/library/9k7k7cf0.aspx">C#</a>;</p>
+
+<p>C&#8217;est un peu plus qu&#8217;une nouvelle syntaxe. Cela permet de faire du code asynchrone. Car cela permet une structure de codage que l&#8217;on appelle: Les <a href="https://fr.wikipedia.org/wiki/Coroutine">Couroutines</a>. Mais plus d&#8217;info dans un prochain post .</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Les Promises Et Php via React]]></title>
@@ -379,7 +694,7 @@ bonjour
 
 <p>Je vais parler de <code>SplStack</code> une structure de donnée qui fait partie de La SPL (pour <strong>S</strong>tandart <strong>P</strong>HP <strong>L</strong>ibrairie). Nous allons voir trois façons de nous servir de cette structure.</p>
 
-<h2>Les Stacks ou Pile</h2>
+<h2>Les Stacks ou Piles</h2>
 
 <p>La pile n&#8217;a que deux opérations.</p>
 
@@ -902,126 +1217,6 @@ var_dump($array);
 <h2>En conclusion</h2>
 
 <p>Donc je n&#8217;ai jamais réussi à écrire un <code>array_walk_recursive</code> mais au moins j&#8217;ai réussi à écrire un post dessus.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Halt Compiler : Twig Et Php Dans Le Même Fichier]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/08/23/halt-compiler-twig-et-php-dans-le-meme-fichier/"/>
-    <updated>2015-08-23T17:20:41+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/08/23/halt-compiler-twig-et-php-dans-le-meme-fichier</id>
-    <content type="html"><![CDATA[<h2>Introduction</h2>
-
-<p>je vais parler de l&#8217;instruction <code>__halt_compiler()</code>.</p>
-
-<p>Cette instruction arrête l&#8217;interprétation du PHP. Instruction inutile ? Pas vraiment..</p>
-
-<p>Pour ce faire je vais montrer un exemple ou je vais mixer un fichier php et un fichier <a href="http://twig.sensiolabs.org/">twig</a> ensemble.</p>
-
-<h2>L&#8217;instruction <code>__halt_compiler()</code></h2>
-
-<p>D&#8217;après php.net</p>
-
-<blockquote><p>Stoppe l&#8217;exécution du compilateur. Ceci peut être très utile pour embarquer des données dans des scripts PHP, comme des fichiers d&#8217;installation.
-L&#8217;octet de la position du début des données peut être déterminé par la constante <code>__COMPILER_HALT_OFFSET__</code> qui n&#8217;est définie que s&#8217;il y a une fonction <code>__halt_compiler()</code> présente dans le fichier.</p></blockquote>
-
-<h2>Une première expérimentation</h2>
-
-<p>Soit le fichier php suivant :</p>
-
-<pre><code class="php">&lt;?php
-echo 'salut la compagnie!!';
-__halt_compiler();
-echo "j'apparais pas";
-</code></pre>
-
-<p>Comme prévue deuxième ligne ne s&#8217;affiche pas.</p>
-
-<h2>Une seconde expérimentation.</h2>
-
-<pre><code class="php">&lt;?php
-$txt = file_get_contents(__FILE__, false, null, __COMPILER_HALT_OFFSET__);
-echo strtoupper($txt);
-__halt_compiler();
-Bonjour tout le monde!
-</code></pre>
-
-<p>La constante <code>__FILE__</code> représente le fichier actuelle, la constante <code>__COMPILER_HALT_OFFSET__</code> représente la position de l&#8217;instruction <code>__halt_compiler()</code>. On récupère le texte qui ne s&#8217;affiche pas.</p>
-
-<pre><code class="sh">BONJOUR TOUT LE MONDE!
-</code></pre>
-
-<h2>Mettre le fichier php et le fichier de template twig dans le même fichier</h2>
-
-<p>Un exemple un peu théorique car pas très optimisé.</p>
-
-<p>J&#8217;ai besoin de twig, voici le <code>composer.json</code></p>
-
-<pre><code class="json">{
-   "require": {
-        "twig/twig": "^1.20"
-    }
-}
-</code></pre>
-
-<p>Voici mon programme.</p>
-
-<pre><code class="php">&lt;?php
-require_once __DIR__ . '/vendor/autoload.php'; // Autoload files using Composer autoload
-
-function get_halt_data() {
-    return file_get_contents(__FILE__, false, null, __COMPILER_HALT_OFFSET__);
-}
-
-$loader = new Twig_Loader_Array(array(
-    'index' =&gt; get_halt_data()));
-$twig = new Twig_Environment($loader);
-
-echo $twig-&gt;render('index', array('name' =&gt; 'Fabien'));
-
-__halt_compiler();
-
-hello {\{name}\}
-</code></pre>
-
-<pre><code class="sh">hello fabien
-</code></pre>
-
-<p>Désolé pour les <code>{\{</code> sinon cela n&#8217;apparait pas sur le code.</p>
-
-<p>C&#8217;est relativement inefficace. Il doit avoir moyen de faire un peu plus propre en profitant du cache.</p>
-
-<p>Comme annoncé dans le titre , j&#8217;ai dans le même fichier le php et le template twig.</p>
-
-<h3>Un exemple plus concret <code>composer.phar</code></h3>
-
-<p>Ouvrons pour voir le fichier <code>composer.phar</code></p>
-
-<p>Voici ce que je vois. Nous retrouvons notre instruction du jour.</p>
-
-<pre><code class="php">...
-Phar::mapPhar('composer.phar');
-define('COMPOSER_DEV_WARNING_TIME', 1445255994);
-require 'phar://composer.phar/bin/composer';
-
-__HALT_COMPILER(); ?&gt;
-.. 
-</code></pre>
-
-<p>Les fichiers <code>.phar</code> en pratique n&#8217;utilise que cette astuce. Je connais assez peu.</p>
-
-<h2>Conclusion</h2>
-
-<ul>
-<li>Sur l&#8217;utilisation en template. Il y a le projet <a href="https://github.com/bobthecow/mustache.php">mustache.php</a> vous ne devriez pas être perdu avec le loader <a href="https://github.com/bobthecow/mustache.php/wiki/Template-Loading#inline-loader">suivant</a></li>
-<li>Sur l&#8217;utilisation de string dans un template twig, la lecture de cet <a href="https://techpunch.co.uk/development/render-string-twig-template-symfony2">article</a> est très bien.</li>
-<li>Sur les <code>.phar</code> la <a href="http://php.net/manual/en/phar.mapphar.php">documentation officielle</a> semble un bon début.</li>
-</ul>
-
-
-<p>Je vais essayer de continuer à parler d&#8217;autres instructions et structures peu connues (par exemple <code>__invoke</code> ou les <code>SplHeap</code>).</p>
-
-<p>Merci de m&#8217;avoir lu.</p>
 ]]></content>
   </entry>
   

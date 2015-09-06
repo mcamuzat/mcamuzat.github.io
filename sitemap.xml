@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://mcamuzat.github.io/blog/2015/09/06/php-yield-les-generateurs/</loc>
+    <lastmod>2015-09-06T19:06:48+02:00</lastmod>
+  </url>
+  <url>
     <loc>http://mcamuzat.github.io/blog/2015/09/05/les-promises-et-php-via-react/</loc>
     <lastmod>2015-09-05T19:10:10+02:00</lastmod>
   </url>
@@ -166,11 +170,11 @@
   </url>
   <url>
     <loc>http://mcamuzat.github.io/</loc>
-    <lastmod>2015-09-05T20:17:58+02:00</lastmod>
+    <lastmod>2015-09-06T19:49:54+02:00</lastmod>
   </url>
   <url>
     <loc>http://mcamuzat.github.io/blog/archives/</loc>
-    <lastmod>2015-09-05T20:17:58+02:00</lastmod>
+    <lastmod>2015-09-06T19:49:54+02:00</lastmod>
   </url>
   <url>
     <loc>http://mcamuzat.github.io/google8cb39a84ece2ce48.html</loc>
