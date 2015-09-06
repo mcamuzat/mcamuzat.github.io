@@ -10,7 +10,7 @@ categories: ["php", "spl", "algorithme", "Structure"]
 
 Je vais parler de `SplStack` une structure de donnée qui fait partie de La SPL (pour **S**tandart **P**HP **L**ibrairie). Nous allons voir trois façons de nous servir de cette structure.
 
-## Les Stacks ou Pile
+## Les Stacks ou Piles
 
 La pile n'a que deux opérations.
 
