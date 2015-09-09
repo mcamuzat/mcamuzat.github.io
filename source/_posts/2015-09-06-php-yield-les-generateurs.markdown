@@ -230,9 +230,9 @@ foreach (mystere() as $value) {
 
 ```
 
-## Un mise au point
+## Une mise au point
 
-Les générateurs se comporte comme des itérateurs, mais pour implémenter un [iterator](http://php.net/manual/fr/class.iterator.php) il faut implémenter l'interface suivante.
+Les générateurs se comportent comme des itérateurs, mais pour implémenter un [iterator](http://php.net/manual/fr/class.iterator.php) il faut implémenter l'interface suivante.
 
 ``` php 
  Iterator extends Traversable {
@@ -329,7 +329,7 @@ for x in countdown(10):
 
 La référence est ce [site](http://www.dabeaz.com/generators/) , Il existe une [video](http://www.youtube.com/watch?v=5-qadlG7tWo) (**3 heures !!!**)
 
-Cela existe aussi dans [ruby](http://www.tutorialspoint.com/ruby/ruby_blocks.htm), [C#](https://msdn.microsoft.com/fr-fr/library/9k7k7cf0.aspx);
+Cela existe aussi dans [ruby](http://www.tutorialspoint.com/ruby/ruby_blocks.htm), [C#](https://msdn.microsoft.com/fr-fr/library/9k7k7cf0.aspx), et dans le javascript ES6
 
 C'est un peu plus qu'une nouvelle syntaxe. Cela permet de faire du code asynchrone. Car cela permet une structure de codage que l'on appelle: Les [Couroutines](https://fr.wikipedia.org/wiki/Coroutine). Mais plus d'info dans un prochain post . 
 
