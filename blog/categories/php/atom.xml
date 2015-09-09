@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Php | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/php/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-09-06T19:49:54+02:00</updated>
+  <updated>2015-09-09T23:15:58+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,186 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Problème Np-Complet]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/09/09/probleme-np-complet/"/>
+    <updated>2015-09-09T21:55:10+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/09/09/probleme-np-complet</id>
+    <content type="html"><![CDATA[<p>Aujourd&#8217;hui je vais parler des problèmes Np-complets avec le <a href="http://xkcd.com/">xkcd</a> suivant. L&#8217;original est <a href="http://xkcd.com/287/">ici</a></p>
+
+<p><img class="center" src="/images/np_complete.png" width="600" height="388" title="&lsquo;xkcd&rsquo; &lsquo;xkcd&rsquo;" ></p>
+
+<p>On appelle ce genre de problème les NP-complets</p>
+
+<p>Pour faire simple (Ce que j&#8217;en ai compris)</p>
+
+<p>Les NP-problèmes sont des problèmes donc il est très facile de vérifier une solutions. Dans notre cas ici il suffit de commander 7 * 2.15 pour obtenir 15.05. Le problème a une solution. Mais il est quasiment impossible de trouver une méthode efficace pour déterminer la solution, voir même de savoir s&#8217;il y a une solutions.</p>
+
+<p>Il suffit de regarder les images suivantes (pris d&#8217;un post de <a href="http://cstheory.stackexchange.com/questions/5188/explain-p-np-problem-to-10-year-old">stack exchange</a>)</p>
+
+<ul>
+<li>si on met les paquets les plus gros d&#8217;abord, les plus larges, avec un <a href="http://www.optaplanner.org/">planner</a>.</li>
+</ul>
+
+
+<p><img class="center" src="/images/backpack.png" width="600" height="450" title="&lsquo;bin packing&rsquo; &lsquo;slide1&rsquo;" ></p>
+
+<ul>
+<li><p>A quel moment mettre le paquet <code>2 * 4 = 8</code>. suivant la forme la solution varie
+<img class="center" src="/images/backpack2.png" width="600" height="450" title="&lsquo;bin packing&rsquo; &lsquo;slide2&rsquo;" ></p></li>
+<li><p>Enfin impossible de savoir s&#8217;il y a une solution ici. Il y a priori la place, pourtant il n&#8217;y a pas de solution</p></li>
+</ul>
+
+
+<p><img class="center" src="/images/backpack3.png" width="600" height="450" title="&lsquo;bin packing&rsquo; &lsquo;slide3&rsquo;" ></p>
+
+<p>la source des images <a href="http://cstheory.stackexchange.com/posts/5206/revisions">ici</a>.</p>
+
+<p>Il reste la force brute.</p>
+
+<p>Voici ma version du xkcd en php</p>
+
+<pre><code class="php">function findSolution($total, $list, $menu) {
+    foreach($menu as $plat =&gt; $prix) {
+        $result = array_merge($list, array($plat));
+        if ($total-$prix == 0) {
+            var_dump($result);
+            return;
+        }
+        if ($total-$prix &gt; 0) {
+            $result = findSolution($total-$prix, $result, $menu);
+        }
+    }
+}
+$menu = array(
+    "Mixed Fruit"=&gt;215,
+    "French Fries"=&gt;275,
+    "Side Salad"=&gt;335,
+    "Hot Wing"=&gt;355,
+    "Mozzarela Sticks"=&gt;420,
+    "Sampler Plate"=&gt;580,
+);
+findSolution(1505, array(), $menu);
+</code></pre>
+
+<p>Cela affiche toute les solutions possibles.</p>
+
+<p>Bien sur il y a des doublons. Il n&#8217;y a pas de différence entre <code>["Hot wing", "Hot wing", "Mixed Fruit", "Sampler Plate"]</code> et  <code>["Hot wing", "Hot wing", "Sampler Plate", "Mixed Fruit"]</code></p>
+
+<p>Pour supprimer les doublons à l&#8217;affichage. Je vais utiliser des globales.</p>
+
+<pre><code>$count = 0;
+$allResult = array();
+function findSolution($total, $list, $menu) {
+    global $count;
+    global $allResult;
+    foreach($menu as $plat =&gt; $prix) {
+        $count++;
+        $result = array_merge($list, array($plat));
+
+        if ($total-$prix == 0) {
+            $sort = $result;
+            sort($sort);
+            $allResult[] = $sort;
+            return $result;
+        }
+        if ($total-$prix &gt; 0) {
+            $result = findSolution($total-$prix,$result, $menu);
+
+        }
+    }
+}
+$menu = array(
+    "Mixed Fruit"=&gt;215,
+    "French Fries"=&gt;275,
+    "Side Salad"=&gt;335,
+    "Hot Wing"=&gt;355,
+    "Mozzarela Sticks"=&gt;420,
+    "Sampler Plate"=&gt;580
+);
+$solution = findSolution(1505, array(), $menu);
+
+$result = array_map(
+    "unserialize",
+    array_unique(
+        array_map("serialize", $allResult
+    )
+)
+);
+var_dump($result);
+var_dump($count);
+</code></pre>
+
+<ul>
+<li>je trie le tableau de résultats. pour que tout mes doublons s&#8217;affiche pareil.</li>
+<li><code>array_unique</code> ne marche pas si les valeurs sont des <em>tableaux</em> (ce qui est la cas ici)</li>
+<li>Je transforme mes tableaux en chaine de caractères grâce à la serialization avec le <code>array_map</code></li>
+<li>Alors <code>array_unique</code> vire les doublons</li>
+<li>Je deserialize avec à nouveau <code>array_map</code> et l&#8217;opération inverse.</li>
+</ul>
+
+
+<pre><code class="php">array([resultat1], [resultat1],[resultat2])
+// array_map("serialize", $result);
+array("resultat1_serialisé","resultat1_serialisé","resultat2_serialisé");
+// array_unique(..)
+array("resultat1_serialise", "resultat2_serialise");
+// array_map("unserialize", ..)
+array([resultat1], [resultat2])
+</code></pre>
+
+<pre><code class="php">int(12040)
+array(2) {
+  [0] =&gt;
+  array(7) {
+    [0] =&gt;
+    string(11) "Mixed Fruit"
+    [1] =&gt;
+    string(11) "Mixed Fruit"
+    [2] =&gt;
+    string(11) "Mixed Fruit"
+    [3] =&gt;
+    string(11) "Mixed Fruit"
+    [4] =&gt;
+    string(11) "Mixed Fruit"
+    [5] =&gt;
+    string(11) "Mixed Fruit"
+    [6] =&gt;
+    string(11) "Mixed Fruit"
+  }
+  [1] =&gt;
+  array(4) {
+    [0] =&gt;
+    string(8) "Hot Wing"
+    [1] =&gt;
+    string(8) "Hot Wing"
+    [2] =&gt;
+    string(11) "Mixed Fruit"
+    [3] =&gt;
+    string(13) "Sampler Plate"
+  }
+}
+</code></pre>
+
+<p>J&#8217;ai fait 12040 boucles pour obtenir toutes les solutions. On peut bien sur optimiser un peu l&#8217;algorithme, si la valeur 5.60 ne marche pas à la première boucle, il y a pas de chance pour quelle marche à la seconde boucle. Donc il faut supprimer des valeurs dans le tableau au fur et à mesure.</p>
+
+<h2> Conclusion</h2>
+
+<p>La force brute n&#8217;est pas vraiment une solution, avec plus de valeurs on explose les possibilités.  Il existe plusieurs <a href="https://fr.wikipedia.org/wiki/Probl%C3%A8me_du_sac_%C3%A0_dos">approches</a> qui tende vers des solutions.</p>
+
+<p>En informatique, il y a des nombreux cas où ce problème intervient</p>
+
+<ul>
+<li>L&#8217;ordre optimal d&#8217;installation des logiciels (Probablement la partie la plus marrante de <a href="https://getcomposer.org/">composer</a>, mais elle est assez peu documentée)</li>
+<li>Beaucoup de cryptages utilisent des problèmes NP-complets (factorisation de deux nombres premiers).</li>
+<li>La dernière phrase du comics parle du <a href="https://fr.wikipedia.org/wiki/Probl%C3%A8me_du_voyageur_de_commerce">voyageur de commerce</a>, un problème célèbre.</li>
+<li>Le sudoku, Les jeux <a href="http://arxiv.org/pdf/1203.1895v1.pdf">nintendos</a> ?!</li>
+<li>Enfin une <a href="https://fr.wikipedia.org/wiki/Liste_de_probl%C3%A8mes_NP-complets">liste complète</a> de wikipedia</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[PHP Yield Les Générateurs]]></title>
@@ -229,9 +409,9 @@ foreach (mystere() as $value) {
 }
 </code></pre>
 
-<h2>Un mise au point</h2>
+<h2>Une mise au point</h2>
 
-<p>Les générateurs se comporte comme des itérateurs, mais pour implémenter un <a href="http://php.net/manual/fr/class.iterator.php">iterator</a> il faut implémenter l&#8217;interface suivante.</p>
+<p>Les générateurs se comportent comme des itérateurs, mais pour implémenter un <a href="http://php.net/manual/fr/class.iterator.php">iterator</a> il faut implémenter l&#8217;interface suivante.</p>
 
 <pre><code class="php "> Iterator extends Traversable {
 /* Méthodes */
@@ -322,7 +502,7 @@ for x in countdown(10):
 
 <p>La référence est ce <a href="http://www.dabeaz.com/generators/">site</a> , Il existe une <a href="http://www.youtube.com/watch?v=5-qadlG7tWo">video</a> (<strong>3 heures !!!</strong>)</p>
 
-<p>Cela existe aussi dans <a href="http://www.tutorialspoint.com/ruby/ruby_blocks.htm">ruby</a>, <a href="https://msdn.microsoft.com/fr-fr/library/9k7k7cf0.aspx">C#</a>;</p>
+<p>Cela existe aussi dans <a href="http://www.tutorialspoint.com/ruby/ruby_blocks.htm">ruby</a>, <a href="https://msdn.microsoft.com/fr-fr/library/9k7k7cf0.aspx">C#</a>, et dans le javascript ES6</p>
 
 <p>C&#8217;est un peu plus qu&#8217;une nouvelle syntaxe. Cela permet de faire du code asynchrone. Car cela permet une structure de codage que l&#8217;on appelle: Les <a href="https://fr.wikipedia.org/wiki/Coroutine">Couroutines</a>. Mais plus d&#8217;info dans un prochain post .</p>
 ]]></content>
@@ -1063,160 +1243,6 @@ int(-4)
 <li><a href="https://fr.wikipedia.org/wiki/Edsger_Dijkstra">Edsger W. Dijkstra</a> est surtout connus pour son algorithme sur le plus court chemin. Mais c&#8217;est une légende de l&#8217;informatique. A voir si vous ne connaissez pas.</li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Array_walk, Array_map, Array_walk_recursive]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/08/26/array-walk/"/>
-    <updated>2015-08-26T22:30:55+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/08/26/array-walk</id>
-    <content type="html"><![CDATA[<p>Une question que l&#8217;on m&#8217;a posé.</p>
-
-<p>Quel instruction je n&#8217;ai jamais jamais réussi à utiliser dans php ? Dans le sens jamais trouvé d&#8217;utilisation pratique.</p>
-
-<p>Ma réponse est un <code>array_recursive_walk()</code> et dans la même idée les <code>RecursiveIteratorIterator</code></p>
-
-<p>Et puis on m&#8217;a demander la différence entre un <code>array_walk</code> et un <code>array_map</code>.</p>
-
-<h2><code>array_map</code></h2>
-
-<p>Voici quelques exemples</p>
-
-<pre><code class="php">// via un array_map
-$array = ['one', 'two', 'three']
-$out = array_map(uc_first, $array);
-</code></pre>
-
-<p><code>array_map</code> ne touche pas le tableau original.</p>
-
-<p>En fait <code>array_map</code> fait exactement ceci.</p>
-
-<pre><code>$out = [ ucfirst('one'), ucfirst('two'), ucfirst('three') ];
-</code></pre>
-
-<p>De manière générale</p>
-
-<pre><code>array_map(function($a),[a ,b, ..,z]) 
-[function(a), function(b), function(c), .. function(z)].
-</code></pre>
-
-<ul>
-<li>On renvoie un tableau de la <strong>même</strong> taille.</li>
-<li>la fonction appelé doit contenir un <strong>return</strong></li>
-<li>C&#8217;est de la programmation fonctionnelle (c&#8217;est le <strong>map</strong> de <strong>Map</strong>Reduce).</li>
-<li>On ne connais pas l&#8217;index (que l&#8217;on pourrai récupérer dans un <code>foreach($array as $key =&gt; $value)</code>).</li>
-</ul>
-
-
-<h2><code>Array_walk</code></h2>
-
-<pre><code class="php">$array = ['one', 'two', 'three']
-function toMaj(&amp;$input, $key) {
-    // ucfirst give error with 2 arguments
-    $input = ucfirst($input);
-}
-array_walk($array, 'toMaj');
-var_dump($array);
-</code></pre>
-
-<p>Constatons:</p>
-
-<ul>
-<li>Je passe par référence <code>&amp;input</code>.</li>
-<li>Donc je n&#8217;ai pas besoin de <code>return</code>.</li>
-<li>Donc nous sommes dans du <strong>procédural</strong>. (ce qui n&#8217;est pas forcément un défaut)</li>
-<li>J&#8217;ai économisé une variable</li>
-<li>On est obligé d&#8217;écrire des fonctions à deux arguments certaines fonctions comme <code>ucfirst</code> refusent d&#8217;avoir plusieurs arguments.</li>
-<li>Par contre, on connait l&#8217;index (<code>$key</code>) mais impossible de le modifier.</li>
-<li><code>array_walk</code> renvoie <code>true</code> or <code>false</code> ce qui n&#8217;aide pas beaucoup</li>
-</ul>
-
-
-<pre><code>$array = ['one', 'two', 'three']
-function toMaj(&amp;$input, $key) {
-    $input = $key.' : 'ucfirst($input);
-}
-array_walk($array, 'toMaj');
-var_dump($array);
-</code></pre>
-
-<p>Pour résumer
-les deux fonctions ont un peu près le même résultat.</p>
-
-<ul>
-<li><code>array_walk</code> prend un array et remplace chaque valeurs par Fonction(valeur).</li>
-<li><code>array_map</code> prend un array et recrée un array de la même taille.</li>
-</ul>
-
-
-<h2>Le <code>Array_recursive_walk</code></h2>
-
-<p>Un exemple de code.</p>
-
-<p>Je voulais faire un <code>CamelCase</code> -> <code>snake_case</code> mais comme le <code>array_walk</code> impossible de modifier les clés des index.</p>
-
-<p>Soit l&#8217;exemple suivant</p>
-
-<pre><code class="php">$array =  ["Tortue-ninja" =&gt; ["leonardo" , "donatello", "michelangelo","raphael"], "Mechant" =&gt; ["shredder", "krang"]];
-array_walk_recursive($array, function(&amp;$item, $key) {
-    if ($key === "Tortue-ninja") {
-        echo 'Cowabunga!';
-    }
-    $item = ucfirst($item);
-});
-
-var_dump($array);
-</code></pre>
-
-<p>Le programme n&#8217;affiche pas de <code>Cowabunga</code>, mais j&#8217;ai mis en majuscule toutes les valeurs.</p>
-
-<pre><code>array(2) {
-  'Tortue-ninja' =&gt;
-  array(4) {
-    [0] =&gt;
-    string(8) "Leonardo"
-    [1] =&gt;
-    string(9) "Donatello"
-    [2] =&gt;
-    string(12) "Michelangelo"
-    [3] =&gt;
-    string(7) "Raphael"
-  }
-  'mechant' =&gt;
-  array(2) {
-    [0] =&gt;
-    string(8) "Shredder"
-    [1] =&gt;
-    string(5) "Krang"
-  }
-}
-</code></pre>
-
-<p>On ne passe jamais sur le clé : <code>Tortue-ninja</code>, d&#8217;ailleurs la documentation est claire</p>
-
-<blockquote><p>Toute clé qui est associée à un tableau n&#8217;est pas passée à la fonction de rappel.</p></blockquote>
-
-<p>Un vrai exemple
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'>    <span class="nb">array_walk_recursive</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="o">&amp;</span><span class="nx">amp</span><span class="p">;</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span> <span class="nx">instanceof</span> <span class="nx">\Traversable</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nv">$value</span> <span class="o">=</span> <span class="nb">iterator_to_array</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>`</p>
-
-<p>Un exemple que l&#8217;on retrouve dans <a href="">PHPUnit</a> et <a href="">Symfony2</a></p>
-
-<p>On veut logger des objets en les serialisant en Json. Certain objects (comme les ArrayCollection et autres..) sont <em>Traversables</em> (c&#8217;est à dire qu&#8217;il possède un Iterateur (On implémente <code>current</code>, <code>next</code>, <code>rewind</code>, <code>valid</code>). En php il est possible de transformer les Itérateurs en Array avec l&#8217;instruction <code>iterator_to_array()</code>. ainsi on transforme l&#8217;objet en Array pour avoir plus d&#8217;information.</p>
-
-<h2>En conclusion</h2>
-
-<p>Donc je n&#8217;ai jamais réussi à écrire un <code>array_walk_recursive</code> mais au moins j&#8217;ai réussi à écrire un post dessus.</p>
 ]]></content>
   </entry>
   

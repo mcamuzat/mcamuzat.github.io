@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Générateur | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/generateur/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-09-06T19:49:54+02:00</updated>
+  <updated>2015-09-09T23:15:58+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -229,9 +229,9 @@ foreach (mystere() as $value) {
 }
 </code></pre>
 
-<h2>Un mise au point</h2>
+<h2>Une mise au point</h2>
 
-<p>Les générateurs se comporte comme des itérateurs, mais pour implémenter un <a href="http://php.net/manual/fr/class.iterator.php">iterator</a> il faut implémenter l&#8217;interface suivante.</p>
+<p>Les générateurs se comportent comme des itérateurs, mais pour implémenter un <a href="http://php.net/manual/fr/class.iterator.php">iterator</a> il faut implémenter l&#8217;interface suivante.</p>
 
 <pre><code class="php "> Iterator extends Traversable {
 /* Méthodes */
@@ -322,7 +322,7 @@ for x in countdown(10):
 
 <p>La référence est ce <a href="http://www.dabeaz.com/generators/">site</a> , Il existe une <a href="http://www.youtube.com/watch?v=5-qadlG7tWo">video</a> (<strong>3 heures !!!</strong>)</p>
 
-<p>Cela existe aussi dans <a href="http://www.tutorialspoint.com/ruby/ruby_blocks.htm">ruby</a>, <a href="https://msdn.microsoft.com/fr-fr/library/9k7k7cf0.aspx">C#</a>;</p>
+<p>Cela existe aussi dans <a href="http://www.tutorialspoint.com/ruby/ruby_blocks.htm">ruby</a>, <a href="https://msdn.microsoft.com/fr-fr/library/9k7k7cf0.aspx">C#</a>, et dans le javascript ES6</p>
 
 <p>C&#8217;est un peu plus qu&#8217;une nouvelle syntaxe. Cela permet de faire du code asynchrone. Car cela permet une structure de codage que l&#8217;on appelle: Les <a href="https://fr.wikipedia.org/wiki/Coroutine">Couroutines</a>. Mais plus d&#8217;info dans un prochain post .</p>
 ]]></content>

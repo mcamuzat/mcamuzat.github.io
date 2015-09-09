@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Composer | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/composer/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-09-06T19:49:54+02:00</updated>
+  <updated>2015-09-09T23:15:58+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,186 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Problème Np-Complet]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/09/09/probleme-np-complet/"/>
+    <updated>2015-09-09T21:55:10+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/09/09/probleme-np-complet</id>
+    <content type="html"><![CDATA[<p>Aujourd&#8217;hui je vais parler des problèmes Np-complets avec le <a href="http://xkcd.com/">xkcd</a> suivant. L&#8217;original est <a href="http://xkcd.com/287/">ici</a></p>
+
+<p><img class="center" src="/images/np_complete.png" width="600" height="388" title="&lsquo;xkcd&rsquo; &lsquo;xkcd&rsquo;" ></p>
+
+<p>On appelle ce genre de problème les NP-complets</p>
+
+<p>Pour faire simple (Ce que j&#8217;en ai compris)</p>
+
+<p>Les NP-problèmes sont des problèmes donc il est très facile de vérifier une solutions. Dans notre cas ici il suffit de commander 7 * 2.15 pour obtenir 15.05. Le problème a une solution. Mais il est quasiment impossible de trouver une méthode efficace pour déterminer la solution, voir même de savoir s&#8217;il y a une solutions.</p>
+
+<p>Il suffit de regarder les images suivantes (pris d&#8217;un post de <a href="http://cstheory.stackexchange.com/questions/5188/explain-p-np-problem-to-10-year-old">stack exchange</a>)</p>
+
+<ul>
+<li>si on met les paquets les plus gros d&#8217;abord, les plus larges, avec un <a href="http://www.optaplanner.org/">planner</a>.</li>
+</ul>
+
+
+<p><img class="center" src="/images/backpack.png" width="600" height="450" title="&lsquo;bin packing&rsquo; &lsquo;slide1&rsquo;" ></p>
+
+<ul>
+<li><p>A quel moment mettre le paquet <code>2 * 4 = 8</code>. suivant la forme la solution varie
+<img class="center" src="/images/backpack2.png" width="600" height="450" title="&lsquo;bin packing&rsquo; &lsquo;slide2&rsquo;" ></p></li>
+<li><p>Enfin impossible de savoir s&#8217;il y a une solution ici. Il y a priori la place, pourtant il n&#8217;y a pas de solution</p></li>
+</ul>
+
+
+<p><img class="center" src="/images/backpack3.png" width="600" height="450" title="&lsquo;bin packing&rsquo; &lsquo;slide3&rsquo;" ></p>
+
+<p>la source des images <a href="http://cstheory.stackexchange.com/posts/5206/revisions">ici</a>.</p>
+
+<p>Il reste la force brute.</p>
+
+<p>Voici ma version du xkcd en php</p>
+
+<pre><code class="php">function findSolution($total, $list, $menu) {
+    foreach($menu as $plat =&gt; $prix) {
+        $result = array_merge($list, array($plat));
+        if ($total-$prix == 0) {
+            var_dump($result);
+            return;
+        }
+        if ($total-$prix &gt; 0) {
+            $result = findSolution($total-$prix, $result, $menu);
+        }
+    }
+}
+$menu = array(
+    "Mixed Fruit"=&gt;215,
+    "French Fries"=&gt;275,
+    "Side Salad"=&gt;335,
+    "Hot Wing"=&gt;355,
+    "Mozzarela Sticks"=&gt;420,
+    "Sampler Plate"=&gt;580,
+);
+findSolution(1505, array(), $menu);
+</code></pre>
+
+<p>Cela affiche toute les solutions possibles.</p>
+
+<p>Bien sur il y a des doublons. Il n&#8217;y a pas de différence entre <code>["Hot wing", "Hot wing", "Mixed Fruit", "Sampler Plate"]</code> et  <code>["Hot wing", "Hot wing", "Sampler Plate", "Mixed Fruit"]</code></p>
+
+<p>Pour supprimer les doublons à l&#8217;affichage. Je vais utiliser des globales.</p>
+
+<pre><code>$count = 0;
+$allResult = array();
+function findSolution($total, $list, $menu) {
+    global $count;
+    global $allResult;
+    foreach($menu as $plat =&gt; $prix) {
+        $count++;
+        $result = array_merge($list, array($plat));
+
+        if ($total-$prix == 0) {
+            $sort = $result;
+            sort($sort);
+            $allResult[] = $sort;
+            return $result;
+        }
+        if ($total-$prix &gt; 0) {
+            $result = findSolution($total-$prix,$result, $menu);
+
+        }
+    }
+}
+$menu = array(
+    "Mixed Fruit"=&gt;215,
+    "French Fries"=&gt;275,
+    "Side Salad"=&gt;335,
+    "Hot Wing"=&gt;355,
+    "Mozzarela Sticks"=&gt;420,
+    "Sampler Plate"=&gt;580
+);
+$solution = findSolution(1505, array(), $menu);
+
+$result = array_map(
+    "unserialize",
+    array_unique(
+        array_map("serialize", $allResult
+    )
+)
+);
+var_dump($result);
+var_dump($count);
+</code></pre>
+
+<ul>
+<li>je trie le tableau de résultats. pour que tout mes doublons s&#8217;affiche pareil.</li>
+<li><code>array_unique</code> ne marche pas si les valeurs sont des <em>tableaux</em> (ce qui est la cas ici)</li>
+<li>Je transforme mes tableaux en chaine de caractères grâce à la serialization avec le <code>array_map</code></li>
+<li>Alors <code>array_unique</code> vire les doublons</li>
+<li>Je deserialize avec à nouveau <code>array_map</code> et l&#8217;opération inverse.</li>
+</ul>
+
+
+<pre><code class="php">array([resultat1], [resultat1],[resultat2])
+// array_map("serialize", $result);
+array("resultat1_serialisé","resultat1_serialisé","resultat2_serialisé");
+// array_unique(..)
+array("resultat1_serialise", "resultat2_serialise");
+// array_map("unserialize", ..)
+array([resultat1], [resultat2])
+</code></pre>
+
+<pre><code class="php">int(12040)
+array(2) {
+  [0] =&gt;
+  array(7) {
+    [0] =&gt;
+    string(11) "Mixed Fruit"
+    [1] =&gt;
+    string(11) "Mixed Fruit"
+    [2] =&gt;
+    string(11) "Mixed Fruit"
+    [3] =&gt;
+    string(11) "Mixed Fruit"
+    [4] =&gt;
+    string(11) "Mixed Fruit"
+    [5] =&gt;
+    string(11) "Mixed Fruit"
+    [6] =&gt;
+    string(11) "Mixed Fruit"
+  }
+  [1] =&gt;
+  array(4) {
+    [0] =&gt;
+    string(8) "Hot Wing"
+    [1] =&gt;
+    string(8) "Hot Wing"
+    [2] =&gt;
+    string(11) "Mixed Fruit"
+    [3] =&gt;
+    string(13) "Sampler Plate"
+  }
+}
+</code></pre>
+
+<p>J&#8217;ai fait 12040 boucles pour obtenir toutes les solutions. On peut bien sur optimiser un peu l&#8217;algorithme, si la valeur 5.60 ne marche pas à la première boucle, il y a pas de chance pour quelle marche à la seconde boucle. Donc il faut supprimer des valeurs dans le tableau au fur et à mesure.</p>
+
+<h2> Conclusion</h2>
+
+<p>La force brute n&#8217;est pas vraiment une solution, avec plus de valeurs on explose les possibilités.  Il existe plusieurs <a href="https://fr.wikipedia.org/wiki/Probl%C3%A8me_du_sac_%C3%A0_dos">approches</a> qui tende vers des solutions.</p>
+
+<p>En informatique, il y a des nombreux cas où ce problème intervient</p>
+
+<ul>
+<li>L&#8217;ordre optimal d&#8217;installation des logiciels (Probablement la partie la plus marrante de <a href="https://getcomposer.org/">composer</a>, mais elle est assez peu documentée)</li>
+<li>Beaucoup de cryptages utilisent des problèmes NP-complets (factorisation de deux nombres premiers).</li>
+<li>La dernière phrase du comics parle du <a href="https://fr.wikipedia.org/wiki/Probl%C3%A8me_du_voyageur_de_commerce">voyageur de commerce</a>, un problème célèbre.</li>
+<li>Le sudoku, Les jeux <a href="http://arxiv.org/pdf/1203.1895v1.pdf">nintendos</a> ?!</li>
+<li>Enfin une <a href="https://fr.wikipedia.org/wiki/Liste_de_probl%C3%A8mes_NP-complets">liste complète</a> de wikipedia</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Halt Compiler : Twig Et Php Dans Le Même Fichier]]></title>
