@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Programmation | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/programmation/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-09-09T23:15:58+02:00</updated>
+  <updated>2015-09-13T21:47:34+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -18,7 +18,7 @@
     <link href="http://mcamuzat.github.io/blog/2015/07/17/processing-et-souvenir/"/>
     <updated>2015-07-17T22:52:27+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/07/17/processing-et-souvenir</id>
-    <content type="html"><![CDATA[<p><img class="center" src="/images/voiture.png" width="499" height="300" title="&lsquo;Vrooum!!&rsquo; &lsquo;Screenshot du programme avec le micro&rsquo;" ></p>
+    <content type="html"><![CDATA[<p>{% img center /images/voiture.png 499 300 &lsquo;Vrooum!!&rsquo; &lsquo;Screenshot du programme avec le micro&rsquo; %}</p>
 
 <p>Aujourd&#8217;hui, je ressors un vieux code que j&#8217;avais écris pour le CNAM. Le sujet était faire que l&#8217;image à l&#8217;écran bouge quand on parle dans un microphone. Mais pas d&#8217;animation à la Winamp (j&#8217;ai des vieilles références :-) ou le player de Windows. J&#8217;avais donc programmé une voiture sur un circuit, pour le réalisme j&#8217;avais connecté un Wii-chuck via un Arduino pour faire le volant. Imaginez une personne avec un Wiichuk et un micro en train de faire &ldquo;Vrrrooum&rdquo; et vous aurez un idée de ma soutenance (qui s&#8217;est bien passée d&#8217;ailleurs).</p>
 
@@ -34,7 +34,7 @@
 
 <p>Processing est une variante de Java en plus simple. C&#8217;est un langage destiné à faire des oeuvres d&#8217;arts numériques. Il est souvent enseigné en école d&#8217;art. Il vient avec son propre éditeur. à noter que les <a href="https://fr.wikipedia.org/wiki/Arduino">Arduinos</a> se programment aussi en processing.</p>
 
-<p><img class="center" src="/images/processing.png" width="499" height="533" title="&lsquo;Processing&rsquo; &lsquo;Screenshot de processing avec son interface&rsquo;" ></p>
+<p>{% img center /images/processing.png 499 533 &lsquo;Processing&rsquo; &lsquo;Screenshot de processing avec son interface&rsquo; %}</p>
 
 <p>Il suffit d&#8217;implémenter deux méthodes :</p>
 
@@ -43,41 +43,27 @@ void draw() // sera appellé 30 à 50 fois par seconde
 </code></pre>
 
 <p>Un exemple très simple
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="n">size</span><span class="o">(</span><span class="mi">640</span><span class="o">,</span> <span class="mi">360</span><span class="o">);</span> <span class="c1">//j&#39;initialise la taille 640*</span>
-</span><span class='line'>  <span class="n">stroke</span><span class="o">(</span><span class="mi">255</span><span class="o">);</span> <span class="c1">// le trait est blanc</span>
-</span><span class='line'>  <span class="n">fill</span><span class="o">(</span><span class="mi">255</span><span class="o">);</span> <span class="c1">// remplissage de blanc</span>
-</span><span class='line'>  <span class="n">background</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span> <span class="c1">// couleur de fond blanche&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kt">void</span> <span class="nf">draw</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="c1">// si la souris est appuyer</span>
-</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">mousePressed</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>     <span class="c1">// ellipse x, y ,hauteur, largeur</span>
-</span><span class='line'>    <span class="n">ellipse</span><span class="o">(</span><span class="n">mouseX</span><span class="o">,</span> <span class="n">mouseY</span><span class="o">,</span> <span class="mi">5</span><span class="o">,</span> <span class="mi">5</span><span class="o">);</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></p>
+&#8220;` java
+void setup() {
+  size(640, 360); //j&#8217;initialise la taille 640*
+  stroke(255); // le trait est blanc
+  fill(255); // remplissage de blanc
+  background(0); // couleur de fond blanche</p>
+
+<p>}</p>
+
+<p>void draw() {
+  // si la souris est appuyer
+  if (mousePressed) {
+     // ellipse x, y ,hauteur, largeur
+    ellipse(mouseX, mouseY, 5, 5);
+  }
+}
+&#8220;`</p>
 
 <p>Appuyez sur la touche play</p>
 
-<p><img class="center" src="/images/processing_exemple.png" width="535" height="375" title="&lsquo;Processing&rsquo; &lsquo;le résultat&rsquo;" ></p>
+<p>{% img center /images/processing_exemple.png 535 375 &lsquo;Processing&rsquo; &lsquo;le résultat&rsquo; %}</p>
 
 <p>Je viens de faire un petit painbrush. C&#8217;est assez facile d&#8217;obtenir un truc plutôt joli avec assez peu de lignes de code. Il y a des librairies toutes prêtes pour la video, webcam.</p>
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Php | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/php/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-09-09T23:15:58+02:00</updated>
+  <updated>2015-09-13T21:47:34+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -14,13 +14,235 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Yield PHP Co-routine]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/09/13/yield-php-co-routine/"/>
+    <updated>2015-09-13T20:31:37+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/09/13/yield-php-co-routine</id>
+    <content type="html"><![CDATA[<p>Nous allons continuer sur le <em>yield</em> <a href="/blog/2015/09/06/php-yield-les-generateurs/">partie1</a></p>
+
+<p>Nous avons vu la fonction xrange qui permet de générer un million de valeurs pour un coup très faible en mémoire.</p>
+
+<p>Mais il y a mieux ! On peux envoyer des valeurs dans le générateur
+&#8220;` php
+&lt;?php
+function generateAnimal() {
+    $input = (yield &lsquo;Panda&rsquo;);
+    var_dump(&ldquo;j&#8217;ai reçu $input&rdquo;);
+    $input = (yield &lsquo;Lama&rsquo;);
+    var_dump(&ldquo;j&#8217;ai reçu $input&rdquo;);
+}</p>
+
+<p>$gen = generateAnimal();
+var_dump($gen->current());// string(5) &ldquo;Panda&rdquo;
+var_dump($gen->send(&lsquo;Canard&rsquo;));//string(16) &ldquo;j&#8217;ai recu Canard&rdquo;
+                               //string(4) &ldquo;Lama&rdquo;
+var_dump($gen->send(&lsquo;Poney&rsquo;)); // j&#8217;ai recus Poney.
+&#8220;`</p>
+
+<p>Si j&#8217;avais fais deux fois <code>-&gt;next()</code>  au lieux de <code>-&gt;send()</code></p>
+
+<pre><code class="php">$gen = generateAnimal();
+var_dump($gen-&gt;current());// string(5) "Panda"
+var_dump($gen-&gt;next());//string(16) "j'ai recu NULL"
+                               //string(4) "Lama"
+var_dump($gen-&gt;next()); // j'ai recus NULL.
+</code></pre>
+
+<h2>Les Co-routines</h2>
+
+<p>Une co-routine est une fonction qui peut se suspendre en reprendre quand on le souhaite.</p>
+
+<p>Nous allons faire une classe <code>Task</code>  pour mieux comprendre.</p>
+
+<pre><code class="php">class Task
+{
+    protected $generator;
+
+    protected $firstCall = true;
+
+    public function __construct(Generator $generator)
+    {
+        $this-&gt;generator = $generator;
+    }
+
+    public function run()
+    {
+        if ($this-&gt;firstCall) {
+            $this-&gt;generator-&gt;current();
+        } else {
+            $this-&gt;generator-&gt;next();
+        }
+
+        $this-&gt;firstCall = false;
+    }
+
+    public function finished()
+    {
+        return !$this-&gt;generator-&gt;valid();
+    }
+}
+</code></pre>
+
+<p>J&#8217;ai besoin d&#8217;un Runner</p>
+
+<pre><code class="php">
+class Runner
+{
+    public function __construct(Task $task)
+    {
+        $this-&gt;task = $task;
+    }
+
+    public function run()
+    {
+        while (!$this-&gt;task-&gt;finished()) {
+            $this-&gt;task-&gt;run();
+        }
+    }
+}
+</code></pre>
+
+<p>Un petit code d&#8217;exemple</p>
+
+<pre><code>function task1() {
+    for ($i = 1; $i &lt;= 10; ++$i) {
+        echo "This is task 1 iteration $i.\n";
+        yield;
+    }
+}
+
+$task = new Task(task1());
+$runner = new Runner($task);
+$runner-&gt;run();
+</code></pre>
+
+<p>Cela donne</p>
+
+<pre><code>This is task 1 iteration 1.
+This is task 1 iteration 2.
+This is task 1 iteration 3.
+This is task 1 iteration 4.
+This is task 1 iteration 5.
+This is task 1 iteration 6.
+This is task 1 iteration 7.
+This is task 1 iteration 8.
+This is task 1 iteration 9.
+This is task 1 iteration 10.
+</code></pre>
+
+<p>J&#8217;ai un objet Task qui appelle une fonction et qui rend la main à chaque itération. Cela semble compliqué pour une seule tache. Mais modifions le code pour avoir plusieurs taches.</p>
+
+<pre><code>class Scheduler
+{
+    protected $queue;
+
+    public function __construct()
+    {
+        $this-&gt;queue = new SplQueue();
+    }
+
+    public function enqueue(Task $task)
+    {
+        $this-&gt;queue-&gt;enqueue($task);
+    }
+
+    public function run()
+    {
+        while (!$this-&gt;queue-&gt;isEmpty()) {
+            $task = $this-&gt;queue-&gt;dequeue();
+            $task-&gt;run();
+
+            if (!$task-&gt;finished()) {
+                $this-&gt;enqueue($task);
+            }
+        }
+    }
+}
+</code></pre>
+
+<p>Bon toute la magie est faite grâce à la <code>SplQueue</code> qui est une file d&#8217;attente. J&#8217;ajoute dans la file d&#8217;attente toutes les taches.</p>
+
+<p>Je prend une tache de la file d&#8217;attente. Je l&#8217;exécute avec <code>-&gt;run()</code>, si la tache n&#8217;est pas finie, je la remets dans la file d&#8217;attente.</p>
+
+<p>Reprenons un code d&#8217;exemple</p>
+
+<pre><code class="php">function task1() {
+    for ($i = 1; $i &lt;= 10; ++$i) {
+        echo "This is task 1 iteration $i.\n";
+        yield;
+    }
+}
+
+function task2() {
+    for ($i = 1; $i &lt;= 5; ++$i) {
+        echo "This is task 2 iteration $i.\n";
+        yield;
+    }
+}
+
+$task1 =  new Task(task1());
+$task2 = new Task(task2());
+$scheduler = new Scheduler();
+$scheduler-&gt;enqueue($task1);
+$scheduler-&gt;enqueue($task2);
+$scheduler-&gt;run();
+</code></pre>
+
+<p>Le résultat.</p>
+
+<pre><code>This is task 1 iteration 1.
+This is task 2 iteration 1.
+This is task 1 iteration 2.
+This is task 2 iteration 2.
+This is task 1 iteration 3.
+This is task 2 iteration 3.
+This is task 1 iteration 4.
+This is task 2 iteration 4.
+This is task 1 iteration 5.
+This is task 2 iteration 5.
+This is task 1 iteration 6.
+This is task 1 iteration 7.
+This is task 1 iteration 8.
+This is task 1 iteration 9.
+This is task 1 iteration 10.
+</code></pre>
+
+<p>On voit que j&#8217;exécute en parallèle toutes mes deux taches.</p>
+
+<h2>En conclusion</h2>
+
+<p>Il existe deux librairies qui utilise ce concept</p>
+
+<ul>
+<li><a href="https://github.com/icicleio/icicle">Icicle</a></li>
+<li><a href="https://github.com/recoilphp/recoil">recoil</a></li>
+</ul>
+
+
+<p>Cette façon d&#8217;implémenter est assez curieuse. Car le code ne ressemble pas au code classique asynchrone avec des callbacks et autre événements. Si on regarde bien cela ressemble beaucoup a du code synchrone. Elle est inspirée du <code>C#</code> <code>async/wait</code>. On a l&#8217;impression que cela ressemble a du code synchrone où on ajoute des <code>yield</code> un peu partout. (en simplifiant beaucoup..)</p>
+
+<p>Il y a peu de documentation et d&#8217;exemple sur le sujet.</p>
+
+<ul>
+<li>la référence est ce post de <a href="http://nikic.github.io">Nikic</a>: <a href="https://nikic.github.io/2012/12/22/Cooperative-multitasking-using-coroutines-in-PHP.html">Cooperative multitasking using coroutines (in PHP!)</a></li>
+<li>Une version légèrement simplifié dont je me suis inspiré pour le code <a href="https://medium.com/@assertchris/co-operative-php-multitasking-ce4ef52858a0">Co-operative PHP Multitasking</a></li>
+</ul>
+
+
+<p>Je vais essayer de continuer avec le yield et repartir sur les promises.</p>
+
+<p>Merci de m&#8217;avoir lu.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Problème Np-Complet]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/09/09/probleme-np-complet/"/>
     <updated>2015-09-09T21:55:10+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/09/09/probleme-np-complet</id>
     <content type="html"><![CDATA[<p>Aujourd&#8217;hui je vais parler des problèmes Np-complets avec le <a href="http://xkcd.com/">xkcd</a> suivant. L&#8217;original est <a href="http://xkcd.com/287/">ici</a></p>
 
-<p><img class="center" src="/images/np_complete.png" width="600" height="388" title="&lsquo;xkcd&rsquo; &lsquo;xkcd&rsquo;" ></p>
+<p>{% img center /images/np_complete.png 600 388 &lsquo;xkcd&rsquo; &lsquo;xkcd&rsquo; %}</p>
 
 <p>On appelle ce genre de problème les NP-complets</p>
 
@@ -35,16 +257,16 @@
 </ul>
 
 
-<p><img class="center" src="/images/backpack.png" width="600" height="450" title="&lsquo;bin packing&rsquo; &lsquo;slide1&rsquo;" ></p>
+<p>{% img center /images/backpack.png 600 450 &lsquo;bin packing&rsquo; &lsquo;slide1&rsquo; %}</p>
 
 <ul>
 <li><p>A quel moment mettre le paquet <code>2 * 4 = 8</code>. suivant la forme la solution varie
-<img class="center" src="/images/backpack2.png" width="600" height="450" title="&lsquo;bin packing&rsquo; &lsquo;slide2&rsquo;" ></p></li>
+{% img center /images/backpack2.png 600 450 &lsquo;bin packing&rsquo; &lsquo;slide2&rsquo; %}</p></li>
 <li><p>Enfin impossible de savoir s&#8217;il y a une solution ici. Il y a priori la place, pourtant il n&#8217;y a pas de solution</p></li>
 </ul>
 
 
-<p><img class="center" src="/images/backpack3.png" width="600" height="450" title="&lsquo;bin packing&rsquo; &lsquo;slide3&rsquo;" ></p>
+<p>{% img center /images/backpack3.png 600 450 &lsquo;bin packing&rsquo; &lsquo;slide3&rsquo; %}</p>
 
 <p>la source des images <a href="http://cstheory.stackexchange.com/posts/5206/revisions">ici</a>.</p>
 
@@ -509,7 +731,7 @@ for x in countdown(10):
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Les Promises Et Php via React]]></title>
+    <title type="html"><![CDATA[Les Promises Et Php via ReactPhp]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/09/05/les-promises-et-php-via-react/"/>
     <updated>2015-09-05T19:10:10+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/09/05/les-promises-et-php-via-react</id>
@@ -618,62 +840,38 @@ action 3 ok
 </code></pre>
 
 <p>Ajoutons un exception à la deuxième étape.
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$promise</span>  <span class="o">=</span> <span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">promise</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">action</span> <span class="mi">1</span> <span class="nx">ok\n</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;;</span> <span class="p">}</span>
-</span><span class='line'><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">throw</span> <span class="k">new</span> <span class="nx">Exception</span><span class="p">();}</span>
-</span><span class='line'><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>   <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">action</span> <span class="mi">3</span> <span class="nx">ok\n</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;;},</span>
-</span><span class='line'>   <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">une</span> <span class="nx">des</span> <span class="nx">actions</span> <span class="nx">n</span><span class="s1">&#39;est pas ok..\n&amp;rdquo;;}</span>
-</span><span class='line'><span class="s1">);&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s1">&lt;pre&gt;&lt;code&gt;</span>
-</span><span class='line'><span class="s1">Le résultat</span>
-</span><span class='line'><span class="s1">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s1">&lt;p&gt;action 1 ok</span>
-</span><span class='line'><span class="s1">une des actions n&#39;</span><span class="nx">est</span> <span class="nx">pas</span> <span class="nx">ok</span><span class="o">..</span>
-</span></code></pre></td></tr></table></div></figure></p>
+&#8220;` php
+$promise  = $deferred->promise()->then(
+    function () { echo &ldquo;action 1 ok\n&rdquo;; }
+)->then(
+    function () { throw new Exception();}
+)->then(
+   function () { echo &ldquo;action 3 ok\n&rdquo;;},
+   function () { echo &ldquo;une des actions n&#8217;est pas ok..\n&rdquo;;}
+);</p>
+
+<pre><code>
+Le résultat
+</code></pre>
+
+<p>action 1 ok
+une des actions n&#8217;est pas ok..
+&#8220;`</p>
 
 <p>Ajoutons une exception dans le premier, et ajoutons un cas pour gérer l&#8217;erreur
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$promise</span>  <span class="o">=</span> <span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">promise</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">throw</span> <span class="k">new</span> <span class="nx">\Exception</span><span class="p">();</span> <span class="p">}</span>
-</span><span class='line'><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">action</span> <span class="mi">2</span> <span class="nx">ok\n</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;;},</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">l</span><span class="s1">&#39;action 1 pas ok mais on continue..\n&amp;rdquo;;}</span>
-</span><span class='line'><span class="s1">)-&gt;then(</span>
-</span><span class='line'><span class="s1">   function () { echo &amp;ldquo;action 3 ok\n&amp;rdquo;;},</span>
-</span><span class='line'><span class="s1">   function () { echo &amp;ldquo;une des actions n&#39;</span><span class="nx">est</span> <span class="nx">pas</span> <span class="nx">ok</span><span class="o">..</span><span class="nx">\n</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;;}</span>
-</span><span class='line'><span class="p">);</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">resolve</span><span class="p">();</span>
-</span></code></pre></td></tr></table></div></figure></p>
+&#8220;` php
+$promise  = $deferred->promise()->then(
+    function () { throw new \Exception(); }
+)->then(
+    function () { echo &ldquo;action 2 ok\n&rdquo;;},
+    function () { echo &ldquo;l&#8217;action 1 pas ok mais on continue..\n&rdquo;;}
+)->then(
+   function () { echo &ldquo;action 3 ok\n&rdquo;;},
+   function () { echo &ldquo;une des actions n&#8217;est pas ok..\n&rdquo;;}
+);</p>
+
+<p>$deferred->resolve();
+&#8220;`</p>
 
 <p>Le résultat
 <code>
@@ -860,387 +1058,6 @@ bonjour
 <li>Si vous voulez appliquer votre commande sur tout le fichier <code>:%!commande</code></li>
 <li>S vous voulez juste la ligne <code>:.!commande</code> ou tapez <code>!!</code>.</li>
 <li>Si vous voulez sur une sélection <code>v</code> ou <code>V</code> puis <code>:</code> vous deviez voir ceci <code>:'&lt;,'&gt;</code>, ajoutez la commande souhaitée.</li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Les Stacks Des Structures Méconnues]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/08/29/stacks-structures-meconnues/"/>
-    <updated>2015-08-29T16:34:41+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/08/29/stacks-structures-meconnues</id>
-    <content type="html"><![CDATA[<h2>Introduction</h2>
-
-<p>Je vais parler de <code>SplStack</code> une structure de donnée qui fait partie de La SPL (pour <strong>S</strong>tandart <strong>P</strong>HP <strong>L</strong>ibrairie). Nous allons voir trois façons de nous servir de cette structure.</p>
-
-<h2>Les Stacks ou Piles</h2>
-
-<p>La pile n&#8217;a que deux opérations.</p>
-
-<ul>
-<li>Empiler ou Push On ajoute une donnée sur le haut de la pile.</li>
-<li>Dépiler ou Pop On retire une donnée du haut de la pile.</li>
-</ul>
-
-
-<p>Il n&#8217;y a que le haut de la pile qui est visible. La pile est une mémoire LIFO (<strong>L</strong>ast <strong>I</strong>n <strong>F</strong>irst <strong>O</strong>ut).</p>
-
-<p>Quelques exemples.</p>
-
-<pre><code class="php">$pile = new SplStack(); // la pile est vide []
-$pile-&gt;push(34) // [34]
-$pile-&gt;push(45) // [34, 45]
-$value = $pile-&gt;pop() // [34]
-$pile-&gt;push('a') // [34, 'a']
-$value = $pile-&gt;top() // $value = 'a' pile [34, 'a']
-</code></pre>
-
-<p>On peux utiliser les array comme des piles avec <code>array_pop</code> et <code>array_push</code>. Mais depuis PHP 5.0 il existe une Classe tout faite <code>SplStack</code></p>
-
-<h2>Premiere application la machine à pile</h2>
-
-<p>Il faut d&#8217;abord que je vous parle de la notation polonaise inverse. (RPN en anglais pour <strong>R</strong>everse <strong>P</strong>olish <strong>N</strong>otation).
-<code>1 + 3</code> devient <code>1 3 +</code>. Pour faire simple je mets l&#8217;opérateur à la fin.</p>
-
-<p>des exemples un peu plus complexe.</p>
-
-<p> <code>1 + 2 * 3</code> devient <code>2 3 * 1 +</code> et <code>( 1 + 3 ) * ( 3 - 4 )</code> devient <code>1 3 + 3 4 - *</code></p>
-
-<p>C&#8217;est un peu compliqué comme notation (en tout cas pas naturelle) mais nous allons voir que l&#8217;algorithme pour le calcul est très simple.</p>
-
-<p>Voici l&#8217;algorithme :</p>
-
-<ul>
-<li>Si l&#8217;entrée est un entier : je l&#8217;empile</li>
-<li>Si c&#8217;est une opération : je dépile deux valeurs, je fais l&#8217;opération et j&#8217;empile le résultat</li>
-</ul>
-
-
-<p>Un exemple</p>
-
-<pre><code class="">soit 1 3 + 3 4 - * 
-# je prend la premiere valeur "1" c'est un chiffre je l'empile
-ma pile [ *1* ] 
-# je prend la seconde valeur "3" c'est un chiffre je l'empile
-ma pile [ 1 *3* ]
-# je prend la valeurs 3 c'est une operation "+", je depile deux valeurs d'abords "3" puis "1". je fais l'addition. "4" que j'empile
-ma pile [ *4* ]
-# je prend la quatrieme valeur "3" c'est un chiffre j'empile
-ma pile [ 4 *3* ]
-# la cinquieme valeurs est un chiffre
-ma pile [ 4 3 *4*]
-# la sixieme valeur est une opération. je dépile deux valeurs "4" et "3" que je soustrait et je rempile
-ma pile [ 4 *-1*]
-# la septième valeur est une opération je dépile "-1" et "4" que je multiplie
-ma pile ["-4"]
-</code></pre>
-
-<p>L&#8217;avantage de la notation est qu&#8217;elle n&#8217;a pas besoin de parenthèse. Il n&#8217;y pas d&#8217;ambigüité <code>( 1 + 3 ) * ( 3 - 4 )</code> est différent de  <code>1 + 3 * 3 - 4</code>.</p>
-
-<p>L&#8217;implémentation est simple</p>
-
-<pre><code class="php">function execute(array $ops)
-{
-    $stack = new \SplStack();
-
-    foreach ($ops as $op) {
-        if (is_numeric($op)) {
-            $stack-&gt;push((int) $op);
-            continue;
-        }
-
-        switch ($op) {
-            case '+':
-                $stack-&gt;push($stack-&gt;pop() + $stack-&gt;pop());
-                break;
-            case '-':
-                $n = $stack-&gt;pop();
-                $stack-&gt;push($stack-&gt;pop() - $n);
-                break;
-            case '*':
-                $stack-&gt;push($stack-&gt;pop() * $stack-&gt;pop());
-                break;
-            case '/':
-                $n = $stack-&gt;pop();
-                $stack-&gt;push($stack-&gt;pop() / $n);
-                break;
-            default:
-                throw new \InvalidArgumentException(sprintf('Invalid operation: %s', $op));
-                break;
-        }
-    }
-
-    return $stack-&gt;top();
-}
-</code></pre>
-
-<p>essayons notre exemple.</p>
-
-<pre><code class="php">var_dump(execute(explode(' ', '1 3 + 3 4 - *');
-int(-4)
-</code></pre>
-
-<p>Félicitation nous venons d&#8217;implémenter notre première machine à pile. La plus célèbre est la <code>Java Virtual Machine</code>. Il existe aussi des langages qui sont basé sur la notion de pile, le plus célèbre est le <a href="https://fr.wikipedia.org/wiki/Forth_%28langage%29">Forth</a> et le <a href="https://fr.wikipedia.org/wiki/PostScript">Postscript</a>(si si le format de adobe). L&#8217;avantage des machines à pile est qu&#8217;elle n&#8217;utilise aucun autre registre que la pile.</p>
-
-<h2>Le Shunting-yard de Dijkstra</h2>
-
-<p>Je présente une version simplifié. <em>Shunting-yard</em> peut se traduire en <strong>Aiguillage</strong>. Il permet d&#8217;évaluer une expression mathématique.</p>
-
-<p>Soit la chaîne suivante:</p>
-
-<pre><code class="php">var_dump($calculate(explode(' ', '( ( 1 + 3 ) * ( 3 - 4 ) )')));
-
-# int(-4)
-</code></pre>
-
-<ul>
-<li>Il y a des parenthèses partout</li>
-<li>L&#8217;arité des fonction est 2:  l&#8217;arité est le nombre d&#8217;argument par exemple 1 + 2 est d&#8217;arité 2 deux arguments. L&#8217;algorithme que je présente est incapable de faire <code>1 + 2 + 3</code> mais fera très bien <code>(1 + ( 2 + 3 ))</code>.</li>
-</ul>
-
-
-<p>Voici l&#8217;algorithme:</p>
-
-<ul>
-<li>Si parenthèse ouvrante:  je passe</li>
-<li>Si c&#8217;est une opération <code>+</code>, <code>-</code>, <code>/</code>, <code>*</code>:  Je stocke dans une pile l&#8217;opération.</li>
-<li>Si c&#8217;est un chiffre : je stocke dans une pile de valeurs</li>
-<li>Si c&#8217;est une parenthèse fermante: Je dépile une opération et je dépile deux arguments. Je fais l&#8217;opération avec mes deux arguments et je remets le résultats dans ma pile.</li>
-</ul>
-
-
-<p>Voici le code</p>
-
-<pre><code>function calculate(array $input)
-{
-    $operators = new SplStack();
-    $values = new SplStack();
-
-    foreach ($input as $token) {
-        switch ($token) {
-        case "(":
-            break;
-        case "+":
-        case "-":
-        case "*":
-        case "/":
-            $operators-&gt;push($token);
-            break;
-        case ")":
-            $op = $operators-&gt;pop();
-            $value = $values-&gt;pop();
-            switch ($op) {
-            case "+":
-                $value = $values-&gt;pop() + $value;
-                break;
-            case "-":
-                $value = $values-&gt;pop() - $value;
-                break;
-            case "*":
-                $value = $values-&gt;pop() * $value;
-                break;
-            case "/":
-                $value = $values-&gt;pop() / $value;
-                break;
-            }
-            $values-&gt;push($value);
-            break;
-        default:
-            $values-&gt;push($token);
-
-        }
-
-    }
-    return $values-&gt;top();
-}
-</code></pre>
-
-<p>On utilise deux piles. Une pour les opérations, Une pour les valeurs
-je propose de faire le même exemple que plus haut
-je vais représenter les deux piles et l&#8217;entrée actuelle</p>
-
-<pre><code>operators :  [] values:  []  expression : ( ( 1 + 3 ) * ( 3 - 4 ) )
-
-# '(' on ignore
-
-operators [] values []  expression : ( 1 + 3 ) * ( 3 - 4 ) )
-
-# '(' on ignore
-operators [] values []  expression: 1 + 3 ) * ( 3 - 4 ) )
-
-# '1' on ajoute dans values
-operators [] values [*1*] expression:  + 3 ) * ( 3 - 4 ) )
-
-# '+' on ajoute dans opérator
-operators [*+*] values [1] expression: 3 ) * ( 3 - 4 ) )
-
-# '3' on ajoute dans value
-operators [*+*] values [1, *3*] expression: ) * ( 3 - 4 ) )
-
-# ')' on dépile deux valeur de value et on depile une valeurs de l'operators et on empile le résultats dans values
-operators [] values [4] expression:  * ( 3 - 4 ) )`
-
-# '*' on ajoute dans opérator 
-operators [*] values [4] expression:  ( 3 - 4 ) )
-
-# '(' on ignore
-operators [*] values [4] expression:  3 - 4 ) )
-
-# '3' on ajoute dans values 
-operators [*] values [4 *3*] expression:  - 4 ) )
-
-# '-' on ajoute dans operators
-operators [*, *-*] values [4 3] expression:  4 ) )
-
-# '4' on ajoute dans values 
-operators [*, ] values [4 3 4] expression:  ) )
-
-# ')' on dépile deux valeur de value et on depile une valeur de operators et on empile le résultat dans values
-operators [*] values [4 -1] expression:  )
-
-# ')' on dépile deux valeur de values et on depile une valeur de operators et on empile le résultat dans values
-operators [] values [-4] expression: 
-</code></pre>
-
-<p>On se rend compte que cette algorithme très simple permet de calculer toutes les expressions que l&#8217;on passe du moment qu&#8217;elles sont bien formées.</p>
-
-<pre><code class="php">$expression = "( ( 1 + 3 ) * ( 3 - 4 ) )"
-var_dump(calculate(explode(" ", $expression)));
-</code></pre>
-
-<p>Félicitation vous venez d&#8217;écrire votre premier interpréteur.</p>
-
-<p>la version originale prend en compte la priorité des opérations (cela rend certaines parenthèses inutiles) c&#8217;est un peu plus complexe, mais pas tant que cela.</p>
-
-<h2>Exemple 3 conversion vers RPN</h2>
-
-<p>Nous allons utiliser notre pile pour traduire notre expression vers la RPN.</p>
-
-<p>C&#8217;est à dire  <code>( ( 1 + 3 ) * ( 3 - 4 ) )</code> -> <code>1 3 + 3 4 - *</code></p>
-
-<p>Voici l&#8217;algorithme.</p>
-
-<ul>
-<li>Si l&#8217;entrée est un parenthèse ouvrante :  je passe</li>
-<li>Si c&#8217;est une opération : je stocke cela dans une pile</li>
-<li>Si c&#8217;est un entier : Je pousse cela dans une file d&#8217;attente</li>
-<li>Si c&#8217;est une parenthèse fermante : je vide la pile dans la file d&#8217;attente.</li>
-</ul>
-
-
-<pre><code>function transformate(array $input)
-{
-    $stack = new SplStack();
-    $output = new SplQueue();
-
-    foreach ($input as $token) {
-        switch ($token) {
-        case "(":
-            break;
-        case "+":
-        case "-":
-        case "*":
-        case "/":
-            $stack-&gt;push($token);
-            break;
-        case ")":
-            while(count($stack)&gt; 0 &amp;&amp; $stack-&gt;top()) {
-                $output-&gt;enqueue($stack-&gt;pop());
-            }
-            break;
-        default:
-            $output-&gt;enqueue($token);
-        }
-    }
-    return iterator_to_array($output);
-}
-</code></pre>
-
-<p>regardons avec le même exemple</p>
-
-<pre><code>stack :  [] output:  []  expression : ( ( 1 + 3 ) * ( 3 - 4 ) )
-
-# '(' on ignore
-
-stack : [] output: []  expression : ( 1 + 3 ) * ( 3 - 4 ) )
-
-# '(' on ignore
-stack :  [] output []  expression: 1 + 3 ) * ( 3 - 4 ) )
-
-# '1' on ajoute dans output
-stack: [] output [1] expression:  + 3 ) * ( 3 - 4 ) )
-
-# '+' on ajoute dans la stack
-stack: [*+*] output [1] expression: 3 ) * ( 3 - 4 ) )
-
-# '3' on ajoute dans output
-stack: [*+*] output [1, *3*] expression: ) * ( 3 - 4 ) )
-
-# ')' on vide stack dans outputs
-stack: [] output [ 1, 3, *+*] expression:  * ( 3 - 4 ) )`
-
-# '*' on ajoute dans la stack
-stack: [*] output [1 , 3 , +] expression:  ( 3 - 4 ) )
-
-# '(' on ignore
-stack: [*] output [1, 3, +] expression:  3 - 4 ) )
-
-# '3' on ajoute dans output.
-stack: [*] output [1, 3, +, *3*] expression:  - 4 ) )
-
-# '-' on ajoute dans la stack
-stack: [*, *-*] output [1, 3, +, 3] expression:  4 ) )
-
-# '4' on ajoute dans output.
-stack: [*,-] output [1, 3, +, 3, *4*] expression:  ) )
-
-# ')' on depile la stack dans output, on dépile d'abords - puis *
-stack: [] output [1, 3, +, 3, 4, -, *] expression:  )
-
-# ')' on re depile la stack mais ici elle est déja vide. 
-</code></pre>
-
-<p>Il suffit de transformer en array <code>$output</code> pour avoir le résultats suivants
-<code>( ( 1 + 3 ) * ( 3 - 4 ) )</code> -> <code>1 3 + 3 4 - *</code></p>
-
-<h2>Tous ensemble.</h2>
-
-<p>Je ne resiste pas au plaisir d&#8217;utiliser l&#8217;instruction tabou du php <code>eval()</code></p>
-
-<blockquote><p>If eval() is the answer, you&rsquo;re almost certainly asking the wrong question. &ndash; Rasmus Lerdorf, BDFL of PHP</p></blockquote>
-
-<pre><code>$operation = "( ( 1 + 3 ) * ( 3 - 4 ) )";
-$input = explode(" ", $operation);
-var_dump(calculate($input));
-var_dump(execute(transformate($input)));
-var_dump($value = eval("return ($operation);"));
-</code></pre>
-
-<p>Nous avons sans surprise le même résultat
-<code>
-int(-4)
-int(-4)
-int(-4)
-</code></p>
-
-<h2>En conclusion</h2>
-
-<ul>
-<li>Nous avons créé une <em>VM</em> Notre machine à pile.</li>
-<li>Nous avons crée un <em>interpréteur</em>:  notre algorithme de shunting-yard</li>
-<li>Nous avons fait un traducteur de notre expression vers notre machine à pile. C&#8217;est un <em>compilateur</em>.</li>
-<li>La notion de pile existe partout, on parle de pile d&#8217;appel (<em>stack-frame</em>), de dépassement de la pile (<em>stack overflow</em>), <code>git stash</code> est aussi un stockage en pile.</li>
-</ul>
-
-
-<h2>Des références.</h2>
-
-<ul>
-<li>L&#8217;algorithme simplifie viens du livre <a href="http://www.amazon.fr/dp/032157351X">Algorithms</a> de Sedgewick (j&#8217;ai traduis du Java vers Php)</li>
-<li>L&#8217;exemple le plus complet sur les stacks-machine est <a href="https://igor.io/archive.html">Igor.io</a> la série est superbe, l&#8217;auteur explique vraiment bien.</li>
-<li>L&#8217;article de wikipedia sur le <a href="https://en.wikipedia.org/wiki/Shunting-yard_algorithm">shunting-yard</a> Les illustrations montrent bien la notion d&#8217;aiguillage.</li>
-<li><a href="https://fr.wikipedia.org/wiki/Edsger_Dijkstra">Edsger W. Dijkstra</a> est surtout connus pour son algorithme sur le plus court chemin. Mais c&#8217;est une légende de l&#8217;informatique. A voir si vous ne connaissez pas.</li>
 </ul>
 
 ]]></content>

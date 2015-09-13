@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Guzzle | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/guzzle/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-09-09T23:15:58+02:00</updated>
+  <updated>2015-09-13T21:47:34+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Les Promises Et Php via React]]></title>
+    <title type="html"><![CDATA[Les Promises Et Php via ReactPhp]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/09/05/les-promises-et-php-via-react/"/>
     <updated>2015-09-05T19:10:10+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/09/05/les-promises-et-php-via-react</id>
@@ -123,62 +123,38 @@ action 3 ok
 </code></pre>
 
 <p>Ajoutons un exception à la deuxième étape.
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$promise</span>  <span class="o">=</span> <span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">promise</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">action</span> <span class="mi">1</span> <span class="nx">ok\n</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;;</span> <span class="p">}</span>
-</span><span class='line'><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">throw</span> <span class="k">new</span> <span class="nx">Exception</span><span class="p">();}</span>
-</span><span class='line'><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>   <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">action</span> <span class="mi">3</span> <span class="nx">ok\n</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;;},</span>
-</span><span class='line'>   <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">une</span> <span class="nx">des</span> <span class="nx">actions</span> <span class="nx">n</span><span class="s1">&#39;est pas ok..\n&amp;rdquo;;}</span>
-</span><span class='line'><span class="s1">);&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s1">&lt;pre&gt;&lt;code&gt;</span>
-</span><span class='line'><span class="s1">Le résultat</span>
-</span><span class='line'><span class="s1">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s1">&lt;p&gt;action 1 ok</span>
-</span><span class='line'><span class="s1">une des actions n&#39;</span><span class="nx">est</span> <span class="nx">pas</span> <span class="nx">ok</span><span class="o">..</span>
-</span></code></pre></td></tr></table></div></figure></p>
+&#8220;` php
+$promise  = $deferred->promise()->then(
+    function () { echo &ldquo;action 1 ok\n&rdquo;; }
+)->then(
+    function () { throw new Exception();}
+)->then(
+   function () { echo &ldquo;action 3 ok\n&rdquo;;},
+   function () { echo &ldquo;une des actions n&#8217;est pas ok..\n&rdquo;;}
+);</p>
+
+<pre><code>
+Le résultat
+</code></pre>
+
+<p>action 1 ok
+une des actions n&#8217;est pas ok..
+&#8220;`</p>
 
 <p>Ajoutons une exception dans le premier, et ajoutons un cas pour gérer l&#8217;erreur
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$promise</span>  <span class="o">=</span> <span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">promise</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">throw</span> <span class="k">new</span> <span class="nx">\Exception</span><span class="p">();</span> <span class="p">}</span>
-</span><span class='line'><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">action</span> <span class="mi">2</span> <span class="nx">ok\n</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;;},</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">l</span><span class="s1">&#39;action 1 pas ok mais on continue..\n&amp;rdquo;;}</span>
-</span><span class='line'><span class="s1">)-&gt;then(</span>
-</span><span class='line'><span class="s1">   function () { echo &amp;ldquo;action 3 ok\n&amp;rdquo;;},</span>
-</span><span class='line'><span class="s1">   function () { echo &amp;ldquo;une des actions n&#39;</span><span class="nx">est</span> <span class="nx">pas</span> <span class="nx">ok</span><span class="o">..</span><span class="nx">\n</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;;}</span>
-</span><span class='line'><span class="p">);</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">resolve</span><span class="p">();</span>
-</span></code></pre></td></tr></table></div></figure></p>
+&#8220;` php
+$promise  = $deferred->promise()->then(
+    function () { throw new \Exception(); }
+)->then(
+    function () { echo &ldquo;action 2 ok\n&rdquo;;},
+    function () { echo &ldquo;l&#8217;action 1 pas ok mais on continue..\n&rdquo;;}
+)->then(
+   function () { echo &ldquo;action 3 ok\n&rdquo;;},
+   function () { echo &ldquo;une des actions n&#8217;est pas ok..\n&rdquo;;}
+);</p>
+
+<p>$deferred->resolve();
+&#8220;`</p>
 
 <p>Le résultat
 <code>

@@ -9,7 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Aujourd'hui je vais parler des problèmes Np-complets avec le xkcd suivant. L'original est ici On appelle ce genre de problème les NP-complets Pour &hellip;">
+  <meta name="description" content="Nous allons continuer sur le yield partie1 Nous avons vu la fonction xrange qui permet de générer un million de valeurs pour un coup très faible en &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +77,396 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/09/13/yield-php-co-routine/">Yield PHP Co-routine</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-09-13T20:31:37+02:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>8:31 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Nous allons continuer sur le <em>yield</em> <a href="/blog/2015/09/06/php-yield-les-generateurs/">partie1</a></p>
+
+<p>Nous avons vu la fonction xrange qui permet de générer un million de valeurs pour un coup très faible en mémoire.</p>
+
+<p>Mais il y a mieux ! On peux envoyer des valeurs dans le générateur</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">function</span> <span class="nf">generateAnimal</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$input</span> <span class="o">=</span> <span class="p">(</span><span class="k">yield</span> <span class="s1">&#39;Panda&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nb">var_dump</span><span class="p">(</span><span class="s2">&quot;j&#39;ai reçu </span><span class="si">$input</span><span class="s2">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nv">$input</span> <span class="o">=</span> <span class="p">(</span><span class="k">yield</span> <span class="s1">&#39;Lama&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nb">var_dump</span><span class="p">(</span><span class="s2">&quot;j&#39;ai reçu </span><span class="si">$input</span><span class="s2">&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$gen</span> <span class="o">=</span> <span class="nx">generateAnimal</span><span class="p">();</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$gen</span><span class="o">-&gt;</span><span class="na">current</span><span class="p">());</span><span class="c1">// string(5) &quot;Panda&quot;</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$gen</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">(</span><span class="s1">&#39;Canard&#39;</span><span class="p">));</span><span class="c1">//string(16) &quot;j&#39;ai recu Canard&quot;</span>
+</span><span class='line'>                               <span class="c1">//string(4) &quot;Lama&quot;</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$gen</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">(</span><span class="s1">&#39;Poney&#39;</span><span class="p">));</span> <span class="c1">// j&#39;ai recus Poney.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si j&#8217;avais fais deux fois <code>-&gt;next()</code>  au lieux de <code>-&gt;send()</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$gen</span> <span class="o">=</span> <span class="nx">generateAnimal</span><span class="p">();</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$gen</span><span class="o">-&gt;</span><span class="na">current</span><span class="p">());</span><span class="c1">// string(5) &quot;Panda&quot;</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$gen</span><span class="o">-&gt;</span><span class="na">next</span><span class="p">());</span><span class="c1">//string(16) &quot;j&#39;ai recu NULL&quot;</span>
+</span><span class='line'>                               <span class="c1">//string(4) &quot;Lama&quot;</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$gen</span><span class="o">-&gt;</span><span class="na">next</span><span class="p">());</span> <span class="c1">// j&#39;ai recus NULL.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Les Co-routines</h2>
+
+<p>Une co-routine est une fonction qui peut se suspendre en reprendre quand on le souhaite.</p>
+
+<p>Nous allons faire une classe <code>Task</code>  pour mieux comprendre.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Task</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">protected</span> <span class="nv">$generator</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">protected</span> <span class="nv">$firstCall</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">Generator</span> <span class="nv">$generator</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">generator</span> <span class="o">=</span> <span class="nv">$generator</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">run</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">firstCall</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">generator</span><span class="o">-&gt;</span><span class="na">current</span><span class="p">();</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">generator</span><span class="o">-&gt;</span><span class="na">next</span><span class="p">();</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">firstCall</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">finished</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="o">!</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">generator</span><span class="o">-&gt;</span><span class="na">valid</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>J&#8217;ai besoin d&#8217;un Runner</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Runner</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">Task</span> <span class="nv">$task</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">task</span> <span class="o">=</span> <span class="nv">$task</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">run</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">task</span><span class="o">-&gt;</span><span class="na">finished</span><span class="p">())</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">task</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">();</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Un petit code d&#8217;exemple</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">task1</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">;</span> <span class="o">++</span><span class="nv">$i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">echo</span> <span class="s2">&quot;This is task 1 iteration </span><span class="si">$i</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">yield</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$task</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Task</span><span class="p">(</span><span class="nx">task1</span><span class="p">());</span>
+</span><span class='line'><span class="nv">$runner</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Runner</span><span class="p">(</span><span class="nv">$task</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$runner</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cela donne</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">1.</span>
+</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">2.</span>
+</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">3.</span>
+</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">4.</span>
+</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">5.</span>
+</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">6.</span>
+</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">7.</span>
+</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">8.</span>
+</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">9.</span>
+</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">10.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>J&#8217;ai un objet Task qui appelle une fonction et qui rend la main à chaque itération. Cela semble compliqué pour une seule tache. Mais modifions le code pour avoir plusieurs taches.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Scheduler</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">protected</span> <span class="nv">$queue</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">queue</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SplQueue</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">enqueue</span><span class="p">(</span><span class="nx">Task</span> <span class="nv">$task</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">queue</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span><span class="nv">$task</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">run</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">queue</span><span class="o">-&gt;</span><span class="na">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$task</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">queue</span><span class="o">-&gt;</span><span class="na">dequeue</span><span class="p">();</span>
+</span><span class='line'>            <span class="nv">$task</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$task</span><span class="o">-&gt;</span><span class="na">finished</span><span class="p">())</span> <span class="p">{</span>
+</span><span class='line'>                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span><span class="nv">$task</span><span class="p">);</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bon toute la magie est faite grâce à la <code>SplQueue</code> qui est une file d&#8217;attente. J&#8217;ajoute dans la file d&#8217;attente toutes les taches.</p>
+
+<p>Je prend une tache de la file d&#8217;attente. Je l&#8217;exécute avec <code>-&gt;run()</code>, si la tache n&#8217;est pas finie, je la remets dans la file d&#8217;attente.</p>
+
+<p>Reprenons un code d&#8217;exemple</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">task1</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">;</span> <span class="o">++</span><span class="nv">$i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">echo</span> <span class="s2">&quot;This is task 1 iteration </span><span class="si">$i</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">yield</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">function</span> <span class="nf">task2</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">;</span> <span class="o">++</span><span class="nv">$i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">echo</span> <span class="s2">&quot;This is task 2 iteration </span><span class="si">$i</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">yield</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$task1</span> <span class="o">=</span>  <span class="k">new</span> <span class="nx">Task</span><span class="p">(</span><span class="nx">task1</span><span class="p">());</span>
+</span><span class='line'><span class="nv">$task2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Task</span><span class="p">(</span><span class="nx">task2</span><span class="p">());</span>
+</span><span class='line'><span class="nv">$scheduler</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Scheduler</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$scheduler</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span><span class="nv">$task1</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$scheduler</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span><span class="nv">$task2</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$scheduler</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Le résultat.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">1.</span>
+</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">2</span> <span class="nx">iteration</span> <span class="mf">1.</span>
+</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">2.</span>
+</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">2</span> <span class="nx">iteration</span> <span class="mf">2.</span>
+</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">3.</span>
+</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">2</span> <span class="nx">iteration</span> <span class="mf">3.</span>
+</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">4.</span>
+</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">2</span> <span class="nx">iteration</span> <span class="mf">4.</span>
+</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">5.</span>
+</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">2</span> <span class="nx">iteration</span> <span class="mf">5.</span>
+</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">6.</span>
+</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">7.</span>
+</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">8.</span>
+</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">9.</span>
+</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">10.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On voit que j&#8217;exécute en parallèle toutes mes deux taches.</p>
+
+<h2>En conclusion</h2>
+
+<p>Il existe deux librairies qui utilise ce concept</p>
+
+<ul>
+<li><a href="https://github.com/icicleio/icicle">Icicle</a></li>
+<li><a href="https://github.com/recoilphp/recoil">recoil</a></li>
+</ul>
+
+
+<p>Cette façon d&#8217;implémenter est assez curieuse. Car le code ne ressemble pas au code classique asynchrone avec des callbacks et autre événements. Si on regarde bien cela ressemble beaucoup a du code synchrone. Elle est inspirée du <code>C#</code> <code>async/wait</code>. On a l&#8217;impression que cela ressemble a du code synchrone où on ajoute des <code>yield</code> un peu partout. (en simplifiant beaucoup..)</p>
+
+<p>Il y a peu de documentation et d&#8217;exemple sur le sujet.</p>
+
+<ul>
+<li>la référence est ce post de <a href="http://nikic.github.io">Nikic</a>: <a href="https://nikic.github.io/2012/12/22/Cooperative-multitasking-using-coroutines-in-PHP.html">Cooperative multitasking using coroutines (in PHP!)</a></li>
+<li>Une version légèrement simplifié dont je me suis inspiré pour le code <a href="https://medium.com/@assertchris/co-operative-php-multitasking-ce4ef52858a0">Co-operative PHP Multitasking</a></li>
+</ul>
+
+
+<p>Je vais essayer de continuer avec le yield et repartir sur les promises.</p>
+
+<p>Merci de m&#8217;avoir lu.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -937,7 +1327,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2015/09/05/les-promises-et-php-via-react/">Les Promises Et Php via React</a></h1>
+      <h1 class="entry-title"><a href="/blog/2015/09/05/les-promises-et-php-via-react/">Les Promises Et Php via ReactPhp</a></h1>
     
     
       <p class="meta">
@@ -3080,306 +3470,6 @@ L&#8217;octet de la position du début des données peut être déterminé par l
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/08/09/workshops-de-javascript/">Workshops De Javascript</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-08-09T16:44:33+02:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>4:44 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><em>Et si on essayait un workshop&hellip;</em></p>
-
-<p>Les workshops de javascript sont des cours interactifs de javascript.</p>
-
-<h2>Installation</h2>
-
-<p>Pour installer le cours de Node.js c&#8217;est très simple. A condition d&#8217;avoir node.js installé.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>npm install -g learnyounode
-</span><span class='line'>learnyounode</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Voila ce que vous devriez voir.</p>
-
-<p><img class="center" src="/images/workshop.png" width="585" height="397" title="screenshot de workshop" alt="On a un menu interactif"></p>
-
-<p>Lançons nous dans le premier exercice.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>
-</span><span class='line'> LEARN YOU THE NODE.JS FOR MUCH WIN!
-</span><span class='line'>─────────────────────────────────────
-</span><span class='line'> HELLO WORLD
-</span><span class='line'> Exercise 1 of 13
-</span><span class='line'>
-</span><span class='line'>Write a program that prints the text "HELLO WORLD" to the console (stdout).
-</span><span class='line'>
-</span><span class='line'>-------------------------------------------------------------------------------
-</span><span class='line'>
-</span><span class='line'>## HINTS
-</span><span class='line'>
-</span><span class='line'>To make a Node.js program, create a new file with a .js extension and start writing JavaScript! Execute your program by running it with the
-</span><span class='line'>node command. e.g.:
-</span><span class='line'>
-</span><span class='line'>    $ node program.js
-</span><span class='line'>
-</span><span class='line'>You can write to the console in the same way as in the browser:
-</span><span class='line'>
-</span><span class='line'>    console.log("text")
-</span><span class='line'>
-</span><span class='line'>When you are done, you must run:
-</span><span class='line'>
-</span><span class='line'>    $ learnyounode verify program.js
-</span><span class='line'>
-</span><span class='line'>to proceed. Your program will be tested, a report will be generated, and the lesson will be marked 'completed' if you are successful.
-</span><span class='line'>
-</span><span class='line'>-------------------------------------------------------------------------------
-</span><span class='line'>
-</span><span class='line'> » To print these instructions again, run: learnyounode print
-</span><span class='line'> » To execute your program in a test environment, run: learnyounode run program.js
-</span><span class='line'> » To verify your program, run: learnyounode verify program.js
-</span><span class='line'> » For help run: learnyounode help</span></code></pre></td></tr></table></div></figure>
-
-
-<p>donc je resume on me demande de programmer un **Hello world&#8221;.</p>
-
-<p>donc je crée un <code>hello.js</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;HELLO WORLD&#39;</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Je peux tester celui-ci avec un programme de test avec la commande suivante</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>learnyounode run hello.js
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Si je suis content du résultat alors je peux faire vérifier le programme par le logiciel.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>learnyounode verify program.js
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Si le programme passe, le niveau est marquer comme <code>[COMPLETED]</code> et on peux passer au suivant.</p>
-
-<p>Bon l&#8217;étape 1 n&#8217;est pas très compliqué passons à l&#8217;étape 2.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'> LEARN YOU THE NODE.JS FOR MUCH WIN!
-</span><span class='line'>─────────────────────────────────────
-</span><span class='line'> BABY STEPS
-</span><span class='line'> Exercise <span class="m">2</span> of 13
-</span><span class='line'>
-</span><span class='line'>Write a program that accepts one or more numbers as <span class="nb">command</span>-line arguments and prints the sum of those numbers to the console <span class="o">(</span>stdout<span class="o">)</span>.
-</span><span class='line'>
-</span><span class='line'>-------------------------------------------------------------------------------
-</span><span class='line'>
-</span><span class='line'><span class="c">## HINTS</span>
-</span><span class='line'>
-</span><span class='line'>You can access <span class="nb">command</span>-line arguments via the global process object. The process object has an argv property which is an array containing the <span class="nb">complete command</span>-line. i.e. process.argv.
-</span><span class='line'>
-</span><span class='line'>To get started, write a program that simply contains:
-</span><span class='line'>
-</span><span class='line'>    console.log<span class="o">(</span>process.argv<span class="o">)</span>
-</span><span class='line'>
-</span><span class='line'>Run it with node program.js and some numbers as arguments. e.g:
-</span><span class='line'>
-</span><span class='line'>    <span class="nv">$ </span>node program.js <span class="m">1</span> <span class="m">2</span> 3
-</span><span class='line'>
-</span><span class='line'>In which <span class="k">case</span> the output would be an array looking something like:
-</span><span class='line'>
-</span><span class='line'>    <span class="o">[</span> <span class="s1">&#39;node&#39;</span>, <span class="s1">&#39;/path/to/your/program.js&#39;</span>, <span class="s1">&#39;1&#39;</span>, <span class="s1">&#39;2&#39;</span>, <span class="s1">&#39;3&#39;</span> <span class="o">]</span>
-</span><span class='line'>
-</span><span class='line'>You<span class="s1">&#39;ll need to think about how to loop through the number arguments so  you can output just their sum. The first element of the process.argv array is always &#39;</span>node<span class="s1">&#39;, and the second element is always the path to your program.js file, so you need to start at the 3rd element (index 2), adding each item to the total until you reach the end of the array.</span>
-</span><span class='line'>
-</span><span class='line'><span class="s1">Also be aware that all elements of process.argv are strings and you may need to coerce them into numbers. You can do this by prefixing the property with + or passing it to Number(). e.g. +process.argv[2] or Number(process.argv[2]).</span>
-</span><span class='line'>
-</span><span class='line'><span class="s1">learnyounode will be supplying arguments to your program when you run learnyounode verify program.js so you don&#39;</span>t need to supply them yourself. To <span class="nb">test </span>your program without verifying it, you can invoke it with learnyounode run program.js. When you use run, you are invoking the <span class="nb">test </span>environment that learnyounode sets up <span class="k">for</span> each exercise.
-</span><span class='line'>
-</span><span class='line'>-------------------------------------------------------------------------------
-</span><span class='line'>
-</span><span class='line'> » To print these instructions again, run: learnyounode print
-</span><span class='line'> » To execute your program in a <span class="nb">test </span>environment, run: learnyounode run program.js
-</span><span class='line'> » To verify your program, run: learnyounode verify program.js
-</span><span class='line'> » For <span class="nb">help </span>run: learnyounode <span class="nb">help</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Donc il s&#8217;agit de créer un programme qui prend les nombres en entrée et faire la somme à la fin.</p>
-
-<p>Voici ma solution (atroce &hellip; )</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">;</span>
-</span><span class='line'><span class="nx">i</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
-</span><span class='line'><span class="nx">i</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span><span class="c1">// supprime les deux premiers arguments (&#39;node&#39;, &#39;programme.js&#39;)</span>
-</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">i</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">){</span><span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">b</span><span class="p">)},</span><span class="mi">0</span><span class="p">));</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Le logiciel donne une implémentation beaucoup plus simple(pas difficile)</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'>   <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-</span><span class='line'>      <span class="nx">result</span> <span class="o">+=</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Etc etc ..</p>
-
-<h2>Une liste de workshop.</h2>
-
-<p>Le site officiel donne la liste suivante en module de base.</p>
-
-<ul>
-<li><a href="https://www.github.com/sethvincent/javascripting">javascripting</a> Apprendre les bases du javascript.</li>
-<li><a href="https://www.github.com/jlord/git-it">git-it</a> pour apprendre Git et GitHub.</li>
-<li><a href="https://www.github.com/jesstelford/scope-chains-closures">Scope Chains &amp; Closures</a> Comprendre les scopes, les closures etc..</li>
-<li><a href="https://www.github.com/workshopper/learnyounode">learnyounode</a> les bases de node asynchronous i/o, http.</li>
-<li><a href="https://github.com/npm/how-to-npm">How to npm</a> Comment créer des modules Npm</li>
-<li><a href="https://www.github.com/substack/stream-adventure">stream-adventure</a> apprennez les streams et comment les composer avec <code>.pipe()</code>.</li>
-</ul>
-
-
-<h2>Mais il y en a plus.</h2>
-
-<p>On peux apprendre un peu près n&#8217;importe quel technologie en pratique.</p>
-
-<ul>
-<li><a href="https://github.com/timoxley/functional-javascript-workshop">Functional Javascript</a> : Base de la programmation fonctionnelle en javascript.</li>
-<li><a href="https://github.com/azat-co/expressworks">ExpressWorks</a>: Apprendre le framework Express.js.</li>
-<li><a href="https://github.com/stevekane/promise-it-wont-hurt">Promise It Won&rsquo;t Hurt</a>:  Apprendre les promesses pour les opération asynchrone.</li>
-<li><a href="https://github.com/bulkan/async-you">Async</a>:  La librairie Async.</li>
-<li><a href="https://github.com/sporto/planetproto">Planet Proto</a>:  Comprendre l&#8217;héritage prototypal.</li>
-<li><a href="https://github.com/finnp/test-anything">Test Anything</a>:  Comment tester son code</li>
-<li><a href="https://github.com/evanlucas/learnyoumongo">learnyoumongo</a>:  Débuter avec MongoDB et node.js</li>
-<li><a href="https://github.com/gl-modules/shader-school">Shader School</a>:  Comprendre les shaders.</li>
-<li><a href="https://github.com/othiym23/bug-clinic">Bug Clinic</a>:  Apprendre de nouveaux outils et debugger plus facilement.</li>
-<li><a href="https://github.com/alexmackey/IntroToWebGLWithThreeJS">Intro to WebGL</a>:  Débuter avec <a href="">three.js</a> et le WebGL.</li>
-<li><a href="https://github.com/mdunisch/lololodash">LololoDash</a>: Apprendre Lo-Dash (fork de underscore)</li>
-<li><a href="https://github.com/robertkowalski/learnyoucouchdb">learnyoucouchdb</a>:  Apprendre CouchDB.</li>
-<li><a href="https://github.com/tako-black/learnyoureact">learnyoureact</a>:  Apprenez React.js.</li>
-</ul>
-
-
-<h2>Des liens</h2>
-
-<ul>
-<li>le <a href="http://nodeschool.io">site officiel</a> et la version <a href="http://nodeschool.io/fr-fr/">française</a></li>
-<li>J&#8217;ai déjà parlé des <a href="/blog/2015/04/29/awesome-et-liste-de-liens/">awesome-list</a>. bien entendu elle existe pour les <a href="https://github.com/therebelrobot/awesome-workshopper">workshops</a>.</li>
-</ul>
-
-
-<h2>Conclusion</h2>
-
-<p>Vous voulez apprendre le js, react.js, écrire des tests je crois que vous savez par ou commencer.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -3395,6 +3485,10 @@ L&#8217;octet de la position du début des données peut être déterminé par l
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/09/13/yield-php-co-routine/">Yield PHP Co-routine</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/09/09/probleme-np-complet/">Problème Np-Complet</a>
       </li>
     
@@ -3403,15 +3497,11 @@ L&#8217;octet de la position du début des données peut être déterminé par l
       </li>
     
       <li class="post">
-        <a href="/blog/2015/09/05/les-promises-et-php-via-react/">Les Promises Et Php via React</a>
+        <a href="/blog/2015/09/05/les-promises-et-php-via-react/">Les Promises Et Php via ReactPhp</a>
       </li>
     
       <li class="post">
         <a href="/blog/2015/08/31/lancer-des-commandes-dans-vim/">Lancer Des Commandes Dans Vim</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/29/stacks-structures-meconnues/">Les Stacks Des Structures Méconnues</a>
       </li>
     
   </ul>

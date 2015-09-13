@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-09-09T23:15:58+02:00</updated>
+  <updated>2015-09-13T21:47:34+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -214,16 +214,13 @@ while (!feof(STDIN)) {
 chmod +x htmlentities.php
 </code>
 Des exemples
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ echo &lsquo;énergie&rsquo; | ./htmlentities.php&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;&eacute;nergie&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;$ cat file.txt | ./htmlentities</span></code></pre></td></tr></table></div></figure></p>
+&#8220;`
+$ echo &lsquo;énergie&rsquo; | ./htmlentities.php</p>
+
+<p>&eacute;nergie</p>
+
+<p>$ cat file.txt | ./htmlentities
+&#8220;`</p>
 
 <p>Ce qui est cool c&#8217;est que l&#8217;on peux chainer les opérateur.</p>
 
