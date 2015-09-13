@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "Les promises et Php via React"
+title: "Les promises et Php via ReactPhp"
 date: 2015-09-05 19:10:10 +0200
 comments: true
-categories: ["PHP", "Javascript", "Guzzle"] 
+categories: ["PHP", "Javascript", "Guzzle", "ReactPHP"] 
 ---
 
 Les promises sont une alternative plus puissante au Callback. Relativement peu connues au début. Elle sont maintenant en standard dans beaucoup de langage javascript ES6, python 3.2, java. Où via des librairies comme [react/promise](https://github.com/reactphp/promise) pour php
