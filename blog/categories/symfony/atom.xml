@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Symfony | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/symfony/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-09-13T21:47:34+02:00</updated>
+  <updated>2015-09-21T22:14:41+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -145,13 +145,17 @@ var_dump($array);
 <blockquote><p>Toute clé qui est associée à un tableau n&#8217;est pas passée à la fonction de rappel.</p></blockquote>
 
 <p>Un vrai exemple
-&#8220;` php
-        array_walk_recursive($data, function (&amp;$value) {
-            if ($value instanceof \Traversable) {
-                $value = iterator_to_array($value);
-            }
-        });
-&#8220;&#8220;</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'>    <span class="nb">array_walk_recursive</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="o">&amp;</span><span class="nx">amp</span><span class="p">;</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span> <span class="nx">instanceof</span> <span class="nx">\Traversable</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$value</span> <span class="o">=</span> <span class="nb">iterator_to_array</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>`</p>
 
 <p>Un exemple que l&#8217;on retrouve dans <a href="">PHPUnit</a> et <a href="">Symfony2</a></p>
 
@@ -302,7 +306,7 @@ Il suffit de créer un fichier <code>pre-commit.sh</code> dans le répertoire <c
 
 <p>Le résultat est très intuitif on a une flèche <code>&gt;</code> à chaque ligne qui pose problème. Il suffit de passer le curseur pour connaitre l&#8217;erreur. Enfin un screenshot sera plus clair.</p>
 
-<p>{% img center /images/syntastic.png 600 212 &lsquo;Screenshot de syntastic&rsquo; &lsquo;syntastic&rsquo; %}</p>
+<p><img class="center" src="/images/syntastic.png" width="600" height="212" title="&lsquo;Screenshot de syntastic&rsquo; &lsquo;syntastic&rsquo;" ></p>
 
 <h2>Conclusion</h2>
 

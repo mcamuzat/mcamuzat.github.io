@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Awesome | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/awesome/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-09-13T21:47:34+02:00</updated>
+  <updated>2015-09-21T22:14:41+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -32,7 +32,7 @@ learnyounode
 
 <p>Voila ce que vous devriez voir.</p>
 
-<p>{% img center /images/workshop.png 585 397 &lsquo;screenshot de workshop&rsquo; &lsquo;On a un menu interactif&rsquo; %}</p>
+<p><img class="center" src="/images/workshop.png" width="585" height="397" title="&lsquo;screenshot de workshop&rsquo; &lsquo;On a un menu interactif&rsquo;" ></p>
 
 <p>Lançons nous dans le premier exercice.</p>
 

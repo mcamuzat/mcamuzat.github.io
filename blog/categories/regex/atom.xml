@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Regex | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/regex/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-09-13T21:47:34+02:00</updated>
+  <updated>2015-09-21T22:14:41+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -22,13 +22,13 @@
 
 <h2>VimAdventure</h2>
 
-<p>{% img center /images/vimadventures.jpg 600 339 &lsquo;Vim adventure&rsquo; &lsquo;Vim adventure&rsquo; %}
+<p><img class="center" src="/images/vimadventures.jpg" width="600" height="339" title="&lsquo;Vim adventure&rsquo; &lsquo;Vim adventure&rsquo;" >
 <a href="http://vim-adventures.com/">Vim adventure</a> permet d&#8217;apprendre les touches de Vim de manière ludique. Personnellement j&#8217;ai beaucoup joué à <a href="http://crawl.develz.org/wordpress/">Dungeon Crawl</a> qui utilise les touches <code>h</code>, <code>j</code>, <code>k</code>, <code>l</code></p>
 
 <h2>Ruby</h2>
 
 <p>Ruby warrior existe en deux versions:
-{% img center /images/ruby-warrior.png 600 288 &lsquo;Ruby warrior&rsquo; &lsquo;Ruby warrior&rsquo; %}</p>
+<img class="center" src="/images/ruby-warrior.png" width="600" height="288" title="&lsquo;Ruby warrior&rsquo; &lsquo;Ruby warrior&rsquo;" ></p>
 
 <p>En ligne de commande <a href="https://github.com/ryanb/ruby-warrior">ruby-warrior</a></p>
 
@@ -41,13 +41,13 @@
 
 <h3>Untrusted</h3>
 
-<p>{% img center /images/untrusted.jpg 600 339 &lsquo;Untrusted&rsquo; &lsquo;Untrusted&rsquo; %}
+<p><img class="center" src="/images/untrusted.jpg" width="600" height="339" title="&lsquo;Untrusted&rsquo; &lsquo;Untrusted&rsquo;" >
 pour passer les niveaux, il faut atteindre le terminal et commencer à hacker le js. C&#8217;est vraiment malin.
 <a href="http://alexnisnevich.github.io/untrusted/">untrusted</a></p>
 
 <h3>Elevator Saga</h3>
 
-<p>{% img center /images/elevator-saga.png 600 288 &lsquo;Elevator Saga&rsquo; &lsquo;Elevator Saga&rsquo; %}</p>
+<p><img class="center" src="/images/elevator-saga.png" width="600" height="288" title="&lsquo;Elevator Saga&rsquo; &lsquo;Elevator Saga&rsquo;" ></p>
 
 <p>Quoi de plus passionnant que simulation d&#8217;ascenseur.On passe assez facilement le niveau 1. Cela se complique vraiment avec le niveau deux et les objectifs.
 <a href="http://play.elevatorsaga.com/">elevator-saga</a></p>
@@ -59,13 +59,13 @@ Diriger un petit combattant, Un peu la même idée que ruby-warror, mais l&#8217
 
 <h2>Multi-plateforme</h2>
 
-<p>{% img center /images/codingame.jpg 600 375 &lsquo;Coding game&rsquo; &lsquo;Coding game&rsquo; %}</p>
+<p><img class="center" src="/images/codingame.jpg" width="600" height="375" title="&lsquo;Coding game&rsquo; &lsquo;Coding game&rsquo;" ></p>
 
 <p><a href="http://www.codingame.com">Codingame</a>. L&#8217;interface est magnifique, vous pouvez choisir le langage (il y a une vingtaine de langage PHP, Js, Haskell, Bash, C). les exercices sont assez variés. C&#8217;est plus des katas de programmation.</p>
 
 <h2>Le SQL</h2>
 
-<p>{% img center /images/schemaverse.png 450 131 &lsquo;Schemaverse&rsquo; &lsquo;Schemaverse&rsquo; %}</p>
+<p><img class="center" src="/images/schemaverse.png" width="450" height="131" title="&lsquo;Schemaverse&rsquo; &lsquo;Schemaverse&rsquo;" ></p>
 
 <p><a href="https://schemaverse.com/">Schemaverse</a>
 Un jeux video en prosgresSQL pur. Il y a même une histoire. C&#8217;est assez compliqué.</p>

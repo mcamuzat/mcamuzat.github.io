@@ -4,7 +4,7 @@
   <title><![CDATA[Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-09-13T20:56:53+02:00</updated>
+  <updated>2015-09-21T22:14:41+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,420 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Guzzle Asynchrone Avec Les Promises]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/09/21/guzzle-asynchrone-avec-les-promises/"/>
+    <updated>2015-09-21T21:39:06+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/09/21/guzzle-asynchrone-avec-les-promises</id>
+    <content type="html"><![CDATA[<p>Nous continuons sur les promises et le yield.</p>
+
+<ul>
+<li><a href="http://mcamuzat.github.io/blog/2015/09/05/les-promises-et-php-via-react/">partie 1 les promises</a></li>
+<li><a href="http://mcamuzat.github.io/blog/2015/09/06/php-yield-les-generateurs/">partie 2 le Yield</a></li>
+<li><a href="http://mcamuzat.github.io/blog/2015/09/13/yield-php-co-routine/">partie 3 les co-routines</a></li>
+</ul>
+
+
+<p>Je vais parler de <a href="https://github.com/guzzle">Guzzle</a> qui est un client HTTP. Nous allons voir la version 6 qui utilise Php5.5</p>
+
+<h2>Promise et Guzzle.</h2>
+
+<p><em>Guzzle</em> connait les promises et possède sa propre <a href="https://github.com/guzzle/promises">implémentation</a>.</p>
+
+<p>la signature de la fonction est un peu près la même que <a href="https://github.com/reactphp/promise">react/promise</a>.</p>
+
+<p>Attention <em>Guzzle</em> ne fait pas la différence entre le <em>Deferred</em> qui est un travail dont la réponse est encore inconnu et représenter par une <em>promise</em>. Dans <em>Guzzle</em> le travail et la réponse sont la même chose.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">use</span> <span class="nx">GuzzleHttp\Promise\Promise</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$promise</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$promise</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
+</span><span class='line'>    <span class="c1">// $onFulfilled</span>
+</span><span class='line'>    <span class="k">function</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">echo</span> <span class="s1">&#39;Tout va bien.&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="c1">// $onRejected</span>
+</span><span class='line'>    <span class="k">function</span> <span class="p">(</span><span class="nv">$reason</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">echo</span> <span class="s1">&#39;On a un problème.&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$promise</span><span class="o">-&gt;</span><span class="na">resolve</span><span class="p">(</span><span class="k">null</span><span class="p">);</span> <span class="c1">// &#39;Tout va bien.&#39;;</span>
+</span><span class='line'><span class="c1">// Ou </span>
+</span><span class='line'><span class="nv">$promise</span><span class="o">-&gt;</span><span class="na">reject</span><span class="p">(</span><span class="k">null</span><span class="p">);</span> <span class="c1">// &#39;On a un problème.&#39;;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>Guzzle</em> est un client Web essayons un cas concret.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">GuzzleHttp\Client</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$promise</span> <span class="o">=</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">requestAsync</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;http://httpbin.org/get&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$promise</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
+</span><span class='line'>    <span class="k">function</span> <span class="p">(</span><span class="nv">$res</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$res</span><span class="o">-&gt;</span><span class="na">getStatusCode</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&quot;j&#39;ai recu un code </span><span class="si">$value</span><span class="s2">&quot;</span><span class="p">}</span> <span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Notre requète n&#39;est pas encore partie. Il faut lancer manuellement l&#39;appel.</span>
+</span><span class='line'><span class="nv">$client</span><span class="o">-&gt;</span><span class="na">wait</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>L&#8217;avantage ici est que je décide quand je lance l&#8217;appel. Par exemple on peut lancer en parallèle les requêtes.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Client</span><span class="p">([</span><span class="s1">&#39;base_uri&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;http://httpbin.org/&#39;</span><span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Je crée toute mes requetes</span>
+</span><span class='line'><span class="nv">$promises</span> <span class="o">=</span> <span class="p">[</span>
+</span><span class='line'>    <span class="s1">&#39;image&#39;</span> <span class="o">=&gt;</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getAsync</span><span class="p">(</span><span class="s1">&#39;/image&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="s1">&#39;png&#39;</span>   <span class="o">=&gt;</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getAsync</span><span class="p">(</span><span class="s1">&#39;/image/png&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="s1">&#39;jpeg&#39;</span>  <span class="o">=&gt;</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getAsync</span><span class="p">(</span><span class="s1">&#39;/image/jpeg&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="s1">&#39;webp&#39;</span>  <span class="o">=&gt;</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getAsync</span><span class="p">(</span><span class="s1">&#39;/image/webp&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// je resouds tout en même temps</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$results</span> <span class="o">=</span> <span class="nx">Promise\unwrap</span><span class="p">(</span><span class="nv">$promises</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On peux créer des pools. Si on souhaite limiter le nombre de requête en même temps.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Client</span><span class="p">([</span><span class="s1">&#39;base_uri&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;http://httpbin.org/&#39;</span><span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$batch</span> <span class="o">=</span> <span class="p">[</span>
+</span><span class='line'>    <span class="s1">&#39;image&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/image&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s1">&#39;png&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;/image/png&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s1">&#39;jpeg&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;/image/jpeg&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s1">&#39;webp&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;/image/webp&#39;</span>
+</span><span class='line'><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$requests</span> <span class="o">=</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$batch</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$batch</span> <span class="k">as</span> <span class="nv">$url</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">yield</span> <span class="k">new</span> <span class="nx">Request</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="nv">$url</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$pool</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Pool</span><span class="p">(</span><span class="nv">$client</span><span class="p">,</span> <span class="nv">$requests</span><span class="p">(</span><span class="nv">$batch</span><span class="p">),</span> <span class="p">[</span>
+</span><span class='line'>    <span class="s1">&#39;fulfilled&#39;</span> <span class="o">=&gt;</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$response</span><span class="p">,</span> <span class="nv">$index</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nb">var_dump</span><span class="p">(</span><span class="nv">$index</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="err">&#39;</span><span class="nx">concurrency</span> <span class="o">=&gt;</span> <span class="mi">2</span><span class="p">,</span>
+</span><span class='line'><span class="p">]);</span>
+</span><span class='line'><span class="nv">$promise</span> <span class="o">=</span> <span class="nv">$pool</span><span class="o">-&gt;</span><span class="na">promise</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$promise</span><span class="o">-&gt;</span><span class="na">wait</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>le résultat ici.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">int</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</span><span class='line'><span class="nx">int</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'><span class="nx">int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="nx">int</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On reconnait aussi notre nouvel ami le <code>yield</code>.</p>
+
+<h2>Le premier arrivé</h2>
+
+<p>Nous allons utiliser l&#8217;instruction <code>any()</code> toutes les requêtes sont lancées en concurrences. C&#8217;est la première arrivée qui l&#8217;emporte.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Client</span><span class="p">([</span><span class="s1">&#39;base_uri&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;http://httpbin.org/&#39;</span><span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// je crée toute mes requetes</span>
+</span><span class='line'><span class="nv">$promises</span> <span class="o">=</span> <span class="p">[</span>
+</span><span class='line'>    <span class="s1">&#39;image&#39;</span> <span class="o">=&gt;</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getAsync</span><span class="p">(</span><span class="s1">&#39;/image&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="s1">&#39;png&#39;</span>   <span class="o">=&gt;</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getAsync</span><span class="p">(</span><span class="s1">&#39;/image/png&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="s1">&#39;jpeg&#39;</span>  <span class="o">=&gt;</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getAsync</span><span class="p">(</span><span class="s1">&#39;/image/jpeg&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="s1">&#39;webp&#39;</span>  <span class="o">=&gt;</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getAsync</span><span class="p">(</span><span class="s1">&#39;/image/webp&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$result</span> <span class="o">=</span> <span class="nx">Promise\any</span><span class="p">(</span><span class="nv">$promises</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$value</span><span class="p">){</span><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$value</span><span class="o">-&gt;</span><span class="na">getHeader</span><span class="p">(</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">));});</span>
+</span><span class='line'><span class="nv">$result</span><span class="o">-&gt;</span><span class="na">wait</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je veux juste les deux premières réponses <code>some(2, $promise)</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Client</span><span class="p">([</span><span class="s1">&#39;base_uri&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;http://httpbin.org/&#39;</span><span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// je crée toute mes requetes</span>
+</span><span class='line'><span class="nv">$promises</span> <span class="o">=</span> <span class="p">[</span>
+</span><span class='line'>    <span class="s1">&#39;image&#39;</span> <span class="o">=&gt;</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getAsync</span><span class="p">(</span><span class="s1">&#39;/image&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="s1">&#39;png&#39;</span>   <span class="o">=&gt;</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getAsync</span><span class="p">(</span><span class="s1">&#39;/image/png&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="s1">&#39;jpeg&#39;</span>  <span class="o">=&gt;</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getAsync</span><span class="p">(</span><span class="s1">&#39;/image/jpeg&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="s1">&#39;webp&#39;</span>  <span class="o">=&gt;</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getAsync</span><span class="p">(</span><span class="s1">&#39;/image/webp&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$result</span> <span class="o">=</span> <span class="nx">Promise\some</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nv">$promises</span><span class="p">)</span>
+</span><span class='line'>    <span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$results</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span><span class="k">foreach</span> <span class="p">(</span><span class="nv">$results</span> <span class="k">as</span> <span class="nv">$value</span><span class="p">)</span>
+</span><span class='line'>        <span class="nb">var_dump</span><span class="p">(</span><span class="nv">$value</span><span class="o">-&gt;</span><span class="na">getHeader</span><span class="p">(</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">));</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">);</span>
+</span><span class='line'><span class="nv">$result</span><span class="o">-&gt;</span><span class="na">wait</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h2>Yield + Promise == Coroutine promise</h2>
+
+<p>Bon Nous allons complexifier encore un peu.</p>
+
+<p>Soit le code suivant</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Client</span><span class="p">([</span><span class="s1">&#39;base_uri&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;http://httpbin.org/&#39;</span><span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$promiseGenerator</span> <span class="o">=</span> <span class="k">function</span> <span class="p">()</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$client</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">yield</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getAsync</span><span class="p">(</span><span class="s1">&#39;/image&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">yield</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getAsync</span><span class="p">(</span><span class="s1">&#39;/image/png&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">yield</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getAsync</span><span class="p">(</span><span class="s1">&#39;/image/jpeg&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">yield</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getAsync</span><span class="p">(</span><span class="s1">&#39;/image/webp&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$result</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$promise</span> <span class="o">=</span> <span class="nx">Promise\each_limit</span><span class="p">(</span><span class="nv">$promiseGenerator</span><span class="p">(),</span> <span class="mi">2</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="nv">$idx</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="o">&amp;</span><span class="nv">$result</span><span class="p">)</span> <span class="p">{</span><span class="nv">$result</span><span class="p">[</span><span class="nv">$idx</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$value</span><span class="p">;});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$promise</span><span class="o">-&gt;</span><span class="na">wait</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je mets à la suite toute les promises que je souhaite exécuter en ajoutant <code>yield</code> devant.</p>
+
+<p>Je laisse Guzzle gérer avec un limitation de 2. des que le programme a une place de libre, il appelle le générateur pour avoir un nouvelle promise.</p>
+
+<p>Mais il existe dans Guzzle des co-routines..</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Client</span><span class="p">([</span><span class="s1">&#39;base_uri&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;http://httpbin.org/&#39;</span><span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$myfunction</span> <span class="o">=</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$url</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$client</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">Promise\coroutine</span><span class="p">(</span>
+</span><span class='line'>        <span class="k">function</span> <span class="p">()</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$client</span><span class="p">,</span> <span class="nv">$url</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">try</span> <span class="p">{</span>
+</span><span class='line'>                <span class="nv">$value</span> <span class="o">=</span> <span class="p">(</span><span class="k">yield</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getAsync</span><span class="p">(</span><span class="nv">$url</span><span class="p">));</span>
+</span><span class='line'>            <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">\Exception</span> <span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                <span class="k">yield</span> <span class="k">New</span> <span class="nx">RejectedPromise</span><span class="p">(</span><span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span><span class="p">());</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">);</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$images</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;baz&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">];</span>
+</span><span class='line'><span class="nv">$promises</span> <span class="o">=</span> <span class="p">[];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Build an array of promises.</span>
+</span><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$images</span> <span class="k">as</span> <span class="nv">$image</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$promises</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$myfunction</span><span class="p">(</span><span class="nv">$image</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$aggregate</span> <span class="o">=</span> <span class="nx">Promise\all</span><span class="p">(</span><span class="nv">$promises</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
+</span><span class='line'>    <span class="k">function</span><span class="p">(</span><span class="nv">$values</span><span class="p">)</span> <span class="p">{</span><span class="k">echo</span> <span class="s1">&#39;ok&#39;</span> <span class="p">;},</span> <span class="k">function</span><span class="p">(</span><span class="nv">$values</span><span class="p">){</span><span class="k">echo</span> <span class="s1">&#39;nope&#39;</span><span class="p">;});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$aggregate</span><span class="o">-&gt;</span><span class="na">wait</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Le code est complètement asynchrone.</p>
+
+<p>Il est intéressant de voir le code synchrone et non parallèle.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Client</span><span class="p">([</span><span class="s1">&#39;base_uri&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;http://httpbin.org/&#39;</span><span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$getImages</span> <span class="o">=</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$url</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$client</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">try</span> <span class="p">{</span>
+</span><span class='line'>                <span class="k">return</span> <span class="nv">$value</span> <span class="o">=</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="nv">$url</span><span class="p">);</span>
+</span><span class='line'>            <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">\Exception</span> <span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                <span class="nv">$value</span> <span class="o">=</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span><span class="p">();</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$images</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;baz&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">];</span>
+</span><span class='line'><span class="nv">$promises</span> <span class="o">=</span> <span class="p">[];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Build an array of promises.</span>
+</span><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$images</span> <span class="k">as</span> <span class="nv">$image</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$result</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$getImages</span><span class="p">(</span><span class="nv">$image</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>En gros, j&#8217;ai retiré le <code>async</code> et les <code>yields</code> mais les deux codes se ressemblent non ?</p>
+
+<h2>Conclusion</h2>
+
+<p>Les promises sont pratiques.</p>
+
+<ul>
+<li>elles sont chainables</li>
+<li>elle sont asynchrone, annulable, rejetable</li>
+<li>on peux faire des foreach dessus.</li>
+<li>On peux les combiner.</li>
+</ul>
+
+
+<p>Ce n&#8217;est pas vraiment un hasard. Les promises sont des <strong>Monades</strong>. Il n&#8217;est pas simple d&#8217;expliquer les monades. Les monades viennent de la programmation fonctionnelle et c&#8217;est surtout <a href="https://www.haskell.org/">haskell</a> qui a popularisé cette structure. J&#8217;espère que je reviendrai dessus.</p>
+
+<p><em>Guzzle</em> est vraiment très sympathique à utiliser. Le coté asynchrone n&#8217;est pas simple, la fonction <code>co-routine</code> n&#8217;est pas dans la documentation. Il a été très difficile de trouver un code d&#8217;exemple. Je regrette que parfois le seul moyen de déclencher la résolution est d&#8217;appeler de manière synchrone <code>-&gt;wait()</code> ce qui est dommage.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Yield PHP Co-routine]]></title>
@@ -2551,7 +2965,7 @@ L&#8217;octet de la position du début des données peut être déterminé par l
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Comme prévue deuxième ligne ne s&#8217;affiche pas.</p>
+<p>Comme prévu la deuxième ligne ne s&#8217;affiche pas.</p>
 
 <h2>Une seconde expérimentation.</h2>
 
@@ -5315,189 +5729,6 @@ quelques phrases issues de ce livre passionnant</p>
 <p>Cette dernière est de <a href="https://en.wikipedia.org/wiki/Willard_Van_Orman_Quine">W. V. Quine</a> qui est la première personne à écrire dessus et qui donne le noms de quine.</p>
 
 <p>la plupart des exemples viens de l&#8217;article <a href="https://fr.wikipedia.org/wiki/Quine_%28informatique%29">quine</a> sur Wikipedia. Voir aussi <a href="http://c2.com/cgi/wiki?QuineProgram">quine</a> sur c2.com</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Des Tests Behat Plus Rapides Sous Symfony]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/07/06/des-tests-plus-rapides-sous-symfony/"/>
-    <updated>2015-07-06T19:46:43+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/07/06/des-tests-plus-rapides-sous-symfony</id>
-    <content type="html"><![CDATA[<h2>Introduction</h2>
-
-<p>Nous allons voir comment multiplier par 5 voir 10 les tests et l&#8217;environnement de test et de dev. L&#8217;astuce ici est de mettre le répertoire <code>cache</code> et <code>log</code> dans la Ram de l&#8217;ordinateur. Ainsi plus d&#8217;écriture sur le disque dur. C&#8217;est très pratique aussi pour les tests Behat. Attention à ne pas utiliser cette astuce sur une instance en production.</p>
-
-<h2>Mise en Oeuvre</h2>
-
-<h3>Méthode 1 : modification du code</h3>
-
-<p>Il suffit de modifier le <code>AppKernel.php</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">getCacheDir</span><span class="p">()</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nb">in_array</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">environment</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;dev&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">)))</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="s1">&#39;/run/shm/&lt;MonProjet&gt;/cache/&#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">environment</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="k">parent</span><span class="o">::</span><span class="na">getCacheDir</span><span class="p">();</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">getLogDir</span><span class="p">()</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nb">in_array</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">environment</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;dev&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">)))</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="s1">&#39;/run/shm/&lt;Monprojet&gt;/logs&#39;</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="k">parent</span><span class="o">::</span><span class="na">getLogDir</span><span class="p">();</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Il faut bien entendu créer les répertoires suivants. <code>/run/shm/&lt;Monprojet&gt;/logs</code> et <code>/run/shm/&lt;Monprojet&gt;/cache</code>.</p>
-
-<p>Le problème de cette méthode est que l&#8217;on modifie le code. Et que ce genre de modification ne marche pas très bien avec les tests automatiques Jenkins. Bref pratique sur son poste mais pas en production.</p>
-
-<h3>Fixer les problèmes de droit.</h3>
-
-<p>Suivant comme est configuré votre projet et votre apache. Il peux y avoir des problème de droit.</p>
-
-<h4>Solution a : mettre les permissions à l&#8217;utilisateur apache</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nb">chown</span> <span class="o">-</span><span class="nx">R</span> <span class="nx">www</span><span class="o">-</span><span class="nx">data</span><span class="o">:</span><span class="nx">www</span><span class="o">-</span><span class="nx">data</span> <span class="o">/</span><span class="nx">run</span><span class="o">/</span><span class="nx">shm</span><span class="o">/&lt;</span><span class="nx">MonProjet</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>Solution b : mettre l&#8217;utilisateur actuel en utilisateur apache.</h4>
-
-<p>Normalement apache utilise l&#8217;utilisateur www-data, mais rien n&#8217;empêche de changer celui-ci par votre utilisateur.</p>
-
-<p>Il suffit de modifier votre <code>/etc/apache2/httpd.conf</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">User</span> <span class="o">&lt;</span><span class="nx">mon</span> <span class="nx">user</span><span class="o">&gt;</span>
-</span><span class='line'><span class="nx">Group</span> <span class="o">&lt;</span><span class="nx">mon</span> <span class="nx">user</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>que je lance symfony de la console, ou du site c&#8217;est toujours le même utilisateur.</p>
-
-<h4>Solution c : Fixer juste pour le projet votre utilisateur.</h4>
-
-<p>La solution la plus simple à mettre en oeuvre est <code>mpm-itk</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">sudo</span> <span class="nx">apt</span><span class="o">-</span><span class="nx">get</span> <span class="nx">install</span> <span class="nx">apache2</span><span class="o">-</span><span class="nx">mpm</span><span class="o">-</span><span class="nx">itk</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Dans mon fichier de conf <code>/etc/apache2/site-available/&lt;monprojet&gt;.conf</code></p>
-
-<p>J&#8217;ajoute les lignes suivantes</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;</span><span class="nx">IfModule</span> <span class="nx">mpm_itk_module</span><span class="o">&gt;</span>
-</span><span class='line'><span class="nx">AssignUserId</span> <span class="o">&lt;</span><span class="nx">mon</span> <span class="nx">user</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nx">mon</span> <span class="nx">group</span><span class="o">&gt;</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="nx">IfModule</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Il faut redémarrer apache. Les plus courageux tenterons le fast-cgi et autre fpm</p>
-
-<h4>Un petit HS:</h4>
-
-<ul>
-<li>Vous pouvez créer un utilisateur par projet.</li>
-<li>Et installer le projet dans /home/projet1</li>
-<li>dans le /etc/apache2/site-available/projet1.conf</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;</span><span class="nx">IfModule</span> <span class="nx">mpm_itk_module</span><span class="o">&gt;</span>
-</span><span class='line'><span class="nx">AssignUserId</span> <span class="o">&lt;</span><span class="nx">projet1</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nx">projet1</span><span class="o">&gt;</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="nx">IfModule</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Si l&#8217;utilisateur <em>projet1</em> est compromis, il ne peux modifier que son home. Il y a plus de risque avec l&#8217;utilisateur apache <code>www-data</code> qui peux modifier l&#8217;ensemble de projet dans le /www/var.</p>
-
-<h3>Solution N°2 : Aucune modification du code.</h3>
-
-<p>Nous allons tout simplement supprimer les répertoires <code>cache</code> et <code>logs</code> du projet et remplacer par un lien symbolique.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">rm</span> <span class="o">-</span><span class="nx">rf</span> <span class="nx">app</span><span class="o">/</span><span class="nx">cache</span>
-</span><span class='line'><span class="nx">ln</span> <span class="o">-</span><span class="nx">s</span> <span class="o">/</span><span class="nx">run</span><span class="o">/</span><span class="nx">shm</span><span class="o">/&lt;</span><span class="nx">mon</span> <span class="nx">projet</span><span class="o">&gt;/</span><span class="nx">cache</span>  <span class="nx">app</span><span class="o">/</span><span class="nx">cache</span>
-</span><span class='line'><span class="nx">ln</span> <span class="o">-</span><span class="nx">s</span> <span class="o">/</span><span class="nx">run</span><span class="o">/</span><span class="nx">shm</span><span class="o">/&lt;</span><span class="nx">mon</span> <span class="nx">projet</span><span class="o">&gt;/</span><span class="nx">logs</span>  <span class="nx">app</span><span class="o">/</span><span class="nx">logs</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Le code n&#8217;est pas modifié. Donc pas de commit bizarre et pas de problème en Prod. Le seul souci est qu&#8217;il y a souvent un <code>.gitkeep</code> sur <code>cache</code> et <code>log</code> donc les <code>git stash</code> et autre se comporte un peu bizarrement.</p>
-
-<h3>des chiffres</h3>
-
-<p>J&#8217;ai pris un projet de mon boulot voici la différence pour les tests Behat</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">Avant</span>
-</span><span class='line'><span class="mi">49</span> <span class="nx">scenarios</span> <span class="p">(</span><span class="mi">49</span> <span class="nx">passed</span><span class="p">)</span>
-</span><span class='line'><span class="mi">396</span> <span class="nx">steps</span> <span class="p">(</span><span class="mi">396</span> <span class="nx">passed</span><span class="p">)</span>
-</span><span class='line'><span class="mi">5</span><span class="nx">m12</span><span class="o">.</span><span class="mi">80</span><span class="nx">s</span> <span class="p">(</span><span class="mf">66.61</span><span class="nx">Mb</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">Après</span>
-</span><span class='line'><span class="mi">49</span> <span class="nx">scenarios</span> <span class="p">(</span><span class="mi">49</span> <span class="nx">passed</span><span class="p">)</span>
-</span><span class='line'><span class="mi">396</span> <span class="nx">steps</span> <span class="p">(</span><span class="mi">396</span> <span class="nx">passed</span><span class="p">)</span>
-</span><span class='line'><span class="mi">0</span><span class="nx">m23</span><span class="o">.</span><span class="mi">74</span><span class="nx">s</span> <span class="p">(</span><span class="mf">72.85</span><span class="nx">Mb</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>je suis passé de 5 minutes à 24 secondes. Les fixtures sur le SQLite sont plus rapides. Bref un gain de temps énorme.</p>
-
-<h2>Conclusion</h2>
-
-<p>Nous avons vu deux solutions.
-Un Post un peu bizarre, puisque c&#8217;est un collègue qui m&#8217;a montré l&#8217;astuce. J&#8217;avais envie d&#8217;écrire un post dessus. Merci à <a href="https://github.com/floyoops">lui</a></p>
-
-<h2>Des liens</h2>
-
-<ul>
-<li><a href="http://www.whitewashing.de/2013/08/19/speedup_symfony2_on_vagrant_boxes.html">le liens le plus cité</a></li>
-<li>sur Npm-itk en <a href="http://bibabox.fr/apache2-mpm-itk-utiliser-un-utiliser-un-utilisateur-different-pour-chaque-vhost/">français</a> ou en <a href="http://blog.stuartherbert.com/php/2008/04/19/using-mpm-itk-to-secure-a-shared-server/">anglais</a> les deux sont biens.</li>
-</ul>
-
 ]]></content>
   </entry>
   

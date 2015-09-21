@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Générateur | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/generateur/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-09-13T21:47:34+02:00</updated>
+  <updated>2015-09-21T22:14:41+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -23,21 +23,33 @@
 <p>Nous avons vu la fonction xrange qui permet de générer un million de valeurs pour un coup très faible en mémoire.</p>
 
 <p>Mais il y a mieux ! On peux envoyer des valeurs dans le générateur
-&#8220;` php
-&lt;?php
-function generateAnimal() {
-    $input = (yield &lsquo;Panda&rsquo;);
-    var_dump(&ldquo;j&#8217;ai reçu $input&rdquo;);
-    $input = (yield &lsquo;Lama&rsquo;);
-    var_dump(&ldquo;j&#8217;ai reçu $input&rdquo;);
-}</p>
-
-<p>$gen = generateAnimal();
-var_dump($gen->current());// string(5) &ldquo;Panda&rdquo;
-var_dump($gen->send(&lsquo;Canard&rsquo;));//string(16) &ldquo;j&#8217;ai recu Canard&rdquo;
-                               //string(4) &ldquo;Lama&rdquo;
-var_dump($gen->send(&lsquo;Poney&rsquo;)); // j&#8217;ai recus Poney.
-&#8220;`</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span><span class="o">?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">function</span> <span class="nf">generateAnimal</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$input</span> <span class="o">=</span> <span class="p">(</span><span class="k">yield</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">Panda</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;);</span>
+</span><span class='line'>    <span class="nb">var_dump</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">j</span><span class="s1">&#39;ai reçu $input&amp;rdquo;);</span>
+</span><span class='line'><span class="s1">    $input = (yield &amp;lsquo;Lama&amp;rsquo;);</span>
+</span><span class='line'><span class="s1">    var_dump(&amp;ldquo;j&#39;</span><span class="nx">ai</span> <span class="nx">reçu</span> <span class="nv">$input</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;);</span>
+</span><span class='line'><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nv">$gen</span> <span class="o">=</span> <span class="nx">generateAnimal</span><span class="p">();</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$gen</span><span class="o">-&gt;</span><span class="na">current</span><span class="p">());</span><span class="c1">// string(5) &amp;ldquo;Panda&amp;rdquo;</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$gen</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">Canard</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;));</span><span class="c1">//string(16) &amp;ldquo;j&#39;ai recu Canard&amp;rdquo;</span>
+</span><span class='line'>                               <span class="c1">//string(4) &amp;ldquo;Lama&amp;rdquo;</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$gen</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">Poney</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;));</span> <span class="c1">// j&#39;ai recus Poney.</span>
+</span></code></pre></td></tr></table></div></figure></p>
 
 <p>Si j&#8217;avais fais deux fois <code>-&gt;next()</code>  au lieux de <code>-&gt;send()</code></p>
 
