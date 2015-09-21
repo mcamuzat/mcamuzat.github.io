@@ -33,7 +33,7 @@ __halt_compiler();
 echo "j'apparais pas";
 ```
 
-Comme prévue deuxième ligne ne s'affiche pas.
+Comme prévu la deuxième ligne ne s'affiche pas.
 
 ## Une seconde expérimentation. 
 
