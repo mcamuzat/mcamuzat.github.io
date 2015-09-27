@@ -246,9 +246,9 @@ En gros, j'ai retiré le `async` et les `yields` mais les deux codes se ressembl
 Les promises sont pratiques.
 
  * elles sont chainables
- * elle sont asynchrone, annulable, rejetable
- * on peux faire des foreach dessus.
- * On peux les combiner.
+ * elles sont asynchrones, annulables, rejetables
+ * On peut faire des foreach dessus.
+ * On peut les combiner.
 
 Ce n'est pas vraiment un hasard. Les promises sont des **Monades**. Il n'est pas simple d'expliquer les monades. Les monades viennent de la programmation fonctionnelle et c'est surtout [haskell](https://www.haskell.org/) qui a popularisé cette structure. J'espère que je reviendrai dessus. 
 
