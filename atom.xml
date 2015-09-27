@@ -4,7 +4,7 @@
   <title><![CDATA[Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-09-21T22:14:41+02:00</updated>
+  <updated>2015-09-27T17:16:32+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,87 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Des Commandes Au Top]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/09/27/des-commandes-au-top/"/>
+    <updated>2015-09-27T16:04:40+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/09/27/des-commandes-au-top</id>
+    <content type="html"><![CDATA[<p>J&#8217;utilise souvent le programme htop. mais il y en a d&#8217;autre.</p>
+
+<h2>atop</h2>
+
+<p>Plus austère. Beaucoup d&#8217;information sur toutes les ressources. C&#8217;est plus un outils d&#8217;audit. Le logicel donne toutes informations possibles. processeurs, disques, carte réseau. En pratique il peut même être lancer au démarrage. En pratique on parle de <code>sar</code> (<strong>S</strong>ystem <strong>A</strong>ctivity <strong>R</strong>eport). Il permet de surveiller la tailles des processus avec la colonne <code>VGROW</code> (<em>Virtual Memory Grow</em>) et <code>RGROW</code>(Resident memory Grow)
+<img class="center" src="http://mcamuzat.github.io/images/atop.png" width="600" height="381" title="atop" alt="atop"></p>
+
+<p>voir <a href="https://en.wikipedia.org/wiki/Sar_%28Unix%29">sar</a></p>
+
+<h2>vtop</h2>
+
+<p>Un clone en Nodejs. voir le screenshot c&#8217;est vraiment très joli</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/vtop.png" width="600" height="383" title="vtop" alt="vtop"></p>
+
+<p>installation via npm</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo npm install -g vtop
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>dépot <a href="https://github.com/MrRio/vtop">Github</a></p>
+
+<h2>Htop</h2>
+
+<h3>Quelques options</h3>
+
+<h3>filtrer par utilisateur</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>htop -umarc
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ou <code>u</code> dans Htop</p>
+
+<h4>Sélectionner un process</h4>
+
+<p>Utilisez la barre d&#8217;espace pour sélectionner un process. Cela permet de le suivre.</p>
+
+<ul>
+<li><code>F7</code> ou  <code>F8</code> pour augmenter la priorité du process</li>
+<li><code>F9</code> ou <code>k</code> pour killer un process</li>
+<li><code>a</code> pour assigner le process à un CPU.</li>
+<li><code>U</code> pour désélectionnér tous les process</li>
+</ul>
+
+
+<h4>Personnalisez l&#8217;affichage</h4>
+
+<p>La touche magique ici est <code>&lt;F2&gt;</code>. Vous pouvez personnaliser les deux colonnes avec les raccourcis claviers suivants. La colonne toutes à droite donne les widgets disponibles</p>
+
+<ul>
+<li><code>&lt;F5&gt;</code> ajouter le widget à la colonne de droite.</li>
+<li><code>&lt;F6&gt;</code> ajouter le widget à la colonne de gauche.</li>
+</ul>
+
+
+<p>Sur une colonne vous pouvez sélectionniez le type d&#8217;affiche (texte simple, histogramme, etc..) via la touche <code>&lt;F4&gt;</code></p>
+
+<p>Voir le screenshot (<code>Text</code>, <code>Graph</code>,<code>Led</code>, <code>Bar</code>)
+<img class="center" src="http://mcamuzat.github.io/images/typeaffichage.png" width="600" height="133" title="affichage" alt="les quatre types d"></p>
+
+<h3>Les codes couleurs</h3>
+
+<p>La touche <code>h</code> permet d&#8217;obtenir de l&#8217;aide, les raccourcis claviers et la significations des couleurs.</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/codecouleur.png" width="600" height="104" title="les différentes couleurs et leurs significations" alt="les différentes couleurs et leurs significations"></p>
+
+<h2>En conclusion</h2>
+
+<p>J&#8217;espère que vous appris un nouveau raccourci sur htop.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Guzzle Asynchrone Avec Les Promises]]></title>
@@ -415,9 +496,9 @@
 
 <ul>
 <li>elles sont chainables</li>
-<li>elle sont asynchrone, annulable, rejetable</li>
-<li>on peux faire des foreach dessus.</li>
-<li>On peux les combiner.</li>
+<li>elles sont asynchrones, annulables, rejetables</li>
+<li>On peut faire des foreach dessus.</li>
+<li>On peut les combiner.</li>
 </ul>
 
 
@@ -5637,98 +5718,6 @@ On télécharge le binaire à l&#8217;<a href="https://processing.org/download/?
 <li><a href="http://processingjs.org/">ProcessingJs</a> (fait par le programmeur de JQuery Jon Resig)</li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Les Quines]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/07/11/les-quines/"/>
-    <updated>2015-07-11T19:39:53+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/07/11/les-quines</id>
-    <content type="html"><![CDATA[<p>Aujourd&#8217;hui commençons par un petit programme</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>  <span class="c">#!/bin/sh</span>
-</span><span class='line'>  quine <span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="nb">echo</span> -e <span class="s2">&quot;#!/bin/sh\n$1&quot;</span>
-</span><span class='line'>  <span class="nb">echo</span> <span class="s2">&quot;quine &#39;$1&#39;&quot;</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>  quine <span class="s1">&#39;quine () {</span>
-</span><span class='line'><span class="s1">  echo -e &quot;#!/bin/sh\\n$1&quot;</span>
-</span><span class='line'><span class="s1">  echo &quot;quine \047$1\047&quot;</span>
-</span><span class='line'><span class="s1">  }</span>
-</span><span class='line'><span class="s1">  &#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Pouvez vous devinez que fais ce programme ?</p>
-
-<p>Une quine est un code donc la sortie est exactement son code source.</p>
-
-<p>Cela ressemble à une exercice de programmation.</p>
-
-<p>Mais toute en quelque sorte peuvent se résumer à l&#8217;idée suivante.</p>
-
-<blockquote><p>Écrivez, puis écrivez entre guillemets et suivi d&#8217;un point, « Écrivez, puis écrivez entre guillemets et suivi d&#8217;un point, ».</p></blockquote>
-
-<p>Le code python suivant est une interprétation littérale.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='py'><span class='line'><span class="n">a</span><span class="o">=</span><span class="s">&#39;a=</span><span class="si">%r</span><span class="s">;print(a</span><span class="si">%%</span><span class="s">a)&#39;</span><span class="p">;</span><span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="o">%</span><span class="n">a</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>En php</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nv">$a</span><span class="o">=</span><span class="s1">&#39;&lt;?$a=%c%s%c;printf($a,39,$a,39);&#39;</span><span class="p">;</span><span class="nb">printf</span><span class="p">(</span><span class="nv">$a</span><span class="p">,</span><span class="mi">39</span><span class="p">,</span><span class="nv">$a</span><span class="p">,</span><span class="mi">39</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Seulement possible en php</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'><span class="k">echo</span> <span class="nb">file_get_contents</span><span class="p">(</span><span class="k">__FILE__</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>A quoi cela sert ?</h2>
-
-<p>On parle de code qui se réplique. Il existe une quine dans tout les langages de programmations complets(c&#8217;est à dire turing-complet). Une des applications les plus curieuses est l&#8217;injection de code malicieux dans les compilateurs. C&#8217;est un des papiers les plus célèbres de Ken Thompson (Inventeur de B, Unix, UTF8, Go bref un monstre..). C&#8217;est un publication académique très facilement lisible et qui ne fait que trois pages. Il décrit une méthode d&#8217;injection dans le compilateur lui-même pour créer un compilateur infecté. Le plus bizarre dans cette histoire est que cette attaque est théorique. Mais personne n&#8217;y croyait. Il existe pourtant réellement un virus qui utilise cette faille.</p>
-
-<ul>
-<li><a href="https://www.ece.cmu.edu/~ganger/712.fall02/papers/p761-thompson.pdf">Reflections on Trusting Trust</a></li>
-<li><a href="https://lists.owasp.org/pipermail/owasp-cincinnati/2009-August/000187.html">la faille de sécurité</a></li>
-</ul>
-
-
-<h2>Des liens et bibliographie.</h2>
-
-<p>Il y a un chapitre complet dans le <a href="https://fr.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach_:_Les_Brins_d%27une_Guirlande_%C3%89ternelle">Gödel Escher Bach</a>
-quelques phrases issues de ce livre passionnant</p>
-
-<blockquote><p>&ldquo;est un fragment de phrase&rdquo; est un fragment de phrase</p>
-
-<p>&ldquo;se compose de cinq mots&rdquo; se compose de cinq mots</p>
-
-<p>&ldquo;Donne une fausseté si précédée d&#8217;elle-même entre guillemets&rdquo; Donne une fausseté si précédée d&#8217;elle-même entre guillemets.</p></blockquote>
-
-<p>Cette dernière est de <a href="https://en.wikipedia.org/wiki/Willard_Van_Orman_Quine">W. V. Quine</a> qui est la première personne à écrire dessus et qui donne le noms de quine.</p>
-
-<p>la plupart des exemples viens de l&#8217;article <a href="https://fr.wikipedia.org/wiki/Quine_%28informatique%29">quine</a> sur Wikipedia. Voir aussi <a href="http://c2.com/cgi/wiki?QuineProgram">quine</a> sur c2.com</p>
 ]]></content>
   </entry>
   

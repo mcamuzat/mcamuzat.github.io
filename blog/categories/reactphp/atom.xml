@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Reactphp | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/reactphp/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-09-21T22:14:41+02:00</updated>
+  <updated>2015-09-27T17:16:32+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -250,9 +250,9 @@ foreach ($images as $image) {
 
 <ul>
 <li>elles sont chainables</li>
-<li>elle sont asynchrone, annulable, rejetable</li>
-<li>on peux faire des foreach dessus.</li>
-<li>On peux les combiner.</li>
+<li>elles sont asynchrones, annulables, rejetables</li>
+<li>On peut faire des foreach dessus.</li>
+<li>On peut les combiner.</li>
 </ul>
 
 
