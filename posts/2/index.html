@@ -9,7 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Introduction Nous allons voir ensemble, une nouvelle façon de faire des tests. Nous allons installer utiliser un projet php-quickcheck. L'idée ici n' &hellip;">
+  <meta name="description" content="Introduction je vais parler de l'instruction __halt_compiler(). Cette instruction arrête l'interprétation du PHP. Instruction inutile ? Pas vraiment &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +77,196 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/23/halt-compiler-twig-et-php-dans-le-meme-fichier/">Halt Compiler : Twig Et Php Dans Le Même Fichier</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-08-23T17:20:41+02:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>5:20 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Introduction</h2>
+
+<p>je vais parler de l&#8217;instruction <code>__halt_compiler()</code>.</p>
+
+<p>Cette instruction arrête l&#8217;interprétation du PHP. Instruction inutile ? Pas vraiment..</p>
+
+<p>Pour ce faire je vais montrer un exemple ou je vais mixer un fichier php et un fichier <a href="http://twig.sensiolabs.org/">twig</a> ensemble.</p>
+
+<h2>L&#8217;instruction <code>__halt_compiler()</code></h2>
+
+<p>D&#8217;après php.net</p>
+
+<blockquote><p>Stoppe l&#8217;exécution du compilateur. Ceci peut être très utile pour embarquer des données dans des scripts PHP, comme des fichiers d&#8217;installation.
+L&#8217;octet de la position du début des données peut être déterminé par la constante <code>__COMPILER_HALT_OFFSET__</code> qui n&#8217;est définie que s&#8217;il y a une fonction <code>__halt_compiler()</code> présente dans le fichier.</p></blockquote>
+
+<h2>Une première expérimentation</h2>
+
+<p>Soit le fichier php suivant :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">echo</span> <span class="s1">&#39;salut la compagnie!!&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="nb">__halt_compiler</span><span class="p">();</span>
+</span><span class='line'><span class="k">echo</span> <span class="s2">&quot;j&#39;apparais pas&quot;</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Comme prévu la deuxième ligne ne s&#8217;affiche pas.</p>
+
+<h2>Une seconde expérimentation.</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="nv">$txt</span> <span class="o">=</span> <span class="nb">file_get_contents</span><span class="p">(</span><span class="k">__FILE__</span><span class="p">,</span> <span class="k">false</span><span class="p">,</span> <span class="k">null</span><span class="p">,</span> <span class="nx">__COMPILER_HALT_OFFSET__</span><span class="p">);</span>
+</span><span class='line'><span class="k">echo</span> <span class="nb">strtoupper</span><span class="p">(</span><span class="nv">$txt</span><span class="p">);</span>
+</span><span class='line'><span class="nb">__halt_compiler</span><span class="p">();</span>
+</span><span class='line'><span class="nx">Bonjour</span> <span class="nx">tout</span> <span class="nx">le</span> <span class="nx">monde</span><span class="o">!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>La constante <code>__FILE__</code> représente le fichier actuelle, la constante <code>__COMPILER_HALT_OFFSET__</code> représente la position de l&#8217;instruction <code>__halt_compiler()</code>. On récupère le texte qui ne s&#8217;affiche pas.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>BONJOUR TOUT LE MONDE!
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Mettre le fichier php et le fichier de template twig dans le même fichier</h2>
+
+<p>Un exemple un peu théorique car pas très optimisé.</p>
+
+<p>J&#8217;ai besoin de twig, voici le <code>composer.json</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>   <span class="nt">&quot;require&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nt">&quot;twig/twig&quot;</span><span class="p">:</span> <span class="s2">&quot;^1.20&quot;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>Voici mon programme.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">require_once</span> <span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">&#39;/vendor/autoload.php&#39;</span><span class="p">;</span> <span class="c1">// Autoload files using Composer autoload</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">function</span> <span class="nf">get_halt_data</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">file_get_contents</span><span class="p">(</span><span class="k">__FILE__</span><span class="p">,</span> <span class="k">false</span><span class="p">,</span> <span class="k">null</span><span class="p">,</span> <span class="nx">__COMPILER_HALT_OFFSET__</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$loader</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Twig_Loader_Array</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>    <span class="s1">&#39;index&#39;</span> <span class="o">=&gt;</span> <span class="nx">get_halt_data</span><span class="p">()));</span>
+</span><span class='line'><span class="nv">$twig</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Twig_Environment</span><span class="p">(</span><span class="nv">$loader</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">echo</span> <span class="nv">$twig</span><span class="o">-&gt;</span><span class="na">render</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Fabien&#39;</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">__halt_compiler</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">hello</span> <span class="p">{</span><span class="nx">\</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="nx">\</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>hello fabien
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Désolé pour les <code>{\{</code> sinon cela n&#8217;apparait pas sur le code.</p>
+
+<p>C&#8217;est relativement inefficace. Il doit avoir moyen de faire un peu plus propre en profitant du cache.</p>
+
+<p>Comme annoncé dans le titre , j&#8217;ai dans le même fichier le php et le template twig.</p>
+
+<h3>Un exemple plus concret <code>composer.phar</code></h3>
+
+<p>Ouvrons pour voir le fichier <code>composer.phar</code></p>
+
+<p>Voici ce que je vois. Nous retrouvons notre instruction du jour.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">...</span>
+</span><span class='line'><span class="nx">Phar</span><span class="o">::</span><span class="na">mapPhar</span><span class="p">(</span><span class="s1">&#39;composer.phar&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nb">define</span><span class="p">(</span><span class="s1">&#39;COMPOSER_DEV_WARNING_TIME&#39;</span><span class="p">,</span> <span class="mi">1445255994</span><span class="p">);</span>
+</span><span class='line'><span class="k">require</span> <span class="s1">&#39;phar://composer.phar/bin/composer&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">__HALT_COMPILER</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">.. </span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Les fichiers <code>.phar</code> en pratique n&#8217;utilise que cette astuce. Je connais assez peu.</p>
+
+<h2>Conclusion</h2>
+
+<ul>
+<li>Sur l&#8217;utilisation en template. Il y a le projet <a href="https://github.com/bobthecow/mustache.php">mustache.php</a> vous ne devriez pas être perdu avec le loader <a href="https://github.com/bobthecow/mustache.php/wiki/Template-Loading#inline-loader">suivant</a></li>
+<li>Sur l&#8217;utilisation de string dans un template twig, la lecture de cet <a href="https://techpunch.co.uk/development/render-string-twig-template-symfony2">article</a> est très bien.</li>
+<li>Sur les <code>.phar</code> la <a href="http://php.net/manual/en/phar.mapphar.php">documentation officielle</a> semble un bon début.</li>
+</ul>
+
+
+<p>Je vais essayer de continuer à parler d&#8217;autres instructions et structures peu connues (par exemple <code>__invoke</code> ou les <code>SplHeap</code>).</p>
+
+<p>Merci de m&#8217;avoir lu.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2658,166 +2848,6 @@ La philosophie de Linux est de créer plein de petits programmes et que ceux-ci 
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/07/17/processing-et-souvenir/">Processing Et Souvenir</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-07-17T22:52:27+02:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:52 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="center" src="/images/voiture.png" width="499" height="300" title="Vrooum!!" alt="Screenshot du programme avec le micro"></p>
-
-<p>Aujourd&#8217;hui, je ressors un vieux code que j&#8217;avais écris pour le CNAM. Le sujet était faire que l&#8217;image à l&#8217;écran bouge quand on parle dans un microphone. Mais pas d&#8217;animation à la Winamp (j&#8217;ai des vieilles références :-) ou le player de Windows. J&#8217;avais donc programmé une voiture sur un circuit, pour le réalisme j&#8217;avais connecté un Wii-chuck via un Arduino pour faire le volant. Imaginez une personne avec un Wiichuk et un micro en train de faire &ldquo;Vrrrooum&rdquo; et vous aurez un idée de ma soutenance (qui s&#8217;est bien passée d&#8217;ailleurs).</p>
-
-<p>Les conditions étaient :</p>
-
-<ul>
-<li>Utiliser un Micro</li>
-<li>La langage imposé est Processing</li>
-</ul>
-
-
-<h2>Processing Késako</h2>
-
-<p>Processing est une variante de Java en plus simple. C&#8217;est un langage destiné à faire des oeuvres d&#8217;arts numériques. Il est souvent enseigné en école d&#8217;art. Il vient avec son propre éditeur. à noter que les <a href="https://fr.wikipedia.org/wiki/Arduino">Arduinos</a> se programment aussi en processing.</p>
-
-<p><img class="center" src="/images/processing.png" width="499" height="533" title="Processing" alt="Screenshot de processing avec son interface"></p>
-
-<p>Il suffit d&#8217;implémenter deux méthodes :</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>void setup() // sera appelé à l'initialisation
-</span><span class='line'>void draw() // sera appellé 30 à 50 fois par seconde</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Un exemple très simple</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="n">size</span><span class="o">(</span><span class="mi">640</span><span class="o">,</span> <span class="mi">360</span><span class="o">);</span> <span class="c1">//j&#39;initialise la taille 640*</span>
-</span><span class='line'>  <span class="n">stroke</span><span class="o">(</span><span class="mi">255</span><span class="o">);</span> <span class="c1">// le trait est blanc</span>
-</span><span class='line'>  <span class="n">fill</span><span class="o">(</span><span class="mi">255</span><span class="o">);</span> <span class="c1">// remplissage de blanc</span>
-</span><span class='line'>  <span class="n">background</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span> <span class="c1">// couleur de fond blanche</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">void</span> <span class="nf">draw</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="c1">// si la souris est appuyer</span>
-</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">mousePressed</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>     <span class="c1">// ellipse x, y ,hauteur, largeur</span>
-</span><span class='line'>    <span class="n">ellipse</span><span class="o">(</span><span class="n">mouseX</span><span class="o">,</span> <span class="n">mouseY</span><span class="o">,</span> <span class="mi">5</span><span class="o">,</span> <span class="mi">5</span><span class="o">);</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Appuyez sur la touche play</p>
-
-<p><img class="center" src="/images/processing_exemple.png" width="535" height="375" title="Processing" alt="le résultat"></p>
-
-<p>Je viens de faire un petit painbrush. C&#8217;est assez facile d&#8217;obtenir un truc plutôt joli avec assez peu de lignes de code. Il y a des librairies toutes prêtes pour la video, webcam.</p>
-
-<p>Il y a de nombreux livres donc le <a href="http://www.amazon.com/Visualizing-Data-Explaining-Processing-Environment/dp/0596514557">Visualizing Data</a>. Pour 2007, le livre est impressionnant. On parle de traitement de donnée et acquisitions des données bien avant la mode du Big data.</p>
-
-<h1>Installez Processing</h1>
-
-<p>Nous allons d&#8217;abord installer Java si vous n&#8217;avez pas. J&#8217;installe le paquet officiel</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">purge</span> <span class="n">openjdk</span><span class="o">*</span>    <span class="c1">// Supprime opendjdk</span>
-</span><span class='line'><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">software</span><span class="o">-</span><span class="n">properties</span><span class="o">-</span><span class="n">common</span>   <span class="c1">//ajout de librairie</span>
-</span><span class='line'><span class="n">sudo</span> <span class="n">add</span><span class="o">-</span><span class="n">apt</span><span class="o">-</span><span class="n">repository</span> <span class="nl">ppa:</span><span class="n">webupd8team</span><span class="o">/</span><span class="n">java</span> <span class="c1">// ajout du depot</span>
-</span><span class='line'><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span>                 <span class="c1">// et on met à jour les videos</span>
-</span><span class='line'><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">oracle</span><span class="o">-</span><span class="n">java7</span><span class="o">-</span><span class="n">installer</span> <span class="c1">// On installe</span>
-</span><span class='line'><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">oracle</span><span class="o">-</span><span class="n">java7</span><span class="o">-</span><span class="n">set</span><span class="o">-</span><span class="k">default</span> <span class="c1">// et on mets par défaut</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Puis nous allons installer Processing
-On télécharge le binaire à l&#8217;<a href="https://processing.org/download/?processing">adresse officielle</a></p>
-
-<p>Puis on décompresse</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">tar</span> <span class="n">xf</span> <span class="n">processing</span><span class="o">-*.</span><span class="na">tgz</span>
-</span><span class='line'><span class="n">sudo</span> <span class="n">mkdir</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">processing</span>
-</span><span class='line'><span class="n">sudo</span> <span class="n">mv</span> <span class="n">processing</span><span class="o">-*</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">processing</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Il n&#8217;y a plus qu&#8217;à lancer processing</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">sh</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">processing</span><span class="o">/</span><span class="n">processing</span><span class="o">-</span><span class="mf">2.2</span><span class="o">.</span><span class="mi">1</span><span class="o">/</span><span class="n">processing</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Vous devriez voir apparaitre l&#8217;interface</p>
-
-<p>Faire marcher mon code:</p>
-
-<ul>
-<li>Il faut utiliser la librairie Ess pour analyser le signal (marrant c&#8217;était déja vieux à l&#8217;époque)</li>
-<li>Aller sur le site <a href="http://www.tree-axis.com/Ess">suivant</a>.</li>
-<li>Décompressez et copier le répertoire ESS dans /usr/share/processing/processing-2.2.1/modes/java/libraries/</li>
-</ul>
-
-
-<h2>Le code</h2>
-
-<p>Il est disponible <a href="https://github.com/mcamuzat/processing-car">ici</a> sous Github. J&#8217;ai commenté la partie avec le Numchuck+Arduino (car peux de gens ont le matériel). A l&#8217;époque impossible de faire marcher la connection USB/Wiichuck sous Linux, j&#8217;ai passé la soutenance sous un vieux PC sous windows XP. Tout est mis dans le même fichier car j&#8217;avais pas trouver comment découper un projet. C&#8217;est d&#8217;ailleurs ce que je reproche un peu à Processing, c&#8217;est un langage simple pour débuter, mais faire un MVC ou un programme très complexe. Il faut quasiment tout refaire à la main.</p>
-
-<h2>Quelques liens</h2>
-
-<ul>
-<li>le <a href="https://processing.org/">site officiel</a></li>
-<li>Des <a href="http://www.openprocessing.org/">galeries interactives</a></li>
-<li><a href="http://processingjs.org/">ProcessingJs</a> (fait par le programmeur de JQuery Jon Resig)</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -2835,6 +2865,10 @@ On télécharge le binaire à l&#8217;<a href="https://processing.org/download/?
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/10/03/spl-surcharge-magique/">SPL Surcharge Magique</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/09/27/des-commandes-au-top/">Des Commandes Au Top</a>
       </li>
     
@@ -2848,10 +2882,6 @@ On télécharge le binaire à l&#8217;<a href="https://processing.org/download/?
     
       <li class="post">
         <a href="/blog/2015/09/09/probleme-np-complet/">Problème Np-Complet</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/09/06/php-yield-les-generateurs/">PHP Yield Les Générateurs</a>
       </li>
     
   </ul>

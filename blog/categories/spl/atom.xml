@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Spl | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/spl/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-09-27T17:16:32+02:00</updated>
+  <updated>2015-10-03T17:57:36+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,170 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[SPL Surcharge Magique]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/10/03/spl-surcharge-magique/"/>
+    <updated>2015-10-03T17:17:33+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/10/03/spl-surcharge-magique</id>
+    <content type="html"><![CDATA[<p>Nous allons repartir sur la <a href="http://php.net/manual/fr/book.spl.php">SPL</a>.</p>
+
+<p>Je vais déjà parler des différentes méthodes amusantes à surcharger.</p>
+
+<h2>Count</h2>
+
+<p>Soit la classe suivante</p>
+
+<pre><code class="php">class BadCounter implements countable{
+    public function count() {
+        return 42;
+    }
+}
+
+$counter = new BadCounter();
+
+var_dump(count($counter));// int(42)
+</code></pre>
+
+<p>On peux surcharger la méthode <code>count</code>. C&#8217;est d&#8217;ailleurs le cas dans le cas du <a href="http://doctrine-orm.readthedocs.org/en/latest/tutorials/pagination.html">Paginator</a> de doctrine.</p>
+
+<pre><code class="php">
+$dql = "SELECT p, c FROM BlogPost p JOIN p.comments c";
+$query = $entityManager-&gt;createQuery($dql)
+                       -&gt;setFirstResult(0)
+                       -&gt;setMaxResults(10);
+
+$paginator = new Paginator($query);
+
+count($paginator) // nombre de lignes dans la base
+</code></pre>
+
+<h2>Les ArrayObjects</h2>
+
+<p>On peut aussi changer toutes les méthodes pour un tableau.</p>
+
+<ul>
+<li><code>isset(counter['valeur'])</code></li>
+<li><code>unset(counter['valeur'])</code></li>
+<li><code>counter['valeur'] = 3</code></li>
+<li><code>counter[] = 3</code></li>
+<li><code>counter['valeur']</code></li>
+</ul>
+
+
+<pre><code class="php">
+class GeekCounter implements Countable, ArrayAccess {
+    public function count() {
+        return 42;
+    }
+    public function offsetSet($offset, $value) {
+        if (is_null($offset)) {
+            echo("on ajoute $value \n");
+
+        } else {
+            echo("on change la clé $offset par $value \n");
+        }
+    }
+
+    public function offsetExists($offset) {
+        echo("on teste la clé  $offset \n");
+        return true;
+    }
+
+    public function offsetUnset($offset) {
+        echo("on unset la clé $offset \n");
+    }
+
+    public function offsetGet($offset) {
+        echo("on me demande la clé $offset \n");
+        return 42;
+    }
+}
+
+$counter = new GeekCounter();
+
+var_dump(isset($counter["IdontCare"]));
+var_dump($counter["IdontCare"]);
+unset($counter["IdontCare"]);
+$counter[] = 3;
+$counter["IdontCare"] = 3;
+</code></pre>
+
+<pre><code class="php">on teste la clé  IdontCare 
+bool(true)
+on me demande la clé IdontCare 
+int(42)
+on unset la clé IdontCare 
+on ajoute 3 
+on change la clé IdontCare par 3 
+</code></pre>
+
+<p>On trouve la même idée dans les collections de doctrine.(l&#8217;interface <code>Collection</code> n&#8217;est qu&#8217;une surcharge);</p>
+
+<p>Si on ne souhaite pas tout implémenter il suffit de surcharger la Classe <code>ArrayObject</code></p>
+
+<p>Par exemple:
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">ZooDeBeauval</span> <span class="k">extends</span> <span class="nx">ArrayObject</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">offsetSet</span><span class="p">(</span><span class="nv">$offset</span><span class="p">,</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">in_array</span><span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">Panda</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">Koala</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">Otarie</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;)))</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">non</span> <span class="nx">cet</span> <span class="nx">animal</span> <span class="nv">$value</span> <span class="nx">n</span><span class="err">&#39;</span><span class="nx">est</span> <span class="nx">pas</span> <span class="nx">autorisé</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;;</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">parent</span><span class="o">::</span><span class="na">offsetSet</span><span class="p">(</span><span class="nv">$offset</span><span class="p">,</span> <span class="nv">$value</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">Un</span> <span class="nx">exemple</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nv">$zoo</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ZooParcDeBeauval</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$zoo</span><span class="p">[]</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">Panda</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span>
+</span><span class='line'><span class="nv">$zoo</span><span class="p">[]</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">Koala</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">liste</span> <span class="o">:</span>  <span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;</span><span class="o">.</span><span class="nb">implode</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;,</span> <span class="nb">iterator_to_array</span><span class="p">(</span><span class="nv">$zoo</span><span class="p">))</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$zoo</span><span class="p">[]</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">Lama</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>le résultat</p>
+
+<pre><code class="php">liste :  Panda, Koala
+non cet animal Lama n'est pas autorisé
+</code></pre>
+
+<p>Pour les <code>foreach</code> j&#8217;ai déjà parlé des iterators et des <a href="blog/2015/09/06/php-yield-les-generateurs/">générateurs</a>.</p>
+
+<h2>Conclusion</h2>
+
+<p>Maintenant les interfaces <code>ArrayAccess</code> et <code>Countable</code> n&#8217;ont plus de secrets pour vous. Nous verrons dans un prochain Post les listes chainée. L&#8217;avantage de ces méthode est que l&#8217;on obtient une structure qui se comporte comme un <code>array</code> mais avec une occupation mémoire moindre.</p>
+
+<p>Dans un prochain post, je vais parler des listes chainées et des différentes structure de la SPL (j&#8217;ai déja parlé de la <a href="blog/2015/08/29/stacks-structures-meconnues/">SplStack</a>)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Les Stacks Des Structures Méconnues]]></title>

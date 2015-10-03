@@ -9,7 +9,15 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="J'utilise souvent le programme htop. mais il y en a d'autre. atop Plus austère. Beaucoup d'information sur toutes les ressources. C'est plus un &hellip;">
+  <meta name="description" content="Nous allons repartir sur la SPL. Je vais déjà parler des différentes méthodes amusantes à surcharger. Count Soit la classe suivante 1
+2
+3
+4
+5
+6
+7
+8
+9 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +85,255 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/10/03/spl-surcharge-magique/">SPL Surcharge Magique</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-10-03T17:17:33+02:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>5:17 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Nous allons repartir sur la <a href="http://php.net/manual/fr/book.spl.php">SPL</a>.</p>
+
+<p>Je vais déjà parler des différentes méthodes amusantes à surcharger.</p>
+
+<h2>Count</h2>
+
+<p>Soit la classe suivante</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">BadCounter</span> <span class="k">implements</span> <span class="nx">countable</span><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">count</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="mi">42</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$counter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BadCounter</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="nv">$counter</span><span class="p">));</span><span class="c1">// int(42)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On peux surcharger la méthode <code>count</code>. C&#8217;est d&#8217;ailleurs le cas dans le cas du <a href="http://doctrine-orm.readthedocs.org/en/latest/tutorials/pagination.html">Paginator</a> de doctrine.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'>
+</span><span class='line'><span class="nv">$dql</span> <span class="o">=</span> <span class="s2">&quot;SELECT p, c FROM BlogPost p JOIN p.comments c&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$query</span> <span class="o">=</span> <span class="nv">$entityManager</span><span class="o">-&gt;</span><span class="na">createQuery</span><span class="p">(</span><span class="nv">$dql</span><span class="p">)</span>
+</span><span class='line'>                       <span class="o">-&gt;</span><span class="na">setFirstResult</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>                       <span class="o">-&gt;</span><span class="na">setMaxResults</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$paginator</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Paginator</span><span class="p">(</span><span class="nv">$query</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">count</span><span class="p">(</span><span class="nv">$paginator</span><span class="p">)</span> <span class="c1">// nombre de lignes dans la base</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Les ArrayObjects</h2>
+
+<p>On peut aussi changer toutes les méthodes pour un tableau.</p>
+
+<ul>
+<li><code>isset(counter['valeur'])</code></li>
+<li><code>unset(counter['valeur'])</code></li>
+<li><code>counter['valeur'] = 3</code></li>
+<li><code>counter[] = 3</code></li>
+<li><code>counter['valeur']</code></li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">GeekCounter</span> <span class="k">implements</span> <span class="nx">Countable</span><span class="p">,</span> <span class="nx">ArrayAccess</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">count</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="mi">42</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">offsetSet</span><span class="p">(</span><span class="nv">$offset</span><span class="p">,</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nb">is_null</span><span class="p">(</span><span class="nv">$offset</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">echo</span><span class="p">(</span><span class="s2">&quot;on ajoute </span><span class="si">$value</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">echo</span><span class="p">(</span><span class="s2">&quot;on change la clé </span><span class="si">$offset</span><span class="s2"> par </span><span class="si">$value</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">offsetExists</span><span class="p">(</span><span class="nv">$offset</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">echo</span><span class="p">(</span><span class="s2">&quot;on teste la clé  </span><span class="si">$offset</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">offsetUnset</span><span class="p">(</span><span class="nv">$offset</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">echo</span><span class="p">(</span><span class="s2">&quot;on unset la clé </span><span class="si">$offset</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">offsetGet</span><span class="p">(</span><span class="nv">$offset</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">echo</span><span class="p">(</span><span class="s2">&quot;on me demande la clé </span><span class="si">$offset</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">return</span> <span class="mi">42</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$counter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">GeekCounter</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$counter</span><span class="p">[</span><span class="s2">&quot;IdontCare&quot;</span><span class="p">]));</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$counter</span><span class="p">[</span><span class="s2">&quot;IdontCare&quot;</span><span class="p">]);</span>
+</span><span class='line'><span class="nb">unset</span><span class="p">(</span><span class="nv">$counter</span><span class="p">[</span><span class="s2">&quot;IdontCare&quot;</span><span class="p">]);</span>
+</span><span class='line'><span class="nv">$counter</span><span class="p">[]</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$counter</span><span class="p">[</span><span class="s2">&quot;IdontCare&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">on</span> <span class="nx">teste</span> <span class="nx">la</span> <span class="nx">clé</span>  <span class="nx">IdontCare</span>
+</span><span class='line'><span class="nx">bool</span><span class="p">(</span><span class="k">true</span><span class="p">)</span>
+</span><span class='line'><span class="nx">on</span> <span class="nx">me</span> <span class="nx">demande</span> <span class="nx">la</span> <span class="nx">clé</span> <span class="nx">IdontCare</span>
+</span><span class='line'><span class="nx">int</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+</span><span class='line'><span class="nx">on</span> <span class="nb">unset</span> <span class="nx">la</span> <span class="nx">clé</span> <span class="nx">IdontCare</span>
+</span><span class='line'><span class="nx">on</span> <span class="nx">ajoute</span> <span class="mi">3</span>
+</span><span class='line'><span class="nx">on</span> <span class="nx">change</span> <span class="nx">la</span> <span class="nx">clé</span> <span class="nx">IdontCare</span> <span class="nx">par</span> <span class="mi">3</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On trouve la même idée dans les collections de doctrine.(l&#8217;interface <code>Collection</code> n&#8217;est qu&#8217;une surcharge);</p>
+
+<p>Si on ne souhaite pas tout implémenter il suffit de surcharger la Classe <code>ArrayObject</code></p>
+
+<p>Par exemple:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">ZooDeBeauval</span> <span class="k">extends</span> <span class="nx">ArrayObject</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">offsetSet</span><span class="p">(</span><span class="nv">$offset</span><span class="p">,</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">in_array</span><span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s2">&quot;Panda&quot;</span><span class="p">,</span> <span class="s2">&quot;Koala&quot;</span><span class="p">,</span> <span class="s2">&quot;Otarie&quot;</span><span class="p">)))</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">echo</span> <span class="s2">&quot;non cet animal </span><span class="si">$value</span><span class="s2"> n&#39;est pas autorisé&quot;</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">parent</span><span class="o">::</span><span class="na">offsetSet</span><span class="p">(</span><span class="nv">$offset</span><span class="p">,</span> <span class="nv">$value</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Un exemple</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$zoo</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ZooParcDeBeauval</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$zoo</span><span class="p">[]</span> <span class="o">=</span> <span class="s1">&#39;Panda&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$zoo</span><span class="p">[]</span> <span class="o">=</span> <span class="s1">&#39;Koala&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">echo</span> <span class="s2">&quot;liste :  &quot;</span><span class="o">.</span><span class="nb">implode</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">,</span> <span class="nb">iterator_to_array</span><span class="p">(</span><span class="nv">$zoo</span><span class="p">))</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$zoo</span><span class="p">[]</span> <span class="o">=</span> <span class="s1">&#39;Lama&#39;</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>le résultat</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">liste</span> <span class="o">:</span>  <span class="nx">Panda</span><span class="p">,</span> <span class="nx">Koala</span>
+</span><span class='line'><span class="nx">non</span> <span class="nx">cet</span> <span class="nx">animal</span> <span class="nx">Lama</span> <span class="nx">n</span><span class="err">&#39;</span><span class="nx">est</span> <span class="nx">pas</span> <span class="nx">autorisé</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pour les <code>foreach</code> j&#8217;ai déjà parlé des iterators et des <a href="blog/2015/09/06/php-yield-les-generateurs/">générateurs</a>.</p>
+
+<h2>Conclusion</h2>
+
+<p>Maintenant les interfaces <code>ArrayAccess</code> et <code>Countable</code> n&#8217;ont plus de secrets pour vous. Nous verrons dans un prochain Post les listes chainée. L&#8217;avantage de ces méthode est que l&#8217;on obtient une structure qui se comporte comme un <code>array</code> mais avec une occupation mémoire moindre.</p>
+
+<p>Dans un prochain post, je vais parler des listes chainées et des différentes structure de la SPL (j&#8217;ai déja parlé de la <a href="blog/2015/08/29/stacks-structures-meconnues/">SplStack</a>)</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -3256,196 +3513,6 @@ les deux fonctions ont un peu près le même résultat.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/08/23/halt-compiler-twig-et-php-dans-le-meme-fichier/">Halt Compiler : Twig Et Php Dans Le Même Fichier</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-08-23T17:20:41+02:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>5:20 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Introduction</h2>
-
-<p>je vais parler de l&#8217;instruction <code>__halt_compiler()</code>.</p>
-
-<p>Cette instruction arrête l&#8217;interprétation du PHP. Instruction inutile ? Pas vraiment..</p>
-
-<p>Pour ce faire je vais montrer un exemple ou je vais mixer un fichier php et un fichier <a href="http://twig.sensiolabs.org/">twig</a> ensemble.</p>
-
-<h2>L&#8217;instruction <code>__halt_compiler()</code></h2>
-
-<p>D&#8217;après php.net</p>
-
-<blockquote><p>Stoppe l&#8217;exécution du compilateur. Ceci peut être très utile pour embarquer des données dans des scripts PHP, comme des fichiers d&#8217;installation.
-L&#8217;octet de la position du début des données peut être déterminé par la constante <code>__COMPILER_HALT_OFFSET__</code> qui n&#8217;est définie que s&#8217;il y a une fonction <code>__halt_compiler()</code> présente dans le fichier.</p></blockquote>
-
-<h2>Une première expérimentation</h2>
-
-<p>Soit le fichier php suivant :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'><span class="k">echo</span> <span class="s1">&#39;salut la compagnie!!&#39;</span><span class="p">;</span>
-</span><span class='line'><span class="nb">__halt_compiler</span><span class="p">();</span>
-</span><span class='line'><span class="k">echo</span> <span class="s2">&quot;j&#39;apparais pas&quot;</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Comme prévu la deuxième ligne ne s&#8217;affiche pas.</p>
-
-<h2>Une seconde expérimentation.</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'><span class="nv">$txt</span> <span class="o">=</span> <span class="nb">file_get_contents</span><span class="p">(</span><span class="k">__FILE__</span><span class="p">,</span> <span class="k">false</span><span class="p">,</span> <span class="k">null</span><span class="p">,</span> <span class="nx">__COMPILER_HALT_OFFSET__</span><span class="p">);</span>
-</span><span class='line'><span class="k">echo</span> <span class="nb">strtoupper</span><span class="p">(</span><span class="nv">$txt</span><span class="p">);</span>
-</span><span class='line'><span class="nb">__halt_compiler</span><span class="p">();</span>
-</span><span class='line'><span class="nx">Bonjour</span> <span class="nx">tout</span> <span class="nx">le</span> <span class="nx">monde</span><span class="o">!</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>La constante <code>__FILE__</code> représente le fichier actuelle, la constante <code>__COMPILER_HALT_OFFSET__</code> représente la position de l&#8217;instruction <code>__halt_compiler()</code>. On récupère le texte qui ne s&#8217;affiche pas.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>BONJOUR TOUT LE MONDE!
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Mettre le fichier php et le fichier de template twig dans le même fichier</h2>
-
-<p>Un exemple un peu théorique car pas très optimisé.</p>
-
-<p>J&#8217;ai besoin de twig, voici le <code>composer.json</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
-</span><span class='line'>   <span class="nt">&quot;require&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nt">&quot;twig/twig&quot;</span><span class="p">:</span> <span class="s2">&quot;^1.20&quot;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<p>Voici mon programme.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'><span class="k">require_once</span> <span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">&#39;/vendor/autoload.php&#39;</span><span class="p">;</span> <span class="c1">// Autoload files using Composer autoload</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">function</span> <span class="nf">get_halt_data</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nb">file_get_contents</span><span class="p">(</span><span class="k">__FILE__</span><span class="p">,</span> <span class="k">false</span><span class="p">,</span> <span class="k">null</span><span class="p">,</span> <span class="nx">__COMPILER_HALT_OFFSET__</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$loader</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Twig_Loader_Array</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
-</span><span class='line'>    <span class="s1">&#39;index&#39;</span> <span class="o">=&gt;</span> <span class="nx">get_halt_data</span><span class="p">()));</span>
-</span><span class='line'><span class="nv">$twig</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Twig_Environment</span><span class="p">(</span><span class="nv">$loader</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">echo</span> <span class="nv">$twig</span><span class="o">-&gt;</span><span class="na">render</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Fabien&#39;</span><span class="p">));</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">__halt_compiler</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">hello</span> <span class="p">{</span><span class="nx">\</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="nx">\</span><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>hello fabien
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Désolé pour les <code>{\{</code> sinon cela n&#8217;apparait pas sur le code.</p>
-
-<p>C&#8217;est relativement inefficace. Il doit avoir moyen de faire un peu plus propre en profitant du cache.</p>
-
-<p>Comme annoncé dans le titre , j&#8217;ai dans le même fichier le php et le template twig.</p>
-
-<h3>Un exemple plus concret <code>composer.phar</code></h3>
-
-<p>Ouvrons pour voir le fichier <code>composer.phar</code></p>
-
-<p>Voici ce que je vois. Nous retrouvons notre instruction du jour.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">...</span>
-</span><span class='line'><span class="nx">Phar</span><span class="o">::</span><span class="na">mapPhar</span><span class="p">(</span><span class="s1">&#39;composer.phar&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nb">define</span><span class="p">(</span><span class="s1">&#39;COMPOSER_DEV_WARNING_TIME&#39;</span><span class="p">,</span> <span class="mi">1445255994</span><span class="p">);</span>
-</span><span class='line'><span class="k">require</span> <span class="s1">&#39;phar://composer.phar/bin/composer&#39;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">__HALT_COMPILER</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span>
-</span><span class='line'><span class="x">.. </span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Les fichiers <code>.phar</code> en pratique n&#8217;utilise que cette astuce. Je connais assez peu.</p>
-
-<h2>Conclusion</h2>
-
-<ul>
-<li>Sur l&#8217;utilisation en template. Il y a le projet <a href="https://github.com/bobthecow/mustache.php">mustache.php</a> vous ne devriez pas être perdu avec le loader <a href="https://github.com/bobthecow/mustache.php/wiki/Template-Loading#inline-loader">suivant</a></li>
-<li>Sur l&#8217;utilisation de string dans un template twig, la lecture de cet <a href="https://techpunch.co.uk/development/render-string-twig-template-symfony2">article</a> est très bien.</li>
-<li>Sur les <code>.phar</code> la <a href="http://php.net/manual/en/phar.mapphar.php">documentation officielle</a> semble un bon début.</li>
-</ul>
-
-
-<p>Je vais essayer de continuer à parler d&#8217;autres instructions et structures peu connues (par exemple <code>__invoke</code> ou les <code>SplHeap</code>).</p>
-
-<p>Merci de m&#8217;avoir lu.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -3461,6 +3528,10 @@ L&#8217;octet de la position du début des données peut être déterminé par l
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/10/03/spl-surcharge-magique/">SPL Surcharge Magique</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/09/27/des-commandes-au-top/">Des Commandes Au Top</a>
       </li>
     
@@ -3474,10 +3545,6 @@ L&#8217;octet de la position du début des données peut être déterminé par l
     
       <li class="post">
         <a href="/blog/2015/09/09/probleme-np-complet/">Problème Np-Complet</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/09/06/php-yield-les-generateurs/">PHP Yield Les Générateurs</a>
       </li>
     
   </ul>

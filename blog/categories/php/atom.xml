@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Php | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/php/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-09-27T17:16:32+02:00</updated>
+  <updated>2015-10-03T17:57:36+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,170 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[SPL Surcharge Magique]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/10/03/spl-surcharge-magique/"/>
+    <updated>2015-10-03T17:17:33+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/10/03/spl-surcharge-magique</id>
+    <content type="html"><![CDATA[<p>Nous allons repartir sur la <a href="http://php.net/manual/fr/book.spl.php">SPL</a>.</p>
+
+<p>Je vais déjà parler des différentes méthodes amusantes à surcharger.</p>
+
+<h2>Count</h2>
+
+<p>Soit la classe suivante</p>
+
+<pre><code class="php">class BadCounter implements countable{
+    public function count() {
+        return 42;
+    }
+}
+
+$counter = new BadCounter();
+
+var_dump(count($counter));// int(42)
+</code></pre>
+
+<p>On peux surcharger la méthode <code>count</code>. C&#8217;est d&#8217;ailleurs le cas dans le cas du <a href="http://doctrine-orm.readthedocs.org/en/latest/tutorials/pagination.html">Paginator</a> de doctrine.</p>
+
+<pre><code class="php">
+$dql = "SELECT p, c FROM BlogPost p JOIN p.comments c";
+$query = $entityManager-&gt;createQuery($dql)
+                       -&gt;setFirstResult(0)
+                       -&gt;setMaxResults(10);
+
+$paginator = new Paginator($query);
+
+count($paginator) // nombre de lignes dans la base
+</code></pre>
+
+<h2>Les ArrayObjects</h2>
+
+<p>On peut aussi changer toutes les méthodes pour un tableau.</p>
+
+<ul>
+<li><code>isset(counter['valeur'])</code></li>
+<li><code>unset(counter['valeur'])</code></li>
+<li><code>counter['valeur'] = 3</code></li>
+<li><code>counter[] = 3</code></li>
+<li><code>counter['valeur']</code></li>
+</ul>
+
+
+<pre><code class="php">
+class GeekCounter implements Countable, ArrayAccess {
+    public function count() {
+        return 42;
+    }
+    public function offsetSet($offset, $value) {
+        if (is_null($offset)) {
+            echo("on ajoute $value \n");
+
+        } else {
+            echo("on change la clé $offset par $value \n");
+        }
+    }
+
+    public function offsetExists($offset) {
+        echo("on teste la clé  $offset \n");
+        return true;
+    }
+
+    public function offsetUnset($offset) {
+        echo("on unset la clé $offset \n");
+    }
+
+    public function offsetGet($offset) {
+        echo("on me demande la clé $offset \n");
+        return 42;
+    }
+}
+
+$counter = new GeekCounter();
+
+var_dump(isset($counter["IdontCare"]));
+var_dump($counter["IdontCare"]);
+unset($counter["IdontCare"]);
+$counter[] = 3;
+$counter["IdontCare"] = 3;
+</code></pre>
+
+<pre><code class="php">on teste la clé  IdontCare 
+bool(true)
+on me demande la clé IdontCare 
+int(42)
+on unset la clé IdontCare 
+on ajoute 3 
+on change la clé IdontCare par 3 
+</code></pre>
+
+<p>On trouve la même idée dans les collections de doctrine.(l&#8217;interface <code>Collection</code> n&#8217;est qu&#8217;une surcharge);</p>
+
+<p>Si on ne souhaite pas tout implémenter il suffit de surcharger la Classe <code>ArrayObject</code></p>
+
+<p>Par exemple:
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">ZooDeBeauval</span> <span class="k">extends</span> <span class="nx">ArrayObject</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">offsetSet</span><span class="p">(</span><span class="nv">$offset</span><span class="p">,</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">in_array</span><span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">Panda</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">Koala</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">Otarie</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;)))</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">non</span> <span class="nx">cet</span> <span class="nx">animal</span> <span class="nv">$value</span> <span class="nx">n</span><span class="err">&#39;</span><span class="nx">est</span> <span class="nx">pas</span> <span class="nx">autorisé</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;;</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">parent</span><span class="o">::</span><span class="na">offsetSet</span><span class="p">(</span><span class="nv">$offset</span><span class="p">,</span> <span class="nv">$value</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">Un</span> <span class="nx">exemple</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nv">$zoo</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ZooParcDeBeauval</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$zoo</span><span class="p">[]</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">Panda</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span>
+</span><span class='line'><span class="nv">$zoo</span><span class="p">[]</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">Koala</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">liste</span> <span class="o">:</span>  <span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;</span><span class="o">.</span><span class="nb">implode</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;,</span> <span class="nb">iterator_to_array</span><span class="p">(</span><span class="nv">$zoo</span><span class="p">))</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$zoo</span><span class="p">[]</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">Lama</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>le résultat</p>
+
+<pre><code class="php">liste :  Panda, Koala
+non cet animal Lama n'est pas autorisé
+</code></pre>
+
+<p>Pour les <code>foreach</code> j&#8217;ai déjà parlé des iterators et des <a href="blog/2015/09/06/php-yield-les-generateurs/">générateurs</a>.</p>
+
+<h2>Conclusion</h2>
+
+<p>Maintenant les interfaces <code>ArrayAccess</code> et <code>Countable</code> n&#8217;ont plus de secrets pour vous. Nous verrons dans un prochain Post les listes chainée. L&#8217;avantage de ces méthode est que l&#8217;on obtient une structure qui se comporte comme un <code>array</code> mais avec une occupation mémoire moindre.</p>
+
+<p>Dans un prochain post, je vais parler des listes chainées et des différentes structure de la SPL (j&#8217;ai déja parlé de la <a href="blog/2015/08/29/stacks-structures-meconnues/">SplStack</a>)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Guzzle Asynchrone Avec Les Promises]]></title>
@@ -988,235 +1152,6 @@ for x in countdown(10):
 <p>Cela existe aussi dans <a href="http://www.tutorialspoint.com/ruby/ruby_blocks.htm">ruby</a>, <a href="https://msdn.microsoft.com/fr-fr/library/9k7k7cf0.aspx">C#</a>, et dans le javascript ES6</p>
 
 <p>C&#8217;est un peu plus qu&#8217;une nouvelle syntaxe. Cela permet de faire du code asynchrone. Car cela permet une structure de codage que l&#8217;on appelle: Les <a href="https://fr.wikipedia.org/wiki/Coroutine">Couroutines</a>. Mais plus d&#8217;info dans un prochain post .</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Les Promises Et Php via ReactPhp]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/09/05/les-promises-et-php-via-react/"/>
-    <updated>2015-09-05T19:10:10+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/09/05/les-promises-et-php-via-react</id>
-    <content type="html"><![CDATA[<p>Les promises sont une alternative plus puissante au Callback. Relativement peu connues au début. Elle sont maintenant en standard dans beaucoup de langage javascript ES6, python 3.2, java. Où via des librairies comme <a href="https://github.com/reactphp/promise">react/promise</a> pour php</p>
-
-<p>Une promise représente une valeur donc le résultat n&#8217;est pas encore connu.
-Quand le résultat est connu,  la promise a 3 états possibles</p>
-
-<ul>
-<li><strong>Pending</strong> ou <strong>Unfulfillled</strong>  en Attente..</li>
-<li><strong>Resolved</strong> ou <strong>fulfillled</strong>  Succès</li>
-<li><strong>Rejected</strong> ou <strong>Failed</strong>  Erreur.</li>
-</ul>
-
-
-<p>Un <em>Deffered</em> représente un travail qui n&#8217;est pas encore fini. Donc un <em>Deferred</em> possède une promise (une valeur pas encore connues).</p>
-
-<p>Quand la valeur est connue, la promesse utilise un <em>handler</em> (en général <code>-&gt;then()</code>) qui lui-même renvoie une promise. L&#8217;intérêt est que les promises sont chainables.</p>
-
-<p>Mais essayons quelques exemples qui seront un peu plus parlant.</p>
-
-<p>Pour ce faire nous allons d&#8217;abord installer <a href="https://github.com/reactphp/promise">react/promises</a></p>
-
-<pre><code class="php">&lt;?php
-require __DIR__.'/vendor/autoload.php';
-
-// On crée un travail
-$deferred = new React\Promise\Deferred();
-
-// On veux la promise
-$promise  = $deferred-&gt;promise()-&gt;then(
-    function () { echo "tout va bien \n"; },
-    function () { echo "tout va mal \n"; },
-    function () { echo "j'attends\n "; }
-);
-
-
-// Le travail est un succes, on résoud la promise
-$deferred-&gt;resolve(); 
-</code></pre>
-
-<p>Voici ce que j&#8217;obtiens si je lance le programme.</p>
-
-<pre><code class="php">tout va bien
-</code></pre>
-
-<p>Si je remplace <code>$deferred-&gt;resolve()</code> par <code>$deferred-&gt;reject()</code>. Le travail n&#8217;as pas marché. J&#8217;obtiens</p>
-
-<pre><code class="php">Tout va mal
-</code></pre>
-
-<p>La syntaxe de <code>then</code> est</p>
-
-<pre><code class="php">then(callable $onFulfilled = null, callable $onRejected = null, callable $onProgress = null)
-</code></pre>
-
-<ul>
-<li>Si l&#8217;action est un succès, On résous la promise en appelant la fonction <code>$onFulfilled</code>.</li>
-<li>L&#8217;action n&#8217;est pas bonne, On rejette la promise avec <code>$onRejected</code>.</li>
-<li>Si l&#8217;action est en cours , On appelle <code>$onProgress</code>.</li>
-</ul>
-
-
-<p>A noter qu&#8217;une promise une fois qu&#8217;elle est résolue ou rejetée ne peut plus être réutilisée sauf dans le cas du <code>pending</code></p>
-
-<pre><code class="php">$promise-&gt;notify();
-$promise-&gt;notify();
-$promise-&gt;notify();
-$promise-&gt;resolve();
-</code></pre>
-
-<p>Le résultat</p>
-
-<pre><code class="">j'attends
-j'attends
-j'attends
-tout va bien
-</code></pre>
-
-<p>Pour l&#8217;instant rien de bien compliqué. On peut chainer les promises</p>
-
-<pre><code class="php ">$promise  = $deferred-&gt;promise()-&gt;then(
-    function () { echo "action 1 ok\n"; }
-)-&gt;then(
-    function () { echo "action 2 ok\n";}
-)-&gt;then(
-   function () { echo "action 3 ok\n";},
-   function () { echo "une des actions n'est pas ok..\n";}
-);
-
-$deferred-&gt;resolve();
-</code></pre>
-
-<p>Le résultat
-<code>
-action 1 ok
-action 2 ok
-action 3 ok
-</code></p>
-
-<p>Essayons avec <code>deffered-&gt;reject()</code></p>
-
-<p>Le résultat</p>
-
-<pre><code>une des actions n'est pas ok..
-</code></pre>
-
-<p>Ajoutons un exception à la deuxième étape.
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$promise</span>  <span class="o">=</span> <span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">promise</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">action</span> <span class="mi">1</span> <span class="nx">ok\n</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;;</span> <span class="p">}</span>
-</span><span class='line'><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">throw</span> <span class="k">new</span> <span class="nx">Exception</span><span class="p">();}</span>
-</span><span class='line'><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>   <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">action</span> <span class="mi">3</span> <span class="nx">ok\n</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;;},</span>
-</span><span class='line'>   <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">une</span> <span class="nx">des</span> <span class="nx">actions</span> <span class="nx">n</span><span class="s1">&#39;est pas ok..\n&amp;rdquo;;}</span>
-</span><span class='line'><span class="s1">);&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s1">&lt;pre&gt;&lt;code&gt;</span>
-</span><span class='line'><span class="s1">Le résultat</span>
-</span><span class='line'><span class="s1">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s1">&lt;p&gt;action 1 ok</span>
-</span><span class='line'><span class="s1">une des actions n&#39;</span><span class="nx">est</span> <span class="nx">pas</span> <span class="nx">ok</span><span class="o">..</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>Ajoutons une exception dans le premier, et ajoutons un cas pour gérer l&#8217;erreur
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$promise</span>  <span class="o">=</span> <span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">promise</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">throw</span> <span class="k">new</span> <span class="nx">\Exception</span><span class="p">();</span> <span class="p">}</span>
-</span><span class='line'><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">action</span> <span class="mi">2</span> <span class="nx">ok\n</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;;},</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">l</span><span class="s1">&#39;action 1 pas ok mais on continue..\n&amp;rdquo;;}</span>
-</span><span class='line'><span class="s1">)-&gt;then(</span>
-</span><span class='line'><span class="s1">   function () { echo &amp;ldquo;action 3 ok\n&amp;rdquo;;},</span>
-</span><span class='line'><span class="s1">   function () { echo &amp;ldquo;une des actions n&#39;</span><span class="nx">est</span> <span class="nx">pas</span> <span class="nx">ok</span><span class="o">..</span><span class="nx">\n</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;;}</span>
-</span><span class='line'><span class="p">);</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">resolve</span><span class="p">();</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>Le résultat
-<code>
-l'action 1 pas ok mais on continue..
-action 3 ok
-</code></p>
-
-<p>Si on veux que l&#8217;erreur de l&#8217;action 1 se propage deux possibilités..</p>
-
-<ul>
-<li>supprimer le callback d&#8217;erreur de l&#8217;action 2</li>
-<li>Ou relancer l&#8217;exception</li>
-</ul>
-
-
-<pre><code>$promise  = $deferred-&gt;promise()-&gt;then(
-    function () { throw new \Exception(); }
-)-&gt;then(
-    function () { echo "action 2 ok\n";},
-    function () { echo "l'action 1 pas ok et on stop le processus"; throw new \Exception();}
-)-&gt;then(
-   function () { echo "action 3 ok\n";},
-   function () { echo "une des actions n'est pas ok..\n";}
-);
-</code></pre>
-
-<p>Ce qui est intéressant dans les promises c&#8217;est que le code équivalent en procédural est pas génial.
-<code>
- $result = doAction1();
-try {
-    $result = doAction1();
-    if ($result) {
-        $result2 = doAction2($result);
-        if ($result2) {
-            $result3 = doAction3($result3);
-            return $result3;
-        } else {
-            throw new Exception();
-        }
-    } else {
-        throw New Exception();
-    }
-} catch (..){
-    echo "une des actions n'est pas ok"
-}
-</code></p>
-
-<p>Devient
-<code>
-    $result = $doAction1()
-        -&gt;then(function($result1){doAction2($result1);})
-        -&gt;then(
-            function($result2){doAction3($result2);},
-            function() {echo "une des actions n'est pas ok"}
-        );
-</code></p>
-
-<p>C&#8217;est mieux non ?</p>
-
-<p>Dans un prochain article nous nous utiliserons ce que nous avons appris avec <a href="http://guzzle.readthedocs.org/en/latest/">Guzzle</a>.</p>
 ]]></content>
   </entry>
   
