@@ -9,15 +9,8 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Nous allons repartir sur la SPL. Je vais déjà parler des différentes méthodes amusantes à surcharger. Count Soit la classe suivante 1
-2
-3
-4
-5
-6
-7
-8
-9 &hellip;">
+  <meta name="description" content="Tig est un client git en ligne de commande Il n'est pas compliqué à installer : 1
+sudo apt-get install tig Néanmoins c'est la version 1.2 dans les &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -85,6 +78,226 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/10/04/tig-status/">Tig : Status</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-10-04T21:59:59+02:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>9:59 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Tig est un client git en ligne de commande</p>
+
+<p>Il n&#8217;est pas compliqué à installer :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install tig
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Néanmoins c&#8217;est la version 1.2 dans les dépôts au moment ou j&#8217;écris ces lignes.</p>
+
+<p>On peut installer la version 2 qui a plus de fonctionnalités et de raccourcis.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git clone https://github.com/jonas/tig
+</span><span class='line'>make
+</span><span class='line'>make install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>La vue principale</h2>
+
+<p>Elle permet de voir l&#8217;historique du dépôt.</p>
+
+<p><img class="center" src="/images/tig-defaut.png" width="600" height="398" title="la vue par défault" alt="la vue par défaut"></p>
+
+<p>Appuyer sur <code>&lt;Enter&gt;</code> pour voir la différence. (Dans la version 2, si le terminal fait plus de 160 caractere l&#8217;écran se splitte en 2 verticalement)</p>
+
+<p><img class="center" src="/images/tig-diff.png" width="600" height="399" title="quand on appuie sur la touche entrée, on affiche la différence" alt="l"></p>
+
+<p>Screenshot de la version 2 avec les deux colonnes.</p>
+
+<p><img class="center" src="/images/tig_view_v2.png" width="600" height="366" title="dans la version 2, si le terminal" alt="Screenshot de la version 2 avec les deux colonnes."></p>
+
+<p>Il va falloir apprendre les touches Vi car on se sert beaucoup de <code>j</code> et <code>k</code> (un rappel <code>j</code> descend vers le bas et <code>k</code> va vers le haut)</p>
+
+<p>De cette écran voici les différents modes (je ne les cites pas tous)</p>
+
+<ul>
+<li><code>S</code> ou <code>s</code> pour voir le stage (équivalent de git status)</li>
+<li><code>t</code> tree view affichage en explorateur de fichier</li>
+<li><code>r</code> permet de voir les différentes branches</li>
+<li><code>l</code> voir les logs</li>
+</ul>
+
+
+<p>Je vais surtout m&#8217;intéresser à la status view.</p>
+
+<h2>La vue Status</h2>
+
+<p>Les touches à connaitre.</p>
+
+<ul>
+<li><code>u</code> sur un noms de fichiers pour <strong>u</strong>se cela fait l&#8217;équivalent de <code>git add &lt;nom du fichier&gt;</code></li>
+</ul>
+
+
+<p>Si vous appuyer sur <code>u</code> sur les lignes <code>Changes to be commited</code>, <code>Changed but not updated</code>, <code>Untracked files</code> vous ajoutez tous les fichiers.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Changes to be committed:
+</span><span class='line'>M   fichier1
+</span><span class='line'>Changed but not updatedy://&lt;---<span class="o">(</span>*curseur*<span class="o">)</span>
+</span><span class='line'>M   fichier2
+</span><span class='line'>M   fichier3
+</span><span class='line'>M   fichier4
+</span><span class='line'>M   fichier5
+</span><span class='line'>M   fichier6
+</span><span class='line'>M   fichier7
+</span><span class='line'>Untracked files:
+</span><span class='line'>?   nouveau fichier
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cela devient</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Changes to be committed:
+</span><span class='line'>M   fichier1
+</span><span class='line'>M   fichier2
+</span><span class='line'>M   fichier3
+</span><span class='line'>M   fichier4
+</span><span class='line'>M   fichier5
+</span><span class='line'>M   fichier6
+</span><span class='line'>M   fichier7
+</span><span class='line'>Changed but not updatedy:
+</span><span class='line'><span class="o">(</span>no files<span class="o">)</span>
+</span><span class='line'>Untracked files:
+</span><span class='line'>?   nouveau fichier
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Enfin on peut aussi prendre chunk par chunck (l&#8217;équivalent de <code>git add -p</code>)</p>
+
+<p><img class="center" src="/images/tig-revert.png" width="600" height="398" title="la vue par défaut" alt="la vue par défaut"></p>
+
+<p>Il suffit d&#8217;appuyer sur <code>Enter</code> puis de ce déplacer dans le commit avec <code>j</code> et <code>k</code> et appuyer sur <code>u</code> pour ajouter ce chunk. Les chunks pour faire simple sont les textes séparés par des <code>@@ ... @@</code>. On se déplace de chunk en chunk grâce à la touche <code>@</code>.</p>
+
+<p>Pour reverter le fichier, On utilise la touche <code>!</code>.</p>
+
+<p>cela marche aussi sur un chunk. On peut donc reverter partiellement un fichier.</p>
+
+<p>Il est possible d&#8217;ajouter ligne par ligne dans un commit grâce à la touche <code>1</code>.</p>
+
+<p>Pour faire le git commit il suffit d&#8217;appuyer sur <code>C</code> comme <strong>C</strong>ommit.</p>
+
+<p>Enfin la touche <code>e</code> comme <strong>e</strong>dit ouvre le fichier dans l&#8217;éditeur par défaut.</p>
+
+<h2>Le fichier <code>.tigrc</code></h2>
+
+<p>Le fichier <code>.tigrc</code> permet de personnaliser l&#8217;affichage et d&#8217;ajouter des raccourcis claviers.</p>
+
+<p>Voici quelques exemples de ma config.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># Delete files in status view (useful for untracked files)</span>
+</span><span class='line'><span class="nb">bind </span>status D !@?rm %<span class="o">(</span>file<span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Amend last commit with A</span>
+</span><span class='line'><span class="nb">bind </span>status A !git commit --amend
+</span><span class='line'>
+</span><span class='line'><span class="c"># Create and checkout a new branch; specify custom prompt</span>
+</span><span class='line'><span class="nb">bind </span>main B !git checkout -b <span class="s2">&quot;%(prompt Enter new branch name: )&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Les raccourcis claviers que j&#8217;ai rajouté</p>
+
+<ul>
+<li>Dans la vue status la touche <code>D</code> efface le fichier</li>
+<li>Dans la vue status la touche <code>A</code> fait un <code>git commit --amend</code></li>
+<li>Dans la vue principale la touche <code>B</code> permet de créer une branches.</li>
+</ul>
+
+
+<h2>Résumé de touches</h2>
+
+<ul>
+<li><code>s</code> ou <code>S</code> voir la vue status</li>
+<li><code>u</code> ajouter le commit/chunk</li>
+<li><code>!</code> revert</li>
+<li><code>1</code> ajoute une lignes au commit</li>
+<li><code>@</code> aller au chunck/diff suivant</li>
+<li><code>D</code> supprimer le fichier (<em>raccourcis perso</em>)</li>
+<li><code>A</code> git amend</li>
+<li><code>e</code> ouvre dans l&#8217;éditeur par défaut</li>
+</ul>
+
+
+<h2>Des liens</h2>
+
+<ul>
+<li><a href="http://jonas.nitro.dk/tig/">le site officiel</a></li>
+<li>la <a href="https://github.com/pmiossec/tig-cheat-sheet">cheat-sheet</a> avec les raccourcis claviers (<em>indispensable</em>)</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>Je vais revenir sur les autres vues bientôt.</p>
+
+<p>Merci de m&#8217;avoir lu.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -325,7 +538,7 @@
 
 <h2>Conclusion</h2>
 
-<p>Maintenant les interfaces <code>ArrayAccess</code> et <code>Countable</code> n&#8217;ont plus de secrets pour vous. Nous verrons dans un prochain Post les listes chainée. L&#8217;avantage de ces méthode est que l&#8217;on obtient une structure qui se comporte comme un <code>array</code> mais avec une occupation mémoire moindre.</p>
+<p>Maintenant les interfaces <code>ArrayAccess</code> et <code>Countable</code> n&#8217;ont plus de secrets pour vous. Nous verrons dans un prochain Post les listes chainées. L&#8217;avantage de ces méthode est que l&#8217;on obtient une structure qui se comporte comme un <code>array</code> mais avec une occupation mémoire moindre.</p>
 
 <p>Dans un prochain post, je vais parler des listes chainées et des différentes structure de la SPL (j&#8217;ai déja parlé de la <a href="blog/2015/08/29/stacks-structures-meconnues/">SplStack</a>)</p>
 </div>
@@ -400,6 +613,7 @@
 <ul>
 <li><code>F7</code> ou  <code>F8</code> pour augmenter la priorité du process</li>
 <li><code>F9</code> ou <code>k</code> pour killer un process</li>
+<li><code>F5</code> affichage en arbre.</li>
 <li><code>a</code> pour assigner le process à un CPU.</li>
 <li><code>U</code> pour désélectionnér tous les process</li>
 </ul>
@@ -3280,239 +3494,6 @@ je vais représenter les deux piles et l&#8217;entrée actuelle</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/08/26/array-walk/">Array_walk, Array_map, Array_walk_recursive</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-08-26T22:30:55+02:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:30 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Une question que l&#8217;on m&#8217;a posé.</p>
-
-<p>Quel instruction je n&#8217;ai jamais jamais réussi à utiliser dans php ? Dans le sens jamais trouvé d&#8217;utilisation pratique.</p>
-
-<p>Ma réponse est un <code>array_recursive_walk()</code> et dans la même idée les <code>RecursiveIteratorIterator</code></p>
-
-<p>Et puis on m&#8217;a demander la différence entre un <code>array_walk</code> et un <code>array_map</code>.</p>
-
-<h2><code>array_map</code></h2>
-
-<p>Voici quelques exemples</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="c1">// via un array_map</span>
-</span><span class='line'><span class="nv">$array</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="s1">&#39;two&#39;</span><span class="p">,</span> <span class="s1">&#39;three&#39;</span><span class="p">]</span>
-</span><span class='line'><span class="nv">$out</span> <span class="o">=</span> <span class="nb">array_map</span><span class="p">(</span><span class="nx">uc_first</span><span class="p">,</span> <span class="nv">$array</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>array_map</code> ne touche pas le tableau original.</p>
-
-<p>En fait <code>array_map</code> fait exactement ceci.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$out</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="s1">&#39;one&#39;</span><span class="p">),</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="s1">&#39;two&#39;</span><span class="p">),</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="s1">&#39;three&#39;</span><span class="p">)</span> <span class="p">];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>De manière générale</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nb">array_map</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$a</span><span class="p">),[</span><span class="nx">a</span> <span class="p">,</span><span class="nx">b</span><span class="p">,</span> <span class="o">..</span><span class="p">,</span><span class="nx">z</span><span class="p">])</span>
-</span><span class='line'><span class="p">[</span><span class="k">function</span><span class="p">(</span><span class="nx">a</span><span class="p">),</span> <span class="k">function</span><span class="p">(</span><span class="nx">b</span><span class="p">),</span> <span class="k">function</span><span class="p">(</span><span class="nx">c</span><span class="p">),</span> <span class="o">..</span> <span class="k">function</span><span class="p">(</span><span class="nx">z</span><span class="p">)]</span><span class="o">.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>On renvoie un tableau de la <strong>même</strong> taille.</li>
-<li>la fonction appelé doit contenir un <strong>return</strong></li>
-<li>C&#8217;est de la programmation fonctionnelle (c&#8217;est le <strong>map</strong> de <strong>Map</strong>Reduce).</li>
-<li>On ne connais pas l&#8217;index (que l&#8217;on pourrai récupérer dans un <code>foreach($array as $key =&gt; $value)</code>).</li>
-</ul>
-
-
-<h2><code>Array_walk</code></h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$array</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="s1">&#39;two&#39;</span><span class="p">,</span> <span class="s1">&#39;three&#39;</span><span class="p">]</span>
-</span><span class='line'><span class="k">function</span> <span class="nf">toMaj</span><span class="p">(</span><span class="o">&amp;</span><span class="nv">$input</span><span class="p">,</span> <span class="nv">$key</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="c1">// ucfirst give error with 2 arguments</span>
-</span><span class='line'>    <span class="nv">$input</span> <span class="o">=</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="nv">$input</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="nb">array_walk</span><span class="p">(</span><span class="nv">$array</span><span class="p">,</span> <span class="s1">&#39;toMaj&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$array</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Constatons:</p>
-
-<ul>
-<li>Je passe par référence <code>&amp;input</code>.</li>
-<li>Donc je n&#8217;ai pas besoin de <code>return</code>.</li>
-<li>Donc nous sommes dans du <strong>procédural</strong>. (ce qui n&#8217;est pas forcément un défaut)</li>
-<li>J&#8217;ai économisé une variable</li>
-<li>On est obligé d&#8217;écrire des fonctions à deux arguments certaines fonctions comme <code>ucfirst</code> refusent d&#8217;avoir plusieurs arguments.</li>
-<li>Par contre, on connait l&#8217;index (<code>$key</code>) mais impossible de le modifier.</li>
-<li><code>array_walk</code> renvoie <code>true</code> or <code>false</code> ce qui n&#8217;aide pas beaucoup</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$array</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="s1">&#39;two&#39;</span><span class="p">,</span> <span class="s1">&#39;three&#39;</span><span class="p">]</span>
-</span><span class='line'><span class="k">function</span> <span class="nf">toMaj</span><span class="p">(</span><span class="o">&amp;</span><span class="nv">$input</span><span class="p">,</span> <span class="nv">$key</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nv">$input</span> <span class="o">=</span> <span class="nv">$key</span><span class="o">.</span><span class="s1">&#39; : &#39;</span><span class="nb">ucfirst</span><span class="p">(</span><span class="nv">$input</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="nb">array_walk</span><span class="p">(</span><span class="nv">$array</span><span class="p">,</span> <span class="s1">&#39;toMaj&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$array</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Pour résumer
-les deux fonctions ont un peu près le même résultat.</p>
-
-<ul>
-<li><code>array_walk</code> prend un array et remplace chaque valeurs par Fonction(valeur).</li>
-<li><code>array_map</code> prend un array et recrée un array de la même taille.</li>
-</ul>
-
-
-<h2>Le <code>Array_recursive_walk</code></h2>
-
-<p>Un exemple de code.</p>
-
-<p>Je voulais faire un <code>CamelCase</code> -> <code>snake_case</code> mais comme le <code>array_walk</code> impossible de modifier les clés des index.</p>
-
-<p>Soit l&#8217;exemple suivant</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$array</span> <span class="o">=</span>  <span class="p">[</span><span class="s2">&quot;Tortue-ninja&quot;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s2">&quot;leonardo&quot;</span> <span class="p">,</span> <span class="s2">&quot;donatello&quot;</span><span class="p">,</span> <span class="s2">&quot;michelangelo&quot;</span><span class="p">,</span><span class="s2">&quot;raphael&quot;</span><span class="p">],</span> <span class="s2">&quot;Mechant&quot;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s2">&quot;shredder&quot;</span><span class="p">,</span> <span class="s2">&quot;krang&quot;</span><span class="p">]];</span>
-</span><span class='line'><span class="nb">array_walk_recursive</span><span class="p">(</span><span class="nv">$array</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="o">&amp;</span><span class="nv">$item</span><span class="p">,</span> <span class="nv">$key</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$key</span> <span class="o">===</span> <span class="s2">&quot;Tortue-ninja&quot;</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">echo</span> <span class="s1">&#39;Cowabunga!&#39;</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="nv">$item</span> <span class="o">=</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="nv">$item</span><span class="p">);</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$array</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Le programme n&#8217;affiche pas de <code>Cowabunga</code>, mais j&#8217;ai mis en majuscule toutes les valeurs.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">array</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="s1">&#39;Tortue-ninja&#39;</span> <span class="o">=&gt;</span>
-</span><span class='line'>  <span class="k">array</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="s2">&quot;Leonardo&quot;</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span> <span class="s2">&quot;Donatello&quot;</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span> <span class="s2">&quot;Michelangelo&quot;</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="s2">&quot;Raphael&quot;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="s1">&#39;mechant&#39;</span> <span class="o">=&gt;</span>
-</span><span class='line'>  <span class="k">array</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="s2">&quot;Shredder&quot;</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="s2">&quot;Krang&quot;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On ne passe jamais sur le clé : <code>Tortue-ninja</code>, d&#8217;ailleurs la documentation est claire</p>
-
-<blockquote><p>Toute clé qui est associée à un tableau n&#8217;est pas passée à la fonction de rappel.</p></blockquote>
-
-<p>Un vrai exemple</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'>    <span class="nb">array_walk_recursive</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="o">&amp;</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span> <span class="nx">instanceof</span> <span class="nx">\Traversable</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nv">$value</span> <span class="o">=</span> <span class="nb">iterator_to_array</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>`</p>
-
-<p>Un exemple que l&#8217;on retrouve dans <a href="">PHPUnit</a> et <a href="">Symfony2</a></p>
-
-<p>On veut logger des objets en les serialisant en Json. Certain objects (comme les ArrayCollection et autres..) sont <em>Traversables</em> (c&#8217;est à dire qu&#8217;il possède un Iterateur (On implémente <code>current</code>, <code>next</code>, <code>rewind</code>, <code>valid</code>). En php il est possible de transformer les Itérateurs en Array avec l&#8217;instruction <code>iterator_to_array()</code>. ainsi on transforme l&#8217;objet en Array pour avoir plus d&#8217;information.</p>
-
-<h2>En conclusion</h2>
-
-<p>Donc je n&#8217;ai jamais réussi à écrire un <code>array_walk_recursive</code> mais au moins j&#8217;ai réussi à écrire un post dessus.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -3528,6 +3509,10 @@ les deux fonctions ont un peu près le même résultat.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/10/04/tig-status/">Tig : Status</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/10/03/spl-surcharge-magique/">SPL Surcharge Magique</a>
       </li>
     
@@ -3541,10 +3526,6 @@ les deux fonctions ont un peu près le même résultat.</p>
     
       <li class="post">
         <a href="/blog/2015/09/13/yield-php-co-routine/">Yield PHP Co-routine</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/09/09/probleme-np-complet/">Problème Np-Complet</a>
       </li>
     
   </ul>

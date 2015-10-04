@@ -9,7 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Introduction je vais parler de l'instruction __halt_compiler(). Cette instruction arrête l'interprétation du PHP. Instruction inutile ? Pas vraiment &hellip;">
+  <meta name="description" content="Une question que l'on m'a posé. Quel instruction je n'ai jamais jamais réussi à utiliser dans php ? Dans le sens jamais trouvé d'utilisation pratique &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +77,239 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/26/array-walk/">Array_walk, Array_map, Array_walk_recursive</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-08-26T22:30:55+02:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:30 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Une question que l&#8217;on m&#8217;a posé.</p>
+
+<p>Quel instruction je n&#8217;ai jamais jamais réussi à utiliser dans php ? Dans le sens jamais trouvé d&#8217;utilisation pratique.</p>
+
+<p>Ma réponse est un <code>array_recursive_walk()</code> et dans la même idée les <code>RecursiveIteratorIterator</code></p>
+
+<p>Et puis on m&#8217;a demander la différence entre un <code>array_walk</code> et un <code>array_map</code>.</p>
+
+<h2><code>array_map</code></h2>
+
+<p>Voici quelques exemples</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="c1">// via un array_map</span>
+</span><span class='line'><span class="nv">$array</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="s1">&#39;two&#39;</span><span class="p">,</span> <span class="s1">&#39;three&#39;</span><span class="p">]</span>
+</span><span class='line'><span class="nv">$out</span> <span class="o">=</span> <span class="nb">array_map</span><span class="p">(</span><span class="nx">uc_first</span><span class="p">,</span> <span class="nv">$array</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>array_map</code> ne touche pas le tableau original.</p>
+
+<p>En fait <code>array_map</code> fait exactement ceci.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$out</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="s1">&#39;one&#39;</span><span class="p">),</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="s1">&#39;two&#39;</span><span class="p">),</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="s1">&#39;three&#39;</span><span class="p">)</span> <span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>De manière générale</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nb">array_map</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$a</span><span class="p">),[</span><span class="nx">a</span> <span class="p">,</span><span class="nx">b</span><span class="p">,</span> <span class="o">..</span><span class="p">,</span><span class="nx">z</span><span class="p">])</span>
+</span><span class='line'><span class="p">[</span><span class="k">function</span><span class="p">(</span><span class="nx">a</span><span class="p">),</span> <span class="k">function</span><span class="p">(</span><span class="nx">b</span><span class="p">),</span> <span class="k">function</span><span class="p">(</span><span class="nx">c</span><span class="p">),</span> <span class="o">..</span> <span class="k">function</span><span class="p">(</span><span class="nx">z</span><span class="p">)]</span><span class="o">.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>On renvoie un tableau de la <strong>même</strong> taille.</li>
+<li>la fonction appelé doit contenir un <strong>return</strong></li>
+<li>C&#8217;est de la programmation fonctionnelle (c&#8217;est le <strong>map</strong> de <strong>Map</strong>Reduce).</li>
+<li>On ne connais pas l&#8217;index (que l&#8217;on pourrai récupérer dans un <code>foreach($array as $key =&gt; $value)</code>).</li>
+</ul>
+
+
+<h2><code>Array_walk</code></h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$array</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="s1">&#39;two&#39;</span><span class="p">,</span> <span class="s1">&#39;three&#39;</span><span class="p">]</span>
+</span><span class='line'><span class="k">function</span> <span class="nf">toMaj</span><span class="p">(</span><span class="o">&amp;</span><span class="nv">$input</span><span class="p">,</span> <span class="nv">$key</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// ucfirst give error with 2 arguments</span>
+</span><span class='line'>    <span class="nv">$input</span> <span class="o">=</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="nv">$input</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nb">array_walk</span><span class="p">(</span><span class="nv">$array</span><span class="p">,</span> <span class="s1">&#39;toMaj&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$array</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Constatons:</p>
+
+<ul>
+<li>Je passe par référence <code>&amp;input</code>.</li>
+<li>Donc je n&#8217;ai pas besoin de <code>return</code>.</li>
+<li>Donc nous sommes dans du <strong>procédural</strong>. (ce qui n&#8217;est pas forcément un défaut)</li>
+<li>J&#8217;ai économisé une variable</li>
+<li>On est obligé d&#8217;écrire des fonctions à deux arguments certaines fonctions comme <code>ucfirst</code> refusent d&#8217;avoir plusieurs arguments.</li>
+<li>Par contre, on connait l&#8217;index (<code>$key</code>) mais impossible de le modifier.</li>
+<li><code>array_walk</code> renvoie <code>true</code> or <code>false</code> ce qui n&#8217;aide pas beaucoup</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$array</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="s1">&#39;two&#39;</span><span class="p">,</span> <span class="s1">&#39;three&#39;</span><span class="p">]</span>
+</span><span class='line'><span class="k">function</span> <span class="nf">toMaj</span><span class="p">(</span><span class="o">&amp;</span><span class="nv">$input</span><span class="p">,</span> <span class="nv">$key</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$input</span> <span class="o">=</span> <span class="nv">$key</span><span class="o">.</span><span class="s1">&#39; : &#39;</span><span class="nb">ucfirst</span><span class="p">(</span><span class="nv">$input</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nb">array_walk</span><span class="p">(</span><span class="nv">$array</span><span class="p">,</span> <span class="s1">&#39;toMaj&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$array</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pour résumer
+les deux fonctions ont un peu près le même résultat.</p>
+
+<ul>
+<li><code>array_walk</code> prend un array et remplace chaque valeurs par Fonction(valeur).</li>
+<li><code>array_map</code> prend un array et recrée un array de la même taille.</li>
+</ul>
+
+
+<h2>Le <code>Array_recursive_walk</code></h2>
+
+<p>Un exemple de code.</p>
+
+<p>Je voulais faire un <code>CamelCase</code> -> <code>snake_case</code> mais comme le <code>array_walk</code> impossible de modifier les clés des index.</p>
+
+<p>Soit l&#8217;exemple suivant</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$array</span> <span class="o">=</span>  <span class="p">[</span><span class="s2">&quot;Tortue-ninja&quot;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s2">&quot;leonardo&quot;</span> <span class="p">,</span> <span class="s2">&quot;donatello&quot;</span><span class="p">,</span> <span class="s2">&quot;michelangelo&quot;</span><span class="p">,</span><span class="s2">&quot;raphael&quot;</span><span class="p">],</span> <span class="s2">&quot;Mechant&quot;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s2">&quot;shredder&quot;</span><span class="p">,</span> <span class="s2">&quot;krang&quot;</span><span class="p">]];</span>
+</span><span class='line'><span class="nb">array_walk_recursive</span><span class="p">(</span><span class="nv">$array</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="o">&amp;</span><span class="nv">$item</span><span class="p">,</span> <span class="nv">$key</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$key</span> <span class="o">===</span> <span class="s2">&quot;Tortue-ninja&quot;</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">echo</span> <span class="s1">&#39;Cowabunga!&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="nv">$item</span> <span class="o">=</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="nv">$item</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$array</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Le programme n&#8217;affiche pas de <code>Cowabunga</code>, mais j&#8217;ai mis en majuscule toutes les valeurs.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">array</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="s1">&#39;Tortue-ninja&#39;</span> <span class="o">=&gt;</span>
+</span><span class='line'>  <span class="k">array</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="s2">&quot;Leonardo&quot;</span>
+</span><span class='line'>    <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span> <span class="s2">&quot;Donatello&quot;</span>
+</span><span class='line'>    <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span> <span class="s2">&quot;Michelangelo&quot;</span>
+</span><span class='line'>    <span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="s2">&quot;Raphael&quot;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="s1">&#39;mechant&#39;</span> <span class="o">=&gt;</span>
+</span><span class='line'>  <span class="k">array</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="s2">&quot;Shredder&quot;</span>
+</span><span class='line'>    <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="s2">&quot;Krang&quot;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On ne passe jamais sur le clé : <code>Tortue-ninja</code>, d&#8217;ailleurs la documentation est claire</p>
+
+<blockquote><p>Toute clé qui est associée à un tableau n&#8217;est pas passée à la fonction de rappel.</p></blockquote>
+
+<p>Un vrai exemple</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'>    <span class="nb">array_walk_recursive</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="o">&amp;</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span> <span class="nx">instanceof</span> <span class="nx">\Traversable</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$value</span> <span class="o">=</span> <span class="nb">iterator_to_array</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>`</p>
+
+<p>Un exemple que l&#8217;on retrouve dans <a href="">PHPUnit</a> et <a href="">Symfony2</a></p>
+
+<p>On veut logger des objets en les serialisant en Json. Certain objects (comme les ArrayCollection et autres..) sont <em>Traversables</em> (c&#8217;est à dire qu&#8217;il possède un Iterateur (On implémente <code>current</code>, <code>next</code>, <code>rewind</code>, <code>valid</code>). En php il est possible de transformer les Itérateurs en Array avec l&#8217;instruction <code>iterator_to_array()</code>. ainsi on transforme l&#8217;objet en Array pour avoir plus d&#8217;information.</p>
+
+<h2>En conclusion</h2>
+
+<p>Donc je n&#8217;ai jamais réussi à écrire un <code>array_walk_recursive</code> mais au moins j&#8217;ai réussi à écrire un post dessus.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2596,258 +2829,6 @@ Il suffit de créer un fichier <code>pre-commit.sh</code> dans le répertoire <c
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/07/19/histogramme-et-ligne-de-commande/">Histogramme Et Ligne De Commande</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-07-19T18:16:57+02:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:16 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Un petit utilitaire.</h2>
-
-<p>J&#8217;ai reprogrammé en php un clone de <a href="https://github.com/holman/spark">spark</a>.</p>
-
-<p>Un petit exemple est plus parlant</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>spark([1,2,3,4,4,5,6,1,2]); // ▂▃▅▆▆▇█▂▃
-</span><span class='line'>spark([1,2,3,4,5,1,2,3,4,5]); //▂▄▅▇█▂▄▅▇█</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Voici l&#8217;implémentation</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">spark</span><span class="p">(</span><span class="nv">$array</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nv">$bars</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;▁&#39;</span><span class="p">,</span><span class="s1">&#39;▂&#39;</span><span class="p">,</span><span class="s1">&#39;▃&#39;</span><span class="p">,</span><span class="s1">&#39;▄&#39;</span><span class="p">,</span><span class="s1">&#39;▅&#39;</span><span class="p">,</span><span class="s1">&#39;▆&#39;</span><span class="p">,</span><span class="s1">&#39;▇&#39;</span><span class="p">,</span><span class="s1">&#39;█&#39;</span><span class="p">);</span>
-</span><span class='line'>    <span class="nv">$divide</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nv">$array</span><span class="p">);</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$divide</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$divide</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="nv">$countBars</span> <span class="o">=</span> <span class="nb">count</span><span class="p">(</span><span class="nv">$bars</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-</span><span class='line'>    <span class="nv">$out</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$array</span> <span class="k">as</span> <span class="nv">$tick</span><span class="p">)</span>
-</span><span class='line'>        <span class="nv">$out</span> <span class="o">.=</span> <span class="nv">$bars</span><span class="p">[</span><span class="nb">round</span><span class="p">((</span><span class="nv">$tick</span> <span class="o">/</span> <span class="nv">$divide</span><span class="p">)</span> <span class="o">*</span> <span class="nv">$countBars</span><span class="p">)];</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="nv">$out</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>L&#8217;appeler en ligne de commande.</h2>
-
-<p>La documentation de spark donne cette ligne de commande</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">spark</span> <span class="mi">0</span> <span class="mi">30</span> <span class="mi">55</span> <span class="mi">80</span> <span class="mi">33</span> <span class="mi">150</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Est ce qu&#8217;on peux faire la même chose ? Il suffit de rajouter les deux lignes suivantes.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$iDontCare</span> <span class="o">=</span><span class="nb">array_shift</span><span class="p">(</span><span class="nv">$argv</span><span class="p">);</span>
-</span><span class='line'><span class="nx">spark</span><span class="p">(</span><span class="nv">$argv</span><span class="p">);</span>
-</span><span class='line'><span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On utilise la variable <code>$argv</code> qui est le tableau de paramètres passer dans la ligne de commande. L&#8217;argument <code>$argv[0]</code>est le nom du programme, c&#8217;est pour cela que l&#8217;on fait un <code>array_shift</code> cela supprime la première valeur du tableau.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">php</span> <span class="nx">spark</span><span class="o">.</span><span class="nx">php</span> <span class="mi">0</span> <span class="mi">30</span> <span class="mi">55</span> <span class="mi">80</span> <span class="mi">33</span> <span class="mi">150</span>
-</span><span class='line'><span class="nx">▁▂▄▅▃█</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>L&#8217;appeler via les pipes</h2>
-
-<p>Un peu plus compliqué via les pipes du Shell.</p>
-
-<p>Les implémentations des Pipes se présentent toujours un peu de la même manière. On utilise <code>STDIN</code>  qui représente l&#8217;entrée standard.</p>
-
-<p>Un exemple qui traduit les caractères accentués. <code>é-&gt;&amp;eacute</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="c1">#!/usr/bin/env php</span>
-</span><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'><span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nb">feof</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>     <span class="k">echo</span> <span class="nb">htmlentities</span><span class="p">(</span><span class="nb">fgets</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">));</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>La ligne <code>!/usr/bin/env php</code> s&#8217;appelle le <a href="https://fr.wikipedia.org/wiki/Shebang">shebang</a></p>
-
-<p>Puis rendre exécutable le fichier</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nb">chmod</span> <span class="o">+</span><span class="nx">x</span> <span class="nb">htmlentities</span><span class="o">.</span><span class="nx">php</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Des exemples</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="err">$</span> <span class="k">echo</span> <span class="s1">&#39;énergie&#39;</span> <span class="o">|</span> <span class="o">./</span><span class="nb">htmlentities</span><span class="o">.</span><span class="nx">php</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&amp;</span><span class="nx">eacute</span><span class="p">;</span><span class="nx">nergie</span>
-</span><span class='line'>
-</span><span class='line'><span class="err">$</span> <span class="nx">cat</span> <span class="nb">file</span><span class="o">.</span><span class="nx">txt</span> <span class="o">|</span> <span class="o">./</span><span class="nb">htmlentities</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Ce qui est cool c&#8217;est que l&#8217;on peux chainer les opérateur.</p>
-
-<p>Un programme qui passe la première lettre en majuscule.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="c1">#!/usr/bin/env php</span>
-</span><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'><span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nb">feof</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>     <span class="k">echo</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="nb">fgets</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">)));</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Un programme qui aime crier !!!!.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="c1">#!/usr/bin/env php</span>
-</span><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'><span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nb">feof</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>     <span class="k">echo</span> <span class="nb">trim</span><span class="p">(</span><span class="nb">fgets</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">))</span><span class="o">.</span><span class="s1">&#39;!!!!&#39;</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="err">$</span> <span class="k">echo</span> <span class="s1">&#39;récuperation&#39;</span> <span class="o">|</span> <span class="o">./</span><span class="nx">shoot</span><span class="o">.</span><span class="nx">php</span> <span class="o">|</span> <span class="o">./</span><span class="nx">capitalize</span><span class="o">.</span><span class="nx">php</span> <span class="o">|</span> <span class="o">./</span><span class="nb">htmlentities</span><span class="o">.</span><span class="nx">php</span>
-</span><span class='line'><span class="nx">R</span><span class="o">&amp;</span><span class="nx">eacute</span><span class="p">;</span><span class="nx">cup</span><span class="o">&amp;</span><span class="nx">eacute</span><span class="p">;</span><span class="nx">ration</span><span class="o">!!!!</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>C&#8217;est un peu plus compliqué dans la vrai vie avec les retours à la ligne vide. Mais j&#8217;espère que vous avez compris mon idée.</p>
-
-<p>Retour à notre script.</p>
-
-<p>Voici la partie pour récupérer de la ligne de commande.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="c1">// si je n&#39;ai aucun argument ..</span>
-</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="nv">$argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nv">$str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-</span><span class='line'>    <span class="c1">// recupère le flux d&#39;entrée</span>
-</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nb">feof</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$str</span> <span class="o">.=</span> <span class="nb">fgets</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="c1">// explode laisse la derniere ligne vide.</span>
-</span><span class='line'>    <span class="c1">// d&#39;ou le array_filter</span>
-</span><span class='line'>    <span class="nx">spark</span><span class="p">(</span><span class="nb">array_filter</span><span class="p">(</span><span class="nb">explode</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nv">$str</span><span class="p">),</span><span class="s1">&#39;strlen&#39;</span><span class="p">));</span>
-</span><span class='line'>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Essayons une commande sur le dépôt git du blog que vous lisez.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">git</span> <span class="nx">shortlog</span> <span class="o">-</span><span class="nx">s</span> <span class="o">|</span> <span class="nx">cut</span> <span class="o">-</span><span class="nx">f1</span> <span class="o">|</span> <span class="nx">php</span> <span class="o">~/</span><span class="nx">prog</span><span class="o">/</span><span class="nx">spark</span><span class="o">/</span><span class="nx">spark</span><span class="o">.</span><span class="nx">php</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>git shortlog -s
-</span><span class='line'><span class="o">(</span>...<span class="o">)</span>
-</span><span class='line'>   <span class="m">2</span>  Manu
-</span><span class='line'>   <span class="m">37</span>  Marc Camuzat
-</span><span class='line'>   <span class="m">1</span>  Marcus Young
-</span><span class='line'><span class="o">(</span>..<span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On ne garde que la colonne 1 avec <code>cut -f1</code> puis on passe au script php</p>
-
-<p>On obtient</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>▁▁▁▁▁▁▁▁▁▁▁▁▃▁▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▃▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Conclusion</h2>
-
-<p>J&#8217;avais besoin pour un futur article (le prochain ?) de cette fonction.
-La philosophie de Linux est de créer plein de petits programmes et que ceux-ci communiquent via une interface très simple et universelle qui est le fichier texte. Ainsi il n&#8217;y a aucune dépendance le programme 1 est en bash, le programme 2 est en C, le programme 3 est en PHP. Et tout cela ne pose aucun problème.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -2865,6 +2846,10 @@ La philosophie de Linux est de créer plein de petits programmes et que ceux-ci 
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/10/04/tig-status/">Tig : Status</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/10/03/spl-surcharge-magique/">SPL Surcharge Magique</a>
       </li>
     
@@ -2878,10 +2863,6 @@ La philosophie de Linux est de créer plein de petits programmes et que ceux-ci 
     
       <li class="post">
         <a href="/blog/2015/09/13/yield-php-co-routine/">Yield PHP Co-routine</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/09/09/probleme-np-complet/">Problème Np-Complet</a>
       </li>
     
   </ul>

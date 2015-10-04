@@ -9,7 +9,10 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Aujourd'hui, je ressors un vieux code que j'avais écris pour le CNAM. Le sujet était faire que l'image à l'écran bouge quand on parle dans un &hellip;">
+  <meta name="description" content="Un petit utilitaire. J'ai reprogrammé en php un clone de spark. Un petit exemple est plus parlant 1
+2
+spark([1,2,3,4,4,5,6,1,2]); // ▂▃▅▆▆▇█▂▃
+spark &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +80,258 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/07/19/histogramme-et-ligne-de-commande/">Histogramme Et Ligne De Commande</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-07-19T18:16:57+02:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:16 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Un petit utilitaire.</h2>
+
+<p>J&#8217;ai reprogrammé en php un clone de <a href="https://github.com/holman/spark">spark</a>.</p>
+
+<p>Un petit exemple est plus parlant</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>spark([1,2,3,4,4,5,6,1,2]); // ▂▃▅▆▆▇█▂▃
+</span><span class='line'>spark([1,2,3,4,5,1,2,3,4,5]); //▂▄▅▇█▂▄▅▇█</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Voici l&#8217;implémentation</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">spark</span><span class="p">(</span><span class="nv">$array</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$bars</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;▁&#39;</span><span class="p">,</span><span class="s1">&#39;▂&#39;</span><span class="p">,</span><span class="s1">&#39;▃&#39;</span><span class="p">,</span><span class="s1">&#39;▄&#39;</span><span class="p">,</span><span class="s1">&#39;▅&#39;</span><span class="p">,</span><span class="s1">&#39;▆&#39;</span><span class="p">,</span><span class="s1">&#39;▇&#39;</span><span class="p">,</span><span class="s1">&#39;█&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nv">$divide</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nv">$array</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$divide</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$divide</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="nv">$countBars</span> <span class="o">=</span> <span class="nb">count</span><span class="p">(</span><span class="nv">$bars</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>    <span class="nv">$out</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$array</span> <span class="k">as</span> <span class="nv">$tick</span><span class="p">)</span>
+</span><span class='line'>        <span class="nv">$out</span> <span class="o">.=</span> <span class="nv">$bars</span><span class="p">[</span><span class="nb">round</span><span class="p">((</span><span class="nv">$tick</span> <span class="o">/</span> <span class="nv">$divide</span><span class="p">)</span> <span class="o">*</span> <span class="nv">$countBars</span><span class="p">)];</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="nv">$out</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>L&#8217;appeler en ligne de commande.</h2>
+
+<p>La documentation de spark donne cette ligne de commande</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">spark</span> <span class="mi">0</span> <span class="mi">30</span> <span class="mi">55</span> <span class="mi">80</span> <span class="mi">33</span> <span class="mi">150</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Est ce qu&#8217;on peux faire la même chose ? Il suffit de rajouter les deux lignes suivantes.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$iDontCare</span> <span class="o">=</span><span class="nb">array_shift</span><span class="p">(</span><span class="nv">$argv</span><span class="p">);</span>
+</span><span class='line'><span class="nx">spark</span><span class="p">(</span><span class="nv">$argv</span><span class="p">);</span>
+</span><span class='line'><span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On utilise la variable <code>$argv</code> qui est le tableau de paramètres passer dans la ligne de commande. L&#8217;argument <code>$argv[0]</code>est le nom du programme, c&#8217;est pour cela que l&#8217;on fait un <code>array_shift</code> cela supprime la première valeur du tableau.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">php</span> <span class="nx">spark</span><span class="o">.</span><span class="nx">php</span> <span class="mi">0</span> <span class="mi">30</span> <span class="mi">55</span> <span class="mi">80</span> <span class="mi">33</span> <span class="mi">150</span>
+</span><span class='line'><span class="nx">▁▂▄▅▃█</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>L&#8217;appeler via les pipes</h2>
+
+<p>Un peu plus compliqué via les pipes du Shell.</p>
+
+<p>Les implémentations des Pipes se présentent toujours un peu de la même manière. On utilise <code>STDIN</code>  qui représente l&#8217;entrée standard.</p>
+
+<p>Un exemple qui traduit les caractères accentués. <code>é-&gt;&amp;eacute</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="c1">#!/usr/bin/env php</span>
+</span><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nb">feof</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>     <span class="k">echo</span> <span class="nb">htmlentities</span><span class="p">(</span><span class="nb">fgets</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">));</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>La ligne <code>!/usr/bin/env php</code> s&#8217;appelle le <a href="https://fr.wikipedia.org/wiki/Shebang">shebang</a></p>
+
+<p>Puis rendre exécutable le fichier</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nb">chmod</span> <span class="o">+</span><span class="nx">x</span> <span class="nb">htmlentities</span><span class="o">.</span><span class="nx">php</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Des exemples</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="err">$</span> <span class="k">echo</span> <span class="s1">&#39;énergie&#39;</span> <span class="o">|</span> <span class="o">./</span><span class="nb">htmlentities</span><span class="o">.</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&amp;</span><span class="nx">eacute</span><span class="p">;</span><span class="nx">nergie</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">$</span> <span class="nx">cat</span> <span class="nb">file</span><span class="o">.</span><span class="nx">txt</span> <span class="o">|</span> <span class="o">./</span><span class="nb">htmlentities</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ce qui est cool c&#8217;est que l&#8217;on peux chainer les opérateur.</p>
+
+<p>Un programme qui passe la première lettre en majuscule.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="c1">#!/usr/bin/env php</span>
+</span><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nb">feof</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>     <span class="k">echo</span> <span class="nb">ucfirst</span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="nb">fgets</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">)));</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Un programme qui aime crier !!!!.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="c1">#!/usr/bin/env php</span>
+</span><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nb">feof</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>     <span class="k">echo</span> <span class="nb">trim</span><span class="p">(</span><span class="nb">fgets</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">))</span><span class="o">.</span><span class="s1">&#39;!!!!&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="err">$</span> <span class="k">echo</span> <span class="s1">&#39;récuperation&#39;</span> <span class="o">|</span> <span class="o">./</span><span class="nx">shoot</span><span class="o">.</span><span class="nx">php</span> <span class="o">|</span> <span class="o">./</span><span class="nx">capitalize</span><span class="o">.</span><span class="nx">php</span> <span class="o">|</span> <span class="o">./</span><span class="nb">htmlentities</span><span class="o">.</span><span class="nx">php</span>
+</span><span class='line'><span class="nx">R</span><span class="o">&amp;</span><span class="nx">eacute</span><span class="p">;</span><span class="nx">cup</span><span class="o">&amp;</span><span class="nx">eacute</span><span class="p">;</span><span class="nx">ration</span><span class="o">!!!!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>C&#8217;est un peu plus compliqué dans la vrai vie avec les retours à la ligne vide. Mais j&#8217;espère que vous avez compris mon idée.</p>
+
+<p>Retour à notre script.</p>
+
+<p>Voici la partie pour récupérer de la ligne de commande.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="c1">// si je n&#39;ai aucun argument ..</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="nv">$argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="c1">// recupère le flux d&#39;entrée</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nb">feof</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$str</span> <span class="o">.=</span> <span class="nb">fgets</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="c1">// explode laisse la derniere ligne vide.</span>
+</span><span class='line'>    <span class="c1">// d&#39;ou le array_filter</span>
+</span><span class='line'>    <span class="nx">spark</span><span class="p">(</span><span class="nb">array_filter</span><span class="p">(</span><span class="nb">explode</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nv">$str</span><span class="p">),</span><span class="s1">&#39;strlen&#39;</span><span class="p">));</span>
+</span><span class='line'>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Essayons une commande sur le dépôt git du blog que vous lisez.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">git</span> <span class="nx">shortlog</span> <span class="o">-</span><span class="nx">s</span> <span class="o">|</span> <span class="nx">cut</span> <span class="o">-</span><span class="nx">f1</span> <span class="o">|</span> <span class="nx">php</span> <span class="o">~/</span><span class="nx">prog</span><span class="o">/</span><span class="nx">spark</span><span class="o">/</span><span class="nx">spark</span><span class="o">.</span><span class="nx">php</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>git shortlog -s
+</span><span class='line'><span class="o">(</span>...<span class="o">)</span>
+</span><span class='line'>   <span class="m">2</span>  Manu
+</span><span class='line'>   <span class="m">37</span>  Marc Camuzat
+</span><span class='line'>   <span class="m">1</span>  Marcus Young
+</span><span class='line'><span class="o">(</span>..<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On ne garde que la colonne 1 avec <code>cut -f1</code> puis on passe au script php</p>
+
+<p>On obtient</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>▁▁▁▁▁▁▁▁▁▁▁▁▃▁▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▃▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Conclusion</h2>
+
+<p>J&#8217;avais besoin pour un futur article (le prochain ?) de cette fonction.
+La philosophie de Linux est de créer plein de petits programmes et que ceux-ci communiquent via une interface très simple et universelle qui est le fichier texte. Ainsi il n&#8217;y a aucune dépendance le programme 1 est en bash, le programme 2 est en C, le programme 3 est en PHP. Et tout cela ne pose aucun problème.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1433,234 +1688,6 @@ Je vais essayer de continuer un peu sur le serveur web (récupération des posts
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/05/10/go-introduction/">Go Introduction</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-05-10T18:21:31+02:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:21 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Introduction</h2>
-
-<p>J&#8217;ai regardé Docker. Docker est en Go ainsi que pas mal de projets en fait. J&#8217;ai donc décidé d&#8217;essayer.</p>
-
-<p>Dans ce chapitre nous n&#8217;allons pas trop discuter du langage mais surtout mettre en place tout les outils.</p>
-
-<h2>Installation(linux)</h2>
-
-<ul>
-<li><p>Nous allons télécharger les fichiers <a href="https://golang.org/dl/">ici</a></p></li>
-<li><p>On décompresse le fichier</p></li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo tar -C /usr/local -xzf go1.4.2.linux-amd64.tar.gz
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Créer un répertoire go dans votre <code>/usr/local</code></p>
-
-<ul>
-<li>enfin il faut l&#8217;ajouter à votre <code>$PATH</code> en modifiant le <code>.profile</code></li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:/usr/local/go/bin
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>testons dans notre ligne de commande.</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>go version
-</span><span class='line'>go version go1.4.2 linux/amd64
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Hello world !</h2>
-
-<p>Ouvrons un fichier <code>hello.go</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">package</span> <span class="nx">main</span>
-</span><span class='line'>
-</span><span class='line'><span class="kn">import</span> <span class="s">&quot;fmt&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;hello, world\n&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Pour l&#8217;exécuter</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>go run hello.go
-</span><span class='line'>hello, world
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Tout va bien ! Nous avons installé Go</p>
-
-<h2>Organisation d&#8217;un projet</h2>
-
-<p>L&#8217;organisation d&#8217;un projet sous Go est fixe ! Comprendre qu&#8217;il faut un <strong>workspace</strong></p>
-
-<p>Nous allons ensemble créer le projet <code>Hello</code></p>
-
-<ul>
-<li><p>Créer un répertoire <code>go</code></p></li>
-<li><p>Assigner la variable d&#8217;environnement <code>$GOPATH</code></p></li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'> <span class="nb">export </span><span class="nv">GOPATH</span><span class="o">=</span><span class="nv">$HOME</span>/go
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>enfin rajouter le $GOPATH/bin dans le PATH</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="nv">$GOPATH</span>/bin
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Nous voulons sauvegarder notre code quelques part. ici github!</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>mkdir -p <span class="nv">$GOPATH</span>/src/github.com/&lt;votreusername&gt;/hello
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Votre <code>username</code> est votre namespace pour les packages (un peu comme java).</p>
-
-<ul>
-<li><p>dans notre répertoire <code>src/github.com/&lt;votreusername&gt;/hello</code> nous allons copier notre <code>hello.go</code></p></li>
-<li><p>Tout est en place. Il n&#8217;y a plus qu&#8217;a taper <code>go install github.com/user/hello</code>.</p></li>
-<li><p>autre possibilité se rendre dans le répertoire <code>src/github.com/&lt;votreusername&gt;/hello</code></p></li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>go install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Nous pouvons vérifier que dans le répertoire <code>$HOME/go</code> il y a un dossier <code>bin/</code></li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$GOPATH</span>/bin/hello
-</span><span class='line'>hello world
-</span><span class='line'><span class="c"># de manière plus simple puisque nous avons ajouter dans le path $GOPATH/bin</span>
-</span><span class='line'>hello
-</span><span class='line'>hello world
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>voici la structure finale</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>.
-</span><span class='line'>├── bin
-</span><span class='line'>│   └── hello
-</span><span class='line'>└── src
-</span><span class='line'>    └── github.com
-</span><span class='line'>        └── mcamuzat
-</span><span class='line'>            └── hello
-</span><span class='line'>                ├── hello.go
-</span><span class='line'>                ├── LICENSE
-</span><span class='line'>                └── README.md
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Sauvegarde d&#8217;un projet</h2>
-
-<p>Nous allons sauvegarder celui-ci sous <a href="https://github.com/">Github</a>. Ce n&#8217;est pas obligatoire.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> <span class="nv">$GOPATH</span>/src/github.com/user/hello
-</span><span class='line'>git init
-</span><span class='line'>git add .
-</span><span class='line'>git commit -m<span class="s2">&quot;create project&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Sous github, j&#8217;ai crée un nouveau repository <code>hello-go</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>git remote add origin git@github.com:mcamuzat/hello-go.git
-</span><span class='line'>git pull --rebase
-</span><span class='line'>git push origin master
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Conclusion</h2>
-
-<p>Nous avons d&#8217;installer Go.</p>
-
-<p>Je viens juste de m&#8217;y mettre, Je ne sais pas encore ce que la suite nous réserve..</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/4">&larr; Older</a>
@@ -1678,6 +1705,10 @@ Je vais essayer de continuer un peu sur le serveur web (récupération des posts
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/10/04/tig-status/">Tig : Status</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/10/03/spl-surcharge-magique/">SPL Surcharge Magique</a>
       </li>
     
@@ -1691,10 +1722,6 @@ Je vais essayer de continuer un peu sur le serveur web (récupération des posts
     
       <li class="post">
         <a href="/blog/2015/09/13/yield-php-co-routine/">Yield PHP Co-routine</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/09/09/probleme-np-complet/">Problème Np-Complet</a>
       </li>
     
   </ul>
