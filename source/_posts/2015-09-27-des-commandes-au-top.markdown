@@ -3,7 +3,7 @@ layout: post
 title: "Des commandes au top"
 date: 2015-09-27 16:04:40 +0200
 comments: true
-categories: 
+categories: ["linux"] 
 ---
 
 J'utilise souvent le programme htop. mais il y en a d'autre.
@@ -46,6 +46,7 @@ Utilisez la barre d'espace pour sélectionner un process. Cela permet de le suiv
 
  * `F7` ou  `F8` pour augmenter la priorité du process
  * `F9` ou `k` pour killer un process
+ * `F5` affichage en arbre.
  * `a` pour assigner le process à un CPU.
  * `U` pour désélectionnér tous les process
 
