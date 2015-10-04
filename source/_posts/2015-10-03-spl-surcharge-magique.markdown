@@ -140,7 +140,7 @@ Pour les `foreach` j'ai déjà parlé des iterators et des [générateurs](blog/
 
 ## Conclusion
 
-Maintenant les interfaces `ArrayAccess` et `Countable` n'ont plus de secrets pour vous. Nous verrons dans un prochain Post les listes chainée. L'avantage de ces méthode est que l'on obtient une structure qui se comporte comme un `array` mais avec une occupation mémoire moindre.  
+Maintenant les interfaces `ArrayAccess` et `Countable` n'ont plus de secrets pour vous. Nous verrons dans un prochain Post les listes chainées. L'avantage de ces méthode est que l'on obtient une structure qui se comporte comme un `array` mais avec une occupation mémoire moindre.  
 
 Dans un prochain post, je vais parler des listes chainées et des différentes structure de la SPL (j'ai déja parlé de la [SplStack](blog/2015/08/29/stacks-structures-meconnues/))
 
