@@ -8,7 +8,7 @@ categories: ["PHP", "SPL"]
 
 Nous allons repartir sur la [SPL](http://php.net/manual/fr/book.spl.php). 
 
-Je vais déjà parler des différentes méthodes amusantes à surcharger.
+Je vais parler des différentes méthodes amusantes à surcharger.
 
 ## Count 
 

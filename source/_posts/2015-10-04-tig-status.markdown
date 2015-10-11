@@ -23,14 +23,14 @@ git clone https://github.com/jonas/tig
 make
 make install
 ```
-
+attention vous aurez probablement besoin d'avoir installer la librairies `libncursesw` pour l'utf-8
 ## La vue principale
 Elle permet de voir l'historique du dépôt.
 
 {% img center /images/tig-defaut.png 600 398 'la vue par défault' 'la vue par défaut' %}
 
 
-Appuyer sur `<Enter>` pour voir la différence. (Dans la version 2, si le terminal fait plus de 160 caractere l'écran se splitte en 2 verticalement)
+Appuyer sur `<Enter>` pour voir la différence. (Dans la version 2, si le terminal fait plus de 160 caractères l'écran se splitte en 2 verticalement)
 
 {% img center /images/tig-diff.png 600 399 'quand on appuie sur la touche entrée, on affiche la différence' 'l'écran de différence' %}
 
@@ -44,7 +44,7 @@ De cette écran voici les différents modes (je ne les cites pas tous)
 
  * `S` ou `s` pour voir le stage (équivalent de git status)
  * `t` tree view affichage en explorateur de fichier
- * `r` permet de voir les différentes branches
+ * `r` permet de voir les différentes branches (`H` dans la version1
  * `l` voir les logs
 
 Je vais surtout m'intéresser à la status view. 
@@ -92,11 +92,11 @@ Enfin on peut aussi prendre chunk par chunck (l'équivalent de `git add -p`)
 
 {% img center /images/tig-revert.png 600 398 'la vue par défaut' 'la vue par défaut' %}
 
-Il suffit d'appuyer sur `Enter` puis de ce déplacer dans le commit avec `j` et `k` et appuyer sur `u` pour ajouter ce chunk. Les chunks pour faire simple sont les textes séparés par des `@@ ... @@`. On se déplace de chunk en chunk grâce à la touche `@`.
+Il suffit d'appuyer sur `Enter` puis de se déplacer dans le commit avec `j` et `k` et appuyer sur `u` pour ajouter ce chunk. Les chunks pour faire simple sont les textes séparés par des `@@ ... @@`. On se déplace de chunk en chunk grâce à la touche `@`.
 
 Pour reverter le fichier, On utilise la touche `!`. 
 
-cela marche aussi sur un chunk. On peut donc reverter partiellement un fichier.
+Cela marche aussi sur un chunk. On peut donc reverter partiellement un fichier.
 
 Il est possible d'ajouter ligne par ligne dans un commit grâce à la touche `1`.
 
@@ -124,7 +124,7 @@ Les raccourcis claviers que j'ai rajouté
 
  * Dans la vue status la touche `D` efface le fichier
  * Dans la vue status la touche `A` fait un `git commit --amend`
- * Dans la vue principale la touche `B` permet de créer une branches.
+ * Dans la vue principale la touche `B` permet de créer une branche.
 
 
 ## Résumé de touches
