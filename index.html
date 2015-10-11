@@ -9,8 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Tig est un client git en ligne de commande Il n'est pas compliqué à installer : 1
-sudo apt-get install tig Néanmoins c'est la version 1.2 dans les &hellip;">
+  <meta name="description" content="Dans la partie 1 nous avons appris à surcharger le count ainsi que les différentes méthodes de ArrayAccess. Pour faire un exemple un peu plus concret &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -84,6 +83,547 @@ sudo apt-get install tig Néanmoins c'est la version 1.2 dans les &hellip;">
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2015/10/10/liste-chainees-implementation/">Liste Chainées : Implémentation</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-10-10T21:12:47+02:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>9:12 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Dans la <a href="/blog/2015/10/03/spl-surcharge-magique/">partie 1</a> nous avons appris à surcharger le <code>count</code> ainsi que les différentes méthodes de <code>ArrayAccess</code>. Pour faire un exemple un peu plus concret, je vais impémenter les listes chainées. Les listes doublement chainée sont <strong>déja</strong> implémentées dans la SPL via <a href="http://php.net/manual/fr/class.spldoublylinkedlist.php">SplDoublyLinkedList</a>.</p>
+
+<p>Le liste chainée (linked list en anglais) est une structure de donnée. Nous allons essayer d&#8217;implémenter une liste chainée en PHP. Cela nous permettra de comprendre l&#8217;idée. Nous allons implémenter l&#8217;interface <code>Countable</code>. (J&#8217;implémente <code>ArrayAccess</code> et <code>Iterator</code> dans le post suivant).</p>
+
+<p>Une liste chainée est constituée de <code>Node</code> ou noeud/chainon.</p>
+
+<p>Un node a deux propriétés.</p>
+
+<ul>
+<li>Sa valeurs</li>
+<li>Le liens vers le noeud suivant</li>
+</ul>
+
+
+<p>En php</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Node</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$data</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$next</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="nx">Node</span> <span class="nv">$next</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span> <span class="o">=</span> <span class="nv">$data</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">next</span> <span class="o">=</span> <span class="nv">$next</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">setData</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span> <span class="o">=</span> <span class="nv">$data</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getData</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getNext</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">next</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">setNext</span><span class="p">(</span><span class="nx">Node</span> <span class="nv">$next</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">next</span> <span class="o">=</span> <span class="nv">$next</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>pour créer une liste rien de bien compliqué.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$noeud1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Node</span><span class="p">(</span><span class="mi">12</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$noeud2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Node</span><span class="p">(</span><span class="mi">99</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$noeud3</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Node</span><span class="p">(</span><span class="mi">37</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$noeud1</span><span class="o">-&gt;</span><span class="na">setNext</span><span class="p">(</span><span class="nv">$noeud2</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$neoud2</span><span class="o">-&gt;</span><span class="na">setNext</span><span class="p">(</span><span class="nv">$noeud3</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Résultat le dessin suivant (wikipedia)</p>
+
+<p><img class="center" src="/images/linked-list.png" width="408" height="41" title="'Une liste chainée' 'Une liste chainée" ></p>
+
+<h2>Implementation de la liste</h2>
+
+<p>Nous allons créer des méthodes pour ajouter simplement nos chainons.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">LinkedList</span> <span class="k">implements</span> <span class="nx">Countable</span><span class="p">,</span> <span class="nx">ArrayAccess</span><span class="p">,</span> <span class="nx">Iterator</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$first</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$last</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="o">...</span>
+</span><span class='line'>    <span class="c1">// pour l&#39;iterateur</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$current</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$position</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Permet d&#39;afficher le contenu de la chaine. </span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">printMe</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$current</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">while</span> <span class="p">(</span><span class="nv">$current</span><span class="o">-&gt;</span><span class="na">getNext</span><span class="p">())</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">echo</span> <span class="s2">&quot;-</span><span class="si">{</span><span class="nv">$current</span><span class="o">-&gt;</span><span class="na">getData</span><span class="p">()</span><span class="si">}</span><span class="s2">-&quot;</span><span class="p">;</span>
+</span><span class='line'>            <span class="nv">$current</span> <span class="o">=</span> <span class="nv">$current</span><span class="o">-&gt;</span><span class="na">getNext</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="k">echo</span> <span class="nv">$current</span><span class="o">-&gt;</span><span class="na">getData</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Nous allons traquer le premier élément de la chaine (<code>$this-&gt;first</code>) et le dernier (<code>$this-&gt;last</code>)</p>
+
+<h3>Ajout d&#8217;un chainon à la fin</h3>
+
+<p>C&#8217;est assez simple.</p>
+
+<ul>
+<li>Créer un nouveau noeud</li>
+<li>Récupérer le dernier chainon</li>
+<li>Faire pointer la propriété <code>next</code> du dernier chainon vers notre nouveau noeud.</li>
+<li>Notre nouveau noeud devient le dernier noeud.</li>
+<li>On augmente la taille de 1</li>
+</ul>
+
+
+<p>en code cela donne</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">insertAtEnd</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// nouveau noeud</span>
+</span><span class='line'>    <span class="nv">$node</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Node</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">// si la liste est vide</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span> <span class="o">==</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span> <span class="o">=</span> <span class="nv">$node</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="c1">// on ajoute le liens vers le suivant</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">last</span> <span class="o">==</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">last</span><span class="o">-&gt;</span><span class="na">setNext</span><span class="p">(</span><span class="nv">$node</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="c1">// notre nouveau noeud devient le dernier</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">last</span> <span class="o">=</span> <span class="nv">$node</span><span class="p">;</span>
+</span><span class='line'>    <span class="c1">// on augmente la taille.</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">count</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Exemple</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$list</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LinkedList</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$list</span><span class="o">-&gt;</span><span class="na">insertAtEnd</span><span class="p">(</span><span class="s2">&quot;ha&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">insertAtEnd</span><span class="p">(</span><span class="s2">&quot;hi&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$list</span><span class="o">-&gt;</span><span class="na">printMe</span><span class="p">()</span> <span class="c1">// -ha-hi</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Ajout d&#8217;un chainon au début</h3>
+
+<p>C&#8217;est un peu près la même idée.</p>
+
+<ul>
+<li>Créer un nouveau noeud</li>
+<li>Récupérer le premier noeud.</li>
+<li>Notre noeud pointe vers le premier noeud.</li>
+<li>On pointe le <code>first</code> vers notre nouveau noeud.</li>
+</ul>
+
+
+<p>En code</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">insertFirstValue</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>   <span class="nv">$node</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Node</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span><span class="p">);</span>
+</span><span class='line'>   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">count</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>   <span class="c1">// si la liste est vide</span>
+</span><span class='line'>   <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">last</span> <span class="o">==</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">last</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span><span class="p">;</span>
+</span><span class='line'>   <span class="p">}</span>
+</span><span class='line'>   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span> <span class="o">=</span> <span class="nv">$node</span><span class="p">;</span>
+</span><span class='line'>   <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Un exemple</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$list</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LinkedList</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$list</span><span class="o">-&gt;</span><span class="na">insertAtEnd</span><span class="p">(</span><span class="s2">&quot;first&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">insertFirstValue</span><span class="p">(</span><span class="s2">&quot;second&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$list</span><span class="o">-&gt;</span><span class="na">printMe</span><span class="p">();</span> <span class="c1">// -second-first</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Suppression d&#8217;un chainon au début.</h3>
+
+<p>Il faut faire dans l&#8217;autre sens.</p>
+
+<p>En code</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">removeFirstValue</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>   <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nx">\Exception</span><span class="p">(</span><span class="s1">&#39;La liste est vide&#39;</span><span class="p">);</span>
+</span><span class='line'>   <span class="p">}</span>
+</span><span class='line'>   <span class="nv">$value</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span><span class="o">-&gt;</span><span class="na">getData</span><span class="p">();</span>
+</span><span class='line'>   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">count</span><span class="o">--</span><span class="p">;</span>
+</span><span class='line'>   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span><span class="o">-&gt;</span><span class="na">getNext</span><span class="p">();</span>
+</span><span class='line'>   <span class="c1">// si la liste est vide , reinitialiser le last</span>
+</span><span class='line'>   <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span> <span class="o">==</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>       <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">last</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+</span><span class='line'>   <span class="p">}</span>
+</span><span class='line'>   <span class="k">return</span> <span class="nv">$value</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nv">$list</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LinkedList</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$list</span><span class="o">-&gt;</span><span class="na">insertAtEnd</span><span class="p">(</span><span class="s2">&quot;first&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">insertAtEnd</span><span class="p">(</span><span class="s2">&quot;second&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$list</span><span class="o">-&gt;</span><span class="na">printMe</span><span class="p">();</span> <span class="c1">// -first-second</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$list</span><span class="o">-&gt;</span><span class="na">removeFirstValue</span><span class="p">());</span>
+</span><span class='line'><span class="nv">$list</span><span class="o">-&gt;</span><span class="na">printMe</span><span class="p">();</span> <span class="c1">//</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Suppression d&#8217;un chainon à la fin</h3>
+
+<p>Comme le dernier chainon ne connait pas son prédécesseur. C&#8217;est beaucoup plus compliqué. On est obligé de repartir depuis le début. Donc pour supprimer le dernier chainon d&#8217;un liste d&#8217;un million de chainon, il nous faut parcourir les 1 millions de chainons.</p>
+
+<p>En Code</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">RemoveLastValue</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// cas particulier la liste est vide</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nx">\Exception</span><span class="p">(</span><span class="s1">&#39;la Liste est vide&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="c1">// Il n&#39;y a qu&#39;un noeud.</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">count</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$value</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">last</span><span class="o">-&gt;</span><span class="na">getData</span><span class="p">();</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">last</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">value</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="c1">// On parcours tout les chainons jusqu&#39;à l&#39;avant-dernier</span>
+</span><span class='line'>    <span class="nv">$current</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span><span class="o">-&gt;</span><span class="na">getNext</span><span class="p">();</span>
+</span><span class='line'>    <span class="nv">$previous</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="nv">$current</span><span class="o">-&gt;</span><span class="na">getNext</span><span class="p">())</span> <span class="p">{</span>
+</span><span class='line'>         <span class="nv">$previous</span> <span class="o">=</span> <span class="nv">$current</span><span class="p">;</span>
+</span><span class='line'>         <span class="nv">$current</span> <span class="o">=</span> <span class="nv">$current</span><span class="o">-&gt;</span><span class="na">getNext</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="c1">// on supprime le liens</span>
+</span><span class='line'>    <span class="nv">$previous</span><span class="o">-&gt;</span><span class="na">setNext</span><span class="p">(</span><span class="k">null</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">// On déplace le last</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">last</span> <span class="o">=</span> <span class="nv">$previous</span><span class="p">;</span>
+</span><span class='line'>    <span class="c1">// on décremente</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">count</span><span class="o">--</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nv">$current</span><span class="o">-&gt;</span><span class="na">getData</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Ajouter une valeurs au milieu de la chaine</h3>
+
+<p>Même punition que pour supprimer un lien à la fin de la liste. Si on a une liste de 1 Millions de chainons. Pour insérer à la position 99999, nous sommes obligés de parcourir les 99999 chainons. Et pour la suppression ce sera pareil..</p>
+
+<p><img class="center" src="/images/LinkedLists-addingnode.png" width="474" height="116" title="un chainon" alt="Ajout d"></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">insertAtPosition</span><span class="p">(</span><span class="nv">$position</span><span class="p">,</span> <span class="nv">$data</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$position</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">insertFirstValue</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$position</span> <span class="o">&gt;=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">count</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">insertAtEnd</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nv">$current</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="nv">$position</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$current</span> <span class="o">=</span> <span class="nv">$current</span><span class="o">-&gt;</span><span class="na">getNext</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nv">$node</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Node</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="nv">$current</span><span class="o">-&gt;</span><span class="na">getNext</span><span class="p">());</span>
+</span><span class='line'>    <span class="nv">$current</span><span class="o">-&gt;</span><span class="na">setNext</span><span class="p">(</span><span class="nv">$node</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">count</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Implementer le <code>count</code></h2>
+
+<p>Si vous avez lu le <a href="">post précédent</a> il suffit d&#8217;ajouter une méthode <code>count</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">count</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">count</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Des applications avec la Liste chainée.</h2>
+
+<p>Si on renomme la méthode <code>insertAtEnd($data)</code> par <code>enqueue($job)</code> et la méthode <code>removeFirstValue()</code> par <code>dequeue()</code></p>
+
+<p>On obtient une file d&#8217;attente ou une <code>Queue</code> en anglais.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$fileAttente</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LinkedList</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$fileAttente</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span><span class="s2">&quot;job1&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span><span class="s2">&quot;job2&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$fileAttente</span><span class="o">-&gt;</span><span class="na">dequeue</span><span class="p">());</span> <span class="c1">// job1</span>
+</span><span class='line'><span class="c1">// je rajoute un travail </span>
+</span><span class='line'><span class="nv">$fileAttente</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span><span class="s2">&quot;OtherJob&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$fileAttente</span><span class="o">-&gt;</span><span class="na">dequeue</span><span class="p">());</span> <span class="c1">// job2</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$fileAttente</span><span class="o">-&gt;</span><span class="na">dequeue</span><span class="p">());</span> <span class="c1">// OtherJob</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si on renomme la méthode <code>insertFirstValue</code> en <code>push</code> et la méthode <code>removeFirstValue()</code> par <code>pop()</code> On obtient une Stack.</p>
+
+<p>Voici le code pour inverser un array sans utiliser <code>array_reverse</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$list1</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$stack</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LinkedList</span><span class="p">();</span>
+</span><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$list</span> <span class="k">as</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$stack</span><span class="o">-&gt;</span><span class="na">push</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nv">$list2</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+</span><span class='line'><span class="k">while</span> <span class="p">(</span><span class="nx">stack</span><span class="o">-&gt;</span><span class="na">count</span><span class="p">())</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$list2</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$stack</span><span class="o">-&gt;</span><span class="na">pop</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$list2</span><span class="p">)</span> <span class="c1">//[5,4,3,2,1];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Conclusion</h2>
+
+<p>Un ancien livre est titré</p>
+
+<blockquote><blockquote><p>Algorithms + Data Structures = Programs</p></blockquote></blockquote>
+
+<p>On a tendance en language php à penser tout en Object et en Array. Parfois la façon dont on représente nos données est importante.</p>
+
+<ul>
+<li>Certaines opérations comme ajouter un lien au début/fin de la chaine sont très peu couteuses (une étape) on parle de complexité O(1);</li>
+<li>supprimer un lien à la fin de la liste par contre prend N étapes On dit que la complexité est de O(N)</li>
+</ul>
+
+
+<p>Pour résoudre ce problème on a inventé les listes doublements chainées. Voir le dessin (Wikipédia);</p>
+
+<p><img class="center" src="/images/Doubly-linked-list.png" width="610" height="41" title="doubles listes chainée" alt="double liste chainée"></p>
+
+<p>Cela prend beaucoup plus de mémoire, mais on simplifie beaucoup l&#8217;ajout et la suppression au début et à la fin de liste. par contre la recherche dans une liste chainée est toujours aussi longue.</p>
+
+<p>Mon post sur les <a href="blog/2015/08/29/stacks-structures-meconnues/">Stack</a>.</p>
+
+<p>Dans le post suivant on implémentera les méthodes de <code>ArrayAccess</code> et <code>Iterator</code>, ce qui nous permettra de faire des <code>foreach</code> ou <code>isset($list[2])</code> etc ..</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2015/10/04/tig-status/">Tig : Status</a></h1>
     
     
@@ -122,13 +662,15 @@ sudo apt-get install tig Néanmoins c'est la version 1.2 dans les &hellip;">
 </span></code></pre></td></tr></table></div></figure>
 
 
+<p>attention vous aurez probablement besoin d&#8217;avoir installer la librairies <code>libncursesw</code> pour l&#8217;utf-8</p>
+
 <h2>La vue principale</h2>
 
 <p>Elle permet de voir l&#8217;historique du dépôt.</p>
 
 <p><img class="center" src="/images/tig-defaut.png" width="600" height="398" title="la vue par défault" alt="la vue par défaut"></p>
 
-<p>Appuyer sur <code>&lt;Enter&gt;</code> pour voir la différence. (Dans la version 2, si le terminal fait plus de 160 caractere l&#8217;écran se splitte en 2 verticalement)</p>
+<p>Appuyer sur <code>&lt;Enter&gt;</code> pour voir la différence. (Dans la version 2, si le terminal fait plus de 160 caractères l&#8217;écran se splitte en 2 verticalement)</p>
 
 <p><img class="center" src="/images/tig-diff.png" width="600" height="399" title="quand on appuie sur la touche entrée, on affiche la différence" alt="l"></p>
 
@@ -143,7 +685,7 @@ sudo apt-get install tig Néanmoins c'est la version 1.2 dans les &hellip;">
 <ul>
 <li><code>S</code> ou <code>s</code> pour voir le stage (équivalent de git status)</li>
 <li><code>t</code> tree view affichage en explorateur de fichier</li>
-<li><code>r</code> permet de voir les différentes branches</li>
+<li><code>r</code> permet de voir les différentes branches (<code>H</code> dans la version1</li>
 <li><code>l</code> voir les logs</li>
 </ul>
 
@@ -219,11 +761,11 @@ sudo apt-get install tig Néanmoins c'est la version 1.2 dans les &hellip;">
 
 <p><img class="center" src="/images/tig-revert.png" width="600" height="398" title="la vue par défaut" alt="la vue par défaut"></p>
 
-<p>Il suffit d&#8217;appuyer sur <code>Enter</code> puis de ce déplacer dans le commit avec <code>j</code> et <code>k</code> et appuyer sur <code>u</code> pour ajouter ce chunk. Les chunks pour faire simple sont les textes séparés par des <code>@@ ... @@</code>. On se déplace de chunk en chunk grâce à la touche <code>@</code>.</p>
+<p>Il suffit d&#8217;appuyer sur <code>Enter</code> puis de se déplacer dans le commit avec <code>j</code> et <code>k</code> et appuyer sur <code>u</code> pour ajouter ce chunk. Les chunks pour faire simple sont les textes séparés par des <code>@@ ... @@</code>. On se déplace de chunk en chunk grâce à la touche <code>@</code>.</p>
 
 <p>Pour reverter le fichier, On utilise la touche <code>!</code>.</p>
 
-<p>cela marche aussi sur un chunk. On peut donc reverter partiellement un fichier.</p>
+<p>Cela marche aussi sur un chunk. On peut donc reverter partiellement un fichier.</p>
 
 <p>Il est possible d&#8217;ajouter ligne par ligne dans un commit grâce à la touche <code>1</code>.</p>
 
@@ -261,7 +803,7 @@ sudo apt-get install tig Néanmoins c'est la version 1.2 dans les &hellip;">
 <ul>
 <li>Dans la vue status la touche <code>D</code> efface le fichier</li>
 <li>Dans la vue status la touche <code>A</code> fait un <code>git commit --amend</code></li>
-<li>Dans la vue principale la touche <code>B</code> permet de créer une branches.</li>
+<li>Dans la vue principale la touche <code>B</code> permet de créer une branche.</li>
 </ul>
 
 
@@ -322,7 +864,7 @@ sudo apt-get install tig Néanmoins c'est la version 1.2 dans les &hellip;">
 
   <div class="entry-content"><p>Nous allons repartir sur la <a href="http://php.net/manual/fr/book.spl.php">SPL</a>.</p>
 
-<p>Je vais déjà parler des différentes méthodes amusantes à surcharger.</p>
+<p>Je vais parler des différentes méthodes amusantes à surcharger.</p>
 
 <h2>Count</h2>
 
@@ -2857,643 +3399,6 @@ vous devriez voir apparaître</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/08/29/stacks-structures-meconnues/">Les Stacks Des Structures Méconnues</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-08-29T16:34:41+02:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>4:34 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Introduction</h2>
-
-<p>Je vais parler de <code>SplStack</code> une structure de donnée qui fait partie de La SPL (pour <strong>S</strong>tandart <strong>P</strong>HP <strong>L</strong>ibrairie). Nous allons voir trois façons de nous servir de cette structure.</p>
-
-<h2>Les Stacks ou Piles</h2>
-
-<p>La pile n&#8217;a que deux opérations.</p>
-
-<ul>
-<li>Empiler ou Push On ajoute une donnée sur le haut de la pile.</li>
-<li>Dépiler ou Pop On retire une donnée du haut de la pile.</li>
-</ul>
-
-
-<p>Il n&#8217;y a que le haut de la pile qui est visible. La pile est une mémoire LIFO (<strong>L</strong>ast <strong>I</strong>n <strong>F</strong>irst <strong>O</strong>ut).</p>
-
-<p>Quelques exemples.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$pile</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SplStack</span><span class="p">();</span> <span class="c1">// la pile est vide []</span>
-</span><span class='line'><span class="nv">$pile</span><span class="o">-&gt;</span><span class="na">push</span><span class="p">(</span><span class="mi">34</span><span class="p">)</span> <span class="c1">// [34]</span>
-</span><span class='line'><span class="nv">$pile</span><span class="o">-&gt;</span><span class="na">push</span><span class="p">(</span><span class="mi">45</span><span class="p">)</span> <span class="c1">// [34, 45]</span>
-</span><span class='line'><span class="nv">$value</span> <span class="o">=</span> <span class="nv">$pile</span><span class="o">-&gt;</span><span class="na">pop</span><span class="p">()</span> <span class="c1">// [34]</span>
-</span><span class='line'><span class="nv">$pile</span><span class="o">-&gt;</span><span class="na">push</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="c1">// [34, &#39;a&#39;]</span>
-</span><span class='line'><span class="nv">$value</span> <span class="o">=</span> <span class="nv">$pile</span><span class="o">-&gt;</span><span class="na">top</span><span class="p">()</span> <span class="c1">// $value = &#39;a&#39; pile [34, &#39;a&#39;]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On peux utiliser les array comme des piles avec <code>array_pop</code> et <code>array_push</code>. Mais depuis PHP 5.0 il existe une Classe tout faite <code>SplStack</code></p>
-
-<h2>Premiere application la machine à pile</h2>
-
-<p>Il faut d&#8217;abord que je vous parle de la notation polonaise inverse. (RPN en anglais pour <strong>R</strong>everse <strong>P</strong>olish <strong>N</strong>otation).
-<code>1 + 3</code> devient <code>1 3 +</code>. Pour faire simple je mets l&#8217;opérateur à la fin.</p>
-
-<p>des exemples un peu plus complexe.</p>
-
-<p> <code>1 + 2 * 3</code> devient <code>2 3 * 1 +</code> et <code>( 1 + 3 ) * ( 3 - 4 )</code> devient <code>1 3 + 3 4 - *</code></p>
-
-<p>C&#8217;est un peu compliqué comme notation (en tout cas pas naturelle) mais nous allons voir que l&#8217;algorithme pour le calcul est très simple.</p>
-
-<p>Voici l&#8217;algorithme :</p>
-
-<ul>
-<li>Si l&#8217;entrée est un entier : je l&#8217;empile</li>
-<li>Si c&#8217;est une opération : je dépile deux valeurs, je fais l&#8217;opération et j&#8217;empile le résultat</li>
-</ul>
-
-
-<p>Un exemple</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">soit</span> <span class="mi">1</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">3</span> <span class="mi">4</span> <span class="o">-</span> <span class="o">*</span>
-</span><span class='line'><span class="c1"># je prend la premiere valeur &quot;1&quot; c&#39;est un chiffre je l&#39;empile</span>
-</span><span class='line'><span class="nx">ma</span> <span class="nx">pile</span> <span class="p">[</span> <span class="o">*</span><span class="mi">1</span><span class="o">*</span> <span class="p">]</span>
-</span><span class='line'><span class="c1"># je prend la seconde valeur &quot;3&quot; c&#39;est un chiffre je l&#39;empile</span>
-</span><span class='line'><span class="nx">ma</span> <span class="nx">pile</span> <span class="p">[</span> <span class="mi">1</span> <span class="o">*</span><span class="mi">3</span><span class="o">*</span> <span class="p">]</span>
-</span><span class='line'><span class="c1"># je prend la valeurs 3 c&#39;est une operation &quot;+&quot;, je depile deux valeurs d&#39;abords &quot;3&quot; puis &quot;1&quot;. je fais l&#39;addition. &quot;4&quot; que j&#39;empile</span>
-</span><span class='line'><span class="nx">ma</span> <span class="nx">pile</span> <span class="p">[</span> <span class="o">*</span><span class="mi">4</span><span class="o">*</span> <span class="p">]</span>
-</span><span class='line'><span class="c1"># je prend la quatrieme valeur &quot;3&quot; c&#39;est un chiffre j&#39;empile</span>
-</span><span class='line'><span class="nx">ma</span> <span class="nx">pile</span> <span class="p">[</span> <span class="mi">4</span> <span class="o">*</span><span class="mi">3</span><span class="o">*</span> <span class="p">]</span>
-</span><span class='line'><span class="c1"># la cinquieme valeurs est un chiffre</span>
-</span><span class='line'><span class="nx">ma</span> <span class="nx">pile</span> <span class="p">[</span> <span class="mi">4</span> <span class="mi">3</span> <span class="o">*</span><span class="mi">4</span><span class="o">*</span><span class="p">]</span>
-</span><span class='line'><span class="c1"># la sixieme valeur est une opération. je dépile deux valeurs &quot;4&quot; et &quot;3&quot; que je soustrait et je rempile</span>
-</span><span class='line'><span class="nx">ma</span> <span class="nx">pile</span> <span class="p">[</span> <span class="mi">4</span> <span class="o">*-</span><span class="mi">1</span><span class="o">*</span><span class="p">]</span>
-</span><span class='line'><span class="c1"># la septième valeur est une opération je dépile &quot;-1&quot; et &quot;4&quot; que je multiplie</span>
-</span><span class='line'><span class="nx">ma</span> <span class="nx">pile</span> <span class="p">[</span><span class="s2">&quot;-4&quot;</span><span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>L&#8217;avantage de la notation est qu&#8217;elle n&#8217;a pas besoin de parenthèse. Il n&#8217;y pas d&#8217;ambigüité <code>( 1 + 3 ) * ( 3 - 4 )</code> est différent de  <code>1 + 3 * 3 - 4</code>.</p>
-
-<p>L&#8217;implémentation est simple</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">execute</span><span class="p">(</span><span class="k">array</span> <span class="nv">$ops</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="nv">$stack</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\SplStack</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$ops</span> <span class="k">as</span> <span class="nv">$op</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nb">is_numeric</span><span class="p">(</span><span class="nv">$op</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nv">$stack</span><span class="o">-&gt;</span><span class="na">push</span><span class="p">((</span><span class="nx">int</span><span class="p">)</span> <span class="nv">$op</span><span class="p">);</span>
-</span><span class='line'>            <span class="k">continue</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">switch</span> <span class="p">(</span><span class="nv">$op</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">case</span> <span class="s1">&#39;+&#39;</span><span class="o">:</span>
-</span><span class='line'>                <span class="nv">$stack</span><span class="o">-&gt;</span><span class="na">push</span><span class="p">(</span><span class="nv">$stack</span><span class="o">-&gt;</span><span class="na">pop</span><span class="p">()</span> <span class="o">+</span> <span class="nv">$stack</span><span class="o">-&gt;</span><span class="na">pop</span><span class="p">());</span>
-</span><span class='line'>                <span class="k">break</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">case</span> <span class="s1">&#39;-&#39;</span><span class="o">:</span>
-</span><span class='line'>                <span class="nv">$n</span> <span class="o">=</span> <span class="nv">$stack</span><span class="o">-&gt;</span><span class="na">pop</span><span class="p">();</span>
-</span><span class='line'>                <span class="nv">$stack</span><span class="o">-&gt;</span><span class="na">push</span><span class="p">(</span><span class="nv">$stack</span><span class="o">-&gt;</span><span class="na">pop</span><span class="p">()</span> <span class="o">-</span> <span class="nv">$n</span><span class="p">);</span>
-</span><span class='line'>                <span class="k">break</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">case</span> <span class="s1">&#39;*&#39;</span><span class="o">:</span>
-</span><span class='line'>                <span class="nv">$stack</span><span class="o">-&gt;</span><span class="na">push</span><span class="p">(</span><span class="nv">$stack</span><span class="o">-&gt;</span><span class="na">pop</span><span class="p">()</span> <span class="o">*</span> <span class="nv">$stack</span><span class="o">-&gt;</span><span class="na">pop</span><span class="p">());</span>
-</span><span class='line'>                <span class="k">break</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">case</span> <span class="s1">&#39;/&#39;</span><span class="o">:</span>
-</span><span class='line'>                <span class="nv">$n</span> <span class="o">=</span> <span class="nv">$stack</span><span class="o">-&gt;</span><span class="na">pop</span><span class="p">();</span>
-</span><span class='line'>                <span class="nv">$stack</span><span class="o">-&gt;</span><span class="na">push</span><span class="p">(</span><span class="nv">$stack</span><span class="o">-&gt;</span><span class="na">pop</span><span class="p">()</span> <span class="o">/</span> <span class="nv">$n</span><span class="p">);</span>
-</span><span class='line'>                <span class="k">break</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">default</span><span class="o">:</span>
-</span><span class='line'>                <span class="k">throw</span> <span class="k">new</span> <span class="nx">\InvalidArgumentException</span><span class="p">(</span><span class="nb">sprintf</span><span class="p">(</span><span class="s1">&#39;Invalid operation: %s&#39;</span><span class="p">,</span> <span class="nv">$op</span><span class="p">));</span>
-</span><span class='line'>                <span class="k">break</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="nv">$stack</span><span class="o">-&gt;</span><span class="na">top</span><span class="p">();</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>essayons notre exemple.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nx">execute</span><span class="p">(</span><span class="nb">explode</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;1 3 + 3 4 - *&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nx">int</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Félicitation nous venons d&#8217;implémenter notre première machine à pile. La plus célèbre est la <code>Java Virtual Machine</code>. Il existe aussi des langages qui sont basé sur la notion de pile, le plus célèbre est le <a href="https://fr.wikipedia.org/wiki/Forth_%28langage%29">Forth</a> et le <a href="https://fr.wikipedia.org/wiki/PostScript">Postscript</a>(si si le format de adobe). L&#8217;avantage des machines à pile est qu&#8217;elle n&#8217;utilise aucun autre registre que la pile.</p>
-
-<h2>Le Shunting-yard de Dijkstra</h2>
-
-<p>Je présente une version simplifié. <em>Shunting-yard</em> peut se traduire en <strong>Aiguillage</strong>. Il permet d&#8217;évaluer une expression mathématique.</p>
-
-<p>Soit la chaîne suivante:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$calculate</span><span class="p">(</span><span class="nb">explode</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;( ( 1 + 3 ) * ( 3 - 4 ) )&#39;</span><span class="p">)));</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># int(-4)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Il y a des parenthèses partout</li>
-<li>L&#8217;arité des fonction est 2:  l&#8217;arité est le nombre d&#8217;argument par exemple 1 + 2 est d&#8217;arité 2 deux arguments. L&#8217;algorithme que je présente est incapable de faire <code>1 + 2 + 3</code> mais fera très bien <code>(1 + ( 2 + 3 ))</code>.</li>
-</ul>
-
-
-<p>Voici l&#8217;algorithme:</p>
-
-<ul>
-<li>Si parenthèse ouvrante:  je passe</li>
-<li>Si c&#8217;est une opération <code>+</code>, <code>-</code>, <code>/</code>, <code>*</code>:  Je stocke dans une pile l&#8217;opération.</li>
-<li>Si c&#8217;est un chiffre : je stocke dans une pile de valeurs</li>
-<li>Si c&#8217;est une parenthèse fermante: Je dépile une opération et je dépile deux arguments. Je fais l&#8217;opération avec mes deux arguments et je remets le résultats dans ma pile.</li>
-</ul>
-
-
-<p>Voici le code</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">calculate</span><span class="p">(</span><span class="k">array</span> <span class="nv">$input</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="nv">$operators</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SplStack</span><span class="p">();</span>
-</span><span class='line'>    <span class="nv">$values</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SplStack</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$input</span> <span class="k">as</span> <span class="nv">$token</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">switch</span> <span class="p">(</span><span class="nv">$token</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">case</span> <span class="s2">&quot;(&quot;</span><span class="o">:</span>
-</span><span class='line'>            <span class="k">break</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">case</span> <span class="s2">&quot;+&quot;</span><span class="o">:</span>
-</span><span class='line'>        <span class="k">case</span> <span class="s2">&quot;-&quot;</span><span class="o">:</span>
-</span><span class='line'>        <span class="k">case</span> <span class="s2">&quot;*&quot;</span><span class="o">:</span>
-</span><span class='line'>        <span class="k">case</span> <span class="s2">&quot;/&quot;</span><span class="o">:</span>
-</span><span class='line'>            <span class="nv">$operators</span><span class="o">-&gt;</span><span class="na">push</span><span class="p">(</span><span class="nv">$token</span><span class="p">);</span>
-</span><span class='line'>            <span class="k">break</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">case</span> <span class="s2">&quot;)&quot;</span><span class="o">:</span>
-</span><span class='line'>            <span class="nv">$op</span> <span class="o">=</span> <span class="nv">$operators</span><span class="o">-&gt;</span><span class="na">pop</span><span class="p">();</span>
-</span><span class='line'>            <span class="nv">$value</span> <span class="o">=</span> <span class="nv">$values</span><span class="o">-&gt;</span><span class="na">pop</span><span class="p">();</span>
-</span><span class='line'>            <span class="k">switch</span> <span class="p">(</span><span class="nv">$op</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">case</span> <span class="s2">&quot;+&quot;</span><span class="o">:</span>
-</span><span class='line'>                <span class="nv">$value</span> <span class="o">=</span> <span class="nv">$values</span><span class="o">-&gt;</span><span class="na">pop</span><span class="p">()</span> <span class="o">+</span> <span class="nv">$value</span><span class="p">;</span>
-</span><span class='line'>                <span class="k">break</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">case</span> <span class="s2">&quot;-&quot;</span><span class="o">:</span>
-</span><span class='line'>                <span class="nv">$value</span> <span class="o">=</span> <span class="nv">$values</span><span class="o">-&gt;</span><span class="na">pop</span><span class="p">()</span> <span class="o">-</span> <span class="nv">$value</span><span class="p">;</span>
-</span><span class='line'>                <span class="k">break</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">case</span> <span class="s2">&quot;*&quot;</span><span class="o">:</span>
-</span><span class='line'>                <span class="nv">$value</span> <span class="o">=</span> <span class="nv">$values</span><span class="o">-&gt;</span><span class="na">pop</span><span class="p">()</span> <span class="o">*</span> <span class="nv">$value</span><span class="p">;</span>
-</span><span class='line'>                <span class="k">break</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">case</span> <span class="s2">&quot;/&quot;</span><span class="o">:</span>
-</span><span class='line'>                <span class="nv">$value</span> <span class="o">=</span> <span class="nv">$values</span><span class="o">-&gt;</span><span class="na">pop</span><span class="p">()</span> <span class="o">/</span> <span class="nv">$value</span><span class="p">;</span>
-</span><span class='line'>                <span class="k">break</span><span class="p">;</span>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>            <span class="nv">$values</span><span class="o">-&gt;</span><span class="na">push</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
-</span><span class='line'>            <span class="k">break</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">default</span><span class="o">:</span>
-</span><span class='line'>            <span class="nv">$values</span><span class="o">-&gt;</span><span class="na">push</span><span class="p">(</span><span class="nv">$token</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nv">$values</span><span class="o">-&gt;</span><span class="na">top</span><span class="p">();</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On utilise deux piles. Une pour les opérations, Une pour les valeurs
-je propose de faire le même exemple que plus haut
-je vais représenter les deux piles et l&#8217;entrée actuelle</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">operators</span> <span class="o">:</span>  <span class="p">[]</span> <span class="nx">values</span><span class="o">:</span>  <span class="p">[]</span>  <span class="nx">expression</span> <span class="o">:</span> <span class="p">(</span> <span class="p">(</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">3</span> <span class="p">)</span> <span class="o">*</span> <span class="p">(</span> <span class="mi">3</span> <span class="o">-</span> <span class="mi">4</span> <span class="p">)</span> <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;(&#39; on ignore</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">operators</span> <span class="p">[]</span> <span class="nx">values</span> <span class="p">[]</span>  <span class="nx">expression</span> <span class="o">:</span> <span class="p">(</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">3</span> <span class="p">)</span> <span class="o">*</span> <span class="p">(</span> <span class="mi">3</span> <span class="o">-</span> <span class="mi">4</span> <span class="p">)</span> <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;(&#39; on ignore</span>
-</span><span class='line'><span class="nx">operators</span> <span class="p">[]</span> <span class="nx">values</span> <span class="p">[]</span>  <span class="nx">expression</span><span class="o">:</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">3</span> <span class="p">)</span> <span class="o">*</span> <span class="p">(</span> <span class="mi">3</span> <span class="o">-</span> <span class="mi">4</span> <span class="p">)</span> <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;1&#39; on ajoute dans values</span>
-</span><span class='line'><span class="nx">operators</span> <span class="p">[]</span> <span class="nx">values</span> <span class="p">[</span><span class="o">*</span><span class="mi">1</span><span class="o">*</span><span class="p">]</span> <span class="nx">expression</span><span class="o">:</span>  <span class="o">+</span> <span class="mi">3</span> <span class="p">)</span> <span class="o">*</span> <span class="p">(</span> <span class="mi">3</span> <span class="o">-</span> <span class="mi">4</span> <span class="p">)</span> <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;+&#39; on ajoute dans opérator</span>
-</span><span class='line'><span class="nx">operators</span> <span class="p">[</span><span class="o">*+*</span><span class="p">]</span> <span class="nx">values</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="nx">expression</span><span class="o">:</span> <span class="mi">3</span> <span class="p">)</span> <span class="o">*</span> <span class="p">(</span> <span class="mi">3</span> <span class="o">-</span> <span class="mi">4</span> <span class="p">)</span> <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;3&#39; on ajoute dans value</span>
-</span><span class='line'><span class="nx">operators</span> <span class="p">[</span><span class="o">*+*</span><span class="p">]</span> <span class="nx">values</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="mi">3</span><span class="o">*</span><span class="p">]</span> <span class="nx">expression</span><span class="o">:</span> <span class="p">)</span> <span class="o">*</span> <span class="p">(</span> <span class="mi">3</span> <span class="o">-</span> <span class="mi">4</span> <span class="p">)</span> <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;)&#39; on dépile deux valeur de value et on depile une valeurs de l&#39;operators et on empile le résultats dans values</span>
-</span><span class='line'><span class="nx">operators</span> <span class="p">[]</span> <span class="nx">values</span> <span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="nx">expression</span><span class="o">:</span>  <span class="o">*</span> <span class="p">(</span> <span class="mi">3</span> <span class="o">-</span> <span class="mi">4</span> <span class="p">)</span> <span class="p">)</span><span class="err">`</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;*&#39; on ajoute dans opérator </span>
-</span><span class='line'><span class="nx">operators</span> <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="nx">values</span> <span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="nx">expression</span><span class="o">:</span>  <span class="p">(</span> <span class="mi">3</span> <span class="o">-</span> <span class="mi">4</span> <span class="p">)</span> <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;(&#39; on ignore</span>
-</span><span class='line'><span class="nx">operators</span> <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="nx">values</span> <span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="nx">expression</span><span class="o">:</span>  <span class="mi">3</span> <span class="o">-</span> <span class="mi">4</span> <span class="p">)</span> <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;3&#39; on ajoute dans values </span>
-</span><span class='line'><span class="nx">operators</span> <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="nx">values</span> <span class="p">[</span><span class="mi">4</span> <span class="o">*</span><span class="mi">3</span><span class="o">*</span><span class="p">]</span> <span class="nx">expression</span><span class="o">:</span>  <span class="o">-</span> <span class="mi">4</span> <span class="p">)</span> <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;-&#39; on ajoute dans operators</span>
-</span><span class='line'><span class="nx">operators</span> <span class="p">[</span><span class="o">*</span><span class="p">,</span> <span class="o">*-*</span><span class="p">]</span> <span class="nx">values</span> <span class="p">[</span><span class="mi">4</span> <span class="mi">3</span><span class="p">]</span> <span class="nx">expression</span><span class="o">:</span>  <span class="mi">4</span> <span class="p">)</span> <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;4&#39; on ajoute dans values </span>
-</span><span class='line'><span class="nx">operators</span> <span class="p">[</span><span class="o">*</span><span class="p">,</span> <span class="p">]</span> <span class="nx">values</span> <span class="p">[</span><span class="mi">4</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">]</span> <span class="nx">expression</span><span class="o">:</span>  <span class="p">)</span> <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;)&#39; on dépile deux valeur de value et on depile une valeur de operators et on empile le résultat dans values</span>
-</span><span class='line'><span class="nx">operators</span> <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="nx">values</span> <span class="p">[</span><span class="mi">4</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="nx">expression</span><span class="o">:</span>  <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;)&#39; on dépile deux valeur de values et on depile une valeur de operators et on empile le résultat dans values</span>
-</span><span class='line'><span class="nx">operators</span> <span class="p">[]</span> <span class="nx">values</span> <span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span> <span class="nx">expression</span><span class="o">:</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<p>On se rend compte que cette algorithme très simple permet de calculer toutes les expressions que l&#8217;on passe du moment qu&#8217;elles sont bien formées.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$expression</span> <span class="o">=</span> <span class="s2">&quot;( ( 1 + 3 ) * ( 3 - 4 ) )&quot;</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nx">calculate</span><span class="p">(</span><span class="nb">explode</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="nv">$expression</span><span class="p">)));</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<p>Félicitation vous venez d&#8217;écrire votre premier interpréteur.</p>
-
-<p>la version originale prend en compte la priorité des opérations (cela rend certaines parenthèses inutiles) c&#8217;est un peu plus complexe, mais pas tant que cela.</p>
-
-<h2>Exemple 3 conversion vers RPN</h2>
-
-<p>Nous allons utiliser notre pile pour traduire notre expression vers la RPN.</p>
-
-<p>C&#8217;est à dire  <code>( ( 1 + 3 ) * ( 3 - 4 ) )</code> -> <code>1 3 + 3 4 - *</code></p>
-
-<p>Voici l&#8217;algorithme.</p>
-
-<ul>
-<li>Si l&#8217;entrée est un parenthèse ouvrante :  je passe</li>
-<li>Si c&#8217;est une opération : je stocke cela dans une pile</li>
-<li>Si c&#8217;est un entier : Je pousse cela dans une file d&#8217;attente</li>
-<li>Si c&#8217;est une parenthèse fermante : je vide la pile dans la file d&#8217;attente.</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">transformate</span><span class="p">(</span><span class="k">array</span> <span class="nv">$input</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="nv">$stack</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SplStack</span><span class="p">();</span>
-</span><span class='line'>    <span class="nv">$output</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SplQueue</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$input</span> <span class="k">as</span> <span class="nv">$token</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">switch</span> <span class="p">(</span><span class="nv">$token</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">case</span> <span class="s2">&quot;(&quot;</span><span class="o">:</span>
-</span><span class='line'>            <span class="k">break</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">case</span> <span class="s2">&quot;+&quot;</span><span class="o">:</span>
-</span><span class='line'>        <span class="k">case</span> <span class="s2">&quot;-&quot;</span><span class="o">:</span>
-</span><span class='line'>        <span class="k">case</span> <span class="s2">&quot;*&quot;</span><span class="o">:</span>
-</span><span class='line'>        <span class="k">case</span> <span class="s2">&quot;/&quot;</span><span class="o">:</span>
-</span><span class='line'>            <span class="nv">$stack</span><span class="o">-&gt;</span><span class="na">push</span><span class="p">(</span><span class="nv">$token</span><span class="p">);</span>
-</span><span class='line'>            <span class="k">break</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">case</span> <span class="s2">&quot;)&quot;</span><span class="o">:</span>
-</span><span class='line'>            <span class="k">while</span><span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="nv">$stack</span><span class="p">)</span><span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nv">$stack</span><span class="o">-&gt;</span><span class="na">top</span><span class="p">())</span> <span class="p">{</span>
-</span><span class='line'>                <span class="nv">$output</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span><span class="nv">$stack</span><span class="o">-&gt;</span><span class="na">pop</span><span class="p">());</span>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>            <span class="k">break</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">default</span><span class="o">:</span>
-</span><span class='line'>            <span class="nv">$output</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span><span class="nv">$token</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nb">iterator_to_array</span><span class="p">(</span><span class="nv">$output</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>regardons avec le même exemple</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">stack</span> <span class="o">:</span>  <span class="p">[]</span> <span class="nx">output</span><span class="o">:</span>  <span class="p">[]</span>  <span class="nx">expression</span> <span class="o">:</span> <span class="p">(</span> <span class="p">(</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">3</span> <span class="p">)</span> <span class="o">*</span> <span class="p">(</span> <span class="mi">3</span> <span class="o">-</span> <span class="mi">4</span> <span class="p">)</span> <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;(&#39; on ignore</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">stack</span> <span class="o">:</span> <span class="p">[]</span> <span class="nx">output</span><span class="o">:</span> <span class="p">[]</span>  <span class="nx">expression</span> <span class="o">:</span> <span class="p">(</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">3</span> <span class="p">)</span> <span class="o">*</span> <span class="p">(</span> <span class="mi">3</span> <span class="o">-</span> <span class="mi">4</span> <span class="p">)</span> <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;(&#39; on ignore</span>
-</span><span class='line'><span class="nx">stack</span> <span class="o">:</span>  <span class="p">[]</span> <span class="nx">output</span> <span class="p">[]</span>  <span class="nx">expression</span><span class="o">:</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">3</span> <span class="p">)</span> <span class="o">*</span> <span class="p">(</span> <span class="mi">3</span> <span class="o">-</span> <span class="mi">4</span> <span class="p">)</span> <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;1&#39; on ajoute dans output</span>
-</span><span class='line'><span class="nx">stack</span><span class="o">:</span> <span class="p">[]</span> <span class="nx">output</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="nx">expression</span><span class="o">:</span>  <span class="o">+</span> <span class="mi">3</span> <span class="p">)</span> <span class="o">*</span> <span class="p">(</span> <span class="mi">3</span> <span class="o">-</span> <span class="mi">4</span> <span class="p">)</span> <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;+&#39; on ajoute dans la stack</span>
-</span><span class='line'><span class="nx">stack</span><span class="o">:</span> <span class="p">[</span><span class="o">*+*</span><span class="p">]</span> <span class="nx">output</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="nx">expression</span><span class="o">:</span> <span class="mi">3</span> <span class="p">)</span> <span class="o">*</span> <span class="p">(</span> <span class="mi">3</span> <span class="o">-</span> <span class="mi">4</span> <span class="p">)</span> <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;3&#39; on ajoute dans output</span>
-</span><span class='line'><span class="nx">stack</span><span class="o">:</span> <span class="p">[</span><span class="o">*+*</span><span class="p">]</span> <span class="nx">output</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="mi">3</span><span class="o">*</span><span class="p">]</span> <span class="nx">expression</span><span class="o">:</span> <span class="p">)</span> <span class="o">*</span> <span class="p">(</span> <span class="mi">3</span> <span class="o">-</span> <span class="mi">4</span> <span class="p">)</span> <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;)&#39; on vide stack dans outputs</span>
-</span><span class='line'><span class="nx">stack</span><span class="o">:</span> <span class="p">[]</span> <span class="nx">output</span> <span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">*+*</span><span class="p">]</span> <span class="nx">expression</span><span class="o">:</span>  <span class="o">*</span> <span class="p">(</span> <span class="mi">3</span> <span class="o">-</span> <span class="mi">4</span> <span class="p">)</span> <span class="p">)</span><span class="err">`</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;*&#39; on ajoute dans la stack</span>
-</span><span class='line'><span class="nx">stack</span><span class="o">:</span> <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="nx">output</span> <span class="p">[</span><span class="mi">1</span> <span class="p">,</span> <span class="mi">3</span> <span class="p">,</span> <span class="o">+</span><span class="p">]</span> <span class="nx">expression</span><span class="o">:</span>  <span class="p">(</span> <span class="mi">3</span> <span class="o">-</span> <span class="mi">4</span> <span class="p">)</span> <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;(&#39; on ignore</span>
-</span><span class='line'><span class="nx">stack</span><span class="o">:</span> <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="nx">output</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">+</span><span class="p">]</span> <span class="nx">expression</span><span class="o">:</span>  <span class="mi">3</span> <span class="o">-</span> <span class="mi">4</span> <span class="p">)</span> <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;3&#39; on ajoute dans output.</span>
-</span><span class='line'><span class="nx">stack</span><span class="o">:</span> <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="nx">output</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">+</span><span class="p">,</span> <span class="o">*</span><span class="mi">3</span><span class="o">*</span><span class="p">]</span> <span class="nx">expression</span><span class="o">:</span>  <span class="o">-</span> <span class="mi">4</span> <span class="p">)</span> <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;-&#39; on ajoute dans la stack</span>
-</span><span class='line'><span class="nx">stack</span><span class="o">:</span> <span class="p">[</span><span class="o">*</span><span class="p">,</span> <span class="o">*-*</span><span class="p">]</span> <span class="nx">output</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">+</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="nx">expression</span><span class="o">:</span>  <span class="mi">4</span> <span class="p">)</span> <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;4&#39; on ajoute dans output.</span>
-</span><span class='line'><span class="nx">stack</span><span class="o">:</span> <span class="p">[</span><span class="o">*</span><span class="p">,</span><span class="o">-</span><span class="p">]</span> <span class="nx">output</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">+</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">*</span><span class="mi">4</span><span class="o">*</span><span class="p">]</span> <span class="nx">expression</span><span class="o">:</span>  <span class="p">)</span> <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;)&#39; on depile la stack dans output, on dépile d&#39;abords - puis *</span>
-</span><span class='line'><span class="nx">stack</span><span class="o">:</span> <span class="p">[]</span> <span class="nx">output</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">+</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="p">,</span> <span class="o">*</span><span class="p">]</span> <span class="nx">expression</span><span class="o">:</span>  <span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># &#39;)&#39; on re depile la stack mais ici elle est déja vide. </span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<p>Il suffit de transformer en array <code>$output</code> pour avoir le résultats suivants
-<code>( ( 1 + 3 ) * ( 3 - 4 ) )</code> -> <code>1 3 + 3 4 - *</code></p>
-
-<h2>Tous ensemble.</h2>
-
-<p>Je ne resiste pas au plaisir d&#8217;utiliser l&#8217;instruction tabou du php <code>eval()</code></p>
-
-<blockquote><p>If eval() is the answer, you&rsquo;re almost certainly asking the wrong question. &ndash; Rasmus Lerdorf, BDFL of PHP</p></blockquote>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$operation</span> <span class="o">=</span> <span class="s2">&quot;( ( 1 + 3 ) * ( 3 - 4 ) )&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$input</span> <span class="o">=</span> <span class="nb">explode</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="nv">$operation</span><span class="p">);</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nx">calculate</span><span class="p">(</span><span class="nv">$input</span><span class="p">));</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nx">execute</span><span class="p">(</span><span class="nx">transformate</span><span class="p">(</span><span class="nv">$input</span><span class="p">)));</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$value</span> <span class="o">=</span> <span class="k">eval</span><span class="p">(</span><span class="s2">&quot;return (</span><span class="si">$operation</span><span class="s2">);&quot;</span><span class="p">));</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Nous avons sans surprise le même résultat</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">int</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">)</span>
-</span><span class='line'><span class="nx">int</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">)</span>
-</span><span class='line'><span class="nx">int</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>En conclusion</h2>
-
-<ul>
-<li>Nous avons créé une <em>VM</em> Notre machine à pile.</li>
-<li>Nous avons crée un <em>interpréteur</em>:  notre algorithme de shunting-yard</li>
-<li>Nous avons fait un traducteur de notre expression vers notre machine à pile. C&#8217;est un <em>compilateur</em>.</li>
-<li>La notion de pile existe partout, on parle de pile d&#8217;appel (<em>stack-frame</em>), de dépassement de la pile (<em>stack overflow</em>), <code>git stash</code> est aussi un stockage en pile.</li>
-</ul>
-
-
-<h2>Des références.</h2>
-
-<ul>
-<li>L&#8217;algorithme simplifie viens du livre <a href="http://www.amazon.fr/dp/032157351X">Algorithms</a> de Sedgewick (j&#8217;ai traduis du Java vers Php)</li>
-<li>L&#8217;exemple le plus complet sur les stacks-machine est <a href="https://igor.io/archive.html">Igor.io</a> la série est superbe, l&#8217;auteur explique vraiment bien.</li>
-<li>L&#8217;article de wikipedia sur le <a href="https://en.wikipedia.org/wiki/Shunting-yard_algorithm">shunting-yard</a> Les illustrations montrent bien la notion d&#8217;aiguillage.</li>
-<li><a href="https://fr.wikipedia.org/wiki/Edsger_Dijkstra">Edsger W. Dijkstra</a> est surtout connus pour son algorithme sur le plus court chemin. Mais c&#8217;est une légende de l&#8217;informatique. A voir si vous ne connaissez pas.</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -3509,6 +3414,10 @@ je vais représenter les deux piles et l&#8217;entrée actuelle</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/10/10/liste-chainees-implementation/">Liste Chainées : Implémentation</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/10/04/tig-status/">Tig : Status</a>
       </li>
     
@@ -3522,10 +3431,6 @@ je vais représenter les deux piles et l&#8217;entrée actuelle</p>
     
       <li class="post">
         <a href="/blog/2015/09/21/guzzle-asynchrone-avec-les-promises/">Guzzle Asynchrone Avec Les Promises</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/09/13/yield-php-co-routine/">Yield PHP Co-routine</a>
       </li>
     
   </ul>

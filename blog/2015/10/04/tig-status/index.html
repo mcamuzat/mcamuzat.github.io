@@ -119,13 +119,15 @@ sudo apt-get install tig Néanmoins c'est la version 1.2 dans les &hellip;">
 </span></code></pre></td></tr></table></div></figure>
 
 
+<p>attention vous aurez probablement besoin d&#8217;avoir installer la librairies <code>libncursesw</code> pour l&#8217;utf-8</p>
+
 <h2>La vue principale</h2>
 
 <p>Elle permet de voir l&#8217;historique du dépôt.</p>
 
 <p><img class="center" src="/images/tig-defaut.png" width="600" height="398" title="la vue par défault" alt="la vue par défaut"></p>
 
-<p>Appuyer sur <code>&lt;Enter&gt;</code> pour voir la différence. (Dans la version 2, si le terminal fait plus de 160 caractere l&#8217;écran se splitte en 2 verticalement)</p>
+<p>Appuyer sur <code>&lt;Enter&gt;</code> pour voir la différence. (Dans la version 2, si le terminal fait plus de 160 caractères l&#8217;écran se splitte en 2 verticalement)</p>
 
 <p><img class="center" src="/images/tig-diff.png" width="600" height="399" title="quand on appuie sur la touche entrée, on affiche la différence" alt="l"></p>
 
@@ -140,7 +142,7 @@ sudo apt-get install tig Néanmoins c'est la version 1.2 dans les &hellip;">
 <ul>
 <li><code>S</code> ou <code>s</code> pour voir le stage (équivalent de git status)</li>
 <li><code>t</code> tree view affichage en explorateur de fichier</li>
-<li><code>r</code> permet de voir les différentes branches</li>
+<li><code>r</code> permet de voir les différentes branches (<code>H</code> dans la version1</li>
 <li><code>l</code> voir les logs</li>
 </ul>
 
@@ -216,11 +218,11 @@ sudo apt-get install tig Néanmoins c'est la version 1.2 dans les &hellip;">
 
 <p><img class="center" src="/images/tig-revert.png" width="600" height="398" title="la vue par défaut" alt="la vue par défaut"></p>
 
-<p>Il suffit d&#8217;appuyer sur <code>Enter</code> puis de ce déplacer dans le commit avec <code>j</code> et <code>k</code> et appuyer sur <code>u</code> pour ajouter ce chunk. Les chunks pour faire simple sont les textes séparés par des <code>@@ ... @@</code>. On se déplace de chunk en chunk grâce à la touche <code>@</code>.</p>
+<p>Il suffit d&#8217;appuyer sur <code>Enter</code> puis de se déplacer dans le commit avec <code>j</code> et <code>k</code> et appuyer sur <code>u</code> pour ajouter ce chunk. Les chunks pour faire simple sont les textes séparés par des <code>@@ ... @@</code>. On se déplace de chunk en chunk grâce à la touche <code>@</code>.</p>
 
 <p>Pour reverter le fichier, On utilise la touche <code>!</code>.</p>
 
-<p>cela marche aussi sur un chunk. On peut donc reverter partiellement un fichier.</p>
+<p>Cela marche aussi sur un chunk. On peut donc reverter partiellement un fichier.</p>
 
 <p>Il est possible d&#8217;ajouter ligne par ligne dans un commit grâce à la touche <code>1</code>.</p>
 
@@ -258,7 +260,7 @@ sudo apt-get install tig Néanmoins c'est la version 1.2 dans les &hellip;">
 <ul>
 <li>Dans la vue status la touche <code>D</code> efface le fichier</li>
 <li>Dans la vue status la touche <code>A</code> fait un <code>git commit --amend</code></li>
-<li>Dans la vue principale la touche <code>B</code> permet de créer une branches.</li>
+<li>Dans la vue principale la touche <code>B</code> permet de créer une branche.</li>
 </ul>
 
 
@@ -330,6 +332,8 @@ sudo apt-get install tig Néanmoins c'est la version 1.2 dans les &hellip;">
         <a class="basic-alignment left" href="/blog/2015/10/03/spl-surcharge-magique/" title="Previous Post: SPL surcharge magique">&laquo; SPL surcharge magique</a>
       
       
+        <a class="basic-alignment right" href="/blog/2015/10/10/liste-chainees-implementation/" title="Next Post: Liste chainées : implémentation">Liste chainées : implémentation &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -341,6 +345,10 @@ sudo apt-get install tig Néanmoins c'est la version 1.2 dans les &hellip;">
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/10/10/liste-chainees-implementation/">Liste Chainées : Implémentation</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2015/10/04/tig-status/">Tig : Status</a>
@@ -356,10 +364,6 @@ sudo apt-get install tig Néanmoins c'est la version 1.2 dans les &hellip;">
     
       <li class="post">
         <a href="/blog/2015/09/21/guzzle-asynchrone-avec-les-promises/">Guzzle Asynchrone Avec Les Promises</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/09/13/yield-php-co-routine/">Yield PHP Co-routine</a>
       </li>
     
   </ul>

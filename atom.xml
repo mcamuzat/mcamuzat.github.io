@@ -4,7 +4,7 @@
   <title><![CDATA[Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-10-04T22:56:53+02:00</updated>
+  <updated>2015-10-11T22:52:34+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,527 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Liste Chainées : Implémentation]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/10/10/liste-chainees-implementation/"/>
+    <updated>2015-10-10T21:12:47+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/10/10/liste-chainees-implementation</id>
+    <content type="html"><![CDATA[<p>Dans la <a href="http://mcamuzat.github.io/blog/2015/10/03/spl-surcharge-magique/">partie 1</a> nous avons appris à surcharger le <code>count</code> ainsi que les différentes méthodes de <code>ArrayAccess</code>. Pour faire un exemple un peu plus concret, je vais impémenter les listes chainées. Les listes doublement chainée sont <strong>déja</strong> implémentées dans la SPL via <a href="http://php.net/manual/fr/class.spldoublylinkedlist.php">SplDoublyLinkedList</a>.</p>
+
+<p>Le liste chainée (linked list en anglais) est une structure de donnée. Nous allons essayer d&#8217;implémenter une liste chainée en PHP. Cela nous permettra de comprendre l&#8217;idée. Nous allons implémenter l&#8217;interface <code>Countable</code>. (J&#8217;implémente <code>ArrayAccess</code> et <code>Iterator</code> dans le post suivant).</p>
+
+<p>Une liste chainée est constituée de <code>Node</code> ou noeud/chainon.</p>
+
+<p>Un node a deux propriétés.</p>
+
+<ul>
+<li>Sa valeurs</li>
+<li>Le liens vers le noeud suivant</li>
+</ul>
+
+
+<p>En php</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Node</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$data</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$next</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="nx">Node</span> <span class="nv">$next</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span> <span class="o">=</span> <span class="nv">$data</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">next</span> <span class="o">=</span> <span class="nv">$next</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">setData</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span> <span class="o">=</span> <span class="nv">$data</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getData</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getNext</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">next</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">setNext</span><span class="p">(</span><span class="nx">Node</span> <span class="nv">$next</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">next</span> <span class="o">=</span> <span class="nv">$next</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>pour créer une liste rien de bien compliqué.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$noeud1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Node</span><span class="p">(</span><span class="mi">12</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$noeud2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Node</span><span class="p">(</span><span class="mi">99</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$noeud3</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Node</span><span class="p">(</span><span class="mi">37</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$noeud1</span><span class="o">-&gt;</span><span class="na">setNext</span><span class="p">(</span><span class="nv">$noeud2</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$neoud2</span><span class="o">-&gt;</span><span class="na">setNext</span><span class="p">(</span><span class="nv">$noeud3</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Résultat le dessin suivant (wikipedia)</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/linked-list.png" width="408" height="41" title="'Une liste chainée' 'Une liste chainée" ></p>
+
+<h2>Implementation de la liste</h2>
+
+<p>Nous allons créer des méthodes pour ajouter simplement nos chainons.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">LinkedList</span> <span class="k">implements</span> <span class="nx">Countable</span><span class="p">,</span> <span class="nx">ArrayAccess</span><span class="p">,</span> <span class="nx">Iterator</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$first</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$last</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="o">...</span>
+</span><span class='line'>    <span class="c1">// pour l&#39;iterateur</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$current</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$position</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Permet d&#39;afficher le contenu de la chaine. </span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">printMe</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$current</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">while</span> <span class="p">(</span><span class="nv">$current</span><span class="o">-&gt;</span><span class="na">getNext</span><span class="p">())</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">echo</span> <span class="s2">&quot;-</span><span class="si">{</span><span class="nv">$current</span><span class="o">-&gt;</span><span class="na">getData</span><span class="p">()</span><span class="si">}</span><span class="s2">-&quot;</span><span class="p">;</span>
+</span><span class='line'>            <span class="nv">$current</span> <span class="o">=</span> <span class="nv">$current</span><span class="o">-&gt;</span><span class="na">getNext</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="k">echo</span> <span class="nv">$current</span><span class="o">-&gt;</span><span class="na">getData</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Nous allons traquer le premier élément de la chaine (<code>$this-&gt;first</code>) et le dernier (<code>$this-&gt;last</code>)</p>
+
+<h3>Ajout d&#8217;un chainon à la fin</h3>
+
+<p>C&#8217;est assez simple.</p>
+
+<ul>
+<li>Créer un nouveau noeud</li>
+<li>Récupérer le dernier chainon</li>
+<li>Faire pointer la propriété <code>next</code> du dernier chainon vers notre nouveau noeud.</li>
+<li>Notre nouveau noeud devient le dernier noeud.</li>
+<li>On augmente la taille de 1</li>
+</ul>
+
+
+<p>en code cela donne</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">insertAtEnd</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// nouveau noeud</span>
+</span><span class='line'>    <span class="nv">$node</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Node</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">// si la liste est vide</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span> <span class="o">==</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span> <span class="o">=</span> <span class="nv">$node</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="c1">// on ajoute le liens vers le suivant</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">last</span> <span class="o">==</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">last</span><span class="o">-&gt;</span><span class="na">setNext</span><span class="p">(</span><span class="nv">$node</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="c1">// notre nouveau noeud devient le dernier</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">last</span> <span class="o">=</span> <span class="nv">$node</span><span class="p">;</span>
+</span><span class='line'>    <span class="c1">// on augmente la taille.</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">count</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Exemple</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$list</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LinkedList</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$list</span><span class="o">-&gt;</span><span class="na">insertAtEnd</span><span class="p">(</span><span class="s2">&quot;ha&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">insertAtEnd</span><span class="p">(</span><span class="s2">&quot;hi&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$list</span><span class="o">-&gt;</span><span class="na">printMe</span><span class="p">()</span> <span class="c1">// -ha-hi</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Ajout d&#8217;un chainon au début</h3>
+
+<p>C&#8217;est un peu près la même idée.</p>
+
+<ul>
+<li>Créer un nouveau noeud</li>
+<li>Récupérer le premier noeud.</li>
+<li>Notre noeud pointe vers le premier noeud.</li>
+<li>On pointe le <code>first</code> vers notre nouveau noeud.</li>
+</ul>
+
+
+<p>En code</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">insertFirstValue</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>   <span class="nv">$node</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Node</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span><span class="p">);</span>
+</span><span class='line'>   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">count</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>   <span class="c1">// si la liste est vide</span>
+</span><span class='line'>   <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">last</span> <span class="o">==</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">last</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span><span class="p">;</span>
+</span><span class='line'>   <span class="p">}</span>
+</span><span class='line'>   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span> <span class="o">=</span> <span class="nv">$node</span><span class="p">;</span>
+</span><span class='line'>   <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Un exemple</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$list</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LinkedList</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$list</span><span class="o">-&gt;</span><span class="na">insertAtEnd</span><span class="p">(</span><span class="s2">&quot;first&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">insertFirstValue</span><span class="p">(</span><span class="s2">&quot;second&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$list</span><span class="o">-&gt;</span><span class="na">printMe</span><span class="p">();</span> <span class="c1">// -second-first</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Suppression d&#8217;un chainon au début.</h3>
+
+<p>Il faut faire dans l&#8217;autre sens.</p>
+
+<p>En code</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">removeFirstValue</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>   <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nx">\Exception</span><span class="p">(</span><span class="s1">&#39;La liste est vide&#39;</span><span class="p">);</span>
+</span><span class='line'>   <span class="p">}</span>
+</span><span class='line'>   <span class="nv">$value</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span><span class="o">-&gt;</span><span class="na">getData</span><span class="p">();</span>
+</span><span class='line'>   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">count</span><span class="o">--</span><span class="p">;</span>
+</span><span class='line'>   <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span><span class="o">-&gt;</span><span class="na">getNext</span><span class="p">();</span>
+</span><span class='line'>   <span class="c1">// si la liste est vide , reinitialiser le last</span>
+</span><span class='line'>   <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span> <span class="o">==</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>       <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">last</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+</span><span class='line'>   <span class="p">}</span>
+</span><span class='line'>   <span class="k">return</span> <span class="nv">$value</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nv">$list</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LinkedList</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$list</span><span class="o">-&gt;</span><span class="na">insertAtEnd</span><span class="p">(</span><span class="s2">&quot;first&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">insertAtEnd</span><span class="p">(</span><span class="s2">&quot;second&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$list</span><span class="o">-&gt;</span><span class="na">printMe</span><span class="p">();</span> <span class="c1">// -first-second</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$list</span><span class="o">-&gt;</span><span class="na">removeFirstValue</span><span class="p">());</span>
+</span><span class='line'><span class="nv">$list</span><span class="o">-&gt;</span><span class="na">printMe</span><span class="p">();</span> <span class="c1">//</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Suppression d&#8217;un chainon à la fin</h3>
+
+<p>Comme le dernier chainon ne connait pas son prédécesseur. C&#8217;est beaucoup plus compliqué. On est obligé de repartir depuis le début. Donc pour supprimer le dernier chainon d&#8217;un liste d&#8217;un million de chainon, il nous faut parcourir les 1 millions de chainons.</p>
+
+<p>En Code</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">RemoveLastValue</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// cas particulier la liste est vide</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nx">\Exception</span><span class="p">(</span><span class="s1">&#39;la Liste est vide&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="c1">// Il n&#39;y a qu&#39;un noeud.</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">count</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$value</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">last</span><span class="o">-&gt;</span><span class="na">getData</span><span class="p">();</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">last</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">value</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="c1">// On parcours tout les chainons jusqu&#39;à l&#39;avant-dernier</span>
+</span><span class='line'>    <span class="nv">$current</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span><span class="o">-&gt;</span><span class="na">getNext</span><span class="p">();</span>
+</span><span class='line'>    <span class="nv">$previous</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="nv">$current</span><span class="o">-&gt;</span><span class="na">getNext</span><span class="p">())</span> <span class="p">{</span>
+</span><span class='line'>         <span class="nv">$previous</span> <span class="o">=</span> <span class="nv">$current</span><span class="p">;</span>
+</span><span class='line'>         <span class="nv">$current</span> <span class="o">=</span> <span class="nv">$current</span><span class="o">-&gt;</span><span class="na">getNext</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="c1">// on supprime le liens</span>
+</span><span class='line'>    <span class="nv">$previous</span><span class="o">-&gt;</span><span class="na">setNext</span><span class="p">(</span><span class="k">null</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">// On déplace le last</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">last</span> <span class="o">=</span> <span class="nv">$previous</span><span class="p">;</span>
+</span><span class='line'>    <span class="c1">// on décremente</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">count</span><span class="o">--</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nv">$current</span><span class="o">-&gt;</span><span class="na">getData</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Ajouter une valeurs au milieu de la chaine</h3>
+
+<p>Même punition que pour supprimer un lien à la fin de la liste. Si on a une liste de 1 Millions de chainons. Pour insérer à la position 99999, nous sommes obligés de parcourir les 99999 chainons. Et pour la suppression ce sera pareil..</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/LinkedLists-addingnode.png" width="474" height="116" title="un chainon" alt="Ajout d"></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">insertAtPosition</span><span class="p">(</span><span class="nv">$position</span><span class="p">,</span> <span class="nv">$data</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$position</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">insertFirstValue</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$position</span> <span class="o">&gt;=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">count</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">insertAtEnd</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nv">$current</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="nv">$position</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$current</span> <span class="o">=</span> <span class="nv">$current</span><span class="o">-&gt;</span><span class="na">getNext</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nv">$node</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Node</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="nv">$current</span><span class="o">-&gt;</span><span class="na">getNext</span><span class="p">());</span>
+</span><span class='line'>    <span class="nv">$current</span><span class="o">-&gt;</span><span class="na">setNext</span><span class="p">(</span><span class="nv">$node</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">count</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Implementer le <code>count</code></h2>
+
+<p>Si vous avez lu le <a href="">post précédent</a> il suffit d&#8217;ajouter une méthode <code>count</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">count</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">count</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Des applications avec la Liste chainée.</h2>
+
+<p>Si on renomme la méthode <code>insertAtEnd($data)</code> par <code>enqueue($job)</code> et la méthode <code>removeFirstValue()</code> par <code>dequeue()</code></p>
+
+<p>On obtient une file d&#8217;attente ou une <code>Queue</code> en anglais.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$fileAttente</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LinkedList</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$fileAttente</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span><span class="s2">&quot;job1&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span><span class="s2">&quot;job2&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$fileAttente</span><span class="o">-&gt;</span><span class="na">dequeue</span><span class="p">());</span> <span class="c1">// job1</span>
+</span><span class='line'><span class="c1">// je rajoute un travail </span>
+</span><span class='line'><span class="nv">$fileAttente</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span><span class="s2">&quot;OtherJob&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$fileAttente</span><span class="o">-&gt;</span><span class="na">dequeue</span><span class="p">());</span> <span class="c1">// job2</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$fileAttente</span><span class="o">-&gt;</span><span class="na">dequeue</span><span class="p">());</span> <span class="c1">// OtherJob</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si on renomme la méthode <code>insertFirstValue</code> en <code>push</code> et la méthode <code>removeFirstValue()</code> par <code>pop()</code> On obtient une Stack.</p>
+
+<p>Voici le code pour inverser un array sans utiliser <code>array_reverse</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$list1</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$stack</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LinkedList</span><span class="p">();</span>
+</span><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$list</span> <span class="k">as</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$stack</span><span class="o">-&gt;</span><span class="na">push</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nv">$list2</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+</span><span class='line'><span class="k">while</span> <span class="p">(</span><span class="nx">stack</span><span class="o">-&gt;</span><span class="na">count</span><span class="p">())</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$list2</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$stack</span><span class="o">-&gt;</span><span class="na">pop</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$list2</span><span class="p">)</span> <span class="c1">//[5,4,3,2,1];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Conclusion</h2>
+
+<p>Un ancien livre est titré</p>
+
+<blockquote><blockquote><p>Algorithms + Data Structures = Programs</p></blockquote></blockquote>
+
+<p>On a tendance en language php à penser tout en Object et en Array. Parfois la façon dont on représente nos données est importante.</p>
+
+<ul>
+<li>Certaines opérations comme ajouter un lien au début/fin de la chaine sont très peu couteuses (une étape) on parle de complexité O(1);</li>
+<li>supprimer un lien à la fin de la liste par contre prend N étapes On dit que la complexité est de O(N)</li>
+</ul>
+
+
+<p>Pour résoudre ce problème on a inventé les listes doublements chainées. Voir le dessin (Wikipédia);</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/Doubly-linked-list.png" width="610" height="41" title="doubles listes chainée" alt="double liste chainée"></p>
+
+<p>Cela prend beaucoup plus de mémoire, mais on simplifie beaucoup l&#8217;ajout et la suppression au début et à la fin de liste. par contre la recherche dans une liste chainée est toujours aussi longue.</p>
+
+<p>Mon post sur les <a href="blog/2015/08/29/stacks-structures-meconnues/">Stack</a>.</p>
+
+<p>Dans le post suivant on implémentera les méthodes de <code>ArrayAccess</code> et <code>Iterator</code>, ce qui nous permettra de faire des <code>foreach</code> ou <code>isset($list[2])</code> etc ..</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Tig : Status]]></title>
@@ -40,13 +561,15 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
+<p>attention vous aurez probablement besoin d&#8217;avoir installer la librairies <code>libncursesw</code> pour l&#8217;utf-8</p>
+
 <h2>La vue principale</h2>
 
 <p>Elle permet de voir l&#8217;historique du dépôt.</p>
 
 <p><img class="center" src="http://mcamuzat.github.io/images/tig-defaut.png" width="600" height="398" title="la vue par défault" alt="la vue par défaut"></p>
 
-<p>Appuyer sur <code>&lt;Enter&gt;</code> pour voir la différence. (Dans la version 2, si le terminal fait plus de 160 caractere l&#8217;écran se splitte en 2 verticalement)</p>
+<p>Appuyer sur <code>&lt;Enter&gt;</code> pour voir la différence. (Dans la version 2, si le terminal fait plus de 160 caractères l&#8217;écran se splitte en 2 verticalement)</p>
 
 <p><img class="center" src="http://mcamuzat.github.io/images/tig-diff.png" width="600" height="399" title="quand on appuie sur la touche entrée, on affiche la différence" alt="l"></p>
 
@@ -61,7 +584,7 @@
 <ul>
 <li><code>S</code> ou <code>s</code> pour voir le stage (équivalent de git status)</li>
 <li><code>t</code> tree view affichage en explorateur de fichier</li>
-<li><code>r</code> permet de voir les différentes branches</li>
+<li><code>r</code> permet de voir les différentes branches (<code>H</code> dans la version1</li>
 <li><code>l</code> voir les logs</li>
 </ul>
 
@@ -137,11 +660,11 @@
 
 <p><img class="center" src="http://mcamuzat.github.io/images/tig-revert.png" width="600" height="398" title="la vue par défaut" alt="la vue par défaut"></p>
 
-<p>Il suffit d&#8217;appuyer sur <code>Enter</code> puis de ce déplacer dans le commit avec <code>j</code> et <code>k</code> et appuyer sur <code>u</code> pour ajouter ce chunk. Les chunks pour faire simple sont les textes séparés par des <code>@@ ... @@</code>. On se déplace de chunk en chunk grâce à la touche <code>@</code>.</p>
+<p>Il suffit d&#8217;appuyer sur <code>Enter</code> puis de se déplacer dans le commit avec <code>j</code> et <code>k</code> et appuyer sur <code>u</code> pour ajouter ce chunk. Les chunks pour faire simple sont les textes séparés par des <code>@@ ... @@</code>. On se déplace de chunk en chunk grâce à la touche <code>@</code>.</p>
 
 <p>Pour reverter le fichier, On utilise la touche <code>!</code>.</p>
 
-<p>cela marche aussi sur un chunk. On peut donc reverter partiellement un fichier.</p>
+<p>Cela marche aussi sur un chunk. On peut donc reverter partiellement un fichier.</p>
 
 <p>Il est possible d&#8217;ajouter ligne par ligne dans un commit grâce à la touche <code>1</code>.</p>
 
@@ -179,7 +702,7 @@
 <ul>
 <li>Dans la vue status la touche <code>D</code> efface le fichier</li>
 <li>Dans la vue status la touche <code>A</code> fait un <code>git commit --amend</code></li>
-<li>Dans la vue principale la touche <code>B</code> permet de créer une branches.</li>
+<li>Dans la vue principale la touche <code>B</code> permet de créer une branche.</li>
 </ul>
 
 
@@ -220,7 +743,7 @@
     <id>http://mcamuzat.github.io/blog/2015/10/03/spl-surcharge-magique</id>
     <content type="html"><![CDATA[<p>Nous allons repartir sur la <a href="http://php.net/manual/fr/book.spl.php">SPL</a>.</p>
 
-<p>Je vais déjà parler des différentes méthodes amusantes à surcharger.</p>
+<p>Je vais parler des différentes méthodes amusantes à surcharger.</p>
 
 <h2>Count</h2>
 
@@ -5297,485 +5820,6 @@ Il suffit de créer un fichier <code>pre-commit.sh</code> dans le répertoire <c
 <p>On peux lancer un build sans passer par travis grâce à docker et <a href="https://github.com/jolicode/JoliCi">JoliCi</a>, Voir ce <a href="blog/2015/04/18/dockers-et-ci/">post</a> à la fin</p>
 
 <p>Dans le prochain article, nous allons parler de CodeSniffer.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Créer Son Dépôt Sous Packagist]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/07/24/creer-son-depot-sous-packagist/"/>
-    <updated>2015-07-24T17:50:58+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/07/24/creer-son-depot-sous-packagist</id>
-    <content type="html"><![CDATA[<h2>Introduction</h2>
-
-<p>J&#8217;avais montré dans le précédent <a href="http://mcamuzat.github.io/blog/2015/07/19/histogramme-et-ligne-de-commande/">Post</a>, une fonction qui permet de créer des histogrammes.</p>
-
-<p>J&#8217;ai décidé de la publier sous <a href="https://packagist.org/">Packagist</a>. Je n&#8217;avais jamais fais. Je vous propose de suivre mon cheminement</p>
-
-<ul>
-<li>Je mets au propre le fichier</li>
-<li>J&#8217;ajoute le <code>composer.json</code></li>
-<li>j&#8217;ajoute les tests unitaires</li>
-<li>Je crée le dépôt sur Github</li>
-<li>J&#8217;enregistre le dépôt sur Packagist</li>
-</ul>
-
-
-<h2>Industrialisation</h2>
-
-<p>Nous sommes partis du code suivant.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">spark</span><span class="p">(</span><span class="nv">$array</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nv">$bars</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;▁&#39;</span><span class="p">,</span><span class="s1">&#39;▂&#39;</span><span class="p">,</span><span class="s1">&#39;▃&#39;</span><span class="p">,</span><span class="s1">&#39;▄&#39;</span><span class="p">,</span><span class="s1">&#39;▅&#39;</span><span class="p">,</span><span class="s1">&#39;▆&#39;</span><span class="p">,</span><span class="s1">&#39;▇&#39;</span><span class="p">,</span><span class="s1">&#39;█&#39;</span><span class="p">);</span>
-</span><span class='line'>    <span class="nv">$divide</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nv">$array</span><span class="p">);</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$divide</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$divide</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="nv">$countBars</span> <span class="o">=</span> <span class="nb">count</span><span class="p">(</span><span class="nv">$bars</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-</span><span class='line'>    <span class="nv">$out</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$array</span> <span class="k">as</span> <span class="nv">$tick</span><span class="p">)</span>
-</span><span class='line'>        <span class="nv">$out</span> <span class="o">.=</span> <span class="nv">$bars</span><span class="p">[</span><span class="nb">round</span><span class="p">((</span><span class="nv">$tick</span> <span class="o">/</span> <span class="nv">$divide</span><span class="p">)</span> <span class="o">*</span> <span class="nv">$countBars</span><span class="p">)];</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="nv">$out</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// si je n&#39;ai aucun argument ..</span>
-</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="nv">$argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nv">$str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-</span><span class='line'>    <span class="c1">// recupère le flux d&#39;entrée</span>
-</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nb">feof</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$str</span> <span class="o">.=</span> <span class="nb">fgets</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="c1">// explode laisse la derniere ligne vide.</span>
-</span><span class='line'>    <span class="c1">// d&#39;ou le array_filter</span>
-</span><span class='line'>    <span class="nx">spark</span><span class="p">(</span><span class="nb">array_filter</span><span class="p">(</span><span class="nb">explode</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nv">$str</span><span class="p">),</span><span class="s1">&#39;strlen&#39;</span><span class="p">));</span>
-</span><span class='line'>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$iDontCare</span> <span class="o">=</span><span class="nb">array_shift</span><span class="p">(</span><span class="nv">$argv</span><span class="p">);</span>
-</span><span class='line'><span class="nx">spark</span><span class="p">(</span><span class="nv">$argv</span><span class="p">);</span>
-</span><span class='line'><span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Je vais découper cela en plusieurs fichiers et répertoires.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">.</span>
-</span><span class='line'><span class="nx">├──</span> <span class="nx">bin</span>
-</span><span class='line'><span class="nx">│  </span> <span class="nx">└──</span> <span class="nx">spark</span>
-</span><span class='line'><span class="nx">├──</span> <span class="nx">composer</span><span class="o">.</span><span class="nx">json</span>
-</span><span class='line'><span class="nx">├──</span> <span class="nx">LICENSE</span>
-</span><span class='line'><span class="nx">├──</span> <span class="nx">phpunit</span><span class="o">.</span><span class="nx">xml</span><span class="o">.</span><span class="nx">dist</span>
-</span><span class='line'><span class="nx">├──</span> <span class="nx">src</span>
-</span><span class='line'><span class="nx">│  </span> <span class="nx">└──</span> <span class="nx">Spark</span>
-</span><span class='line'><span class="nx">│  </span>     <span class="nx">└──</span> <span class="nx">Spark</span><span class="o">.</span><span class="nx">php</span>
-</span><span class='line'><span class="nx">└──</span> <span class="nx">tests</span>
-</span><span class='line'>    <span class="nx">├──</span> <span class="nx">bootstrap</span><span class="o">.</span><span class="nx">php</span>
-</span><span class='line'>    <span class="nx">└──</span> <span class="nx">Spark</span>
-</span><span class='line'>        <span class="nx">└──</span> <span class="nx">SparkTest</span><span class="o">.</span><span class="nx">php</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Voici <code>Spark.php</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'><span class="k">namespace</span> <span class="nx">Spark</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Spark</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">private</span> <span class="k">static</span> <span class="nv">$bars</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;▁&#39;</span><span class="p">,</span><span class="s1">&#39;▂&#39;</span><span class="p">,</span><span class="s1">&#39;▃&#39;</span><span class="p">,</span><span class="s1">&#39;▄&#39;</span><span class="p">,</span><span class="s1">&#39;▅&#39;</span><span class="p">,</span><span class="s1">&#39;▆&#39;</span><span class="p">,</span><span class="s1">&#39;▇&#39;</span><span class="p">,</span><span class="s1">&#39;█&#39;</span><span class="p">);</span>
-</span><span class='line'>    <span class="sd">/**</span>
-</span><span class='line'><span class="sd">     *</span>
-</span><span class='line'><span class="sd">     */</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">spark</span><span class="p">(</span><span class="nv">$array</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$divide</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nv">$array</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$divide</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nv">$divide</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="nv">$countTick</span> <span class="o">=</span> <span class="nb">count</span><span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="nv">$bars</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-</span><span class='line'>        <span class="nv">$out</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$array</span> <span class="k">as</span> <span class="nv">$tick</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nv">$out</span> <span class="o">.=</span> <span class="nx">self</span><span class="o">::</span><span class="nv">$bars</span><span class="p">[</span><span class="nb">round</span><span class="p">((</span><span class="nv">$tick</span> <span class="o">/</span> <span class="nv">$divide</span><span class="p">)</span> <span class="o">*</span> <span class="nv">$countTick</span><span class="p">)];</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$out</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Et le fichier <code>spark</code> dans le répertoire <code>bin</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="c1">#!/usr/bin/env php</span>
-</span><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">require_once</span> <span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">&#39;/../vendor/autoload.php&#39;</span><span class="p">;</span> <span class="c1">// Autoload files using Composer autoload</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">use</span> <span class="nx">Spark\Spark</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$iDontCare</span> <span class="o">=</span><span class="nb">array_shift</span><span class="p">(</span><span class="nv">$argv</span><span class="p">);</span>
-</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="nv">$argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nv">$str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nb">feof</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$str</span> <span class="o">.=</span> <span class="nb">fgets</span><span class="p">(</span><span class="nx">STDIN</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="nx">Spark</span><span class="o">::</span><span class="na">spark</span><span class="p">(</span><span class="nb">array_filter</span><span class="p">(</span><span class="nb">explode</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nv">$str</span><span class="p">),</span><span class="s1">&#39;strlen&#39;</span><span class="p">));</span>
-</span><span class='line'>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="k">echo</span> <span class="nx">Spark</span><span class="o">::</span><span class="na">spark</span><span class="p">(</span><span class="nv">$argv</span><span class="p">);</span>
-</span><span class='line'><span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Le Composer.json</h2>
-
-<p><strong>Pour publier sur Packagist il faut un <code>composer.json</code></strong></p>
-
-<p>C&#8217;est plutôt simple en fait. Il suffit de lancer la commande <code>composer init</code>. Tout se fait de manière interactive.</p>
-
-<p>à la fin j&#8217;obtiens.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;mcamuzat/spark&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;description&quot;</span><span class="o">:</span> <span class="s2">&quot;histogram in command line. Clone of holman/spark&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;require-dev&quot;</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>        <span class="s2">&quot;phpunit/phpunit&quot;</span><span class="o">:</span> <span class="s2">&quot;~4.0&quot;</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;squizlabs/php_codesniffer&quot;</span><span class="o">:</span> <span class="s2">&quot;2.*&quot;</span>
-</span><span class='line'>    <span class="p">},</span>
-</span><span class='line'>    <span class="s2">&quot;license&quot;</span><span class="o">:</span> <span class="s2">&quot;MIT&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;authors&quot;</span><span class="o">:</span> <span class="p">[</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>            <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Marc Camuzat&quot;</span><span class="p">,</span>
-</span><span class='line'>            <span class="s2">&quot;email&quot;</span><span class="o">:</span> <span class="s2">&quot;marc.camuzat@gmail.com&quot;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">],</span>
-</span><span class='line'>    <span class="s2">&quot;minimum-stability&quot;</span><span class="o">:</span> <span class="s2">&quot;dev&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{},</span>
-</span><span class='line'>    <span class="s2">&quot;autoload&quot;</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>        <span class="s2">&quot;psr-0&quot;</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>            <span class="s2">&quot;Spark&quot;</span><span class="o">:</span> <span class="s2">&quot;src/&quot;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">},</span>
-</span><span class='line'>    <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>        <span class="s2">&quot;bin-dir&quot;</span><span class="o">:</span> <span class="s2">&quot;bin&quot;</span>
-</span><span class='line'>    <span class="p">},</span>
-</span><span class='line'>    <span class="s2">&quot;bin&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;bin/spark&quot;</span><span class="p">]</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Je crée le Namespace et j&#8217;ajoute que j&#8217;ai un fichier à marquer comme exécutable de le répertoire <code>bin/spark</code>. Je n&#8217;ai aucune dépendance.</p>
-
-<h2>Ajoutons les tests.</h2>
-
-<p>Il faut un minimum de tests.</p>
-
-<p>Pour avoir des tests il faut 3 fichiers</p>
-
-<ul>
-<li>Un <code>phpunit.xml.dist</code></li>
-<li>Un <code>bootstrap.php</code> pour qui se borne à appeler l&#8217;autoload de composer</li>
-<li>Enfin un fichier de test</li>
-</ul>
-
-
-<p>Et installer PHPUnit (qui est déjà dans mon <code>composer.json</code>)</p>
-
-<p>Le <code>phpunit.xml.dist</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;phpunit</span> <span class="na">backupGlobals=</span><span class="s">&quot;false&quot;</span>
-</span><span class='line'>         <span class="na">backupStaticAttributes=</span><span class="s">&quot;false&quot;</span>
-</span><span class='line'>         <span class="na">colors=</span><span class="s">&quot;true&quot;</span>
-</span><span class='line'>         <span class="na">convertErrorsToExceptions=</span><span class="s">&quot;true&quot;</span>
-</span><span class='line'>         <span class="na">convertNoticesToExceptions=</span><span class="s">&quot;true&quot;</span>
-</span><span class='line'>         <span class="na">convertWarningsToExceptions=</span><span class="s">&quot;true&quot;</span>
-</span><span class='line'>         <span class="na">processIsolation=</span><span class="s">&quot;false&quot;</span>
-</span><span class='line'>         <span class="na">stopOnFailure=</span><span class="s">&quot;false&quot;</span>
-</span><span class='line'>         <span class="na">syntaxCheck=</span><span class="s">&quot;false&quot;</span>
-</span><span class='line'>         <span class="na">bootstrap=</span><span class="s">&quot;tests/bootstrap.php&quot;</span>
-</span><span class='line'><span class="nt">&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;testsuites&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;testsuite</span> <span class="na">name=</span><span class="s">&quot;Spark Test Suite&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>            <span class="nt">&lt;directory&gt;</span>./tests/<span class="nt">&lt;/directory&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;/testsuite&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/testsuites&gt;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nt">&lt;filter&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;whitelist&gt;</span>
-</span><span class='line'>            <span class="nt">&lt;directory&gt;</span>./src/<span class="nt">&lt;/directory&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;/whitelist&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/filter&gt;</span>
-</span><span class='line'><span class="nt">&lt;/phpunit&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On appelle le <code>bootstrap.php</code> qui fait venir l&#8217;autoloader</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'><span class="nv">$loader</span> <span class="o">=</span> <span class="o">@</span><span class="k">include</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/../vendor/autoload.php&#39;</span><span class="p">;</span>
-</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$loader</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nv">$loader</span> <span class="o">=</span> <span class="k">require</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/../../../../vendor/autoload.php&#39;</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Et enfin les tests</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'><span class="k">namespace</span> <span class="nx">Spark</span><span class="p">;</span>
-</span><span class='line'><span class="k">use</span> <span class="nx">Spark\Spark</span><span class="p">;</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">SparkTest</span> <span class="k">extends</span> <span class="nx">\PHPUnit_Framework_TestCase</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">testItCreateAStringFromData</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$out</span> <span class="o">=</span> <span class="nx">Spark</span><span class="o">::</span><span class="na">spark</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">22</span><span class="p">,</span><span class="mi">13</span><span class="p">,</span><span class="mi">5</span><span class="p">));</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertEquals</span><span class="p">(</span><span class="s1">&#39;▁▃█▅▃&#39;</span><span class="p">,</span> <span class="nv">$out</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">testItDontCareifInputIsString</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$out</span> <span class="o">=</span> <span class="nx">Spark</span><span class="o">::</span><span class="na">spark</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="s2">&quot;4&quot;</span><span class="p">,</span><span class="s2">&quot;8&quot;</span><span class="p">));</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertEquals</span><span class="p">(</span><span class="s1">&#39;▃▅█&#39;</span><span class="p">,</span> <span class="nv">$out</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">testItWorkWithFloatNumber</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$out</span> <span class="o">=</span> <span class="nx">Spark</span><span class="o">::</span><span class="na">spark</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s2">&quot;0.2&quot;</span><span class="p">,</span><span class="s2">&quot;0.8&quot;</span><span class="p">,</span><span class="s2">&quot;0.4&quot;</span><span class="p">));</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertEquals</span><span class="p">(</span><span class="s1">&#39;▃█▅&#39;</span><span class="p">,</span> <span class="nv">$out</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">testItNotDivideBy0</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$out</span> <span class="o">=</span> <span class="nx">Spark</span><span class="o">::</span><span class="na">spark</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">));</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertEquals</span><span class="p">(</span><span class="s1">&#39;▁▁▁&#39;</span><span class="p">,</span> <span class="nv">$out</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Lançons les tests</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>bin/phpunit
-</span><span class='line'>PHPUnit 4.8-ge1cc585 by Sebastian Bergmann and contributors.
-</span><span class='line'>
-</span><span class='line'>....
-</span><span class='line'>
-</span><span class='line'>Time: <span class="m">722</span> ms, Memory: 4.50Mb
-</span><span class='line'>
-</span><span class='line'>OK <span class="o">(</span><span class="m">4</span> tests, <span class="m">4</span> assertions<span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Publication</h2>
-
-<p>Je crée le dépôt sur <a href="https://github.com/mcamuzat/spark">GitHub</a> que je clone</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>git clone mcamuzat/spark.git
-</span><span class='line'>git add .
-</span><span class='line'>git commit -m<span class="s2">&quot;initialize repo&quot;</span>
-</span><span class='line'>git push -u origin master
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Je me suis inscris sur <a href="https://packagist.org/">Packagist</a>.</p>
-
-<p>Il suffit de cliquer sur <strong>Submit</strong></p>
-
-<p><img class="center" src="http://mcamuzat.github.io/images/packagist_ajout.png" width="600" height="258" title="Ajouter un dépôt sur Packagist" alt="Ajouter un dépôt sur packagist"></p>
-
-<p>Et de mettre l&#8217;url de Github. Et c&#8217;est tout !</p>
-
-<h2>Des liens</h2>
-
-<ul>
-<li>Le projet sur <a href="https://github.com/mcamuzat/spark">Github</a></li>
-<li>Le projet sur <a href="https://packagist.org/packages/mcamuzat/spark">Packagist</a></li>
-</ul>
-
-
-<h2>En conclusion</h2>
-
-<p>Il manque encore le <code>README</code> sur Github, car pour l&#8217;instant l&#8217;intérêt du programme est encore un peu mystérieux pour une personne extérieure.</p>
-
-<p>J&#8217;espère que si vous voulez créer votre propre librairie sur Packagist, ce tutoriel vous servira.</p>
 ]]></content>
   </entry>
   
