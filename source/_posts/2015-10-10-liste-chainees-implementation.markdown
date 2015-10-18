@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "Liste chainées : implémentation"
+title: "Listes chainées : implémentation"
 date: 2015-10-10 21:12:47 +0200
 comments: true
-categories: 
+categories: ["php", "SPL"] 
 ---
 
 Dans la [partie 1](/blog/2015/10/03/spl-surcharge-magique/) nous avons appris à surcharger le `count` ainsi que les différentes méthodes de `ArrayAccess`. Pour faire un exemple un peu plus concret, je vais impémenter les listes chainées. Les listes doublement chainée sont **déja** implémentées dans la SPL via [SplDoublyLinkedList](http://php.net/manual/fr/class.spldoublylinkedlist.php).
