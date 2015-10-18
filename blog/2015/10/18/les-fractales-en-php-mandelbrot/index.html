@@ -1,0 +1,684 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Les Fractales en Php Mandelbrot - Mon blog perso.</title>
+  <meta name="author" content="mcamuzat">
+
+  
+  <meta name="description" content="Voici le code : 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mcamuzat.github.io/blog/2015/10/18/les-fractales-en-php-mandelbrot/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Mon blog perso." type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-60315965-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Mon blog perso.</a></h1>
+  
+    <h2>Un simple blog PHP/Linux/Programmation/Docker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="mcamuzat.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Les Fractales en Php Mandelbrot</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-10-18T20:02:28+02:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>8:02 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Voici le code :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Mandelbrot</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">function</span> <span class="nf">Mandelbrot</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">for</span> <span class="p">(</span><span class="nv">$x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">19</span><span class="p">;</span> <span class="nv">$x</span> <span class="o">&lt;</span> <span class="mi">19</span><span class="p">;</span> <span class="nv">$x</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">echo</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+</span><span class='line'>            <span class="k">for</span> <span class="p">(</span><span class="nv">$y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">19</span><span class="p">;</span> <span class="nv">$y</span> <span class="o">&lt;</span> <span class="mi">19</span><span class="p">;</span> <span class="nv">$y</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                <span class="k">if</span> <span class="p">((</span><span class="nv">$out</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">iterate</span><span class="p">(</span><span class="nv">$x</span><span class="o">/</span><span class="mf">20.0</span><span class="p">,</span><span class="nv">$y</span><span class="o">/</span><span class="mf">20.0</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>                    <span class="k">echo</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">);</span>
+</span><span class='line'>                <span class="k">else</span>
+</span><span class='line'>                    <span class="k">echo</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">function</span> <span class="nf">iterate</span><span class="p">(</span><span class="nv">$x</span><span class="p">,</span><span class="nv">$y</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$cr</span> <span class="o">=</span> <span class="nv">$y</span><span class="o">-</span><span class="mf">0.5</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$ci</span> <span class="o">=</span> <span class="nv">$x</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$zi</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$zr</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$i</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>            <span class="nv">$zr2</span> <span class="o">=</span> <span class="nv">$zr</span> <span class="o">*</span> <span class="nv">$zr</span><span class="p">;</span>
+</span><span class='line'>            <span class="nv">$zi2</span> <span class="o">=</span> <span class="nv">$zi</span> <span class="o">*</span> <span class="nv">$zi</span><span class="p">;</span>
+</span><span class='line'>            <span class="c1">// Calul de la nouvelle valeur de z</span>
+</span><span class='line'>            <span class="k">list</span><span class="p">(</span><span class="nv">$zr</span><span class="p">,</span> <span class="nv">$zi</span><span class="p">)</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+</span><span class='line'>                <span class="nv">$zr2</span> <span class="o">-</span> <span class="nv">$zi2</span> <span class="o">+</span> <span class="nv">$cr</span><span class="p">,</span>
+</span><span class='line'>                <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="nv">$zr</span> <span class="o">*</span> <span class="nv">$zi</span><span class="p">)</span> <span class="o">+</span> <span class="nv">$ci</span>
+</span><span class='line'>            <span class="p">);</span>
+</span><span class='line'>            <span class="c1">// Si le module est supérieur à 2</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="nv">$zi2</span> <span class="o">+</span> <span class="nv">$zr2</span> <span class="o">&gt;</span> <span class="nx">BAILOUT</span><span class="p">)</span>
+</span><span class='line'>                <span class="k">return</span> <span class="nv">$i</span><span class="p">;</span>
+</span><span class='line'>            <span class="c1">// si cela fait la millieme boucle.</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">&gt;</span> <span class="nx">MAX_ITERATIONS</span><span class="p">)</span>
+</span><span class='line'>                <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$m</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Mandelbrot</span><span class="p">();</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">    </span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Voici le résultat</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">______________________________________</span>
+</span><span class='line'><span class="nx">______________________________________</span>
+</span><span class='line'><span class="nx">___________________________</span><span class="o">*</span><span class="nx">__________</span>
+</span><span class='line'><span class="nx">_________________________</span><span class="o">****</span><span class="nx">_________</span>
+</span><span class='line'><span class="nx">_________________________</span><span class="o">****</span><span class="nx">_________</span>
+</span><span class='line'><span class="nx">_________________________</span><span class="o">****</span><span class="nx">_________</span>
+</span><span class='line'><span class="nx">______________________________________</span>
+</span><span class='line'><span class="nx">___________________</span><span class="o">*</span><span class="nx">__</span><span class="o">**********</span><span class="nx">______</span>
+</span><span class='line'><span class="nx">___________________</span><span class="o">**************</span><span class="nx">_</span><span class="o">**</span><span class="nx">__</span>
+</span><span class='line'><span class="nx">___________________</span><span class="o">*****************</span><span class="nx">__</span>
+</span><span class='line'><span class="nx">__________________</span><span class="o">*****************</span><span class="nx">___</span>
+</span><span class='line'><span class="nx">_________________</span><span class="o">*******************</span><span class="nx">__</span>
+</span><span class='line'><span class="nx">________________</span><span class="o">*********************</span><span class="nx">_</span>
+</span><span class='line'><span class="nx">________________</span><span class="o">*********************</span><span class="nx">_</span>
+</span><span class='line'><span class="nx">______</span><span class="o">*</span><span class="nx">__</span><span class="o">*</span><span class="nx">_____</span><span class="o">**********************</span><span class="nx">_</span>
+</span><span class='line'><span class="nx">______</span><span class="o">*******</span><span class="nx">__</span><span class="o">**********************</span><span class="nx">_</span>
+</span><span class='line'><span class="nx">_____</span><span class="o">*********</span><span class="nx">_</span><span class="o">**********************</span><span class="nx">_</span>
+</span><span class='line'><span class="nx">_____</span><span class="o">*********</span><span class="nx">_</span><span class="o">**********************</span><span class="nx">_</span>
+</span><span class='line'><span class="nx">___</span><span class="o">*</span><span class="nx">_</span><span class="o">*********</span><span class="nx">_</span><span class="o">*********************</span><span class="nx">__</span>
+</span><span class='line'><span class="o">***********************************</span><span class="nx">___</span>
+</span><span class='line'><span class="nx">___</span><span class="o">*</span><span class="nx">_</span><span class="o">*********</span><span class="nx">_</span><span class="o">*********************</span><span class="nx">__</span>
+</span><span class='line'><span class="nx">_____</span><span class="o">*********</span><span class="nx">_</span><span class="o">**********************</span><span class="nx">_</span>
+</span><span class='line'><span class="nx">_____</span><span class="o">*********</span><span class="nx">_</span><span class="o">**********************</span><span class="nx">_</span>
+</span><span class='line'><span class="nx">______</span><span class="o">*******</span><span class="nx">__</span><span class="o">**********************</span><span class="nx">_</span>
+</span><span class='line'><span class="nx">______</span><span class="o">*</span><span class="nx">__</span><span class="o">*</span><span class="nx">_____</span><span class="o">**********************</span><span class="nx">_</span>
+</span><span class='line'><span class="nx">________________</span><span class="o">*********************</span><span class="nx">_</span>
+</span><span class='line'><span class="nx">________________</span><span class="o">*********************</span><span class="nx">_</span>
+</span><span class='line'><span class="nx">_________________</span><span class="o">*******************</span><span class="nx">__</span>
+</span><span class='line'><span class="nx">__________________</span><span class="o">*****************</span><span class="nx">___</span>
+</span><span class='line'><span class="nx">___________________</span><span class="o">*****************</span><span class="nx">__</span>
+</span><span class='line'><span class="nx">___________________</span><span class="o">**************</span><span class="nx">_</span><span class="o">**</span><span class="nx">__</span>
+</span><span class='line'><span class="nx">___________________</span><span class="o">*</span><span class="nx">__</span><span class="o">**********</span><span class="nx">______</span>
+</span><span class='line'><span class="nx">______________________________________</span>
+</span><span class='line'><span class="nx">_________________________</span><span class="o">****</span><span class="nx">_________</span>
+</span><span class='line'><span class="nx">_________________________</span><span class="o">****</span><span class="nx">_________</span>
+</span><span class='line'><span class="nx">_________________________</span><span class="o">****</span><span class="nx">_________</span>
+</span><span class='line'><span class="nx">___________________________</span><span class="o">*</span><span class="nx">__________</span>
+</span><span class='line'><span class="nx">_____________________________________</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Comment cela marche.</p>
+
+<p>Rappel sur les complexes</p>
+
+<ul>
+<li>un nombre complexe est composé d&#8217;une partie réelle et une partie imaginaire : <code>a + i b</code> ici <strong>a</strong> est la partie réelle et <strong>b</strong> est la partie imaginaire</li>
+<li>le module d&#8217;un nombre complexe représente la distance entre les coordonnées du point et le centre. <code>|module|^2 = a^2 + b ^2</code></li>
+<li>la multiplication d&#8217;un nombre complexe donne <code>(a + ib)^2 = (a^2-b^2)+2ab * i</code></li>
+</ul>
+
+
+<h2>La version simple</h2>
+
+<p>il existe une video en anglais qui explique cela très bien.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/NGMRB4O922I" frameborder="0" allowfullscreen></iframe>
+
+
+<ul>
+<li>Je crée un tableau (x,y) de 20 * 20 qui va de [1, -1] en largeur et en hauteur</li>
+<li>j&#8217;effectue la boucle suivante.</li>
+<li>je calcule la valeur <code>z1</code> qui est égale à <code>z0^2 + c</code> avec c qui est <code>x+i*y</code>.</li>
+<li>puis je calcule la valeur de <code>z2 = z1^2 + c</code> puis <code>z3</code>..</li>
+<li>je quitte la boucle pour deux raisons.
+
+<ul>
+<li>si le module est supérieur à 2, le module devient de plus en plus grand et dépasse 2.</li>
+<li>au bout de 1000 boucles la valeurs n&#8217;a toujours pas dépassé 2. Je renvoie 0</li>
+</ul>
+</li>
+</ul>
+
+
+<p>C&#8217;est le code de la fonction <code>iterate</code>. le php ne connaît pas les complexes(c&#8217;est natif en python..) donc le chiffre z est divisé en 2 <code>zr</code> la partie réelle et <code>zi</code> la partie imaginaire.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">iterate</span><span class="p">(</span><span class="nv">$x</span><span class="p">,</span><span class="nv">$y</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nv">$cr</span> <span class="o">=</span> <span class="nv">$y</span><span class="o">-</span><span class="mf">0.5</span><span class="p">;</span>
+</span><span class='line'>    <span class="nv">$ci</span> <span class="o">=</span> <span class="nv">$x</span><span class="p">;</span>
+</span><span class='line'>    <span class="nv">$zi</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+</span><span class='line'>    <span class="nv">$zr</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+</span><span class='line'>    <span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$i</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$zr2</span> <span class="o">=</span> <span class="nv">$zr</span> <span class="o">*</span> <span class="nv">$zr</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$zi2</span> <span class="o">=</span> <span class="nv">$zi</span> <span class="o">*</span> <span class="nv">$zi</span><span class="p">;</span>
+</span><span class='line'>        <span class="c1">// Calul de la nouvelle valeur de z</span>
+</span><span class='line'>        <span class="k">list</span><span class="p">(</span><span class="nv">$zr</span><span class="p">,</span> <span class="nv">$zi</span><span class="p">)</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+</span><span class='line'>            <span class="nv">$zr2</span> <span class="o">-</span> <span class="nv">$zi2</span> <span class="o">+</span> <span class="nv">$cr</span><span class="p">,</span>
+</span><span class='line'>            <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="nv">$zr</span> <span class="o">*</span> <span class="nv">$zi</span><span class="p">)</span> <span class="o">+</span> <span class="nv">$ci</span>
+</span><span class='line'>        <span class="p">);</span>
+</span><span class='line'>        <span class="c1">// Si le module est supérieur à 2</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$zi2</span> <span class="o">+</span> <span class="nv">$zr2</span> <span class="o">&gt;</span> <span class="nx">BAILOUT</span><span class="p">)</span>
+</span><span class='line'>            <span class="k">return</span> <span class="nv">$i</span><span class="p">;</span>
+</span><span class='line'>        <span class="c1">// si cela fait la millieme boucle.</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">&gt;</span> <span class="nx">MAX_ITERATIONS</span><span class="p">)</span>
+</span><span class='line'>            <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si on compte le nombre d&#8217;étapes pour dépasser 2 on obtient le schéma suivant.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">Mandelbrot</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="nv">$x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">19</span><span class="p">;</span> <span class="nv">$x</span> <span class="o">&lt;</span> <span class="mi">19</span><span class="p">;</span> <span class="nv">$x</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">echo</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">for</span> <span class="p">(</span><span class="nv">$y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">19</span><span class="p">;</span> <span class="nv">$y</span> <span class="o">&lt;</span> <span class="mi">19</span><span class="p">;</span> <span class="nv">$y</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">((</span><span class="nv">$out</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">iterate</span><span class="p">(</span><span class="nv">$x</span><span class="o">/</span><span class="mf">20.0</span><span class="p">,</span><span class="nv">$y</span><span class="o">/</span><span class="mf">20.0</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>                <span class="k">echo</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">);</span>
+</span><span class='line'>            <span class="k">else</span>
+</span><span class='line'>                <span class="k">echo</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="mi">41</span><span class="o">+</span><span class="nv">$out</span><span class="o">%</span><span class="mi">16</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Voici le résultat</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">--------------.......///</span><span class="mi">1241410</span><span class="o">/....--</span>
+</span><span class='line'><span class="o">-------------.......///</span><span class="mf">023.2520</span><span class="c1">//....-</span>
+</span><span class='line'><span class="o">------------.......///</span><span class="mo">053</span><span class="p">)</span><span class="mi">1</span> <span class="p">,</span><span class="o">*</span><span class="mi">1</span><span class="c1">///....</span>
+</span><span class='line'><span class="o">-----------.......//</span><span class="mo">0012</span><span class="mi">8</span>    <span class="p">,</span><span class="mi">20</span><span class="c1">////..</span>
+</span><span class='line'><span class="o">----------......//</span><span class="mo">0001130</span>    <span class="p">,</span><span class="mi">2100</span><span class="c1">///.</span>
+</span><span class='line'><span class="o">--------......//</span><span class="mo">01222234</span><span class="mi">8</span>    <span class="mi">7432000</span><span class="p">,</span><span class="o">/</span>
+</span><span class='line'><span class="o">-------.....///</span><span class="mo">017</span><span class="o">+</span><span class="mf">644.</span><span class="o">*</span><span class="mi">1865</span><span class="o">+</span><span class="mi">1</span><span class="o">/</span><span class="mi">73222</span><span class="p">)</span><span class="mi">1</span>
+</span><span class='line'><span class="o">------....////</span><span class="mo">00164</span> <span class="o">*</span><span class="mi">4</span>          <span class="o">.</span><span class="mi">68</span><span class="p">)</span><span class="o">*</span><span class="p">)</span>
+</span><span class='line'><span class="o">-----..//////</span><span class="mo">00024</span><span class="o">-</span>              <span class="mi">6</span>  <span class="mi">23</span>
+</span><span class='line'><span class="o">---..///////</span><span class="mo">0002</span><span class="mi">868</span>                 <span class="o">.</span><span class="mi">1</span>
+</span><span class='line'><span class="o">-../</span><span class="mo">000</span><span class="c1">///00011/23                 ,61</span>
+</span><span class='line'><span class="o">.//</span><span class="mf">1611111111125.</span>                   <span class="o">+</span><span class="mi">3</span>
+</span><span class='line'><span class="c1">//01)3326422224,                     8</span>
+</span><span class='line'><span class="c1">//014*.67-753352                     )</span>
+</span><span class='line'><span class="c1">//113) 2) 73757                      8</span>
+</span><span class='line'><span class="o">/</span><span class="mo">0125</span><span class="p">,</span>       <span class="p">)</span><span class="o">*</span>                      <span class="p">)</span>
+</span><span class='line'><span class="mi">1</span><span class="o">+</span><span class="mi">34</span><span class="o">-</span>         <span class="mi">0</span>                      <span class="mi">6</span>
+</span><span class='line'><span class="mi">26780</span>         <span class="o">+</span>                      <span class="mi">2</span>
+</span><span class='line'><span class="mi">48</span><span class="o">/</span> <span class="mi">6</span>         <span class="p">)</span>                     <span class="mi">41</span>
+</span><span class='line'>                                   <span class="mi">621</span>
+</span><span class='line'><span class="mi">48</span><span class="o">/</span> <span class="mi">6</span>         <span class="p">)</span>                     <span class="mi">41</span>
+</span><span class='line'><span class="mi">26780</span>         <span class="o">+</span>                      <span class="mi">2</span>
+</span><span class='line'><span class="mi">1</span><span class="o">+</span><span class="mi">34</span><span class="o">-</span>         <span class="mi">0</span>                      <span class="mi">6</span>
+</span><span class='line'><span class="o">/</span><span class="mo">0125</span><span class="p">,</span>       <span class="p">)</span><span class="o">*</span>                      <span class="p">)</span>
+</span><span class='line'><span class="c1">//113) 2) 73757                      8</span>
+</span><span class='line'><span class="c1">//014*.67-753352                     )</span>
+</span><span class='line'><span class="c1">//01)3326422224,                     8</span>
+</span><span class='line'><span class="o">.//</span><span class="mf">1611111111125.</span>                   <span class="o">+</span><span class="mi">3</span>
+</span><span class='line'><span class="o">-../</span><span class="mo">000</span><span class="c1">///00011/23                 ,61</span>
+</span><span class='line'><span class="o">---..///////</span><span class="mo">0002</span><span class="mi">868</span>                 <span class="o">.</span><span class="mi">1</span>
+</span><span class='line'><span class="o">-----..//////</span><span class="mo">00024</span><span class="o">-</span>              <span class="mi">6</span>  <span class="mi">23</span>
+</span><span class='line'><span class="o">------....////</span><span class="mo">00164</span> <span class="o">*</span><span class="mi">4</span>          <span class="o">.</span><span class="mi">68</span><span class="p">)</span><span class="o">*</span><span class="p">)</span>
+</span><span class='line'><span class="o">-------.....///</span><span class="mo">017</span><span class="o">+</span><span class="mf">644.</span><span class="o">*</span><span class="mi">1865</span><span class="o">+</span><span class="mi">1</span><span class="o">/</span><span class="mi">73222</span><span class="p">)</span><span class="mi">1</span>
+</span><span class='line'><span class="o">--------......//</span><span class="mo">01222234</span><span class="mi">8</span>    <span class="mi">7432000</span><span class="p">,</span><span class="o">/</span>
+</span><span class='line'><span class="o">----------......//</span><span class="mo">0001130</span>    <span class="p">,</span><span class="mi">2100</span><span class="c1">///.</span>
+</span><span class='line'><span class="o">-----------.......//</span><span class="mo">0012</span><span class="mi">8</span>    <span class="p">,</span><span class="mi">20</span><span class="c1">////..</span>
+</span><span class='line'><span class="o">------------.......///</span><span class="mo">053</span><span class="p">)</span><span class="mi">1</span> <span class="p">,</span><span class="o">*</span><span class="mi">1</span><span class="c1">///....</span>
+</span><span class='line'><span class="o">-------------.......///</span><span class="mf">023.2520</span><span class="c1">//....-</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>C&#8217;est ce qui est assez amusant dans les fractales, les formules sont très simples. Mais le résultat est très impressionnant.</p>
+
+<h2>Des liens</h2>
+
+<ul>
+<li>article <a href="https://en.wikipedia.org/wiki/Mandelbrot_set">wikipédia</a></li>
+<li>les videos hypnotiques de <a href="https://en.wikipedia.org/wiki/Electric_Sheep">electric sheep</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mcamuzat</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-10-18T20:02:28+02:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>8:02 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/php/'>php</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mcamuzat.github.io/blog/2015/10/18/les-fractales-en-php-mandelbrot/" data-via="" data-counturl="http://mcamuzat.github.io/blog/2015/10/18/les-fractales-en-php-mandelbrot/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/10/10/liste-chainees-implementation/" title="Previous Post: Listes chainées : implémentation">&laquo; Listes chainées : implémentation</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/10/18/les-fractales-en-php-mandelbrot/">Les Fractales en Php Mandelbrot</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/10/liste-chainees-implementation/">Listes Chainées : Implémentation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/04/tig-status/">Tig : Status</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/03/spl-surcharge-magique/">SPL Surcharge Magique</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/09/27/des-commandes-au-top/">Des Commandes Au Top</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/mcamuzat">@mcamuzat</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'mcamuzat',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - mcamuzat -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

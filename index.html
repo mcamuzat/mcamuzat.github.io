@@ -9,7 +9,53 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Dans la partie 1 nous avons appris à surcharger le count ainsi que les différentes méthodes de ArrayAccess. Pour faire un exemple un peu plus concret &hellip;">
+  <meta name="description" content="Voici le code : 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -83,7 +129,430 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2015/10/10/liste-chainees-implementation/">Liste Chainées : Implémentation</a></h1>
+      <h1 class="entry-title"><a href="/blog/2015/10/18/les-fractales-en-php-mandelbrot/">Les Fractales en Php Mandelbrot</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-10-18T20:02:28+02:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>8:02 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Voici le code :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Mandelbrot</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">function</span> <span class="nf">Mandelbrot</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">for</span> <span class="p">(</span><span class="nv">$x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">19</span><span class="p">;</span> <span class="nv">$x</span> <span class="o">&lt;</span> <span class="mi">19</span><span class="p">;</span> <span class="nv">$x</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">echo</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+</span><span class='line'>            <span class="k">for</span> <span class="p">(</span><span class="nv">$y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">19</span><span class="p">;</span> <span class="nv">$y</span> <span class="o">&lt;</span> <span class="mi">19</span><span class="p">;</span> <span class="nv">$y</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                <span class="k">if</span> <span class="p">((</span><span class="nv">$out</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">iterate</span><span class="p">(</span><span class="nv">$x</span><span class="o">/</span><span class="mf">20.0</span><span class="p">,</span><span class="nv">$y</span><span class="o">/</span><span class="mf">20.0</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>                    <span class="k">echo</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">);</span>
+</span><span class='line'>                <span class="k">else</span>
+</span><span class='line'>                    <span class="k">echo</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">function</span> <span class="nf">iterate</span><span class="p">(</span><span class="nv">$x</span><span class="p">,</span><span class="nv">$y</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$cr</span> <span class="o">=</span> <span class="nv">$y</span><span class="o">-</span><span class="mf">0.5</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$ci</span> <span class="o">=</span> <span class="nv">$x</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$zi</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$zr</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$i</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>            <span class="nv">$zr2</span> <span class="o">=</span> <span class="nv">$zr</span> <span class="o">*</span> <span class="nv">$zr</span><span class="p">;</span>
+</span><span class='line'>            <span class="nv">$zi2</span> <span class="o">=</span> <span class="nv">$zi</span> <span class="o">*</span> <span class="nv">$zi</span><span class="p">;</span>
+</span><span class='line'>            <span class="c1">// Calul de la nouvelle valeur de z</span>
+</span><span class='line'>            <span class="k">list</span><span class="p">(</span><span class="nv">$zr</span><span class="p">,</span> <span class="nv">$zi</span><span class="p">)</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+</span><span class='line'>                <span class="nv">$zr2</span> <span class="o">-</span> <span class="nv">$zi2</span> <span class="o">+</span> <span class="nv">$cr</span><span class="p">,</span>
+</span><span class='line'>                <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="nv">$zr</span> <span class="o">*</span> <span class="nv">$zi</span><span class="p">)</span> <span class="o">+</span> <span class="nv">$ci</span>
+</span><span class='line'>            <span class="p">);</span>
+</span><span class='line'>            <span class="c1">// Si le module est supérieur à 2</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="nv">$zi2</span> <span class="o">+</span> <span class="nv">$zr2</span> <span class="o">&gt;</span> <span class="nx">BAILOUT</span><span class="p">)</span>
+</span><span class='line'>                <span class="k">return</span> <span class="nv">$i</span><span class="p">;</span>
+</span><span class='line'>            <span class="c1">// si cela fait la millieme boucle.</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">&gt;</span> <span class="nx">MAX_ITERATIONS</span><span class="p">)</span>
+</span><span class='line'>                <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$m</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Mandelbrot</span><span class="p">();</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">    </span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Voici le résultat</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">______________________________________</span>
+</span><span class='line'><span class="nx">______________________________________</span>
+</span><span class='line'><span class="nx">___________________________</span><span class="o">*</span><span class="nx">__________</span>
+</span><span class='line'><span class="nx">_________________________</span><span class="o">****</span><span class="nx">_________</span>
+</span><span class='line'><span class="nx">_________________________</span><span class="o">****</span><span class="nx">_________</span>
+</span><span class='line'><span class="nx">_________________________</span><span class="o">****</span><span class="nx">_________</span>
+</span><span class='line'><span class="nx">______________________________________</span>
+</span><span class='line'><span class="nx">___________________</span><span class="o">*</span><span class="nx">__</span><span class="o">**********</span><span class="nx">______</span>
+</span><span class='line'><span class="nx">___________________</span><span class="o">**************</span><span class="nx">_</span><span class="o">**</span><span class="nx">__</span>
+</span><span class='line'><span class="nx">___________________</span><span class="o">*****************</span><span class="nx">__</span>
+</span><span class='line'><span class="nx">__________________</span><span class="o">*****************</span><span class="nx">___</span>
+</span><span class='line'><span class="nx">_________________</span><span class="o">*******************</span><span class="nx">__</span>
+</span><span class='line'><span class="nx">________________</span><span class="o">*********************</span><span class="nx">_</span>
+</span><span class='line'><span class="nx">________________</span><span class="o">*********************</span><span class="nx">_</span>
+</span><span class='line'><span class="nx">______</span><span class="o">*</span><span class="nx">__</span><span class="o">*</span><span class="nx">_____</span><span class="o">**********************</span><span class="nx">_</span>
+</span><span class='line'><span class="nx">______</span><span class="o">*******</span><span class="nx">__</span><span class="o">**********************</span><span class="nx">_</span>
+</span><span class='line'><span class="nx">_____</span><span class="o">*********</span><span class="nx">_</span><span class="o">**********************</span><span class="nx">_</span>
+</span><span class='line'><span class="nx">_____</span><span class="o">*********</span><span class="nx">_</span><span class="o">**********************</span><span class="nx">_</span>
+</span><span class='line'><span class="nx">___</span><span class="o">*</span><span class="nx">_</span><span class="o">*********</span><span class="nx">_</span><span class="o">*********************</span><span class="nx">__</span>
+</span><span class='line'><span class="o">***********************************</span><span class="nx">___</span>
+</span><span class='line'><span class="nx">___</span><span class="o">*</span><span class="nx">_</span><span class="o">*********</span><span class="nx">_</span><span class="o">*********************</span><span class="nx">__</span>
+</span><span class='line'><span class="nx">_____</span><span class="o">*********</span><span class="nx">_</span><span class="o">**********************</span><span class="nx">_</span>
+</span><span class='line'><span class="nx">_____</span><span class="o">*********</span><span class="nx">_</span><span class="o">**********************</span><span class="nx">_</span>
+</span><span class='line'><span class="nx">______</span><span class="o">*******</span><span class="nx">__</span><span class="o">**********************</span><span class="nx">_</span>
+</span><span class='line'><span class="nx">______</span><span class="o">*</span><span class="nx">__</span><span class="o">*</span><span class="nx">_____</span><span class="o">**********************</span><span class="nx">_</span>
+</span><span class='line'><span class="nx">________________</span><span class="o">*********************</span><span class="nx">_</span>
+</span><span class='line'><span class="nx">________________</span><span class="o">*********************</span><span class="nx">_</span>
+</span><span class='line'><span class="nx">_________________</span><span class="o">*******************</span><span class="nx">__</span>
+</span><span class='line'><span class="nx">__________________</span><span class="o">*****************</span><span class="nx">___</span>
+</span><span class='line'><span class="nx">___________________</span><span class="o">*****************</span><span class="nx">__</span>
+</span><span class='line'><span class="nx">___________________</span><span class="o">**************</span><span class="nx">_</span><span class="o">**</span><span class="nx">__</span>
+</span><span class='line'><span class="nx">___________________</span><span class="o">*</span><span class="nx">__</span><span class="o">**********</span><span class="nx">______</span>
+</span><span class='line'><span class="nx">______________________________________</span>
+</span><span class='line'><span class="nx">_________________________</span><span class="o">****</span><span class="nx">_________</span>
+</span><span class='line'><span class="nx">_________________________</span><span class="o">****</span><span class="nx">_________</span>
+</span><span class='line'><span class="nx">_________________________</span><span class="o">****</span><span class="nx">_________</span>
+</span><span class='line'><span class="nx">___________________________</span><span class="o">*</span><span class="nx">__________</span>
+</span><span class='line'><span class="nx">_____________________________________</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Comment cela marche.</p>
+
+<p>Rappel sur les complexes</p>
+
+<ul>
+<li>un nombre complexe est composé d&#8217;une partie réelle et une partie imaginaire : <code>a + i b</code> ici <strong>a</strong> est la partie réelle et <strong>b</strong> est la partie imaginaire</li>
+<li>le module d&#8217;un nombre complexe représente la distance entre les coordonnées du point et le centre. <code>|module|^2 = a^2 + b ^2</code></li>
+<li>la multiplication d&#8217;un nombre complexe donne <code>(a + ib)^2 = (a^2-b^2)+2ab * i</code></li>
+</ul>
+
+
+<h2>La version simple</h2>
+
+<p>il existe une video en anglais qui explique cela très bien.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/NGMRB4O922I" frameborder="0" allowfullscreen></iframe>
+
+
+<ul>
+<li>Je crée un tableau (x,y) de 20 * 20 qui va de [1, -1] en largeur et en hauteur</li>
+<li>j&#8217;effectue la boucle suivante.</li>
+<li>je calcule la valeur <code>z1</code> qui est égale à <code>z0^2 + c</code> avec c qui est <code>x+i*y</code>.</li>
+<li>puis je calcule la valeur de <code>z2 = z1^2 + c</code> puis <code>z3</code>..</li>
+<li>je quitte la boucle pour deux raisons.
+
+<ul>
+<li>si le module est supérieur à 2, le module devient de plus en plus grand et dépasse 2.</li>
+<li>au bout de 1000 boucles la valeurs n&#8217;a toujours pas dépassé 2. Je renvoie 0</li>
+</ul>
+</li>
+</ul>
+
+
+<p>C&#8217;est le code de la fonction <code>iterate</code>. le php ne connaît pas les complexes(c&#8217;est natif en python..) donc le chiffre z est divisé en 2 <code>zr</code> la partie réelle et <code>zi</code> la partie imaginaire.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">iterate</span><span class="p">(</span><span class="nv">$x</span><span class="p">,</span><span class="nv">$y</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nv">$cr</span> <span class="o">=</span> <span class="nv">$y</span><span class="o">-</span><span class="mf">0.5</span><span class="p">;</span>
+</span><span class='line'>    <span class="nv">$ci</span> <span class="o">=</span> <span class="nv">$x</span><span class="p">;</span>
+</span><span class='line'>    <span class="nv">$zi</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+</span><span class='line'>    <span class="nv">$zr</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+</span><span class='line'>    <span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$i</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$zr2</span> <span class="o">=</span> <span class="nv">$zr</span> <span class="o">*</span> <span class="nv">$zr</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$zi2</span> <span class="o">=</span> <span class="nv">$zi</span> <span class="o">*</span> <span class="nv">$zi</span><span class="p">;</span>
+</span><span class='line'>        <span class="c1">// Calul de la nouvelle valeur de z</span>
+</span><span class='line'>        <span class="k">list</span><span class="p">(</span><span class="nv">$zr</span><span class="p">,</span> <span class="nv">$zi</span><span class="p">)</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+</span><span class='line'>            <span class="nv">$zr2</span> <span class="o">-</span> <span class="nv">$zi2</span> <span class="o">+</span> <span class="nv">$cr</span><span class="p">,</span>
+</span><span class='line'>            <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="nv">$zr</span> <span class="o">*</span> <span class="nv">$zi</span><span class="p">)</span> <span class="o">+</span> <span class="nv">$ci</span>
+</span><span class='line'>        <span class="p">);</span>
+</span><span class='line'>        <span class="c1">// Si le module est supérieur à 2</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$zi2</span> <span class="o">+</span> <span class="nv">$zr2</span> <span class="o">&gt;</span> <span class="nx">BAILOUT</span><span class="p">)</span>
+</span><span class='line'>            <span class="k">return</span> <span class="nv">$i</span><span class="p">;</span>
+</span><span class='line'>        <span class="c1">// si cela fait la millieme boucle.</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">&gt;</span> <span class="nx">MAX_ITERATIONS</span><span class="p">)</span>
+</span><span class='line'>            <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si on compte le nombre d&#8217;étapes pour dépasser 2 on obtient le schéma suivant.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">Mandelbrot</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="nv">$x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">19</span><span class="p">;</span> <span class="nv">$x</span> <span class="o">&lt;</span> <span class="mi">19</span><span class="p">;</span> <span class="nv">$x</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">echo</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">for</span> <span class="p">(</span><span class="nv">$y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">19</span><span class="p">;</span> <span class="nv">$y</span> <span class="o">&lt;</span> <span class="mi">19</span><span class="p">;</span> <span class="nv">$y</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">((</span><span class="nv">$out</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">iterate</span><span class="p">(</span><span class="nv">$x</span><span class="o">/</span><span class="mf">20.0</span><span class="p">,</span><span class="nv">$y</span><span class="o">/</span><span class="mf">20.0</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>                <span class="k">echo</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">);</span>
+</span><span class='line'>            <span class="k">else</span>
+</span><span class='line'>                <span class="k">echo</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="mi">41</span><span class="o">+</span><span class="nv">$out</span><span class="o">%</span><span class="mi">16</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Voici le résultat</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">--------------.......///</span><span class="mi">1241410</span><span class="o">/....--</span>
+</span><span class='line'><span class="o">-------------.......///</span><span class="mf">023.2520</span><span class="c1">//....-</span>
+</span><span class='line'><span class="o">------------.......///</span><span class="mo">053</span><span class="p">)</span><span class="mi">1</span> <span class="p">,</span><span class="o">*</span><span class="mi">1</span><span class="c1">///....</span>
+</span><span class='line'><span class="o">-----------.......//</span><span class="mo">0012</span><span class="mi">8</span>    <span class="p">,</span><span class="mi">20</span><span class="c1">////..</span>
+</span><span class='line'><span class="o">----------......//</span><span class="mo">0001130</span>    <span class="p">,</span><span class="mi">2100</span><span class="c1">///.</span>
+</span><span class='line'><span class="o">--------......//</span><span class="mo">01222234</span><span class="mi">8</span>    <span class="mi">7432000</span><span class="p">,</span><span class="o">/</span>
+</span><span class='line'><span class="o">-------.....///</span><span class="mo">017</span><span class="o">+</span><span class="mf">644.</span><span class="o">*</span><span class="mi">1865</span><span class="o">+</span><span class="mi">1</span><span class="o">/</span><span class="mi">73222</span><span class="p">)</span><span class="mi">1</span>
+</span><span class='line'><span class="o">------....////</span><span class="mo">00164</span> <span class="o">*</span><span class="mi">4</span>          <span class="o">.</span><span class="mi">68</span><span class="p">)</span><span class="o">*</span><span class="p">)</span>
+</span><span class='line'><span class="o">-----..//////</span><span class="mo">00024</span><span class="o">-</span>              <span class="mi">6</span>  <span class="mi">23</span>
+</span><span class='line'><span class="o">---..///////</span><span class="mo">0002</span><span class="mi">868</span>                 <span class="o">.</span><span class="mi">1</span>
+</span><span class='line'><span class="o">-../</span><span class="mo">000</span><span class="c1">///00011/23                 ,61</span>
+</span><span class='line'><span class="o">.//</span><span class="mf">1611111111125.</span>                   <span class="o">+</span><span class="mi">3</span>
+</span><span class='line'><span class="c1">//01)3326422224,                     8</span>
+</span><span class='line'><span class="c1">//014*.67-753352                     )</span>
+</span><span class='line'><span class="c1">//113) 2) 73757                      8</span>
+</span><span class='line'><span class="o">/</span><span class="mo">0125</span><span class="p">,</span>       <span class="p">)</span><span class="o">*</span>                      <span class="p">)</span>
+</span><span class='line'><span class="mi">1</span><span class="o">+</span><span class="mi">34</span><span class="o">-</span>         <span class="mi">0</span>                      <span class="mi">6</span>
+</span><span class='line'><span class="mi">26780</span>         <span class="o">+</span>                      <span class="mi">2</span>
+</span><span class='line'><span class="mi">48</span><span class="o">/</span> <span class="mi">6</span>         <span class="p">)</span>                     <span class="mi">41</span>
+</span><span class='line'>                                   <span class="mi">621</span>
+</span><span class='line'><span class="mi">48</span><span class="o">/</span> <span class="mi">6</span>         <span class="p">)</span>                     <span class="mi">41</span>
+</span><span class='line'><span class="mi">26780</span>         <span class="o">+</span>                      <span class="mi">2</span>
+</span><span class='line'><span class="mi">1</span><span class="o">+</span><span class="mi">34</span><span class="o">-</span>         <span class="mi">0</span>                      <span class="mi">6</span>
+</span><span class='line'><span class="o">/</span><span class="mo">0125</span><span class="p">,</span>       <span class="p">)</span><span class="o">*</span>                      <span class="p">)</span>
+</span><span class='line'><span class="c1">//113) 2) 73757                      8</span>
+</span><span class='line'><span class="c1">//014*.67-753352                     )</span>
+</span><span class='line'><span class="c1">//01)3326422224,                     8</span>
+</span><span class='line'><span class="o">.//</span><span class="mf">1611111111125.</span>                   <span class="o">+</span><span class="mi">3</span>
+</span><span class='line'><span class="o">-../</span><span class="mo">000</span><span class="c1">///00011/23                 ,61</span>
+</span><span class='line'><span class="o">---..///////</span><span class="mo">0002</span><span class="mi">868</span>                 <span class="o">.</span><span class="mi">1</span>
+</span><span class='line'><span class="o">-----..//////</span><span class="mo">00024</span><span class="o">-</span>              <span class="mi">6</span>  <span class="mi">23</span>
+</span><span class='line'><span class="o">------....////</span><span class="mo">00164</span> <span class="o">*</span><span class="mi">4</span>          <span class="o">.</span><span class="mi">68</span><span class="p">)</span><span class="o">*</span><span class="p">)</span>
+</span><span class='line'><span class="o">-------.....///</span><span class="mo">017</span><span class="o">+</span><span class="mf">644.</span><span class="o">*</span><span class="mi">1865</span><span class="o">+</span><span class="mi">1</span><span class="o">/</span><span class="mi">73222</span><span class="p">)</span><span class="mi">1</span>
+</span><span class='line'><span class="o">--------......//</span><span class="mo">01222234</span><span class="mi">8</span>    <span class="mi">7432000</span><span class="p">,</span><span class="o">/</span>
+</span><span class='line'><span class="o">----------......//</span><span class="mo">0001130</span>    <span class="p">,</span><span class="mi">2100</span><span class="c1">///.</span>
+</span><span class='line'><span class="o">-----------.......//</span><span class="mo">0012</span><span class="mi">8</span>    <span class="p">,</span><span class="mi">20</span><span class="c1">////..</span>
+</span><span class='line'><span class="o">------------.......///</span><span class="mo">053</span><span class="p">)</span><span class="mi">1</span> <span class="p">,</span><span class="o">*</span><span class="mi">1</span><span class="c1">///....</span>
+</span><span class='line'><span class="o">-------------.......///</span><span class="mf">023.2520</span><span class="c1">//....-</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>C&#8217;est ce qui est assez amusant dans les fractales, les formules sont très simples. Mais le résultat est très impressionnant.</p>
+
+<h2>Des liens</h2>
+
+<ul>
+<li>article <a href="https://en.wikipedia.org/wiki/Mandelbrot_set">wikipédia</a></li>
+<li>les videos hypnotiques de <a href="https://en.wikipedia.org/wiki/Electric_Sheep">electric sheep</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/10/10/liste-chainees-implementation/">Listes Chainées : Implémentation</a></h1>
     
     
       <p class="meta">
@@ -3209,196 +3678,6 @@ La syntaxe de <code>then</code> est</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/08/31/lancer-des-commandes-dans-vim/">Lancer Des Commandes Dans Vim</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-08-31T23:49:17+02:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>11:49 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Soit le fichier texte suivant:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'> * Alpha
-</span><span class='line'> * Foxtrot
-</span><span class='line'> * Charlie
-</span><span class='line'> * Delta
-</span><span class='line'> * Echo 
-</span><span class='line'> * Bravo</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Dans VIM il suffit de taper.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>:%sort ou :%!sort</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Pour obtenir</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'> * Alpha
-</span><span class='line'> * Bravo
-</span><span class='line'> * Charlie
-</span><span class='line'> * Delta
-</span><span class='line'> * Echo 
-</span><span class='line'> * Foxtrot</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On peux aussi lancer plein de commandes amusantes</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'> * Doublon
-</span><span class='line'> * Pas unique
-</span><span class='line'> * Doublon
-</span><span class='line'> * 
-</span><span class='line'> * ...</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>!sort | uniq -c | tr "[A-Z]" "[a-z]"</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Pour ceux qui ne se rappelle plus trop les commandes de Bash</p>
-
-<ul>
-<li><code>sort</code> trie le texte</li>
-<li><code>uniq -c</code> prend toute les valeurs et les comptes c&#8217;est l&#8217;équivalent d&#8217;un <code>GROUP BY</code> en SQL</li>
-<li><code>tr</code> est l&#8217;abréviation de <strong>tr</strong>anspose je remplace les lettres en <code>[A-Z]</code> par leur équivalent en minuscule.</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>  1  * 
-</span><span class='line'>  1  * ...
-</span><span class='line'>  2  * doublon
-</span><span class='line'>  1  * pas unique</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Si vous sélectionnez le texte avec <code>v</code> et que vous appuyer sur <code>:</code></p>
-
-<p>Alors vous devez voir la commande suivante</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>:'&lt;,'&gt;</span></code></pre></td></tr></table></div></figure>
-
-
-<p>et Ajoutez la commande que vous allez appliquer à la sélection. Par exemple <code>:'&lt;,'&gt;!sort</code></p>
-
-<p>Plus rigolo. On peux appeler des langages que l&#8217;on veut dans VIM</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span> <span class="k">echo</span> <span class="s2">&quot;bonjour&quot;</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Tapez <code>!!</code>
-vous devriez voir apparaître</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">:.!</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Compléter avec <code>:.!php</code></p>
-
-<p>votre texte va se remplacer</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">bonjour</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Cela marche aussi avec python</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">print</span> <span class="s">&quot;olleh&quot;</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Avec le curseur sur la ligne, appuyer sur <code>!!</code> puis ajoutez <code>:.!python</code></p>
-
-<p>La ligne devient</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">hello</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Exécuter une commande Bash depuis VIM</h2>
-
-<p>La commande suivante</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">php</span> <span class="n">app</span><span class="o">/</span><span class="n">console</span> <span class="n">cache</span><span class="p">:</span><span class="n">clear</span> <span class="o">--</span><span class="n">env</span><span class="o">=</span><span class="n">prod</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Si vous voulez exécuter la commande mais ne pas modifiez la ligne.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="p">:</span><span class="o">.</span><span class="n">w</span> <span class="err">!</span><span class="n">bash</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>C&#8217;est un peu moins simple.</p>
-
-<ul>
-<li><code>:.</code> représente la ligne actuelle.</li>
-<li><code>w</code> représente une écriture</li>
-<li><code>!bash</code> via Bash.</li>
-</ul>
-
-
-<p>La documentation de VIM <code>:help :w_c</code></p>
-
-<h2>en résumé</h2>
-
-<ul>
-<li>Si vous voulez appliquer votre commande sur tout le fichier <code>:%!commande</code></li>
-<li>S vous voulez juste la ligne <code>:.!commande</code> ou tapez <code>!!</code>.</li>
-<li>Si vous voulez sur une sélection <code>v</code> ou <code>V</code> puis <code>:</code> vous deviez voir ceci <code>:'&lt;,'&gt;</code>, ajoutez la commande souhaitée.</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -3414,7 +3693,11 @@ vous devriez voir apparaître</p>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2015/10/10/liste-chainees-implementation/">Liste Chainées : Implémentation</a>
+        <a href="/blog/2015/10/18/les-fractales-en-php-mandelbrot/">Les Fractales en Php Mandelbrot</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/10/liste-chainees-implementation/">Listes Chainées : Implémentation</a>
       </li>
     
       <li class="post">
@@ -3427,10 +3710,6 @@ vous devriez voir apparaître</p>
     
       <li class="post">
         <a href="/blog/2015/09/27/des-commandes-au-top/">Des Commandes Au Top</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/09/21/guzzle-asynchrone-avec-les-promises/">Guzzle Asynchrone Avec Les Promises</a>
       </li>
     
   </ul>
