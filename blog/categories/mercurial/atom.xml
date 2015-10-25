@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Mercurial | Mon blog perso.]]></title>
+  <link href="http://mcamuzat.github.io/blog/categories/mercurial/atom.xml" rel="self"/>
+  <link href="http://mcamuzat.github.io/"/>
+  <updated>2015-10-25T19:23:59+01:00</updated>
+  <id>http://mcamuzat.github.io/</id>
+  <author>
+    <name><![CDATA[mcamuzat]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Retour Vers Le Futur Avec Vim]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/10/25/retour-vers-le-futur-avec-vim/"/>
+    <updated>2015-10-25T18:52:49+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/10/25/retour-vers-le-futur-avec-vim</id>
+    <content type="html"><![CDATA[<h2>Parlons de retour vers le futur.</h2>
+
+<p>En effet le héros dans le film 2 arrive le 21 octobre 2015. Bon on n&#8217;a pas les voitures volantes. Et c&#8217;est toujours le même éditeur de texte (vi date de 1976 !).</p>
+
+<h2>Annuler dans VIM</h2>
+
+<p>Pour annuler de VIM c&#8217;est plutôt simple <code>u</code> pour <strong>u</strong>ndo. Pour refaire c&#8217;est moins simple <code>&lt;CTRL + r&gt;</code>. Mais en pratique c&#8217;est plus puissant que cela.</p>
+
+<p>En fait on peut voyager dans le temps avec VIM.</p>
+
+<h2>Retour dans le passé</h2>
+
+<p>Grâce à la commande  <code>:earlier</code></p>
+
+<ul>
+<li><code>:earlier 5m</code> reviens en arrière de 5 minutes</li>
+<li><code>:earlier 10</code> annule 10 modifications</li>
+<li><code>:earlier 5h</code> annule 5 heures.</li>
+<li><code>:earlier 1f</code> ramène le fichier avant le dernier enregistrement</li>
+<li><code>:earlier 2f</code> ramène le fichier à l&#8217;avant-dernier enregistrement</li>
+</ul>
+
+
+<p>Bien sur on peut faire un <em>retour vers futur</em> avec la commande suivante.</p>
+
+<ul>
+<li><code>:later 5m</code> retourne 5 minute plus tard.</li>
+<li><code>:later 10</code> refait les 10 derniers modifications</li>
+</ul>
+
+
+<p>Encore plus fort se déplacer dans l&#8217;historique de VIM</p>
+
+<h2>Se déplacer dans les différents passés</h2>
+
+<p>Celui-ci ce comporte comme un arbre.</p>
+
+<p>Par exemple je rentre le texte <code>premier</code>, puis le texte <code>second</code>. Puis je change <code>second</code> en <code>troisième</code> mon historique ressemble à cela.
+<code>
+   premier
+     |
+   modif 1
+     |
+   premier second
+     |
+   modif 2
+     |
+   premier troisième
+</code></p>
+
+<p>Si j&#8217;annule une étape et que je change le texte mon historique ressemble à cela</p>
+
+<pre><code>                  premier 
+                     |
+                   modif 1
+                     |
+                   premier second
+                ^    |       \
+     annulation |  modif 2    modif 3
+                |    |               \
+                   premier troisième premier quatrième.
+</code></pre>
+
+<p>Impossible de revenir à la modif 2 avec <code>u</code> et <code>Ctrl-r</code>.</p>
+
+<p>Mais les touches <code>g+</code> et <code>g-</code> permette de faire cela.</p>
+
+<p>Par exemple <code>g-</code> va nous ramener à la modif 2, un seconde fois <code>g-</code> nous ramène à la modif 1 etc ..</p>
+
+<p>Pour voir toute les modifications il existe une liste de tous les changements avec <code>:undolist</code></p>
+
+<p>Cela n&#8217;est pas très <em>user-friendly</em> comme vue. C&#8217;est pour cela qu&#8217;il existe un plugin vim <a href="https://github.com/sjl/gundo.vim/">gundo</a> qui rend cela beaucoup plus simple</p>
+
+<pre><code>  Undo graph                          File
++-----------------------------------+---------------------------+
+| " Gundo for something.txt [1]     |one                        |
+| " j/k  - move between undo states |two                        |
+| " &lt;cr&gt; - revert to that state     |three                      |
+|                                   |five                       |
+| @  [5] 3 hours ago                |                           |
+| |                                 |                           |
+| | o  [4] 4 hours ago              |                           |
+| | |                               |                           |
+| o |  [3] 4 hours ago              |                           |
+| | |                               |                           |
+| o |  [2] 4 hours ago              |                           |
+| |/                                |                           |
+| o  [1] 4 hours ago                |                           |
+| |                                 |                           |
+| o  [0] Original                   |                           |
++-----------------------------------+                           |
+| --- 3 2010-10-12 06:27:35 PM      |                           |
+| +++ 5 2010-10-12 07:38:37 PM      |                           |
+| @@ -1,3 +1,4                      |                           |
+|  one                              |                           |
+|  two                              |                           |
+|  three                            |                           |
+| +five                             |                           |
++-----------------------------------+---------------------------+
+</code></pre>
+
+<h2>Sauvegarder les annulations.</h2>
+
+<p>Parfois on fait des bêtises et que le fichier n&#8217;est pas encore versionné et/ou commité (et cela vous est déjà arrivé non ?). Quand on a quitté vim. On perd tout l&#8217;historique. Ce n&#8217;est plus le cas en précisant un <code>undofile</code></p>
+
+<h2>Conclusion</h2>
+
+<p>Nous avons appris à nous déplacer comme des pros dans l&#8217;historique vim.</p>
+
+<p>Résumé des touches</p>
+
+<ul>
+<li><code>u</code> annule, <code>ctrl+r</code> refait</li>
+<li><code>:earlier</code> reviens en arrière</li>
+<li><code>g-</code> et <code>g+</code> reviens/retourne à l&#8217;état précédent</li>
+</ul>
+
+
+<h2>Références</h2>
+
+<ul>
+<li>la documentation de vim <code>help undo</code></li>
+<li><a href="https://github.com/sjl/gundo.vim/">Gundo</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

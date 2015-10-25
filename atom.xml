@@ -4,7 +4,7 @@
   <title><![CDATA[Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-10-18T20:40:15+02:00</updated>
+  <updated>2015-10-25T19:23:59+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,184 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Retour Vers Le Futur Avec Vim]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/10/25/retour-vers-le-futur-avec-vim/"/>
+    <updated>2015-10-25T18:52:49+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/10/25/retour-vers-le-futur-avec-vim</id>
+    <content type="html"><![CDATA[<h2>Parlons de retour vers le futur.</h2>
+
+<p>En effet le héros dans le film 2 arrive le 21 octobre 2015. Bon on n&#8217;a pas les voitures volantes. Et c&#8217;est toujours le même éditeur de texte (vi date de 1976 !).</p>
+
+<h2>Annuler dans VIM</h2>
+
+<p>Pour annuler de VIM c&#8217;est plutôt simple <code>u</code> pour <strong>u</strong>ndo. Pour refaire c&#8217;est moins simple <code>&lt;CTRL + r&gt;</code>. Mais en pratique c&#8217;est plus puissant que cela.</p>
+
+<p>En fait on peut voyager dans le temps avec VIM.</p>
+
+<h2>Retour dans le passé</h2>
+
+<p>Grâce à la commande  <code>:earlier</code></p>
+
+<ul>
+<li><code>:earlier 5m</code> reviens en arrière de 5 minutes</li>
+<li><code>:earlier 10</code> annule 10 modifications</li>
+<li><code>:earlier 5h</code> annule 5 heures.</li>
+<li><code>:earlier 1f</code> ramène le fichier avant le dernier enregistrement</li>
+<li><code>:earlier 2f</code> ramène le fichier à l&#8217;avant-dernier enregistrement</li>
+</ul>
+
+
+<p>Bien sur on peut faire un <em>retour vers futur</em> avec la commande suivante.</p>
+
+<ul>
+<li><code>:later 5m</code> retourne 5 minute plus tard.</li>
+<li><code>:later 10</code> refait les 10 derniers modifications</li>
+</ul>
+
+
+<p>Encore plus fort se déplacer dans l&#8217;historique de VIM</p>
+
+<h2>Se déplacer dans les différents passés</h2>
+
+<p>Celui-ci ce comporte comme un arbre.</p>
+
+<p>Par exemple je rentre le texte <code>premier</code>, puis le texte <code>second</code>. Puis je change <code>second</code> en <code>troisième</code> mon historique ressemble à cela.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>   premier 
+</span><span class='line'>     |
+</span><span class='line'>   modif 1
+</span><span class='line'>     |
+</span><span class='line'>   premier second
+</span><span class='line'>     |
+</span><span class='line'>   modif 2
+</span><span class='line'>     |
+</span><span class='line'>   premier troisième</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si j&#8217;annule une étape et que je change le texte mon historique ressemble à cela</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>              premier 
+</span><span class='line'>                 |
+</span><span class='line'>               modif 1
+</span><span class='line'>                 |
+</span><span class='line'>               premier second
+</span><span class='line'>            ^    |       \
+</span><span class='line'> annulation |  modif 2    modif 3
+</span><span class='line'>            |    |               \
+</span><span class='line'>               premier troisième premier quatrième.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Impossible de revenir à la modif 2 avec <code>u</code> et <code>Ctrl-r</code>.</p>
+
+<p>Mais les touches <code>g+</code> et <code>g-</code> permette de faire cela.</p>
+
+<p>Par exemple <code>g-</code> va nous ramener à la modif 2, un seconde fois <code>g-</code> nous ramène à la modif 1 etc ..</p>
+
+<p>Pour voir toute les modifications il existe une liste de tous les changements avec <code>:undolist</code></p>
+
+<p>Cela n&#8217;est pas très <em>user-friendly</em> comme vue. C&#8217;est pour cela qu&#8217;il existe un plugin vim <a href="https://github.com/sjl/gundo.vim/">gundo</a> qui rend cela beaucoup plus simple</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  Undo graph                          File
+</span><span class='line'>+-----------------------------------+---------------------------+
+</span><span class='line'>| " Gundo for something.txt [1]     |one                        |
+</span><span class='line'>| " j/k  - move between undo states |two                        |
+</span><span class='line'>| " &lt;cr&gt; - revert to that state     |three                      |
+</span><span class='line'>|                                   |five                       |
+</span><span class='line'>| @  [5] 3 hours ago                |                           |
+</span><span class='line'>| |                                 |                           |
+</span><span class='line'>| | o  [4] 4 hours ago              |                           |
+</span><span class='line'>| | |                               |                           |
+</span><span class='line'>| o |  [3] 4 hours ago              |                           |
+</span><span class='line'>| | |                               |                           |
+</span><span class='line'>| o |  [2] 4 hours ago              |                           |
+</span><span class='line'>| |/                                |                           |
+</span><span class='line'>| o  [1] 4 hours ago                |                           |
+</span><span class='line'>| |                                 |                           |
+</span><span class='line'>| o  [0] Original                   |                           |
+</span><span class='line'>+-----------------------------------+                           |
+</span><span class='line'>| --- 3 2010-10-12 06:27:35 PM      |                           |
+</span><span class='line'>| +++ 5 2010-10-12 07:38:37 PM      |                           |
+</span><span class='line'>| @@ -1,3 +1,4                      |                           |
+</span><span class='line'>|  one                              |                           |
+</span><span class='line'>|  two                              |                           |
+</span><span class='line'>|  three                            |                           |
+</span><span class='line'>| +five                             |                           |
+</span><span class='line'>+-----------------------------------+---------------------------+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Sauvegarder les annulations.</h2>
+
+<p>Parfois on fait des bêtises et que le fichier n&#8217;est pas encore versionné et/ou commité (et cela vous est déjà arrivé non ?). Quand on a quitté vim. On perd tout l&#8217;historique. Ce n&#8217;est plus le cas en précisant un <code>undofile</code></p>
+
+<h2>Conclusion</h2>
+
+<p>Nous avons appris à nous déplacer comme des pros dans l&#8217;historique vim.</p>
+
+<p>Résumé des touches</p>
+
+<ul>
+<li><code>u</code> annule, <code>ctrl+r</code> refait</li>
+<li><code>:earlier</code> reviens en arrière</li>
+<li><code>g-</code> et <code>g+</code> reviens/retourne à l&#8217;état précédent</li>
+</ul>
+
+
+<h2>Références</h2>
+
+<ul>
+<li>la documentation de vim <code>help undo</code></li>
+<li><a href="https://github.com/sjl/gundo.vim/">Gundo</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Les Fractales en Php Mandelbrot]]></title>
@@ -5988,185 +6166,6 @@ quand je lance mes tests je vois cela.</p>
 <p>Il y a encore pas mal d&#8217;utilisation je pense au <a href="https://github.com/whatthejeff/nyancat-phpunit-resultprinter">nyan-cat</a> ! Ou l&#8217;utilisation avec des notifications sur le bureau par exemple <a href="https://github.com/llaville/phpunit-LoggerTestListener">ici</a>.</p>
 
 <p>La librairie <a href="https://packagist.org/packages/mcamuzat/spark">mcamuzat/spark</a> a été initialement fait pour ce post. J&#8217;ai passé finalement plus de temps sur la création de la librairie.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[PHP Code Sniffer Mise en Place]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/08/01/php-code-sniffer-mise-en-place/"/>
-    <updated>2015-08-01T18:33:12+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/08/01/php-code-sniffer-mise-en-place</id>
-    <content type="html"><![CDATA[<h2>Qualité de code et php</h2>
-
-<p>Dans ce post nous allons voir les logiciels qui permettent de respecter les standards de code en PHP.</p>
-
-<p>En pratique il n&#8217;y en a que 2.</p>
-
-<ul>
-<li><a href="https://github.com/squizlabs/PHP_CodeSniffer">CodeSniffer</a></li>
-<li><a href="http://cs.sensiolabs.org/">PHP Coding Standards Fixer</a></li>
-</ul>
-
-
-<h2>CodeSniffer</h2>
-
-<p>Il y a différentes normes de codage :  les plus connus sont la <a href="http://www.php-fig.org/psr/psr-1/">psr-1</a> et la <a href="http://www.php-fig.org/psr/psr-2/">psr-2</a>. La psr-2 hérite de la psr-1. Mais certain Framework ont leur propres méthodes d&#8217;indentations. On peux personnaliser d&#8217;ailleurs les différentes règles. Les gouts et les couleurs de chacun sur le code est subjectif. L&#8217;intérêt de suivre les recommandations est que cela dépassionne le débat. Cela passe CodeSniffer ou cela ne passe pas. Pour participer au projet Open-source, il faut suivre la norme.</p>
-
-<p>La norme est pointilleuse sur les commentaires aussi. Si pas de commentaire pas de validation. On est quasiment forcer d&#8217;écrire la documentation. Cela a parfois un effet pervers ou le programmeur remplit sans trop réfléchir pour faire passer code sniffer.</p>
-
-<p>Très souvent on ajoute un <em>hook</em> sur les commits de git. Lorsque on commite, git déclenche le logiciel, si un des fichiers n&#8217;est pas valide CodeSniffer on refuse de commiter. C&#8217;est assez peu contraignant quand la codebase est déjà indentée. (quoique parfois cela tombe vraiment au mauvais moment).En général on vérifie seulement sur les fichiers modifiés. Re-indenter tout le projet est souvent trop compliqué, trop long et un peu suicidaire si vous avez des rebases et des merges.</p>
-
-<h2>Installation de CodeSniffer</h2>
-
-<p>Deux possibilités</p>
-
-<h3>Dans le projet</h3>
-
-<p>via une dépendance au projet en l&#8217;ajoutant dans le <code>composer.json</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="nt">&quot;require-dev&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nt">&quot;squizlabs/php_codesniffer&quot;</span><span class="p">:</span> <span class="s2">&quot;2.*&quot;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Alors dans le projet</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>./vendor/bin/phpcs -h
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Personnellement je définie toujours un répertoire <code>bin</code> par défaut</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="s2">&quot;config&quot;</span><span class="err">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nt">&quot;bin-dir&quot;</span><span class="p">:</span> <span class="s2">&quot;bin&quot;</span>
-</span><span class='line'><span class="p">}</span><span class="err">,</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Ainsi la commande précédente devient</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>bin/phpcs
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Installation globale</h3>
-
-<p>Soit l&#8217;installer de manière globale</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>composer global require <span class="s2">&quot;squizlabs/php_codesniffer=*&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Attention si vous utilisez Composer de manière globale ne pas oublier de rajouter dans votre <code>$PATH</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span>~/.composer/vendor/bin:<span class="nv">$PATH</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Ajoutez les reglès symfony</h3>
-
-<p>par défaut phpcs vient avec les règles suivantes</p>
-
-<ul>
-<li><a href="http://www.php-fig.org/psr/psr-1/">psr-1</a></li>
-<li><a href="http://www.php-fig.org/psr/psr-2/">psr-2</a></li>
-<li><a href="https://github.com/squizlabs/PHP_CodeSniffer/tree/master/CodeSniffer/Standards/Squiz">Squiz</a></li>
-<li><a href="http://framework.zend.com/manual/1.12/fr/coding-standard.html">Zend</a></li>
-<li><a href="https://pear.php.net/manual/en/standards.php">Pear</a></li>
-<li><a href="https://github.com/squizlabs/PHP_CodeSniffer/tree/master/CodeSniffer/Standards/PHPCS">Phpcs</a></li>
-</ul>
-
-
-<p>Il manque Symfony..</p>
-
-<p>Voici une méthode simple (mais pas la méthode officielle) si vous voulez l&#8217;installer de manière globale. Je rajoute dans le répertoire <code>Standards</code> un répertoire <code>Symfony2</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>composer global require <span class="s2">&quot;squizlabs/php_codesniffer=*&quot;</span>
-</span><span class='line'><span class="nv">$ </span><span class="nb">cd</span> ~/.composer/vendor/squizlabs/php_codesniffer/CodeSniffer/Standards
-</span><span class='line'><span class="nv">$ </span>git clone git@github.com:escapestudios/Symfony2-coding-standard.git Symfony2
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On vérifie que les règles symfony2 sont bien installées</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>phpcs -i
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Symfony2 en défaut. Ainsi pas besoin de préciser <code>--standard=Symfony2</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>phpcs --config-set default_standard Symfony2
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Php-cbf</h3>
-
-<p>Code sniffer est capable de corriger certaines fautes tout seul. Encore une fois essayer de faire au fur et à mesure. Le commit d&#8217;indentation avec 500 fichiers modifiés est un calvaire à gérer si vous faite des revues de codes ou pire un rebase.</p>
-
-<p>La syntaxe est la même que phpcs.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>php-cbf src/
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<h2>Php-cs-fixer</h2>
-
-<p>Écris par <a href="http://sensiolabs.com/">Sensio</a> les créateurs de <a href="http://symfony.com/">Symfony</a>. Ce logiciel fixe automatiquement l&#8217;indentation et différentes règles. L&#8217;avantage est qu&#8217;il est simple à installer pas besoin de cloner d&#8217;autre dépôt.</p>
-
-<h2>Avoir tout les outils via docker.</h2>
-
-<p>J&#8217;ai déjà présenté les différentes méthodes avec <a href="https://github.com/jolicode/docker-images/tree/master/languages/php/phaudit">phaudit</a> ans cette article <a href="http://mcamuzat.github.io/blog/2015/04/18/dockers-et-ci/">ici</a></p>
-
-<h2>Méthode par rapport à git</h2>
-
-<p>Pour lancer une vérification avant chaque commit
-Il suffit de créer un fichier <code>pre-commit.sh</code> dans le répertoire <code>.git/hook</code>. Il y a plein d&#8217;exemples sur le net. Je n&#8217;ai pas d&#8217;exemple à partager. Le code ne m&#8217;appartient plus..</p>
-
-<h2>Installation sous VIM.</h2>
-
-<p>C&#8217;est très simple Il faut installer le plugin <a href="https://github.com/scrooloose/syntastic">syntastic</a>. C&#8217;est un plugin qui gère un peu près tout les formats possibles.</p>
-
-<p>Code-sniffer doit être installé de manière <strong>globale</strong></p>
-
-<p>Il suffit de rajouter cette ligne dans votre <code>.vimrc</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">let </span>g:syntastic_php_checkers<span class="o">=[</span><span class="s1">&#39;php&#39;</span>, <span class="s1">&#39;phpcs&#39;</span><span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>A chaque fois que l&#8217;on enregistre le fichier, le plugin lance automatiquement d&#8217;abord <code>php</code> pour vérifier que le fichier est valide, puis <code>phpcs</code>.</p>
-
-<p>Le résultat est très intuitif on a une flèche <code>&gt;</code> à chaque ligne qui pose problème. Il suffit de passer le curseur pour connaitre l&#8217;erreur. Enfin un screenshot sera plus clair.</p>
-
-<p><img class="center" src="http://mcamuzat.github.io/images/syntastic.png" width="600" height="212" title="Screenshot de syntastic" alt="syntastic"></p>
-
-<h2>Conclusion</h2>
-
-<p>Respecter la norme psr-2 ou autre n&#8217;est pas très compliqué, avec l&#8217;habitude c&#8217;est même plutôt facile. Il est plus facile de d&#8217;intervenir sur un code propre. Sur la mise en place, on a vu qu&#8217;il y a deux possibilités soit des warning dans le code soit une correction automatique. Je ne suis pas <em>fan</em> pas la correction automatique. Je ne veux pas que le logiciel prennent des décisions pour moi.</p>
 ]]></content>
   </entry>
   

@@ -9,53 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Voici le code : 1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47 &hellip;">
+  <meta name="description" content="Parlons de retour vers le futur. En effet le héros dans le film 2 arrive le 21 octobre 2015. Bon on n'a pas les voitures volantes. Et c'est toujours &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -123,6 +77,204 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/10/25/retour-vers-le-futur-avec-vim/">Retour Vers Le Futur Avec Vim</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-10-25T18:52:49+01:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:52 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Parlons de retour vers le futur.</h2>
+
+<p>En effet le héros dans le film 2 arrive le 21 octobre 2015. Bon on n&#8217;a pas les voitures volantes. Et c&#8217;est toujours le même éditeur de texte (vi date de 1976 !).</p>
+
+<h2>Annuler dans VIM</h2>
+
+<p>Pour annuler de VIM c&#8217;est plutôt simple <code>u</code> pour <strong>u</strong>ndo. Pour refaire c&#8217;est moins simple <code>&lt;CTRL + r&gt;</code>. Mais en pratique c&#8217;est plus puissant que cela.</p>
+
+<p>En fait on peut voyager dans le temps avec VIM.</p>
+
+<h2>Retour dans le passé</h2>
+
+<p>Grâce à la commande  <code>:earlier</code></p>
+
+<ul>
+<li><code>:earlier 5m</code> reviens en arrière de 5 minutes</li>
+<li><code>:earlier 10</code> annule 10 modifications</li>
+<li><code>:earlier 5h</code> annule 5 heures.</li>
+<li><code>:earlier 1f</code> ramène le fichier avant le dernier enregistrement</li>
+<li><code>:earlier 2f</code> ramène le fichier à l&#8217;avant-dernier enregistrement</li>
+</ul>
+
+
+<p>Bien sur on peut faire un <em>retour vers futur</em> avec la commande suivante.</p>
+
+<ul>
+<li><code>:later 5m</code> retourne 5 minute plus tard.</li>
+<li><code>:later 10</code> refait les 10 derniers modifications</li>
+</ul>
+
+
+<p>Encore plus fort se déplacer dans l&#8217;historique de VIM</p>
+
+<h2>Se déplacer dans les différents passés</h2>
+
+<p>Celui-ci ce comporte comme un arbre.</p>
+
+<p>Par exemple je rentre le texte <code>premier</code>, puis le texte <code>second</code>. Puis je change <code>second</code> en <code>troisième</code> mon historique ressemble à cela.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>   premier 
+</span><span class='line'>     |
+</span><span class='line'>   modif 1
+</span><span class='line'>     |
+</span><span class='line'>   premier second
+</span><span class='line'>     |
+</span><span class='line'>   modif 2
+</span><span class='line'>     |
+</span><span class='line'>   premier troisième</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si j&#8217;annule une étape et que je change le texte mon historique ressemble à cela</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>              premier 
+</span><span class='line'>                 |
+</span><span class='line'>               modif 1
+</span><span class='line'>                 |
+</span><span class='line'>               premier second
+</span><span class='line'>            ^    |       \
+</span><span class='line'> annulation |  modif 2    modif 3
+</span><span class='line'>            |    |               \
+</span><span class='line'>               premier troisième premier quatrième.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Impossible de revenir à la modif 2 avec <code>u</code> et <code>Ctrl-r</code>.</p>
+
+<p>Mais les touches <code>g+</code> et <code>g-</code> permette de faire cela.</p>
+
+<p>Par exemple <code>g-</code> va nous ramener à la modif 2, un seconde fois <code>g-</code> nous ramène à la modif 1 etc ..</p>
+
+<p>Pour voir toute les modifications il existe une liste de tous les changements avec <code>:undolist</code></p>
+
+<p>Cela n&#8217;est pas très <em>user-friendly</em> comme vue. C&#8217;est pour cela qu&#8217;il existe un plugin vim <a href="https://github.com/sjl/gundo.vim/">gundo</a> qui rend cela beaucoup plus simple</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  Undo graph                          File
+</span><span class='line'>+-----------------------------------+---------------------------+
+</span><span class='line'>| " Gundo for something.txt [1]     |one                        |
+</span><span class='line'>| " j/k  - move between undo states |two                        |
+</span><span class='line'>| " &lt;cr&gt; - revert to that state     |three                      |
+</span><span class='line'>|                                   |five                       |
+</span><span class='line'>| @  [5] 3 hours ago                |                           |
+</span><span class='line'>| |                                 |                           |
+</span><span class='line'>| | o  [4] 4 hours ago              |                           |
+</span><span class='line'>| | |                               |                           |
+</span><span class='line'>| o |  [3] 4 hours ago              |                           |
+</span><span class='line'>| | |                               |                           |
+</span><span class='line'>| o |  [2] 4 hours ago              |                           |
+</span><span class='line'>| |/                                |                           |
+</span><span class='line'>| o  [1] 4 hours ago                |                           |
+</span><span class='line'>| |                                 |                           |
+</span><span class='line'>| o  [0] Original                   |                           |
+</span><span class='line'>+-----------------------------------+                           |
+</span><span class='line'>| --- 3 2010-10-12 06:27:35 PM      |                           |
+</span><span class='line'>| +++ 5 2010-10-12 07:38:37 PM      |                           |
+</span><span class='line'>| @@ -1,3 +1,4                      |                           |
+</span><span class='line'>|  one                              |                           |
+</span><span class='line'>|  two                              |                           |
+</span><span class='line'>|  three                            |                           |
+</span><span class='line'>| +five                             |                           |
+</span><span class='line'>+-----------------------------------+---------------------------+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Sauvegarder les annulations.</h2>
+
+<p>Parfois on fait des bêtises et que le fichier n&#8217;est pas encore versionné et/ou commité (et cela vous est déjà arrivé non ?). Quand on a quitté vim. On perd tout l&#8217;historique. Ce n&#8217;est plus le cas en précisant un <code>undofile</code></p>
+
+<h2>Conclusion</h2>
+
+<p>Nous avons appris à nous déplacer comme des pros dans l&#8217;historique vim.</p>
+
+<p>Résumé des touches</p>
+
+<ul>
+<li><code>u</code> annule, <code>ctrl+r</code> refait</li>
+<li><code>:earlier</code> reviens en arrière</li>
+<li><code>g-</code> et <code>g+</code> reviens/retourne à l&#8217;état précédent</li>
+</ul>
+
+
+<h2>Références</h2>
+
+<ul>
+<li>la documentation de vim <code>help undo</code></li>
+<li><a href="https://github.com/sjl/gundo.vim/">Gundo</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -3339,345 +3491,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/09/05/les-promises-et-php-via-react/">Les Promises Et Php via ReactPhp</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-09-05T19:10:10+02:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:10 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Les promises sont une alternative plus puissante au Callback. Relativement peu connues au début. Elle sont maintenant en standard dans beaucoup de langage javascript ES6, python 3.2, java. Où via des librairies comme <a href="https://github.com/reactphp/promise">react/promise</a> pour php</p>
-
-<p>Une promise représente une valeur donc le résultat n&#8217;est pas encore connu.
-Quand le résultat est connu,  la promise a 3 états possibles</p>
-
-<ul>
-<li><strong>Pending</strong> ou <strong>Unfulfillled</strong>  en Attente..</li>
-<li><strong>Resolved</strong> ou <strong>fulfillled</strong>  Succès</li>
-<li><strong>Rejected</strong> ou <strong>Failed</strong>  Erreur.</li>
-</ul>
-
-
-<p>Un <em>Deffered</em> représente un travail qui n&#8217;est pas encore fini. Donc un <em>Deferred</em> possède une promise (une valeur pas encore connues).</p>
-
-<p>Quand la valeur est connue, la promesse utilise un <em>handler</em> (en général <code>-&gt;then()</code>) qui lui-même renvoie une promise. L&#8217;intérêt est que les promises sont chainables.</p>
-
-<p>Mais essayons quelques exemples qui seront un peu plus parlant.</p>
-
-<p>Pour ce faire nous allons d&#8217;abord installer <a href="https://github.com/reactphp/promise">react/promises</a></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'><span class="k">require</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/vendor/autoload.php&#39;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// On crée un travail</span>
-</span><span class='line'><span class="nv">$deferred</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">React\Promise\Deferred</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// On veux la promise</span>
-</span><span class='line'><span class="nv">$promise</span>  <span class="o">=</span> <span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">promise</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&quot;tout va bien </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span> <span class="p">},</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&quot;tout va mal </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span> <span class="p">},</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&quot;j&#39;attends</span><span class="se">\n</span><span class="s2"> &quot;</span><span class="p">;</span> <span class="p">}</span>
-</span><span class='line'><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// Le travail est un succes, on résoud la promise</span>
-</span><span class='line'><span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">resolve</span><span class="p">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Voici ce que j&#8217;obtiens si je lance le programme.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">tout</span> <span class="nx">va</span> <span class="nx">bien</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Si je remplace <code>$deferred-&gt;resolve()</code> par <code>$deferred-&gt;reject()</code>. Le travail n&#8217;as pas marché. J&#8217;obtiens</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">Tout</span> <span class="nx">va</span> <span class="nx">mal</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>
-La syntaxe de <code>then</code> est</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">then</span><span class="p">(</span><span class="nx">callable</span> <span class="nv">$onFulfilled</span> <span class="o">=</span> <span class="k">null</span><span class="p">,</span> <span class="nx">callable</span> <span class="nv">$onRejected</span> <span class="o">=</span> <span class="k">null</span><span class="p">,</span> <span class="nx">callable</span> <span class="nv">$onProgress</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Si l&#8217;action est un succès, On résous la promise en appelant la fonction <code>$onFulfilled</code>.</li>
-<li>L&#8217;action n&#8217;est pas bonne, On rejette la promise avec <code>$onRejected</code>.</li>
-<li>Si l&#8217;action est en cours , On appelle <code>$onProgress</code>.</li>
-</ul>
-
-
-<p>A noter qu&#8217;une promise une fois qu&#8217;elle est résolue ou rejetée ne peut plus être réutilisée sauf dans le cas du <code>pending</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$promise</span><span class="o">-&gt;</span><span class="na">notify</span><span class="p">();</span>
-</span><span class='line'><span class="nv">$promise</span><span class="o">-&gt;</span><span class="na">notify</span><span class="p">();</span>
-</span><span class='line'><span class="nv">$promise</span><span class="o">-&gt;</span><span class="na">notify</span><span class="p">();</span>
-</span><span class='line'><span class="nv">$promise</span><span class="o">-&gt;</span><span class="na">resolve</span><span class="p">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Le résultat</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">j</span><span class="s1">&#39;attends</span>
-</span><span class='line'><span class="s1">j&#39;</span><span class="nx">attends</span>
-</span><span class='line'><span class="nx">j</span><span class="err">&#39;</span><span class="nx">attends</span>
-</span><span class='line'><span class="nx">tout</span> <span class="nx">va</span> <span class="nx">bien</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Pour l&#8217;instant rien de bien compliqué. On peut chainer les promises</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$promise</span>  <span class="o">=</span> <span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">promise</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&quot;action 1 ok</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span> <span class="p">}</span>
-</span><span class='line'><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&quot;action 2 ok</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;}</span>
-</span><span class='line'><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>   <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&quot;action 3 ok</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;},</span>
-</span><span class='line'>   <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&quot;une des actions n&#39;est pas ok..</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;}</span>
-</span><span class='line'><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">resolve</span><span class="p">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Le résultat</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">action</span> <span class="mi">1</span> <span class="nx">ok</span>
-</span><span class='line'><span class="nx">action</span> <span class="mi">2</span> <span class="nx">ok</span>
-</span><span class='line'><span class="nx">action</span> <span class="mi">3</span> <span class="nx">ok</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Essayons avec <code>deffered-&gt;reject()</code></p>
-
-<p>Le résultat</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">une</span> <span class="nx">des</span> <span class="nx">actions</span> <span class="nx">n</span><span class="err">&#39;</span><span class="nx">est</span> <span class="nx">pas</span> <span class="nx">ok</span><span class="o">..</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Ajoutons un exception à la deuxième étape.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$promise</span>  <span class="o">=</span> <span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">promise</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&quot;action 1 ok</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span> <span class="p">}</span>
-</span><span class='line'><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">throw</span> <span class="k">new</span> <span class="nx">Exception</span><span class="p">();}</span>
-</span><span class='line'><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>   <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&quot;action 3 ok</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;},</span>
-</span><span class='line'>   <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&quot;une des actions n&#39;est pas ok..</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;}</span>
-</span><span class='line'><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Le résultat</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">action</span> <span class="mi">1</span> <span class="nx">ok</span>
-</span><span class='line'><span class="nx">une</span> <span class="nx">des</span> <span class="nx">actions</span> <span class="nx">n</span><span class="err">&#39;</span><span class="nx">est</span> <span class="nx">pas</span> <span class="nx">ok</span><span class="o">..</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Ajoutons une exception dans le premier, et ajoutons un cas pour gérer l&#8217;erreur</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$promise</span>  <span class="o">=</span> <span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">promise</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">throw</span> <span class="k">new</span> <span class="nx">\Exception</span><span class="p">();</span> <span class="p">}</span>
-</span><span class='line'><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&quot;action 2 ok</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;},</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&quot;l&#39;action 1 pas ok mais on continue..</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;}</span>
-</span><span class='line'><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>   <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&quot;action 3 ok</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;},</span>
-</span><span class='line'>   <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&quot;une des actions n&#39;est pas ok..</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;}</span>
-</span><span class='line'><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">resolve</span><span class="p">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Le résultat</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">l</span><span class="err">&#39;</span><span class="nx">action</span> <span class="mi">1</span> <span class="nx">pas</span> <span class="nx">ok</span> <span class="nx">mais</span> <span class="nx">on</span> <span class="k">continue</span><span class="o">..</span>
-</span><span class='line'><span class="nx">action</span> <span class="mi">3</span> <span class="nx">ok</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Si on veux que l&#8217;erreur de l&#8217;action 1 se propage deux possibilités..</p>
-
-<ul>
-<li>supprimer le callback d&#8217;erreur de l&#8217;action 2</li>
-<li>Ou relancer l&#8217;exception</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$promise</span>  <span class="o">=</span> <span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">promise</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">throw</span> <span class="k">new</span> <span class="nx">\Exception</span><span class="p">();</span> <span class="p">}</span>
-</span><span class='line'><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&quot;action 2 ok</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;},</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&quot;l&#39;action 1 pas ok et on stop le processus&quot;</span><span class="p">;</span> <span class="k">throw</span> <span class="k">new</span> <span class="nx">\Exception</span><span class="p">();}</span>
-</span><span class='line'><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>   <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&quot;action 3 ok</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;},</span>
-</span><span class='line'>   <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&quot;une des actions n&#39;est pas ok..</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;}</span>
-</span><span class='line'><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Ce qui est intéressant dans les promises c&#8217;est que le code équivalent en procédural est pas génial.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'> <span class="nv">$result</span> <span class="o">=</span> <span class="nx">doAction1</span><span class="p">();</span>
-</span><span class='line'><span class="k">try</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nv">$result</span> <span class="o">=</span> <span class="nx">doAction1</span><span class="p">();</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$result</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$result2</span> <span class="o">=</span> <span class="nx">doAction2</span><span class="p">(</span><span class="nv">$result</span><span class="p">);</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$result2</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nv">$result3</span> <span class="o">=</span> <span class="nx">doAction3</span><span class="p">(</span><span class="nv">$result3</span><span class="p">);</span>
-</span><span class='line'>            <span class="k">return</span> <span class="nv">$result3</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">throw</span> <span class="k">new</span> <span class="nx">Exception</span><span class="p">();</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">throw</span> <span class="k">New</span> <span class="nx">Exception</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="o">..</span><span class="p">){</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;une des actions n&#39;est pas ok&quot;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Devient</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$result</span> <span class="o">=</span> <span class="nv">$doAction1</span><span class="p">()</span>
-</span><span class='line'>    <span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$result1</span><span class="p">){</span><span class="nx">doAction2</span><span class="p">(</span><span class="nv">$result1</span><span class="p">);})</span>
-</span><span class='line'>    <span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>        <span class="k">function</span><span class="p">(</span><span class="nv">$result2</span><span class="p">){</span><span class="nx">doAction3</span><span class="p">(</span><span class="nv">$result2</span><span class="p">);},</span>
-</span><span class='line'>        <span class="k">function</span><span class="p">()</span> <span class="p">{</span><span class="k">echo</span> <span class="s2">&quot;une des actions n&#39;est pas ok&quot;</span><span class="p">}</span>
-</span><span class='line'>    <span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<p>C&#8217;est mieux non ?</p>
-
-<p>Dans un prochain article nous nous utiliserons ce que nous avons appris avec <a href="http://guzzle.readthedocs.org/en/latest/">Guzzle</a>.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -3693,6 +3506,10 @@ La syntaxe de <code>then</code> est</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/10/25/retour-vers-le-futur-avec-vim/">Retour Vers Le Futur Avec Vim</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/10/18/les-fractales-en-php-mandelbrot/">Les Fractales en Php Mandelbrot</a>
       </li>
     
@@ -3706,10 +3523,6 @@ La syntaxe de <code>then</code> est</p>
     
       <li class="post">
         <a href="/blog/2015/10/03/spl-surcharge-magique/">SPL Surcharge Magique</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/09/27/des-commandes-au-top/">Des Commandes Au Top</a>
       </li>
     
   </ul>

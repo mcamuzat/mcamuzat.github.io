@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Mon blog perso.</title>
+  <meta name="author" content="mcamuzat">
+
+  
+  <meta name="description" content="Quelques commandes utiles Quelques commandes utiles que j'utilise souvent Quand je ne suis pas sudo 1
+2
+3
+4
+$ apt-get install npm
+E: Could not open &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mcamuzat.github.io/posts/6/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Mon blog perso." type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-60315965-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Mon blog perso.</a></h1>
+  
+    <h2>Un simple blog PHP/Linux/Programmation/Docker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="mcamuzat.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/03/02/quelques-commandes-vim-slash-bash/">Quelques Commandes Vim/Bash</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-03-02T21:24:52+01:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>9:24 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>Quelques commandes utiles</h1>
+
+<p>Quelques commandes utiles que j&#8217;utilise souvent</p>
+
+<h2>Quand je ne suis pas sudo</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>apt-get install npm
+</span><span class='line'>E: Could not open lock file /var/lib/dpkg/lock - open <span class="o">(</span>13: Permission denied<span class="o">)</span>
+</span><span class='line'>E: Unable to lock the administration directory <span class="o">(</span>/var/lib/dpkg/<span class="o">)</span>, are you root?
+</span><span class='line'><span class="nv">$ </span>sudo !!
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>!!</code> est la dernière commande exécutée</p>
+
+<h3>Une variante</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mkdir log/
+</span><span class='line'><span class="nb">cd</span> !<span class="nv">$ </span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>!$</code> est la dernière commande sans le premier argument ici <code>log/</code></p>
+
+<h2>Vi/Vim</h2>
+
+<p>Bon il y a beaucoup de commandes relativement sympa et complexes mais je donne celle que tout le monde demande</p>
+
+<p>Enregistrer un fichier en lecture seule</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>:w !sudo tee %
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Dite oui pour recharger la page. Et dite oui si vous voulez quitter la page sans enregistrer.</p>
+
+<p>D&#8217;ailleurs si vous utilisez tout le temps <code>:wq</code> vous pouvez essayer</p>
+
+<ul>
+<li><code>:w</code> enregistre sans quitter</li>
+<li><code>:q</code> quitte mais avec warning si vous n&#8217;avez pas sauvegarder</li>
+<li><code>:q!</code> quitte sans warning et sans sauver</li>
+<li><code>:x</code> raccourci de <code>:wq</code>. Il existe aussi le raccourci clavier <code>ZZ</code> comme pour aller dormir. quitte et enregistre.</li>
+<li><code>:e fichier.txt</code> ouvre le fichier (l&#8217;auto complétion avec tab fonctionne..)</li>
+<li><code>:tabe fichier.txt</code> ouvre dans un nouvel onglet (vim seulement). on peux se ballader d&#8217;onglet en onglet avec les touches <code>gt</code> et <code>gT</code> <code>g</code> est le diminutif de <em>go</em> et <code>t</code> pour <em>tab</em>. ou avec <code>ctrl+&lt;pageUp&gt;</code> et <code>ctrl+&lt;pageDown&gt;</code> ou encore tout simplement cliquer avec la souris (astuce suivante)</li>
+</ul>
+
+
+<h3>Active la souris</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">set </span><span class="nv">mouse</span><span class="o">=</span>a
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>une astuce est d&#8217;ajouter un .vimrc et d&#8217;ajouter cette ligne dans ce fichier de config.</p>
+
+<h3>le <code>vimrc</code></h3>
+
+<p>Vous en avez besoin !! Il existe deux versions de vi: <code>vi</code> et <code>vim</code> vim démarre par défaut en mode vi compatible (ce qui n&#8217;est plus tout à fait vrai).Certaines fonctionnalités sont coupées. Dont les flèches de directions (et ca vous <em>voulez</em>les flèches haut, bas, gauche, droite) et surtout le annuler (<code>u</code> come <em>u</em>ndo) illimité (il est parfois limité à 1). Quel rapport avec le <code>vimrc</code> ? L&#8217;existence du fichier fera que votre vi démarre en mode non compatible. donc vous aurez les touches et le undo.</p>
+
+<h2>l&#8217;auto-complétion sous vim</h2>
+
+<p>Il existe une dizaine d&#8217;auto complétion sous vim. Certainement pas aussi puissantes que IDE mais cela rend service.</p>
+
+<p>En mode insertion <code>ctrl+p</code> auto complétion en cherchant dans les fichiers ouverts. Cela résout 50 % des auto complétions.</p>
+
+<p>l&#8217;auto-complétion est activé via la touche <code>ctrl+x</code> +<code>crtl+lettre</code> avec :</p>
+
+<ul>
+<li><code>ctrl+x</code> <code>ctrl+f</code> <code>f</code> pour <code>file</code> auto complétion suivant le fichier (marche nickel pour les hosts apache !)</li>
+<li><code>ctrl+x</code> <code>ctrl+l</code> <code>l</code> pour <code>line</code> auto complétion sur la ligne entière</li>
+<li><code>ctrl+x</code> <code>ctrl+p</code> c&#8217;est pareil que ctrl+p</li>
+<li><code>ctrl+x</code> <code>ctrl+o</code> <code>o</code> pour <code>omni-completion</code> auto complete php/python/bash suivant le fichier que vous éditez. (cela comprend les mots clés et peux vous donner la syntaxe)</li>
+</ul>
+
+
+<p>Je montrerai dans un prochain post comment faire pareil qu&#8217;un IDE avec les fonctions. Ou se balader dans les classes et/ou auto compléter le code. Ce n&#8217;est pas encore le niveau des IDEs mais c&#8217;est souvent une fonctionnalité méconnue (pourtant c&#8217;est dans vi depuis des années)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/posts/5">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/10/25/retour-vers-le-futur-avec-vim/">Retour Vers Le Futur Avec Vim</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/18/les-fractales-en-php-mandelbrot/">Les Fractales en Php Mandelbrot</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/10/liste-chainees-implementation/">Listes Chainées : Implémentation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/04/tig-status/">Tig : Status</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/03/spl-surcharge-magique/">SPL Surcharge Magique</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/mcamuzat">@mcamuzat</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'mcamuzat',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - mcamuzat -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
