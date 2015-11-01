@@ -9,7 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Les promises sont une alternative plus puissante au Callback. Relativement peu connues au début. Elle sont maintenant en standard dans beaucoup de &hellip;">
+  <meta name="description" content="Nous allons voir une nouveauté de PHP 5.5 l'instruction yield Cela permet de mettre en place ce qu'on appelle les générateurs. Un premier exemple &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +77,555 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/09/06/php-yield-les-generateurs/">PHP Yield Les Générateurs</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-09-06T19:06:48+02:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:06 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Nous allons voir une nouveauté de PHP 5.5 l&#8217;instruction <strong>yield</strong></p>
+
+<p>Cela permet de mettre en place ce qu&#8217;on appelle les générateurs.</p>
+
+<h2>Un premier exemple</h2>
+
+<p>Regardons un exemple ensemble</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">function</span> <span class="nf">generateAnimal</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;Je suis dans le générateur</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Panda&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;Je suis retourné dans le générateur</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Lama&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;je suis de retour</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Alpaga&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;plus de d&#39;animaux</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$generator</span> <span class="o">=</span> <span class="nx">generateAnimal</span><span class="p">();</span>
+</span><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$generator</span> <span class="k">as</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;j&#39;ai reçu </span><span class="si">$value</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Voici le résultat</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">j</span><span class="s1">&#39;ai reçu Panda </span>
+</span><span class='line'><span class="s1">Je suis retourné dans le générateur</span>
+</span><span class='line'><span class="s1">j&#39;</span><span class="nx">ai</span> <span class="nx">reçu</span> <span class="nx">Lama</span>
+</span><span class='line'><span class="nx">je</span> <span class="nx">suis</span> <span class="nx">de</span> <span class="nx">retour</span>
+</span><span class='line'><span class="nx">j</span><span class="s1">&#39;ai reçu Alpaga </span>
+</span><span class='line'><span class="s1">plus de d&#39;</span><span class="nx">animaux</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>D&#8217;abord un générateur se comporte comme un iterator. C&#8217;est grâce à cela que je peux faire un <code>foreach</code>.</p>
+
+<p>Je vais refaire pas à pas avec des commentaires.</p>
+
+<h3>premier passage</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">function</span> <span class="nf">generateAnimal</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;Je suis dans le générateur</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Panda&quot;</span><span class="p">;</span> <span class="c1">// Je retourne ici </span>
+</span><span class='line'>        <span class="k">echo</span> <span class="s2">&quot;Je suis retourné dans le générateur</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Lama&quot;</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">echo</span> <span class="s2">&quot;je suis de retour</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Alpaga&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;plus de d&#39;animaux</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$generator</span> <span class="o">=</span> <span class="nx">generateAnimal</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">echo</span> <span class="nv">$generator</span><span class="o">-&gt;</span><span class="na">current</span><span class="p">();</span>
+</span><span class='line'><span class="c1">// &quot;je suis dans le générateur</span>
+</span><span class='line'><span class="c1">// $value = &quot;Panda&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Itération suivante</h3>
+
+<p>En fait le générateur reste en suspens, <code>yield</code> est un pseudo <code>return</code> (enfin c&#8217;est comme cela que je l&#8217;ai compris)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">function</span> <span class="nf">generateAnimal</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;Je suis dans le générateur</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Panda&quot;</span><span class="p">;</span> <span class="c1">// Je suis reste ici .. je continue </span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;Je suis retourné dans le générateur</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Lama&quot;</span><span class="p">;</span> <span class="c1">// je m&#39;arrete à nouveau </span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;je suis de retour</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Alpaga&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;plus d&#39;animaux</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$generator</span><span class="o">-&gt;</span><span class="na">next</span><span class="p">()</span> <span class="c1">// On récupère la valeur suivante</span>
+</span><span class='line'><span class="k">echo</span> <span class="nv">$generator</span><span class="o">-&gt;</span><span class="na">current</span><span class="p">();</span>
+</span><span class='line'><span class="c1">// &quot;je suis retourné dans le générateur</span>
+</span><span class='line'><span class="c1">// &quot;Lama&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Troisième itération</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">function</span> <span class="nf">generateAnimal</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;Je suis dans le générateur</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Panda&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;Je suis retourné dans le générateur</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Lama&quot;</span><span class="p">;</span> <span class="c1">// je me suis arrété ici </span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;je suis de retour</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Alpaga&quot;</span><span class="p">;</span> <span class="c1">// je retourne .. </span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;plus d&#39;animaux</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$generator</span><span class="o">-&gt;</span><span class="na">next</span><span class="p">()</span> <span class="c1">// On récupère la valeur suivante</span>
+</span><span class='line'><span class="k">echo</span> <span class="nv">$generator</span><span class="o">-&gt;</span><span class="na">current</span><span class="p">();</span>
+</span><span class='line'><span class="c1">// Je suis de retour</span>
+</span><span class='line'><span class="c1">// &quot;Alpaga&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Dernière Itération</h3>
+
+<p>Nous y sommes presque..</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">function</span> <span class="nf">generateAnimal</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;Je suis dans le générateur</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Panda&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;Je suis retourné dans le générateur</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Lama&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;je suis de retour</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Alpaga&quot;</span><span class="p">;</span> <span class="c1">// je me suis arréte ici</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;plus d&#39;animaux</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span> <span class="c1">//pas de yield je renvoie null..</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$generator</span><span class="o">-&gt;</span><span class="na">next</span><span class="p">()</span> <span class="c1">// On récupère la valeur suivante</span>
+</span><span class='line'><span class="k">echo</span> <span class="nv">$generator</span><span class="o">-&gt;</span><span class="na">current</span><span class="p">();</span>
+</span><span class='line'><span class="c1">// Plus d&#39;animaux </span>
+</span><span class='line'><span class="c1">// il n&#39;y a rien car echo null;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Une fois qu&#8217;un générateur a fini, on ne peux le réutiliser</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$generator</span> <span class="k">as</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;j&#39;ai reçu </span><span class="si">$value</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$generator</span> <span class="k">as</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;j&#39;ai reçu </span><span class="si">$value</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>J&#8217;obtiens</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">PHP</span> <span class="nx">Fatal</span> <span class="nx">error</span><span class="o">:</span>  <span class="nx">Uncaught</span> <span class="nx">exception</span> <span class="s1">&#39;Exception&#39;</span> <span class="nx">with</span> <span class="nx">message</span> <span class="s1">&#39;Cannot traverse an already closed generator&#39;</span> <span class="nx">in</span> <span class="o">/</span><span class="nx">home</span><span class="o">/</span><span class="nx">marc</span><span class="o">/</span><span class="k">yield</span><span class="o">.</span><span class="nx">php</span><span class="o">:</span><span class="mi">16</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Quel est l&#8217;intérêt ?</h2>
+
+<p>Admettons que je veux faire un <code>foreach</code> sur un tableau d&#8217;un millions de lignes.</p>
+
+<p>Pour faire un Array de 1 Million de valeurs ce n&#8217;est pas très compliqué. Une instruction suffit.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nb">range</span><span class="p">(</span><span class="mi">1000000</span><span class="p">)</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="o">...</span><span class="p">,</span><span class="mi">1000000</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Mais cela prend un peu de mémoire. Utilisons notre générateur de manière sympathique</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">xrange</span><span class="p">(</span><span class="nv">$min</span><span class="p">,</span> <span class="nv">$max</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="nv">$min</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="nv">$max</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="k">yield</span> <span class="nv">$i</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nx">xrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1000000</span><span class="p">)</span> <span class="k">as</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>   <span class="k">echo</span> <span class="nv">$value</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>l&#8217;énorme avantage est que je n&#8217;ai pas besoin de générer un array de 1 Millions de lignes, je génère valeur par valeur. Si la fonction est appelle deux fois je ne génère que deux valeurs. L&#8217;occupation en mémoire est faible. Les valeurs sont instanciées <em>paresseusements</em>.</p>
+
+<h3>Un exemple encore plus concret.</h3>
+
+<p>Pour lire un fichier:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">getLinesFromFile</span><span class="p">(</span><span class="nv">$fileName</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$fileHandle</span> <span class="o">=</span> <span class="nb">fopen</span><span class="p">(</span><span class="nv">$fileName</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="k">false</span> <span class="o">!==</span> <span class="nv">$line</span> <span class="o">=</span> <span class="nb">fgets</span><span class="p">(</span><span class="nv">$fileHandle</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">yield</span> <span class="nv">$line</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="nb">fclose</span><span class="p">(</span><span class="nv">$fileHandle</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nv">$lines</span> <span class="o">=</span> <span class="nx">getLinesFromFile</span><span class="p">(</span><span class="nv">$fileName</span><span class="p">);</span>
+</span><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$lines</span> <span class="k">as</span> <span class="nv">$line</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// do something with $line</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ce code a plusieurs avantages.</p>
+
+<ul>
+<li>On va chercher la ligne à la demande.</li>
+<li>Il y a une couche d&#8217;abstraction entre la lecture et le programme principale.</li>
+</ul>
+
+
+<h3>Un petit quizz</h3>
+
+<p>Pouvez vous deviner la fonction suivante ?</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">mystere</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$last</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="nv">$current</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">yield</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">list</span><span class="p">(</span><span class="nv">$current</span><span class="p">,</span> <span class="nv">$last</span><span class="p">)</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="nv">$current</span> <span class="o">+</span> <span class="nv">$last</span><span class="p">,</span> <span class="nv">$current</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">yield</span> <span class="nv">$current</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nx">mystere</span><span class="p">()</span> <span class="k">as</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$count</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="nv">$value</span> <span class="o">.</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$count</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>        <span class="c1">// pas cool la boucle infinie</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Une mise au point</h2>
+
+<p>Les générateurs se comportent comme des itérateurs, mais pour implémenter un <a href="http://php.net/manual/fr/class.iterator.php">iterator</a> il faut implémenter l&#8217;interface suivante.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'> <span class="nx">Iterator</span> <span class="k">extends</span> <span class="nx">Traversable</span> <span class="p">{</span>
+</span><span class='line'><span class="cm">/* Méthodes */</span>
+</span><span class='line'><span class="k">abstract</span> <span class="k">public</span> <span class="nx">mixed</span> <span class="nb">current</span> <span class="p">(</span> <span class="nx">void</span> <span class="p">)</span>
+</span><span class='line'><span class="k">abstract</span> <span class="k">public</span> <span class="nx">scalar</span> <span class="nb">key</span> <span class="p">(</span> <span class="nx">void</span> <span class="p">)</span>
+</span><span class='line'><span class="k">abstract</span> <span class="k">public</span> <span class="nx">void</span> <span class="nb">next</span> <span class="p">(</span> <span class="nx">void</span> <span class="p">)</span>
+</span><span class='line'><span class="k">abstract</span> <span class="k">public</span> <span class="nx">void</span> <span class="nb">rewind</span> <span class="p">(</span> <span class="nx">void</span> <span class="p">)</span>
+</span><span class='line'><span class="k">abstract</span> <span class="k">public</span> <span class="nx">boolean</span> <span class="nx">valid</span> <span class="p">(</span> <span class="nx">void</span> <span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Par exemple pour l&#8217;exemple du fichier (je recopie la doc de php)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">LineIterator</span> <span class="k">implements</span> <span class="nx">Iterator</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">protected</span> <span class="nv">$fileHandle</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">protected</span> <span class="nv">$line</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">protected</span> <span class="nv">$i</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$fileName</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">fileHandle</span> <span class="o">=</span> <span class="nb">fopen</span><span class="p">(</span><span class="nv">$fileName</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">throw</span> <span class="k">new</span> <span class="nx">RuntimeException</span><span class="p">(</span><span class="s1">&#39;Impossible d\&#39;ouvrir le fichier : &quot;&#39;</span> <span class="o">.</span> <span class="nv">$fileName</span> <span class="o">.</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">rewind</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nb">fseek</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">fileHandle</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">line</span> <span class="o">=</span> <span class="nb">fgets</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">fileHandle</span><span class="p">);</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">valid</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="k">false</span> <span class="o">!==</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">line</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">current</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">line</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">key</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">i</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">next</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="k">false</span> <span class="o">!==</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">line</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">line</span> <span class="o">=</span> <span class="nb">fgets</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">fileHandle</span><span class="p">);</span>
+</span><span class='line'>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">i</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__destruct</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nb">fclose</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">fileHandle</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>L&#8217;implémentation en générateur.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">getLinesFromFile</span><span class="p">(</span><span class="nv">$fileName</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$fileHandle</span> <span class="o">=</span> <span class="nb">fopen</span><span class="p">(</span><span class="nv">$fileName</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nx">RuntimeException</span><span class="p">(</span><span class="s1">&#39;Impossible d\&#39;ouvrir le fichier : &quot;&#39;</span> <span class="o">.</span> <span class="nv">$fileName</span> <span class="o">.</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="k">false</span> <span class="o">!==</span> <span class="nv">$line</span> <span class="o">=</span> <span class="nb">fgets</span><span class="p">(</span><span class="nv">$fileHandle</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">yield</span> <span class="nv">$line</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nb">fclose</span><span class="p">(</span><span class="nv">$fileHandle</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>C&#8217;est quand même plus simple.</p>
+
+<h2>En conclusion.</h2>
+
+<p>Cela existe aussi dans les autres langages</p>
+
+<p>On trouve l&#8217;instruction <code>yield</code> surtout dans python</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">countdown</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">while</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+</span><span class='line'>        <span class="k">yield</span> <span class="n">n</span>
+</span><span class='line'>        <span class="n">n</span> <span class="o">-=</span> <span class="mi">1</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">countdown</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">print</span> <span class="s">&#39;depart dans </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">x</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>La référence est ce <a href="http://www.dabeaz.com/generators/">site</a> , Il existe une <a href="http://www.youtube.com/watch?v=5-qadlG7tWo">video</a> (<strong>3 heures !!!</strong>)</p>
+
+<p>Cela existe aussi dans <a href="http://www.tutorialspoint.com/ruby/ruby_blocks.htm">ruby</a>, <a href="https://msdn.microsoft.com/fr-fr/library/9k7k7cf0.aspx">C#</a>, et dans le javascript ES6</p>
+
+<p>C&#8217;est un peu plus qu&#8217;une nouvelle syntaxe. Cela permet de faire du code asynchrone. Car cela permet une structure de codage que l&#8217;on appelle: Les <a href="https://fr.wikipedia.org/wiki/Coroutine">Couroutines</a>. Mais plus d&#8217;info dans un prochain post .</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2678,549 +3227,6 @@ L&#8217;octet de la position du début des données peut être déterminé par l
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/08/04/decorer-phpunit-avec-les-listeners/">Décorer PHPUnit Avec Les Listeners</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-08-04T19:44:52+02:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:44 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Des test unitaires plus jolis</h2>
-
-<p>Comme tout les programmeurs vous faites des tests unitaires. En php, On utilise souvent PHPUnit.
-quand je lance mes tests je vois cela.</p>
-
-<p><img class="center" src="/images/phpunit_screenshot.png" width="499" height="168" title="Screenshot de phpunit" alt="Mon terminal n\"></p>
-
-<p>C&#8217;est un peu triste. Et encore j&#8217;ai activé la couleur !.</p>
-
-<p>il existe des variantes avec <code>--testdox</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>bin/phpunit --testdox
-</span><span class='line'>PHPUnit 4.8-ge1cc585 by Sebastian Bergmann and contributors.
-</span><span class='line'>
-</span><span class='line'>Spark<span class="se">\S</span>park
-</span><span class='line'> <span class="o">[</span>x<span class="o">]</span> It creates a string from data
-</span><span class='line'> <span class="o">[</span>x<span class="o">]</span> It dont care <span class="k">if</span> input is string
-</span><span class='line'> <span class="o">[</span>x<span class="o">]</span> It works with float number
-</span><span class='line'> <span class="o">[</span>x<span class="o">]</span> It s not divide by 0
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>C&#8217;est un peu mieux.</p>
-
-<p>Il existe aussi <code>--debug</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>PHPUnit 4.8-ge1cc585 by Sebastian Bergmann and contributors.
-</span><span class='line'>
-</span><span class='line'>Starting <span class="nb">test</span> <span class="s1">&#39;Spark\SparkTest::testItCreatesAStringFromData&#39;</span>.
-</span><span class='line'>.
-</span><span class='line'>Starting <span class="nb">test</span> <span class="s1">&#39;Spark\SparkTest::testItDontCareIfInputIsString&#39;</span>.
-</span><span class='line'>.
-</span><span class='line'>Starting <span class="nb">test</span> <span class="s1">&#39;Spark\SparkTest::testItWorksWithFloatNumber&#39;</span>.
-</span><span class='line'>.
-</span><span class='line'>Starting <span class="nb">test</span> <span class="s1">&#39;Spark\SparkTest::testItSNotDivideBy0&#39;</span>.
-</span><span class='line'>.
-</span><span class='line'>
-</span><span class='line'>Time: <span class="m">69</span> ms, Memory: 4.50Mb
-</span><span class='line'>
-</span><span class='line'>OK <span class="o">(</span><span class="m">4</span> tests, <span class="m">4</span> assertions<span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Mais on a un peu fait le tour</p>
-
-<h2>Les Listeners de PHPUnit</h2>
-
-<p>On peux surcharger l&#8217;affichage de PHPunit et cela grâce au listener.</p>
-
-<h3> Comment enregistrer un listener</h3>
-
-<p>Il suffit d&#8217;éditer <code>phpunit.xml</code> et de rajouter les lignes suivantes</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'>  <span class="nt">&lt;listeners&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;listener</span> <span class="na">class=</span><span class="s">&quot;SparkListener&quot;</span>
-</span><span class='line'>      <span class="na">file=</span><span class="s">&quot;../src/un-projet-pro/FooBundle/Tests/Listener/SparkListener.php&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/listener&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/listeners&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Comment implémenter un listener.</h3>
-
-<p>Le plus propre est d&#8217;implémenter tout les méthodes de l&#8217;interface</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Monlistener</span> <span class="k">implements</span> <span class="nx">PHPUnit_Framework_TestListener</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">addError</span><span class="p">(</span><span class="nx">PHPUnit_Framework_Test</span> <span class="nv">$test</span><span class="p">,</span> <span class="nx">Exception</span> <span class="nv">$e</span><span class="p">,</span> <span class="nv">$time</span><span class="p">)</span> <span class="p">{}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">addFailure</span><span class="p">(</span><span class="nx">PHPUnit_Framework_Test</span> <span class="nv">$test</span><span class="p">,</span> <span class="nx">PHPUnit_Framework_AssertionFailedError</span> <span class="nv">$e</span><span class="p">,</span> <span class="nv">$time</span><span class="p">)</span> <span class="p">{}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">addIncompleteTest</span><span class="p">(</span><span class="nx">PHPUnit_Framework_Test</span> <span class="nv">$test</span><span class="p">,</span> <span class="nx">Exception</span> <span class="nv">$e</span><span class="p">,</span> <span class="nv">$time</span><span class="p">)</span> <span class="p">{}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">addSkippedTest</span><span class="p">(</span><span class="nx">PHPUnit_Framework_Test</span> <span class="nv">$test</span><span class="p">,</span> <span class="nx">Exception</span> <span class="nv">$e</span><span class="p">,</span> <span class="nv">$time</span><span class="p">)</span> <span class="p">{}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">startTest</span><span class="p">(</span><span class="nx">PHPUnit_Framework_Test</span> <span class="nv">$test</span><span class="p">)</span> <span class="p">{}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">endTest</span><span class="p">(</span><span class="nx">PHPUnit_Framework_Test</span> <span class="nv">$test</span><span class="p">,</span> <span class="nv">$time</span><span class="p">)</span> <span class="p">{}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">startTestSuite</span><span class="p">(</span><span class="nx">PHPUnit_Framework_TestSuite</span> <span class="nv">$suite</span><span class="p">)</span> <span class="p">{}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">endTestSuite</span><span class="p">(</span><span class="nx">PHPUnit_Framework_TestSuite</span> <span class="nv">$suite</span><span class="p">)</span> <span class="p">{}</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Mais pour aujourd&#8217;hui, Je vais faire plus simple je vais hériter de la classe <code>PHPUnit_TextUI_ResultPrinter</code> si je n&#8217;ai pas envie de réécrire toutes les méthodes.</p>
-
-<h2>Plein d&#8217;utilisation de Listener</h2>
-
-<h3>Des statistiques sur les tests</h3>
-
-<p>Quel est le test qui prend le plus de temps ? Facile avec le Listener suivant.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">MaxListener</span> <span class="k">extends</span> <span class="nx">PHPUnit_TextUI_ResultPrinter</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">public</span> <span class="nv">$maxTime</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">private</span> <span class="nv">$suites</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">private</span> <span class="nv">$endedSuites</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">startTestSuite</span><span class="p">(</span><span class="nx">PHPUnit_Framework_TestSuite</span> <span class="nv">$suite</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">suites</span><span class="o">++</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">endTestSuite</span><span class="p">(</span><span class="nx">PHPUnit_Framework_TestSuite</span> <span class="nv">$suite</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">endedSuites</span><span class="o">++</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">suites</span> <span class="o">&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">endedSuites</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">return</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="k">echo</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">echo</span> <span class="s2">&quot;le test le plus long prend </span><span class="si">$this-&gt;maxTime</span><span class="s2"> seconde(s)&quot;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">endTest</span><span class="p">(</span><span class="nx">PHPUnit_Framework_Test</span> <span class="nv">$test</span><span class="p">,</span> <span class="nv">$time</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">maxTime</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nv">$time</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">maxTime</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Avec ma librairie que j&#8217;ai développé dans les <a href="/blog/2015/07/19/histogramme-et-ligne-de-commande/">posts</a> précédents.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">use</span> <span class="nx">Spark\Spark</span><span class="p">;</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">SparkListener</span> <span class="k">extends</span> <span class="nx">PHPUnit_TextUI_ResultPrinter</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">private</span> <span class="nv">$suites</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">private</span> <span class="nv">$endedSuites</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">public</span> <span class="nv">$testTimes</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">startTestSuite</span><span class="p">(</span><span class="nx">PHPUnit_Framework_TestSuite</span> <span class="nv">$suite</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">suites</span><span class="o">++</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">endTestSuite</span><span class="p">(</span><span class="nx">PHPUnit_Framework_TestSuite</span> <span class="nv">$suite</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">endedSuites</span><span class="o">++</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">suites</span> <span class="o">&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">endedSuites</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">return</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="k">echo</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">echo</span> <span class="nx">Spark</span><span class="o">::</span><span class="na">spark</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">testTimes</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">endTest</span><span class="p">(</span><span class="nx">PHPUnit_Framework_Test</span> <span class="nv">$test</span><span class="p">,</span> <span class="nv">$time</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">testTimes</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$time</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Voici le résultat</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">bin</span><span class="o">/</span><span class="nx">phpunit</span> <span class="o">-</span><span class="nx">c</span> <span class="nx">build</span><span class="o">/</span><span class="nx">phpunit</span><span class="o">.</span><span class="nx">xml</span>
-</span><span class='line'><span class="nx">PHPUnit</span> <span class="mf">4.5</span><span class="o">.</span><span class="mi">1</span> <span class="nx">by</span> <span class="nx">Sebastian</span> <span class="nx">Bergmann</span> <span class="k">and</span> <span class="nx">contributors</span><span class="o">.</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">Configuration</span> <span class="nx">read</span> <span class="nx">from</span> <span class="o">/</span><span class="nx">home</span><span class="o">/</span><span class="nx">marc</span><span class="o">/</span><span class="nx">prog</span><span class="o">/</span><span class="nx">Un</span><span class="o">-</span><span class="nx">projet</span><span class="o">-</span><span class="nx">pro</span><span class="o">/</span><span class="nx">build</span><span class="o">/</span><span class="nx">phpunit</span><span class="o">.</span><span class="nx">xml</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">.....................................................</span>
-</span><span class='line'><span class="nx">█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▂▁▁▁▁▁▁▁▁▁▁▁▂▁▁▁▁▁▁▁▂▁▁▁▁▁▁▁▁</span>
-</span><span class='line'><span class="nx">le</span> <span class="nx">test</span> <span class="nx">le</span> <span class="nx">plus</span> <span class="nx">long</span> <span class="nx">prend</span> <span class="mf">0.2183518409729</span> <span class="nx">seconde</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">Time</span><span class="o">:</span> <span class="mi">971</span> <span class="nx">ms</span><span class="p">,</span> <span class="nx">Memory</span><span class="o">:</span> <span class="mf">17.25</span><span class="nx">Mb</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">OK</span> <span class="p">(</span><span class="mi">53</span> <span class="nx">tests</span><span class="p">,</span> <span class="mi">98</span> <span class="nx">assertions</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Libérer de la mémoire</h3>
-
-<p>On peux libérer de la mémoire en mettant à <code>null</code> les mocks à la fin du test. (exemple trouvé sur github <a href="https://github.com/mybuilder/phpunit-accelerator">mybuilder/phpunit-accelerator</a>)</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">FreeListener</span> <span class="k">implements</span> <span class="nx">PHPUnit_Framework_TestListener</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="c1">// .. </span>
-</span><span class='line'>    <span class="c1">// les autres methodes vides.</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">endTest</span><span class="p">(</span><span class="nx">PHPUnit_Framework_Test</span> <span class="nv">$test</span><span class="p">,</span> <span class="nv">$time</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$refl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReflectionObject</span><span class="p">(</span><span class="nv">$test</span><span class="p">);</span>
-</span><span class='line'>        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$refl</span><span class="o">-&gt;</span><span class="na">getProperties</span><span class="p">()</span> <span class="k">as</span> <span class="nv">$prop</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$prop</span><span class="o">-&gt;</span><span class="na">isStatic</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="mi">0</span> <span class="o">!==</span> <span class="nb">strpos</span><span class="p">(</span><span class="nv">$prop</span><span class="o">-&gt;</span><span class="na">getDeclaringClass</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getName</span><span class="p">(),</span> <span class="s1">&#39;PHPUnit_&#39;</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>                <span class="nv">$prop</span><span class="o">-&gt;</span><span class="na">setAccessible</span><span class="p">(</span><span class="k">true</span><span class="p">);</span>
-</span><span class='line'>                <span class="nv">$prop</span><span class="o">-&gt;</span><span class="na">setValue</span><span class="p">(</span><span class="nv">$this</span><span class="p">,</span> <span class="k">null</span><span class="p">);</span>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On pourrait faire cela sur un <code>tearDown()</code></p>
-
-<h3>Jouer des fixtures</h3>
-
-<p>Normalement il n&#8217;y a pas de fixture dans PHPUnit. Mais en pratique pour tester certaines méthodes dans les repository, ben il n&#8217;y pas beaucoup le choix.  On peux refaire la base, dropper le schéma, un truncate à chaque test ou <code>memory::sqlite</code>. Mais sur certaines bases de données, c&#8217;est un peu compliqué. Une solution est de vider la base entre chaque suites de tests. Une proposition</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">DBListener</span> <span class="k">implements</span> <span class="nx">PHPUnit_Framework_TestListener</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="c1">// .. </span>
-</span><span class='line'>    <span class="c1">// les autres methodes vides.</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">startTestSuite</span><span class="p">(</span><span class="nx">PHPUnit_Framework_TestSuite</span> <span class="nv">$suite</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">truncateDb</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">truncateDb</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="c1">// vide la table..</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">fixtureDb</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="c1">// joue les fixtures</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">startTest</span><span class="p">(</span><span class="nx">PHPUnit_Framework_Test</span> <span class="nv">$test</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="c1">// si le nom du test contient truncate</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nb">strpos</span><span class="p">(</span><span class="nv">$test</span><span class="o">-&gt;</span><span class="na">getName</span><span class="p">(),</span> <span class="s1">&#39;truncate&#39;</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">truncateDB</span><span class="p">();</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="c1">//</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nb">strpos</span><span class="p">(</span><span class="nv">$test</span><span class="o">-&gt;</span><span class="na">getName</span><span class="p">(),</span> <span class="s1">&#39;fixture&#39;</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">truncateDB</span><span class="p">();</span>
-</span><span class='line'>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">fixtureDB</span><span class="p">();</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Si le nom du test contient <code>truncate</code> et <code>fixture</code> alors on force le truncate et/ou fixture. Une autre possibilité est d&#8217;implémenter la méthode <code>setUpBeforeClass</code> dans le test. Cette méthode est jouée juste avant l&#8217;instantiation de la classe. C&#8217;est du statique, donc pas forcement la joie..</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">setUpBeforeClass</span><span class="p">()</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">parent</span><span class="o">::</span><span class="na">setUpBeforeClass</span><span class="p">();</span>
-</span><span class='line'>    <span class="nx">self</span><span class="o">::</span><span class="na">TruncateDB</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<h3>Relancer les tests qui ne passent pas.</h3>
-
-<p>Pour le fun..</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">FailureListener</span> <span class="k">extends</span> <span class="nx">PHPUnit_TextUI_ResultPrinter</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">private</span> <span class="nv">$suites</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">private</span> <span class="nv">$endedSuites</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">public</span> <span class="nv">$failTest</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">startTestSuite</span><span class="p">(</span><span class="nx">PHPUnit_Framework_TestSuite</span> <span class="nv">$suite</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">suites</span><span class="o">++</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">addFailure</span><span class="p">(</span><span class="nx">PHPUnit_Framework_Test</span> <span class="nv">$test</span><span class="p">,</span> <span class="nx">PHPUnit_Framework_AssertionFailedError</span> <span class="nv">$e</span><span class="p">,</span> <span class="nv">$time</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>       <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">failTest</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$test</span><span class="o">-&gt;</span><span class="na">getName</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">startTest</span><span class="p">(</span><span class="nx">PHPUnit_Framework_Test</span> <span class="nv">$test</span><span class="p">)</span> <span class="p">{}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">endTestSuite</span><span class="p">(</span><span class="nx">PHPUnit_Framework_TestSuite</span> <span class="nv">$suite</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">endedSuites</span><span class="o">++</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">suites</span> <span class="o">&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">endedSuites</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">return</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="nv">$cli</span> <span class="o">=</span> <span class="nb">implode</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">failTest</span><span class="p">);</span>
-</span><span class='line'>        <span class="k">echo</span> <span class="nx">PHP_EOL</span> <span class="o">.</span> <span class="s2">&quot;Pour relancer seulement les tests qui ne passent pas ajoutez&quot;</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">echo</span> <span class="s2">&quot;--filter &#39;(</span><span class="si">$cli</span><span class="s2">)&#39;&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Le script en action.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>bin/phpunit -c build/phpunit.xml
-</span><span class='line'>PHPUnit 4.5.1 by Sebastian Bergmann and contributors.
-</span><span class='line'>
-</span><span class='line'>Configuration <span class="nb">read </span>from /home/marc/prog/un-projet-pro/build/phpunit.xml
-</span><span class='line'>
-</span><span class='line'>............................................................................................F.F...........
-</span><span class='line'>Pour relancer seulement les tests qui ne passent pas ajoutez
-</span><span class='line'>--filter <span class="s1">&#39;(testObjectNeedUpdate|testUpdateObject)&#39;</span>
-</span><span class='line'>
-</span><span class='line'>Time: <span class="m">958</span> ms, Memory: 17.25Mb
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>La seconde fois avec la commande qui va bien.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>bin/phpunit -c build/phpunit.xml --filter <span class="s1">&#39;(testObjectNeedUpdate|testUpdateObject)&#39;</span>
-</span><span class='line'>PHPUnit 4.5.1 by Sebastian Bergmann and contributors.
-</span><span class='line'>
-</span><span class='line'>Configuration <span class="nb">read </span>from /home/marc/prog/un-projet-pro/build/phpunit.xml
-</span><span class='line'>
-</span><span class='line'>FF
-</span><span class='line'>
-</span><span class='line'>Time: <span class="m">116</span> ms, Memory: 9.25Mb
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Conclusion</h2>
-
-<p>Il y a encore pas mal d&#8217;utilisation je pense au <a href="https://github.com/whatthejeff/nyancat-phpunit-resultprinter">nyan-cat</a> ! Ou l&#8217;utilisation avec des notifications sur le bureau par exemple <a href="https://github.com/llaville/phpunit-LoggerTestListener">ici</a>.</p>
-
-<p>La librairie <a href="https://packagist.org/packages/mcamuzat/spark">mcamuzat/spark</a> a été initialement fait pour ce post. J&#8217;ai passé finalement plus de temps sur la création de la librairie.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -3238,6 +3244,10 @@ quand je lance mes tests je vois cela.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/11/01/listes-chainees-iterator/">Listes Chainées Iterator</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/10/25/retour-vers-le-futur-avec-vim/">Retour Vers Le Futur Avec Vim</a>
       </li>
     
@@ -3251,10 +3261,6 @@ quand je lance mes tests je vois cela.</p>
     
       <li class="post">
         <a href="/blog/2015/10/04/tig-status/">Tig : Status</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/10/03/spl-surcharge-magique/">SPL Surcharge Magique</a>
       </li>
     
   </ul>

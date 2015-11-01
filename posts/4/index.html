@@ -9,8 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Pour commencer : comment sélectionner sous vim solution n°1 : utiliser la souris tapez : 1
-set mouse=a vous pouvez sélectionnez avec la souris. Pour &hellip;">
+  <meta name="description" content="Je suis tombé un peu par hasard sur ce livre &ldquo;If Hemingway Wrote JavaScript&rdquo;. Cela part de l'idée que tout les auteurs ont un certain &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +77,76 @@ set mouse=a vous pouvez sélectionnez avec la souris. Pour &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/06/21/if-hemingway-wrote-javascript/">If Hemingway Wrote Javascript</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-06-21T19:06:54+02:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>7:06 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Je suis tombé un peu par hasard sur ce livre &ldquo;If Hemingway Wrote JavaScript&rdquo;. Cela part de l&#8217;idée que tout les auteurs ont un certain style. Et que s&#8217;il devait programmer en javascript le résultat serait diffèrent. L&#8217;auteur est un expert du javascript.</p>
+
+<p>On trouve dans les auteurs</p>
+
+<ul>
+<li>Ernest Hemingway</li>
+<li>William Shakespeare</li>
+<li>André Breton</li>
+<li>Roberto Bolaño</li>
+<li>Dan Brown</li>
+<li>Jack Kerouac</li>
+<li>Jane Austen</li>
+<li>Samuel Johnson</li>
+<li>Sir Arthur Conan Doyle</li>
+<li>James Joyce</li>
+<li>J.D. Salinger</li>
+<li>Tupac Shakur</li>
+<li>Virginia Woolf</li>
+<li>Geoffrey Chaucer</li>
+<li>Vladimir Nabokov</li>
+<li>Jorge Luis Borges</li>
+<li>Lewis Carroll</li>
+<li>Douglas Adams</li>
+<li>Charles Dickens</li>
+<li>David Foster Wallace</li>
+<li>Sylvia Plath</li>
+<li>Italo Calvino</li>
+<li>J.K. Rowling</li>
+<li>Arundhati Roy</li>
+<li>Franz Kafka</li>
+</ul>
+
+
+<p>Bien sur un livre en anglais implique plutôt de la littérature anglaise. Certain choix sont curieux Dan Brown (Da vinci code) entre Kerouac et Joyce, Voir Tupac (si si le rappeur). Je venais de lire le livre le plus connus de Borges.</p>
+
+<p>On trouve 7-8 implémentation du Fibonnaci et autre factorielle. Vous allez apprendre plein de trucs sur le javascript, bien que je doute que cela serve. L&#8217;auteur montre des utilisations de <code>with</code> ou l&#8217;atroce mais absolument correct <code>Function('return this/4').call(2*2)</code>. Il y a toutes les subtilités du javascript qui sont évoquées : Héritage, scope, hoisting, variable, etc..</p>
+
+<p>La présentation est classe. Je l&#8217;avais pas reconnu mais les dessins sont de Miran Lipovača. C&#8217;est l&#8217;auteur du magnifique <a href="http://learnyouahaskell.com">Learn You a Haskell for Great Good!</a> si vous ne connaissez pas foncer.</p>
+
+<h2>En conclusion</h2>
+
+<p>Un bouquin qui aime les écrivains et qui aime le javascript. Il vous faudra aimer un peu les deux pour apprécier le contenu. Je m&#8217;en sors pas trop mal, je connaissais la plupart des écrivains. Pour moi c&#8217;est une curiosité et j&#8217;adore ce genre de livre. J&#8217;aime beaucoup la présentation.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1492,96 +1561,6 @@ pour simplifier je vais utiliser une autre distribution <a href="https://www.alp
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/04/22/correction-orthographique-et-vim/">Correction Orthographique Et VIM</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-04-22T22:26:43+02:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>10:26 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>J&#8217;ai assisté à un Meetup sur VIM.</p>
-
-<p>Le speaker parlait de la correction orthographique sous VIM. Je savais que c&#8217;était possible, mais je ne m&#8217;en suis jamais servis. J&#8217;ai donc décidé de réessayer.. Et j&#8217;ai vu de façon différente mes posts sur ce blog. Je suis repasser un peu sur tout.</p>
-
-<p>Voici la commande pour activer/installer la correction automatique</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>set spell spelllang=fr</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Normalement Vim va télécharger pour vous les différents fichiers sur le Ftp officiel.  Il y a une commande interactive pour vous aider dans l&#8217;installation. Si jamais il a un souci le wiki français indique de se placer dans son répertoire <code>spell</code> (chez moi <code>~/.vim/spell</code>) et de lancer les commandes suivantes</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>wget http://ftp.vim.org/vim/runtime/spell/fr.latin1.spl
-</span><span class='line'>wget http://ftp.vim.org/vim/runtime/spell/fr.latin1.sug
-</span><span class='line'>wget http://ftp.vim.org/vim/runtime/spell/fr.utf-8.spl
-</span><span class='line'>wget http://ftp.vim.org/vim/runtime/spell/fr.utf-8.sug
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>La touche magique ici est <code>z=</code> puis les touches du <code>0..n</code>. <code>]s</code> pour aller à l&#8217;erreur suivante <code>[s</code> pour l&#8217;erreur précédente. Il y a différentes touches pour ajouter à son propre dictionnaire. J&#8217;avoue que cela ne m&#8217;intéresse pas trop de suite.</p>
-
-<p>On peut aussi faire de l&#8217;auto complétion ou plutôt de l&#8217;auto correction pendant la saisie avec les touche <code>Ctrl-x</code> + <code>s</code>.</p>
-
-<h2>Résumé</h2>
-
-<table>
-<thead>
-<tr>
-<th> Touche      </th>
-<th style="text-align:center;"> Description </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td> <code>z=</code>               </td>
-<td style="text-align:center;"> auto correct si <code>spell</code> est activée</td>
-</tr>
-<tr>
-<td> <code>[s</code>               </td>
-<td style="text-align:center;"> erreur précédente</td>
-</tr>
-<tr>
-<td> <code>]s</code>               </td>
-<td style="text-align:center;"> erreur suivante</td>
-</tr>
-<tr>
-<td> <code>Crtl-x s</code>      </td>
-<td style="text-align:center;">auto complétion via le dictionnaire </td>
-</tr>
-</tbody>
-</table>
-
-
-<p>Warning : <code>Ctrl-s</code> parfois freeze le terminal (option pratique quand je regarde les tests fonctionnels passés). Pour <em>defreezer</em> le terminal c&#8217;est <code>Ctrl-Q</code></p>
-
-<h2>Conclusion:</h2>
-
-<p>Il manque le correcteur grammatical :-)</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/5">&larr; Older</a>
@@ -1599,6 +1578,10 @@ pour simplifier je vais utiliser une autre distribution <a href="https://www.alp
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/11/01/listes-chainees-iterator/">Listes Chainées Iterator</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/10/25/retour-vers-le-futur-avec-vim/">Retour Vers Le Futur Avec Vim</a>
       </li>
     
@@ -1612,10 +1595,6 @@ pour simplifier je vais utiliser une autre distribution <a href="https://www.alp
     
       <li class="post">
         <a href="/blog/2015/10/04/tig-status/">Tig : Status</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/10/03/spl-surcharge-magique/">SPL Surcharge Magique</a>
       </li>
     
   </ul>
