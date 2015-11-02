@@ -9,8 +9,12 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Troisième partie sur la SPL et les listes chainées. partie 1 SPL et surcharge
-partie 2 Implémentation Nous allons implémenter l'interface ArrayAccess &hellip;">
+  <meta name="description" content="Nous allons jouer un peu avec les diff et les patchs.  Mise en place Soit le fichier suivant README.md 1
+2
+3
+4
+5
+Ceci est un exemple. Ceci est une &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +82,296 @@ partie 2 Implémentation Nous allons implémenter l'interface ArrayAccess &helli
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/11/02/diff-patch-git/">Diff Et Patch, Pas Besoin De Git</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-11-02T22:24:03+01:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>10:24 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Nous allons jouer un peu avec les diff et les patchs.</p>
+
+<h1> Mise en place</h1>
+
+<p>Soit le fichier suivant <code>README.md</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Ceci est un exemple.
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>Ceci est une ligne ajoutée
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Modifions le fichier par ceci.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Ceci est un exemple.
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>j'ai ajouté cette ligne</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Enregistrons celui-ci en <code>README2.md</code></p>
+
+<p>Et lançons la commande suivante</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>diff README.md README2.md
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Nous obtenons le résultat suivant</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='diff'><span class='line'>4d3
+</span><span class='line'>&lt; Ceci est une ligne ajoutée
+</span><span class='line'>6a6,9
+</span><span class='line'>&gt;
+</span><span class='line'>&gt;
+</span><span class='line'>&gt;
+</span><span class='line'>&gt; j&#39;ai ajouté cette ligne
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il y a en fait plusieurs formats</p>
+
+<p>Essayez la commande suivante</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>diff -u README.md README2.md &gt; readme.diff
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On obtient le fichier suivant</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='diff'><span class='line'><span class="gd">--- README.md   2015-11-02 22:07:43.728854981 +0100</span>
+</span><span class='line'><span class="gi">+++ README2.md  2015-11-02 22:13:58.244839112 +0100</span>
+</span><span class='line'><span class="gu">@@ -1,6 +1,9 @@</span>
+</span><span class='line'> Ceci est un exemple.
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="gd">-Ceci est une ligne ajoutée</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="gi">+</span>
+</span><span class='line'><span class="gi">+</span>
+</span><span class='line'><span class="gi">+</span>
+</span><span class='line'><span class="gi">+j&#39;ai ajouté cette ligne</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cette vision doit vous être assez familière si vous faite du git, svn ou mercurial</p>
+
+<p>c&#8217;est la sortie d&#8217;un <code>git diff</code> si on avait modifié ce fichier.</p>
+
+<h2>Jouer un patch</h2>
+
+<p>Pour ce convaincre nous allons demander à linux de jouer le fichier <code>.diff</code> qui est tout simplement un patch</p>
+
+<p>Grâce à la commande suivante.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>patch -p0 &lt; README.diff
+</span><span class='line'>patching file README.md
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Comme toute modification je peux avoir des conflits. Si je modifie mon <code>README.md</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>Ceci est un exemple.
+</span><span class='line'>
+</span><span class='line'>Ceci est une autre ligne
+</span><span class='line'>Ceci est une ligne ajoutée
+</span><span class='line'>Mais celle ci aussi
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>patching file README.md
+</span><span class='line'>Hunk <span class="c">#1 FAILED at 1.</span>
+</span><span class='line'><span class="m">1</span> out of <span class="m">1</span> hunk FAILED -- saving rejects to file README.md.rej
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Vous retrouvez les fameux <code>.orig</code> et <code>.rej</code> qui pourrissent un peu la vie de ceux qui font du mercurial ou git (<code>hg purge</code> et <code>git clean</code> est probablement ce que vous cherchez).</p>
+
+<h2>Merger</h2>
+
+<p>Si vous voulez un merge. c&#8217;est possible</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>patch -p0 --merge &lt; README.diff
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+le résultat</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>Ceci est un exemple.
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;&lt;&lt;&lt;&lt;&lt;</span>&lt;
+</span><span class='line'>Ceci est une autre ligne
+</span><span class='line'>Ceci est une ligne ajoutée
+</span><span class='line'>Mais celle ci <span class="nv">aussi</span>
+</span><span class='line'><span class="o">=======</span>
+</span><span class='line'>&gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>j<span class="err">&#39;</span>ai ajouté cette ligne
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>L&#8217;option <code>-p0</code> ou le plus souvent <code>-p1</code> demande à la commande <code>patch</code> d&#8217;ignorer le chemin sur un niveau.</p>
+
+<p>Voici un exemple avec git et le même fichier</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='diff'><span class='line'><span class="gh">diff --git a/README.md b/README.md</span>
+</span><span class='line'><span class="gh">index 1030f85..5e8e5f9 100644</span>
+</span><span class='line'><span class="gd">--- a/README.md</span>
+</span><span class='line'><span class="gi">+++ b/README.md</span>
+</span><span class='line'><span class="gu">@@ -1,6 +1,9 @@</span>
+</span><span class='line'> Ceci est un exemple.
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="gd">-Ceci est une ligne ajoutée</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="gi">+</span>
+</span><span class='line'><span class="gi">+</span>
+</span><span class='line'><span class="gi">+</span>
+</span><span class='line'><span class="gi">+j&#39;ai ajouté cette ligne</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>on voit que la ligne <code>a/README.md</code> et <code>b/README.md</code>, ici pour appliquer le patch il faut utiliser <code>-p1</code> pour ignorer le premier niveau (supprime le <code>a/</code> et <code>b/</code>)</p>
+
+<p>Sous Git c&#8217;est plus simple</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git apply lefichier.diff
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Reverter</h2>
+
+<p>Enfin soyons complet il est possible de reverter un patch avec <code>-R</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>patch -R -p1 &lt; mon patch
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Avec git</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git apply -R &lt;mon fichier diff&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Conclusion</h2>
+
+<p>Pas besoin d&#8217;avoir git/mercurial/svn pour créer ou jouer des patchs.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -218,7 +512,7 @@ partie 2 Implémentation Nous allons implémenter l'interface ArrayAccess &helli
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Pour avoir le 9999 chainon,  il faut parcourir les 9998 chainon précédent.</p>
+<p>Pour avoir le 9999 chainon,  il faut parcourir les 9998 chainons précédents.</p>
 
 <p>Avec les deux méthodes précédentes. Il suffit d&#8217;implémenter les méthodes suivantes</p>
 
@@ -329,7 +623,7 @@ partie 2 Implémentation Nous allons implémenter l'interface ArrayAccess &helli
 
 <h2>Ajout de l&#8217;itérator</h2>
 
-<p>Pour faire un itérator il faut impléùenter l&#8217;interface suivante</p>
+<p>Pour faire un itérator il faut implémenter l&#8217;interface suivante</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -3128,311 +3422,6 @@ partie 2 Implémentation Nous allons implémenter l'interface ArrayAccess &helli
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/09/09/probleme-np-complet/">Problème Np-Complet</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-09-09T21:55:10+02:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>9:55 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Aujourd&#8217;hui je vais parler des problèmes Np-complets avec le <a href="http://xkcd.com/">xkcd</a> suivant. L&#8217;original est <a href="http://xkcd.com/287/">ici</a></p>
-
-<p><img class="center" src="/images/np_complete.png" width="600" height="388" title="xkcd" alt="xkcd"></p>
-
-<p>On appelle ce genre de problème les NP-complets</p>
-
-<p>Pour faire simple (Ce que j&#8217;en ai compris)</p>
-
-<p>Les NP-problèmes sont des problèmes donc il est très facile de vérifier une solutions. Dans notre cas ici il suffit de commander 7 * 2.15 pour obtenir 15.05. Le problème a une solution. Mais il est quasiment impossible de trouver une méthode efficace pour déterminer la solution, voir même de savoir s&#8217;il y a une solutions.</p>
-
-<p>Il suffit de regarder les images suivantes (pris d&#8217;un post de <a href="http://cstheory.stackexchange.com/questions/5188/explain-p-np-problem-to-10-year-old">stack exchange</a>)</p>
-
-<ul>
-<li>si on met les paquets les plus gros d&#8217;abord, les plus larges, avec un <a href="http://www.optaplanner.org/">planner</a>.</li>
-</ul>
-
-
-<p><img class="center" src="/images/backpack.png" width="600" height="450" title="bin packing" alt="slide1"></p>
-
-<ul>
-<li><p>A quel moment mettre le paquet <code>2 * 4 = 8</code>. suivant la forme la solution varie
-<img class="center" src="/images/backpack2.png" width="600" height="450" title="bin packing" alt="slide2"></p></li>
-<li><p>Enfin impossible de savoir s&#8217;il y a une solution ici. Il y a priori la place, pourtant il n&#8217;y a pas de solution</p></li>
-</ul>
-
-
-<p><img class="center" src="/images/backpack3.png" width="600" height="450" title="bin packing" alt="slide3"></p>
-
-<p>la source des images <a href="http://cstheory.stackexchange.com/posts/5206/revisions">ici</a>.</p>
-
-<p>Il reste la force brute.</p>
-
-<p>Voici ma version du xkcd en php</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">findSolution</span><span class="p">(</span><span class="nv">$total</span><span class="p">,</span> <span class="nv">$list</span><span class="p">,</span> <span class="nv">$menu</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">foreach</span><span class="p">(</span><span class="nv">$menu</span> <span class="k">as</span> <span class="nv">$plat</span> <span class="o">=&gt;</span> <span class="nv">$prix</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$result</span> <span class="o">=</span> <span class="nb">array_merge</span><span class="p">(</span><span class="nv">$list</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nv">$plat</span><span class="p">));</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$total</span><span class="o">-</span><span class="nv">$prix</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nb">var_dump</span><span class="p">(</span><span class="nv">$result</span><span class="p">);</span>
-</span><span class='line'>            <span class="k">return</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$total</span><span class="o">-</span><span class="nv">$prix</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nv">$result</span> <span class="o">=</span> <span class="nx">findSolution</span><span class="p">(</span><span class="nv">$total</span><span class="o">-</span><span class="nv">$prix</span><span class="p">,</span> <span class="nv">$result</span><span class="p">,</span> <span class="nv">$menu</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="nv">$menu</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
-</span><span class='line'>    <span class="s2">&quot;Mixed Fruit&quot;</span><span class="o">=&gt;</span><span class="mi">215</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;French Fries&quot;</span><span class="o">=&gt;</span><span class="mi">275</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;Side Salad&quot;</span><span class="o">=&gt;</span><span class="mi">335</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;Hot Wing&quot;</span><span class="o">=&gt;</span><span class="mi">355</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;Mozzarela Sticks&quot;</span><span class="o">=&gt;</span><span class="mi">420</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;Sampler Plate&quot;</span><span class="o">=&gt;</span><span class="mi">580</span><span class="p">,</span>
-</span><span class='line'><span class="p">);</span>
-</span><span class='line'><span class="nx">findSolution</span><span class="p">(</span><span class="mi">1505</span><span class="p">,</span> <span class="k">array</span><span class="p">(),</span> <span class="nv">$menu</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Cela affiche toute les solutions possibles.</p>
-
-<p>Bien sur il y a des doublons. Il n&#8217;y a pas de différence entre <code>["Hot wing", "Hot wing", "Mixed Fruit", "Sampler Plate"]</code> et  <code>["Hot wing", "Hot wing", "Sampler Plate", "Mixed Fruit"]</code></p>
-
-<p>Pour supprimer les doublons à l&#8217;affichage. Je vais utiliser des globales.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$allResult</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
-</span><span class='line'><span class="k">function</span> <span class="nf">findSolution</span><span class="p">(</span><span class="nv">$total</span><span class="p">,</span> <span class="nv">$list</span><span class="p">,</span> <span class="nv">$menu</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">global</span> <span class="nv">$count</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">global</span> <span class="nv">$allResult</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">foreach</span><span class="p">(</span><span class="nv">$menu</span> <span class="k">as</span> <span class="nv">$plat</span> <span class="o">=&gt;</span> <span class="nv">$prix</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$count</span><span class="o">++</span><span class="p">;</span>
-</span><span class='line'>        <span class="nv">$result</span> <span class="o">=</span> <span class="nb">array_merge</span><span class="p">(</span><span class="nv">$list</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nv">$plat</span><span class="p">));</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$total</span><span class="o">-</span><span class="nv">$prix</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nv">$sort</span> <span class="o">=</span> <span class="nv">$result</span><span class="p">;</span>
-</span><span class='line'>            <span class="nb">sort</span><span class="p">(</span><span class="nv">$sort</span><span class="p">);</span>
-</span><span class='line'>            <span class="nv">$allResult</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$sort</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">return</span> <span class="nv">$result</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$total</span><span class="o">-</span><span class="nv">$prix</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nv">$result</span> <span class="o">=</span> <span class="nx">findSolution</span><span class="p">(</span><span class="nv">$total</span><span class="o">-</span><span class="nv">$prix</span><span class="p">,</span><span class="nv">$result</span><span class="p">,</span> <span class="nv">$menu</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="nv">$menu</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
-</span><span class='line'>    <span class="s2">&quot;Mixed Fruit&quot;</span><span class="o">=&gt;</span><span class="mi">215</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;French Fries&quot;</span><span class="o">=&gt;</span><span class="mi">275</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;Side Salad&quot;</span><span class="o">=&gt;</span><span class="mi">335</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;Hot Wing&quot;</span><span class="o">=&gt;</span><span class="mi">355</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;Mozzarela Sticks&quot;</span><span class="o">=&gt;</span><span class="mi">420</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;Sampler Plate&quot;</span><span class="o">=&gt;</span><span class="mi">580</span>
-</span><span class='line'><span class="p">);</span>
-</span><span class='line'><span class="nv">$solution</span> <span class="o">=</span> <span class="nx">findSolution</span><span class="p">(</span><span class="mi">1505</span><span class="p">,</span> <span class="k">array</span><span class="p">(),</span> <span class="nv">$menu</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$result</span> <span class="o">=</span> <span class="nb">array_map</span><span class="p">(</span>
-</span><span class='line'>    <span class="s2">&quot;unserialize&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nb">array_unique</span><span class="p">(</span>
-</span><span class='line'>        <span class="nb">array_map</span><span class="p">(</span><span class="s2">&quot;serialize&quot;</span><span class="p">,</span> <span class="nv">$allResult</span>
-</span><span class='line'>    <span class="p">)</span>
-</span><span class='line'><span class="p">)</span>
-</span><span class='line'><span class="p">);</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$result</span><span class="p">);</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$count</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>je trie le tableau de résultats. pour que tout mes doublons s&#8217;affiche pareil.</li>
-<li><code>array_unique</code> ne marche pas si les valeurs sont des <em>tableaux</em> (ce qui est la cas ici)</li>
-<li>Je transforme mes tableaux en chaine de caractères grâce à la serialization avec le <code>array_map</code></li>
-<li>Alors <code>array_unique</code> vire les doublons</li>
-<li>Je deserialize avec à nouveau <code>array_map</code> et l&#8217;opération inverse.</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">array</span><span class="p">([</span><span class="nx">resultat1</span><span class="p">],</span> <span class="p">[</span><span class="nx">resultat1</span><span class="p">],[</span><span class="nx">resultat2</span><span class="p">])</span>
-</span><span class='line'><span class="c1">// array_map(&quot;serialize&quot;, $result);</span>
-</span><span class='line'><span class="k">array</span><span class="p">(</span><span class="s2">&quot;resultat1_serialisé&quot;</span><span class="p">,</span><span class="s2">&quot;resultat1_serialisé&quot;</span><span class="p">,</span><span class="s2">&quot;resultat2_serialisé&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="c1">// array_unique(..)</span>
-</span><span class='line'><span class="k">array</span><span class="p">(</span><span class="s2">&quot;resultat1_serialise&quot;</span><span class="p">,</span> <span class="s2">&quot;resultat2_serialise&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="c1">// array_map(&quot;unserialize&quot;, ..)</span>
-</span><span class='line'><span class="k">array</span><span class="p">([</span><span class="nx">resultat1</span><span class="p">],</span> <span class="p">[</span><span class="nx">resultat2</span><span class="p">])</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">int</span><span class="p">(</span><span class="mi">12040</span><span class="p">)</span>
-</span><span class='line'><span class="k">array</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>  <span class="k">array</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;Mixed Fruit&quot;</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;Mixed Fruit&quot;</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;Mixed Fruit&quot;</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;Mixed Fruit&quot;</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;Mixed Fruit&quot;</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;Mixed Fruit&quot;</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;Mixed Fruit&quot;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>  <span class="k">array</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="s2">&quot;Hot Wing&quot;</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="s2">&quot;Hot Wing&quot;</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;Mixed Fruit&quot;</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">13</span><span class="p">)</span> <span class="s2">&quot;Sampler Plate&quot;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>J&#8217;ai fait 12040 boucles pour obtenir toutes les solutions. On peut bien sur optimiser un peu l&#8217;algorithme, si la valeur 5.60 ne marche pas à la première boucle, il y a pas de chance pour quelle marche à la seconde boucle. Donc il faut supprimer des valeurs dans le tableau au fur et à mesure.</p>
-
-<h2> Conclusion</h2>
-
-<p>La force brute n&#8217;est pas vraiment une solution, avec plus de valeurs on explose les possibilités.  Il existe plusieurs <a href="https://fr.wikipedia.org/wiki/Probl%C3%A8me_du_sac_%C3%A0_dos">approches</a> qui tende vers des solutions.</p>
-
-<p>En informatique, il y a des nombreux cas où ce problème intervient</p>
-
-<ul>
-<li>L&#8217;ordre optimal d&#8217;installation des logiciels (Probablement la partie la plus marrante de <a href="https://getcomposer.org/">composer</a>, mais elle est assez peu documentée)</li>
-<li>Beaucoup de cryptages utilisent des problèmes NP-complets (factorisation de deux nombres premiers).</li>
-<li>La dernière phrase du comics parle du <a href="https://fr.wikipedia.org/wiki/Probl%C3%A8me_du_voyageur_de_commerce">voyageur de commerce</a>, un problème célèbre.</li>
-<li>Le sudoku, Les jeux <a href="http://arxiv.org/pdf/1203.1895v1.pdf">nintendos</a> ?!</li>
-<li>Enfin une <a href="https://fr.wikipedia.org/wiki/Liste_de_probl%C3%A8mes_NP-complets">liste complète</a> de wikipedia</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -3448,6 +3437,10 @@ partie 2 Implémentation Nous allons implémenter l'interface ArrayAccess &helli
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/11/02/diff-patch-git/">Diff Et Patch, Pas Besoin De Git</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/11/01/listes-chainees-iterator/">Listes Chainées Iterator</a>
       </li>
     
@@ -3461,10 +3454,6 @@ partie 2 Implémentation Nous allons implémenter l'interface ArrayAccess &helli
     
       <li class="post">
         <a href="/blog/2015/10/10/liste-chainees-implementation/">Listes Chainées : Implémentation</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/10/04/tig-status/">Tig : Status</a>
       </li>
     
   </ul>

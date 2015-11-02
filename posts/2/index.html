@@ -9,7 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Nous allons voir une nouveauté de PHP 5.5 l'instruction yield Cela permet de mettre en place ce qu'on appelle les générateurs. Un premier exemple &hellip;">
+  <meta name="description" content="Aujourd'hui je vais parler des problèmes Np-complets avec le xkcd suivant. L'original est ici On appelle ce genre de problème les NP-complets Pour &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +77,311 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/09/09/probleme-np-complet/">Problème Np-Complet</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-09-09T21:55:10+02:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>9:55 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Aujourd&#8217;hui je vais parler des problèmes Np-complets avec le <a href="http://xkcd.com/">xkcd</a> suivant. L&#8217;original est <a href="http://xkcd.com/287/">ici</a></p>
+
+<p><img class="center" src="/images/np_complete.png" width="600" height="388" title="xkcd" alt="xkcd"></p>
+
+<p>On appelle ce genre de problème les NP-complets</p>
+
+<p>Pour faire simple (Ce que j&#8217;en ai compris)</p>
+
+<p>Les NP-problèmes sont des problèmes donc il est très facile de vérifier une solutions. Dans notre cas ici il suffit de commander 7 * 2.15 pour obtenir 15.05. Le problème a une solution. Mais il est quasiment impossible de trouver une méthode efficace pour déterminer la solution, voir même de savoir s&#8217;il y a une solutions.</p>
+
+<p>Il suffit de regarder les images suivantes (pris d&#8217;un post de <a href="http://cstheory.stackexchange.com/questions/5188/explain-p-np-problem-to-10-year-old">stack exchange</a>)</p>
+
+<ul>
+<li>si on met les paquets les plus gros d&#8217;abord, les plus larges, avec un <a href="http://www.optaplanner.org/">planner</a>.</li>
+</ul>
+
+
+<p><img class="center" src="/images/backpack.png" width="600" height="450" title="bin packing" alt="slide1"></p>
+
+<ul>
+<li><p>A quel moment mettre le paquet <code>2 * 4 = 8</code>. suivant la forme la solution varie
+<img class="center" src="/images/backpack2.png" width="600" height="450" title="bin packing" alt="slide2"></p></li>
+<li><p>Enfin impossible de savoir s&#8217;il y a une solution ici. Il y a priori la place, pourtant il n&#8217;y a pas de solution</p></li>
+</ul>
+
+
+<p><img class="center" src="/images/backpack3.png" width="600" height="450" title="bin packing" alt="slide3"></p>
+
+<p>la source des images <a href="http://cstheory.stackexchange.com/posts/5206/revisions">ici</a>.</p>
+
+<p>Il reste la force brute.</p>
+
+<p>Voici ma version du xkcd en php</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">findSolution</span><span class="p">(</span><span class="nv">$total</span><span class="p">,</span> <span class="nv">$list</span><span class="p">,</span> <span class="nv">$menu</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">foreach</span><span class="p">(</span><span class="nv">$menu</span> <span class="k">as</span> <span class="nv">$plat</span> <span class="o">=&gt;</span> <span class="nv">$prix</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$result</span> <span class="o">=</span> <span class="nb">array_merge</span><span class="p">(</span><span class="nv">$list</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nv">$plat</span><span class="p">));</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$total</span><span class="o">-</span><span class="nv">$prix</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nb">var_dump</span><span class="p">(</span><span class="nv">$result</span><span class="p">);</span>
+</span><span class='line'>            <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$total</span><span class="o">-</span><span class="nv">$prix</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$result</span> <span class="o">=</span> <span class="nx">findSolution</span><span class="p">(</span><span class="nv">$total</span><span class="o">-</span><span class="nv">$prix</span><span class="p">,</span> <span class="nv">$result</span><span class="p">,</span> <span class="nv">$menu</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nv">$menu</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+</span><span class='line'>    <span class="s2">&quot;Mixed Fruit&quot;</span><span class="o">=&gt;</span><span class="mi">215</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;French Fries&quot;</span><span class="o">=&gt;</span><span class="mi">275</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;Side Salad&quot;</span><span class="o">=&gt;</span><span class="mi">335</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;Hot Wing&quot;</span><span class="o">=&gt;</span><span class="mi">355</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;Mozzarela Sticks&quot;</span><span class="o">=&gt;</span><span class="mi">420</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;Sampler Plate&quot;</span><span class="o">=&gt;</span><span class="mi">580</span><span class="p">,</span>
+</span><span class='line'><span class="p">);</span>
+</span><span class='line'><span class="nx">findSolution</span><span class="p">(</span><span class="mi">1505</span><span class="p">,</span> <span class="k">array</span><span class="p">(),</span> <span class="nv">$menu</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cela affiche toute les solutions possibles.</p>
+
+<p>Bien sur il y a des doublons. Il n&#8217;y a pas de différence entre <code>["Hot wing", "Hot wing", "Mixed Fruit", "Sampler Plate"]</code> et  <code>["Hot wing", "Hot wing", "Sampler Plate", "Mixed Fruit"]</code></p>
+
+<p>Pour supprimer les doublons à l&#8217;affichage. Je vais utiliser des globales.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$allResult</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+</span><span class='line'><span class="k">function</span> <span class="nf">findSolution</span><span class="p">(</span><span class="nv">$total</span><span class="p">,</span> <span class="nv">$list</span><span class="p">,</span> <span class="nv">$menu</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">global</span> <span class="nv">$count</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">global</span> <span class="nv">$allResult</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">foreach</span><span class="p">(</span><span class="nv">$menu</span> <span class="k">as</span> <span class="nv">$plat</span> <span class="o">=&gt;</span> <span class="nv">$prix</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$count</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$result</span> <span class="o">=</span> <span class="nb">array_merge</span><span class="p">(</span><span class="nv">$list</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nv">$plat</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$total</span><span class="o">-</span><span class="nv">$prix</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$sort</span> <span class="o">=</span> <span class="nv">$result</span><span class="p">;</span>
+</span><span class='line'>            <span class="nb">sort</span><span class="p">(</span><span class="nv">$sort</span><span class="p">);</span>
+</span><span class='line'>            <span class="nv">$allResult</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$sort</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">return</span> <span class="nv">$result</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$total</span><span class="o">-</span><span class="nv">$prix</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$result</span> <span class="o">=</span> <span class="nx">findSolution</span><span class="p">(</span><span class="nv">$total</span><span class="o">-</span><span class="nv">$prix</span><span class="p">,</span><span class="nv">$result</span><span class="p">,</span> <span class="nv">$menu</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nv">$menu</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+</span><span class='line'>    <span class="s2">&quot;Mixed Fruit&quot;</span><span class="o">=&gt;</span><span class="mi">215</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;French Fries&quot;</span><span class="o">=&gt;</span><span class="mi">275</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;Side Salad&quot;</span><span class="o">=&gt;</span><span class="mi">335</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;Hot Wing&quot;</span><span class="o">=&gt;</span><span class="mi">355</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;Mozzarela Sticks&quot;</span><span class="o">=&gt;</span><span class="mi">420</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;Sampler Plate&quot;</span><span class="o">=&gt;</span><span class="mi">580</span>
+</span><span class='line'><span class="p">);</span>
+</span><span class='line'><span class="nv">$solution</span> <span class="o">=</span> <span class="nx">findSolution</span><span class="p">(</span><span class="mi">1505</span><span class="p">,</span> <span class="k">array</span><span class="p">(),</span> <span class="nv">$menu</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$result</span> <span class="o">=</span> <span class="nb">array_map</span><span class="p">(</span>
+</span><span class='line'>    <span class="s2">&quot;unserialize&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nb">array_unique</span><span class="p">(</span>
+</span><span class='line'>        <span class="nb">array_map</span><span class="p">(</span><span class="s2">&quot;serialize&quot;</span><span class="p">,</span> <span class="nv">$allResult</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'><span class="p">)</span>
+</span><span class='line'><span class="p">);</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$result</span><span class="p">);</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$count</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>je trie le tableau de résultats. pour que tout mes doublons s&#8217;affiche pareil.</li>
+<li><code>array_unique</code> ne marche pas si les valeurs sont des <em>tableaux</em> (ce qui est la cas ici)</li>
+<li>Je transforme mes tableaux en chaine de caractères grâce à la serialization avec le <code>array_map</code></li>
+<li>Alors <code>array_unique</code> vire les doublons</li>
+<li>Je deserialize avec à nouveau <code>array_map</code> et l&#8217;opération inverse.</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">array</span><span class="p">([</span><span class="nx">resultat1</span><span class="p">],</span> <span class="p">[</span><span class="nx">resultat1</span><span class="p">],[</span><span class="nx">resultat2</span><span class="p">])</span>
+</span><span class='line'><span class="c1">// array_map(&quot;serialize&quot;, $result);</span>
+</span><span class='line'><span class="k">array</span><span class="p">(</span><span class="s2">&quot;resultat1_serialisé&quot;</span><span class="p">,</span><span class="s2">&quot;resultat1_serialisé&quot;</span><span class="p">,</span><span class="s2">&quot;resultat2_serialisé&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// array_unique(..)</span>
+</span><span class='line'><span class="k">array</span><span class="p">(</span><span class="s2">&quot;resultat1_serialise&quot;</span><span class="p">,</span> <span class="s2">&quot;resultat2_serialise&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// array_map(&quot;unserialize&quot;, ..)</span>
+</span><span class='line'><span class="k">array</span><span class="p">([</span><span class="nx">resultat1</span><span class="p">],</span> <span class="p">[</span><span class="nx">resultat2</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">int</span><span class="p">(</span><span class="mi">12040</span><span class="p">)</span>
+</span><span class='line'><span class="k">array</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>  <span class="k">array</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;Mixed Fruit&quot;</span>
+</span><span class='line'>    <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;Mixed Fruit&quot;</span>
+</span><span class='line'>    <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;Mixed Fruit&quot;</span>
+</span><span class='line'>    <span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;Mixed Fruit&quot;</span>
+</span><span class='line'>    <span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;Mixed Fruit&quot;</span>
+</span><span class='line'>    <span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;Mixed Fruit&quot;</span>
+</span><span class='line'>    <span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;Mixed Fruit&quot;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>  <span class="k">array</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="s2">&quot;Hot Wing&quot;</span>
+</span><span class='line'>    <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="s2">&quot;Hot Wing&quot;</span>
+</span><span class='line'>    <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;Mixed Fruit&quot;</span>
+</span><span class='line'>    <span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">13</span><span class="p">)</span> <span class="s2">&quot;Sampler Plate&quot;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>J&#8217;ai fait 12040 boucles pour obtenir toutes les solutions. On peut bien sur optimiser un peu l&#8217;algorithme, si la valeur 5.60 ne marche pas à la première boucle, il y a pas de chance pour quelle marche à la seconde boucle. Donc il faut supprimer des valeurs dans le tableau au fur et à mesure.</p>
+
+<h2> Conclusion</h2>
+
+<p>La force brute n&#8217;est pas vraiment une solution, avec plus de valeurs on explose les possibilités.  Il existe plusieurs <a href="https://fr.wikipedia.org/wiki/Probl%C3%A8me_du_sac_%C3%A0_dos">approches</a> qui tende vers des solutions.</p>
+
+<p>En informatique, il y a des nombreux cas où ce problème intervient</p>
+
+<ul>
+<li>L&#8217;ordre optimal d&#8217;installation des logiciels (Probablement la partie la plus marrante de <a href="https://getcomposer.org/">composer</a>, mais elle est assez peu documentée)</li>
+<li>Beaucoup de cryptages utilisent des problèmes NP-complets (factorisation de deux nombres premiers).</li>
+<li>La dernière phrase du comics parle du <a href="https://fr.wikipedia.org/wiki/Probl%C3%A8me_du_voyageur_de_commerce">voyageur de commerce</a>, un problème célèbre.</li>
+<li>Le sudoku, Les jeux <a href="http://arxiv.org/pdf/1203.1895v1.pdf">nintendos</a> ?!</li>
+<li>Enfin une <a href="https://fr.wikipedia.org/wiki/Liste_de_probl%C3%A8mes_NP-complets">liste complète</a> de wikipedia</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -3075,158 +3380,6 @@ L&#8217;octet de la position du début des données peut être déterminé par l
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/08/08/gmail-vim-memes-raccourcis/">Gmail Vim Mêmes Raccourcis</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-08-08T18:52:17+02:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:52 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Les raccourcis de Gmail ressemblent à vi.</h2>
-
-<p><em>Résumé : appuyer sur <code>?</code> dans gmail pour avoir le tableau complet, les raccourcis claviers suivant ne sont pas activés par défaut</em></p>
-
-<p>Le titre est un peu exagéré.. Je vais essayer de montrer que la <em>philosophie</em> est un peu la même.</p>
-
-<p>Mais sur Vi On utilise les flèches de direction <code>h</code>, <code>j</code>, <code>k</code>, <code>l</code> pour <code>gauche</code>, <code>bas</code>, <code>haut</code>, <code>droite</code> pour se déplacer (enfin surtout <code>j</code> et <code>k</code>). Et bien les touches <code>j</code>(bas)  et <code>k</code>(haut) marchent pareilles sous Gmail.</p>
-
-<p>Pour chercher sous Vi on utilise la touche <code>/</code> , essayez sous Gmail et vous aller directement dans la barre de recherche.</p>
-
-<h2>Une lettre = une idée..</h2>
-
-<p>Comme dans vi ou <code>w</code> signifie <strong>w</strong>ord, <code>d</code> signifie <strong>d</strong>elete, <code>u</code> <strong>u</strong>ndo on retrouve la même idée.</p>
-
-<p>Par exemple <code>c</code> est l&#8217;abréviation de <strong>c</strong>omposer.</p>
-
-<ul>
-<li><code>c</code> pour <strong>c</strong>ompose Nouveau message</li>
-<li><code>n</code> signifie <strong>n</strong>ext Message suivant</li>
-<li><code>p</code> signifie <strong>p</strong>revious Message précédent.</li>
-<li><code>r</code> pour reply <strong>r</strong>eply Répondre</li>
-<li><code>a</code> pour tous <strong>a</strong>ll. Repondre à tous</li>
-<li><code>f</code> pour transférer <strong>f</strong>orward.</li>
-<li><code>o</code> pour ouvrir le conversation.</li>
-</ul>
-
-
-<h2>La lettre en majuscule = la version minuscule en plus forte</h2>
-
-<p>Dans vi <code>i</code> insere du texte, <code>I</code> insere au début de la ligne, <code>a</code> ajoute du texte , <code>A</code> ajoute le texte à la fin de la ligne.</p>
-
-<ul>
-<li><code>C</code> compose un nouveau message dans une nouvelle fenêtre</li>
-<li><code>R</code> Répondre dans une nouvelle fenêtre</li>
-<li><code>A</code> Répondre à tous dans une nouvelle fenêtre.</li>
-<li><code>F</code> Transférer dans une nouvelle fenêtre.</li>
-</ul>
-
-
-<h2>Une lettre = un pictogramme.</h2>
-
-<p>Sous Vi certaine lettre sont des pictogrammes. Par exemple la touche <code>'</code> représente le marque page.</p>
-
-<p>Je n&#8217;ai encore jamais parlé des marques pages sous vi pour faire simple</p>
-
-<ul>
-<li>Ouvrez un fichier texte très long</li>
-<li>Allez vers le mileu du fichier  appuyer sur <code>m</code> puis <code>a</code></li>
-<li>Re-deplacez vous et appuyer sur <code>m</code> puis <code>b</code>.</li>
-<li>tapez <code>'a</code> vous ramene ou point a et <code>'b</code> au point b, <code>d'a</code> (effacer jusqu&#8217;au marque-page a)</li>
-</ul>
-
-
-<p><img class="center" src="/images/quote.png" width="431" height="174" title="Le guillement est une pictogramme de marques-pages" alt="le guillemet est le pictogramme du marque-page"></p>
-
-<p>La lettre <code>=</code> est le pictogramme de deux lignes indentées. Quand j&#8217;appuie sur <code>=</code> j&#8217;indente le texte.</p>
-
-<p><img class="center" src="/images/indentation.png" width="600" height="276" title="Indentation" alt="Pour indenter on utilise la touche = "></p>
-
-<p>La lettre <code>z</code> correspond au repli de texte</p>
-
-<p><img class="center" src="/images/repli.png" width="600" height="230" title="z = repli de texte ;" alt="Pour plier déplier le texte on utilise la touche z"></p>
-
-<ul>
-<li><code>z</code> + <code>c</code> pour replier (c = close)</li>
-<li><code>z</code> + <code>o</code> pour deplier (o = open)</li>
-<li><code>z</code> + <code>a</code> pour alterner.</li>
-</ul>
-
-
-<p><img class="center" src="/images/plier.png" width="595" height="214" title="z = repli de texte" alt="Pour plier déplier le texte on utilise la touche z"></p>
-
-<p>Sous gmail, c&#8217;est encore la même idée.  la touche <code>x</code> correspond à une checkbox. appuyer sur x pour sélectionner la conversation. le <code>#</code> correspond à supprimer, le <code>!</code> à SPAM!!!.</p>
-
-<p><img class="center" src="/images/checkanddelete.png" width="543" height="193" title="'le x est le pictogramme d'un checkbox' 'Mon terminal`" ></p>
-
-<h2>Le cas de <code>*</code></h2>
-
-<p>Pour tout selectionner tout les fichiers textes on utilise la commande <code>*.txt</code></p>
-
-<ul>
-<li><code>*</code> puis <code>a</code> : Sélectionner toutes les conversations</li>
-<li><code>*</code> puis <code>n</code> : Désélectionner toutes les conversations</li>
-<li><code>*</code> puis <code>r</code> : Sélectionner les conversations lues</li>
-<li><code>*</code> puis <code>u</code> : Sélectionner les conversations non lues</li>
-<li><code>*</code> puis <code>s</code> : Sélectionner les conversations dont le suivi est activé</li>
-<li><code>*</code> puis <code>t</code> : Sélectionner les conversations dont le suivi n’est pas activé</li>
-</ul>
-
-
-<p>puis après:</p>
-
-<ul>
-<li><code>e</code> : Archiver</li>
-<li><code>m</code> : Ignorer la conversation</li>
-<li><code>!</code> : Signaler comme spam</li>
-<li><code>#</code> : Supprimer</li>
-<li><code>z</code> : Annuler la dernière action</li>
-<li><code>I</code> : Marquer comme lu</li>
-<li><code>U</code> : Marquer comme non lu</li>
-<li><code>+</code> ou <code>=</code> : Marquer comme important</li>
-<li><code>-</code> : Marquer comme non important</li>
-</ul>
-
-
-<h2>Une lettre = Un verbe</h2>
-
-<p>la lettre g signifie <strong>g</strong>o</p>
-
-<ul>
-<li><code>g</code> puis <code>i</code> : Ouvrir la boîte de réception (<strong>i</strong>nput)</li>
-<li><code>g</code> puis <code>s</code> : Ouvrir les conversations dont le suivi est activé</li>
-<li><code>g</code> puis <code>t</code> : Ouvrir le dossier &ldquo;Messages envoyés&rdquo;</li>
-<li><code>g</code> puis <code>d</code> : Ouvrir le dossier &ldquo;Brouillons&rdquo; (<strong>d</strong>raft)</li>
-<li><code>g</code> puis <code>a</code> : Ouvrir le dossier &ldquo;Tous les messages&rdquo;</li>
-<li><code>g</code> puis <code>c</code> : Ouvrir le dossier &ldquo;Contacts&rdquo;</li>
-</ul>
-
-
-<h2>Conclusion</h2>
-
-<p>A mon travail, on utilise Gmail, Je recois beaucoup de mail (BitBucket, Hipchat, Slack, Redmine, Jira, Wordpress, Meetup, Ovh). J&#8217;avoue que des que j&#8217;ai décidé de traiter les mails via raccourcis clavier, j&#8217;ai trouvé cela assez pratique.</p>
-
-<p>On peux retrouver un tableau qui résume tout en tapant &ldquo;?&rdquo; dans Gmail.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -3244,6 +3397,10 @@ L&#8217;octet de la position du début des données peut être déterminé par l
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/11/02/diff-patch-git/">Diff Et Patch, Pas Besoin De Git</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/11/01/listes-chainees-iterator/">Listes Chainées Iterator</a>
       </li>
     
@@ -3257,10 +3414,6 @@ L&#8217;octet de la position du début des données peut être déterminé par l
     
       <li class="post">
         <a href="/blog/2015/10/10/liste-chainees-implementation/">Listes Chainées : Implémentation</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/10/04/tig-status/">Tig : Status</a>
       </li>
     
   </ul>

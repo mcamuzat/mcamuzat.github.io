@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Doctrine | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/doctrine/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-01T21:07:34+01:00</updated>
+  <updated>2015-11-02T23:20:28+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -296,7 +296,7 @@
 </span><span class='line'>
 </span><span class='line'>
 </span><span class='line'><span class="s1">&lt;pre&gt;&lt;code&gt;</span>
-</span><span class='line'><span class="s1">Pour avoir le 9999 chainon,  il faut parcourir les 9998 chainon précédent.</span>
+</span><span class='line'><span class="s1">Pour avoir le 9999 chainon,  il faut parcourir les 9998 chainons précédents.</span>
 </span><span class='line'>
 </span><span class='line'><span class="s1">Avec les deux méthodes précédentes. Il suffit d&#39;</span><span class="nx">implémenter</span> <span class="nx">les</span> <span class="nx">méthodes</span> <span class="nx">suivantes</span>
 </span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
@@ -363,7 +363,7 @@
 </span><span class='line'>
 </span><span class='line'><span class="s1">&lt;h2&gt;Ajout de l&#39;</span><span class="nx">itérator</span><span class="o">&lt;/</span><span class="nx">h2</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">Pour</span> <span class="nx">faire</span> <span class="nx">un</span> <span class="nx">itérator</span> <span class="nx">il</span> <span class="nx">faut</span> <span class="nx">impléùenter</span> <span class="nx">l</span><span class="s1">&#39;interface suivante</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">Pour</span> <span class="nx">faire</span> <span class="nx">un</span> <span class="nx">itérator</span> <span class="nx">il</span> <span class="nx">faut</span> <span class="nx">implémenter</span> <span class="nx">l</span><span class="s1">&#39;interface suivante</span>
 </span><span class='line'><span class="s1">&lt;code&gt;php</span>
 </span><span class='line'><span class="s1"> Iterator extends Traversable {</span>
 </span><span class='line'><span class="s1">/* Méthodes */</span>
