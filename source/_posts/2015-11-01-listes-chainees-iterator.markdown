@@ -69,7 +69,7 @@ Je vais rajouter deux méthodes. Attention les `Array` commencent traditionnelle
 
 ```
 
-Pour avoir le 9999 chainon,  il faut parcourir les 9998 chainon précédent.
+Pour avoir le 9999 chainon,  il faut parcourir les 9998 chainons précédents.
 
 Avec les deux méthodes précédentes. Il suffit d'implémenter les méthodes suivantes
 
@@ -138,7 +138,7 @@ Nous avons une liste qui se comporte comme un array. c'est pratique, mais on ne 
 
 ## Ajout de l'itérator
 
-Pour faire un itérator il faut impléùenter l'interface suivante
+Pour faire un itérator il faut implémenter l'interface suivante
 ``` php
  Iterator extends Traversable {
 /* Méthodes */
