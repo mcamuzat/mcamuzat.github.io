@@ -1,0 +1,88 @@
+---
+layout: post
+title: "git grep"
+date: 2015-11-05 22:22:13 +0100
+comments: true
+categories: ["linux", "git", "tig", "bash"] 
+---
+
+Dans le post [précédent](blog/2015/11/02/diff-patch-git) j'ai parlé des commandes linux `patch` et `diff`. des fonctionnalités ou on utiliserait plutôt Git. Ici je vais faire le contraire : utiliser git sans utiliser les commandes linux. Je vais parler de `git grep`.
+
+## git grep
+
+l'utilisation est très simple 
+
+```sh
+git grep hello
+```
+On peut utiliser une regex
+le résultat s'affiche dans un pager (sous linux c'est souvent `less`).
+
+**Rappel des touches sur Less**
+
+| Touche      | Description |
+| ------------- |:-------------:| 
+| `g`               | début du fichier|
+| `G`               | fin  du fichier|
+| `/mot`            | cherche `mot`. `n` pour suivant `N` pour précédent| 
+| `&mot`            | seulement le mot|
+
+
+`git grep` utilise un peu près les mêmes options que le `grep`.
+
+par exemple 
+
+``` sh
+git grep -n -C 10 hello
+```
+ * `-n` numérote les lignes
+ * `-C 5` affiche un contexte de 5 lignes
+
+A noter que git grep n'utilise que les fichiers dans le dépôt qui sont déjà indexé. Donc il est plutôt rapide (alors qu'un grep devrait faire tous les répertoires).
+
+## Git grep et l'historique
+
+Mais la vrai force de git grep est de pouvoir chercher sur toute les branches !
+
+``` sh
+git grep -n -C 10 -e <ma regex> <la branche>
+```
+
+D'ailleurs si vous voulez savoir qui a commité a ajouté un bug qui contient le mot "Panda"
+``` sh
+git rev-list --all | xargs git grep 'Panda'
+```
+
+Il y a des alternatives
+``` sh
+git log -G Panda
+git log -S Panda
+```
+
+## Git grep et tig
+
+Depuis la version 2 de [tig](https://github.com/jonas/tig) (**pas encore** dans les dépots au moment ou j'écris ces lignes)
+il suffit d'appuyer sur `g` de faire la recherche. 
+
+Les différentes commandes
+
+ * `e` ouvrir dans l'éditeur
+ * `b` ouvre la vue blame
+ * `Enter` permet de se déplacer dans le fichiers.
+
+{% img center /images/tiggrep.png 600 398 'Git grep' 'Git grep' %}
+
+## Git grep et vim
+
+* Il est dispo dans le plugin [Fugitive](https://github.com/tpope/vim-fugitive). 
+
+## Conclusion
+
+L'intégration dans *tig* me plait beaucoup, j'ai beaucoup tapé le commande suivante pour faire mes recherches. 
+``` sh
+ find . -name '*.php'| xargs grep 'array_walk_recur'
+```
+
+Je me suis forcé à lire un peu la documentation de git grep, et je ne le regrette pas.
+
+Enfin il existe des alternative à `grep` comme [ack](http://beyondgrep.com/) ou plus récemment [the silver searcher](https://github.com/ggreer/the_silver_searcher). Je vais essayer d'en parler plus tard.

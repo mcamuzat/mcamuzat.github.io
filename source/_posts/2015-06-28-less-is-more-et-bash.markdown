@@ -18,7 +18,7 @@ Ou tout simplement appuyer sur `F` quand le fichier est ouvert avec `less`.
 Less est compatible avec les raccourcis VI donc les commandes suivantes marchent 
 
 ```
-gg # debut du fichier
+g # debut du fichier
 G # fin du fichier
 / #recherche
 & #affiche seulement les lignes qui contiennent le mot 
