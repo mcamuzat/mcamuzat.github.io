@@ -5,16 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Quelques Commandes Vim/Bash - Mon blog perso.</title>
+  <title>Git Grep - Mon blog perso.</title>
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Quelques commandes utiles Quelques commandes utiles que j'utilise souvent Quand je ne suis pas sudo 1
-2
-3
-4
-$ apt-get install npm
-E: Could not open &hellip;">
+  <meta name="description" content="Dans le post précédent j'ai parlé des commandes linux patch et diff. des fonctionnalités ou on utiliserait plutôt Git. Ici je vais faire le contraire &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -23,7 +18,7 @@ E: Could not open &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mcamuzat.github.io/blog/2015/03/02/quelques-commandes-vim-slash-bash/">
+  <link rel="canonical" href="http://mcamuzat.github.io/blog/2015/11/05/git-grep/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Mon blog perso." type="application/atom+xml">
@@ -85,7 +80,7 @@ E: Could not open &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Quelques Commandes Vim/Bash</h1>
+      <h1 class="entry-title">Git Grep</h1>
     
     
       <p class="meta">
@@ -94,98 +89,134 @@ E: Could not open &hellip;">
 
 
 
-<time class='entry-date' datetime='2015-03-02T21:24:52+01:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>9:24 pm</span></time>
+<time class='entry-date' datetime='2015-11-05T22:22:13+01:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:22 pm</span></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><h1>Quelques commandes utiles</h1>
+<div class="entry-content"><p>Dans le post <a href="blog/2015/11/02/diff-patch-git">précédent</a> j&#8217;ai parlé des commandes linux <code>patch</code> et <code>diff</code>. des fonctionnalités ou on utiliserait plutôt Git. Ici je vais faire le contraire : utiliser git sans utiliser les commandes linux. Je vais parler de <code>git grep</code>.</p>
 
-<p>Quelques commandes utiles que j&#8217;utilise souvent</p>
+<h2>git grep</h2>
 
-<h2>Quand je ne suis pas sudo</h2>
+<p>l&#8217;utilisation est très simple</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>apt-get install npm
-</span><span class='line'>E: Could not open lock file /var/lib/dpkg/lock - open <span class="o">(</span>13: Permission denied<span class="o">)</span>
-</span><span class='line'>E: Unable to lock the administration directory <span class="o">(</span>/var/lib/dpkg/<span class="o">)</span>, are you root?
-</span><span class='line'><span class="nv">$ </span>sudo !!
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git grep hello
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><code>!!</code> est la dernière commande exécutée</p>
+<p>On peut utiliser une regex
+le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code>less</code>).</p>
 
-<h3>Une variante</h3>
+<p><strong>Rappel des touches sur Less</strong></p>
+
+<table>
+<thead>
+<tr>
+<th> Touche      </th>
+<th style="text-align:center;"> Description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>g</code>               </td>
+<td style="text-align:center;"> début du fichier</td>
+</tr>
+<tr>
+<td> <code>G</code>               </td>
+<td style="text-align:center;"> fin  du fichier</td>
+</tr>
+<tr>
+<td> <code>/mot</code>            </td>
+<td style="text-align:center;"> cherche <code>mot</code>. <code>n</code> pour suivant <code>N</code> pour précédent</td>
+</tr>
+<tr>
+<td> <code>&amp;mot</code>            </td>
+<td style="text-align:center;"> seulement le mot</td>
+</tr>
+</tbody>
+</table>
+
+
+<p><code>git grep</code> utilise un peu près les mêmes options que le <code>grep</code>.</p>
+
+<p>par exemple</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>mkdir log/
-</span><span class='line'><span class="nb">cd</span> !<span class="nv">$ </span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git grep -n -C <span class="m">10</span> hello
 </span></code></pre></td></tr></table></div></figure>
 
-
-<p><code>!$</code> est la dernière commande sans le premier argument ici <code>log/</code></p>
-
-<h2>Vi/Vim</h2>
-
-<p>Bon il y a beaucoup de commandes relativement sympa et complexes mais je donne celle que tout le monde demande</p>
-
-<p>Enregistrer un fichier en lecture seule</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>:w !sudo tee %
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Dite oui pour recharger la page. Et dite oui si vous voulez quitter la page sans enregistrer.</p>
-
-<p>D&#8217;ailleurs si vous utilisez tout le temps <code>:wq</code> vous pouvez essayer</p>
 
 <ul>
-<li><code>:w</code> enregistre sans quitter</li>
-<li><code>:q</code> quitte mais avec warning si vous n&#8217;avez pas sauvegarder</li>
-<li><code>:q!</code> quitte sans warning et sans sauver</li>
-<li><code>:x</code> raccourci de <code>:wq</code>. Il existe aussi le raccourci clavier <code>ZZ</code> comme pour aller dormir. quitte et enregistre.</li>
-<li><code>:e fichier.txt</code> ouvre le fichier (l&#8217;auto complétion avec tab fonctionne..)</li>
-<li><code>:tabe fichier.txt</code> ouvre dans un nouvel onglet (vim seulement). on peux se ballader d&#8217;onglet en onglet avec les touches <code>gt</code> et <code>gT</code> <code>g</code> est le diminutif de <em>go</em> et <code>t</code> pour <em>tab</em>. ou avec <code>ctrl+&lt;pageUp&gt;</code> et <code>ctrl+&lt;pageDown&gt;</code> ou encore tout simplement cliquer avec la souris (astuce suivante)</li>
+<li><code>-n</code> numérote les lignes</li>
+<li><code>-C 5</code> affiche un contexte de 5 lignes</li>
 </ul>
 
 
-<h3>Active la souris</h3>
+<p>A noter que git grep n&#8217;utilise que les fichiers dans le dépôt qui sont déjà indexé. Donc il est plutôt rapide (alors qu&#8217;un grep devrait faire tous les répertoires).</p>
+
+<h2>Git grep et l&#8217;historique</h2>
+
+<p>Mais la vrai force de git grep est de pouvoir chercher sur toute les branches !</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">set </span><span class="nv">mouse</span><span class="o">=</span>a
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git grep -n -C <span class="m">10</span> -e &lt;ma regex&gt; &lt;la branche&gt;
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>une astuce est d&#8217;ajouter un .vimrc et d&#8217;ajouter cette ligne dans ce fichier de config.</p>
+<p>D&#8217;ailleurs si vous voulez savoir qui a commité a ajouté un bug qui contient le mot &ldquo;Panda&rdquo;</p>
 
-<h3>le <code>vimrc</code></h3>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git rev-list --all <span class="p">|</span> xargs git grep <span class="s1">&#39;Panda&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>Vous en avez besoin !! Il existe deux versions de vi: <code>vi</code> et <code>vim</code> vim démarre par défaut en mode vi compatible (ce qui n&#8217;est plus tout à fait vrai).Certaines fonctionnalités sont coupées. Dont les flèches de directions (et ca vous <em>voulez</em>les flèches haut, bas, gauche, droite) et surtout le annuler (<code>u</code> come <em>u</em>ndo) illimité (il est parfois limité à 1). Quel rapport avec le <code>vimrc</code> ? L&#8217;existence du fichier fera que votre vi démarre en mode non compatible. donc vous aurez les touches et le undo.</p>
 
-<h2>l&#8217;auto-complétion sous vim</h2>
+<p>Il y a des alternatives</p>
 
-<p>Il existe une dizaine d&#8217;auto complétion sous vim. Certainement pas aussi puissantes que IDE mais cela rend service.</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git log -G Panda
+</span><span class='line'>git log -S Panda
+</span></code></pre></td></tr></table></div></figure>
 
-<p>En mode insertion <code>ctrl+p</code> auto complétion en cherchant dans les fichiers ouverts. Cela résout 50 % des auto complétions.</p>
 
-<p>l&#8217;auto-complétion est activé via la touche <code>ctrl+x</code> +<code>crtl+lettre</code> avec :</p>
+<h2>Git grep et tig</h2>
+
+<p>Depuis la version 2 de <a href="https://github.com/jonas/tig">tig</a> (<strong>pas encore</strong> dans les dépots au moment ou j&#8217;écris ces lignes)
+il suffit d&#8217;appuyer sur <code>g</code> de faire la recherche.</p>
+
+<p>Les différentes commandes</p>
 
 <ul>
-<li><code>ctrl+x</code> <code>ctrl+f</code> <code>f</code> pour <code>file</code> auto complétion suivant le fichier (marche nickel pour les hosts apache !)</li>
-<li><code>ctrl+x</code> <code>ctrl+l</code> <code>l</code> pour <code>line</code> auto complétion sur la ligne entière</li>
-<li><code>ctrl+x</code> <code>ctrl+p</code> c&#8217;est pareil que ctrl+p</li>
-<li><code>ctrl+x</code> <code>ctrl+o</code> <code>o</code> pour <code>omni-completion</code> auto complete php/python/bash suivant le fichier que vous éditez. (cela comprend les mots clés et peux vous donner la syntaxe)</li>
+<li><code>e</code> ouvrir dans l&#8217;éditeur</li>
+<li><code>b</code> ouvre la vue blame</li>
+<li><code>Enter</code> permet de se déplacer dans le fichiers.</li>
 </ul>
 
 
-<p>Je montrerai dans un prochain post comment faire pareil qu&#8217;un IDE avec les fonctions. Ou se balader dans les classes et/ou auto compléter le code. Ce n&#8217;est pas encore le niveau des IDEs mais c&#8217;est souvent une fonctionnalité méconnue (pourtant c&#8217;est dans vi depuis des années)</p>
+<p><img class="center" src="/images/tiggrep.png" width="600" height="398" title="Git grep" alt="Git grep"></p>
+
+<h2>Git grep et vim</h2>
+
+<ul>
+<li>Il est dispo dans le plugin <a href="https://github.com/tpope/vim-fugitive">Fugitive</a>.</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>L&#8217;intégration dans <em>tig</em> me plait beaucoup, j&#8217;ai beaucoup tapé le commande suivante pour faire mes recherches.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'> find . -name <span class="s1">&#39;*.php&#39;</span><span class="p">|</span> xargs grep <span class="s1">&#39;array_walk_recur&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je me suis forcé à lire un peu la documentation de git grep, et je ne le regrette pas.</p>
+
+<p>Enfin il existe des alternative à <code>grep</code> comme <a href="http://beyondgrep.com/">ack</a> ou plus récemment <a href="https://github.com/ggreer/the_silver_searcher">the silver searcher</a>. Je vais essayer d&#8217;en parler plus tard.</p>
 </div>
 
 
@@ -201,12 +232,12 @@ E: Could not open &hellip;">
 
 
 
-<time class='entry-date' datetime='2015-03-02T21:24:52+01:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>9:24 pm</span></time>
+<time class='entry-date' datetime='2015-11-05T22:22:13+01:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:22 pm</span></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/bash/'>bash</a>, <a class='category' href='/blog/categories/vim/'>vim</a>
+    <a class='category' href='/blog/categories/bash/'>bash</a>, <a class='category' href='/blog/categories/git/'>git</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/tig/'>tig</a>
   
 </span>
 
@@ -215,7 +246,7 @@ E: Could not open &hellip;">
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mcamuzat.github.io/blog/2015/03/02/quelques-commandes-vim-slash-bash/" data-via="" data-counturl="http://mcamuzat.github.io/blog/2015/03/02/quelques-commandes-vim-slash-bash/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mcamuzat.github.io/blog/2015/11/05/git-grep/" data-via="" data-counturl="http://mcamuzat.github.io/blog/2015/11/05/git-grep/" >Tweet</a>
   
   
   
@@ -224,8 +255,8 @@ E: Could not open &hellip;">
     
     <p class="meta">
       
+        <a class="basic-alignment left" href="/blog/2015/11/02/diff-patch-git/" title="Previous Post: diff et patch, pas besoin de git">&laquo; diff et patch, pas besoin de git</a>
       
-        <a class="basic-alignment right" href="/blog/2015/03/08/comprendre-les-raccourcis-claviers-de-vi-slash-vim/" title="Next Post: Comprendre les raccourcis claviers de vi/vim">Comprendre les raccourcis claviers de vi/vim &raquo;</a>
       
     </p>
   </footer>

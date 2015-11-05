@@ -9,7 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Les raccourcis de Gmail ressemblent à vi. Résumé : appuyer sur ? dans gmail pour avoir le tableau complet, les raccourcis claviers suivant ne sont &hellip;">
+  <meta name="description" content="Et si on essayait un workshop&hellip; Les workshops de javascript sont des cours interactifs de javascript. Installation Pour installer le cours de &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +77,306 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/09/workshops-de-javascript/">Workshops De Javascript</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-08-09T16:44:33+02:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>4:44 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><em>Et si on essayait un workshop&hellip;</em></p>
+
+<p>Les workshops de javascript sont des cours interactifs de javascript.</p>
+
+<h2>Installation</h2>
+
+<p>Pour installer le cours de Node.js c&#8217;est très simple. A condition d&#8217;avoir node.js installé.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>npm install -g learnyounode
+</span><span class='line'>learnyounode</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Voila ce que vous devriez voir.</p>
+
+<p><img class="center" src="/images/workshop.png" width="585" height="397" title="screenshot de workshop" alt="On a un menu interactif"></p>
+
+<p>Lançons nous dans le premier exercice.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'> LEARN YOU THE NODE.JS FOR MUCH WIN!
+</span><span class='line'>─────────────────────────────────────
+</span><span class='line'> HELLO WORLD
+</span><span class='line'> Exercise 1 of 13
+</span><span class='line'>
+</span><span class='line'>Write a program that prints the text "HELLO WORLD" to the console (stdout).
+</span><span class='line'>
+</span><span class='line'>-------------------------------------------------------------------------------
+</span><span class='line'>
+</span><span class='line'>## HINTS
+</span><span class='line'>
+</span><span class='line'>To make a Node.js program, create a new file with a .js extension and start writing JavaScript! Execute your program by running it with the
+</span><span class='line'>node command. e.g.:
+</span><span class='line'>
+</span><span class='line'>    $ node program.js
+</span><span class='line'>
+</span><span class='line'>You can write to the console in the same way as in the browser:
+</span><span class='line'>
+</span><span class='line'>    console.log("text")
+</span><span class='line'>
+</span><span class='line'>When you are done, you must run:
+</span><span class='line'>
+</span><span class='line'>    $ learnyounode verify program.js
+</span><span class='line'>
+</span><span class='line'>to proceed. Your program will be tested, a report will be generated, and the lesson will be marked 'completed' if you are successful.
+</span><span class='line'>
+</span><span class='line'>-------------------------------------------------------------------------------
+</span><span class='line'>
+</span><span class='line'> » To print these instructions again, run: learnyounode print
+</span><span class='line'> » To execute your program in a test environment, run: learnyounode run program.js
+</span><span class='line'> » To verify your program, run: learnyounode verify program.js
+</span><span class='line'> » For help run: learnyounode help</span></code></pre></td></tr></table></div></figure>
+
+
+<p>donc je resume on me demande de programmer un **Hello world&#8221;.</p>
+
+<p>donc je crée un <code>hello.js</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;HELLO WORLD&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je peux tester celui-ci avec un programme de test avec la commande suivante</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>learnyounode run hello.js
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si je suis content du résultat alors je peux faire vérifier le programme par le logiciel.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>learnyounode verify program.js
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si le programme passe, le niveau est marquer comme <code>[COMPLETED]</code> et on peux passer au suivant.</p>
+
+<p>Bon l&#8217;étape 1 n&#8217;est pas très compliqué passons à l&#8217;étape 2.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'> LEARN YOU THE NODE.JS FOR MUCH WIN!
+</span><span class='line'>─────────────────────────────────────
+</span><span class='line'> BABY STEPS
+</span><span class='line'> Exercise <span class="m">2</span> of 13
+</span><span class='line'>
+</span><span class='line'>Write a program that accepts one or more numbers as <span class="nb">command</span>-line arguments and prints the sum of those numbers to the console <span class="o">(</span>stdout<span class="o">)</span>.
+</span><span class='line'>
+</span><span class='line'>-------------------------------------------------------------------------------
+</span><span class='line'>
+</span><span class='line'><span class="c">## HINTS</span>
+</span><span class='line'>
+</span><span class='line'>You can access <span class="nb">command</span>-line arguments via the global process object. The process object has an argv property which is an array containing the <span class="nb">complete command</span>-line. i.e. process.argv.
+</span><span class='line'>
+</span><span class='line'>To get started, write a program that simply contains:
+</span><span class='line'>
+</span><span class='line'>    console.log<span class="o">(</span>process.argv<span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>Run it with node program.js and some numbers as arguments. e.g:
+</span><span class='line'>
+</span><span class='line'>    <span class="nv">$ </span>node program.js <span class="m">1</span> <span class="m">2</span> 3
+</span><span class='line'>
+</span><span class='line'>In which <span class="k">case</span> the output would be an array looking something like:
+</span><span class='line'>
+</span><span class='line'>    <span class="o">[</span> <span class="s1">&#39;node&#39;</span>, <span class="s1">&#39;/path/to/your/program.js&#39;</span>, <span class="s1">&#39;1&#39;</span>, <span class="s1">&#39;2&#39;</span>, <span class="s1">&#39;3&#39;</span> <span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'>You<span class="s1">&#39;ll need to think about how to loop through the number arguments so  you can output just their sum. The first element of the process.argv array is always &#39;</span>node<span class="s1">&#39;, and the second element is always the path to your program.js file, so you need to start at the 3rd element (index 2), adding each item to the total until you reach the end of the array.</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">Also be aware that all elements of process.argv are strings and you may need to coerce them into numbers. You can do this by prefixing the property with + or passing it to Number(). e.g. +process.argv[2] or Number(process.argv[2]).</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">learnyounode will be supplying arguments to your program when you run learnyounode verify program.js so you don&#39;</span>t need to supply them yourself. To <span class="nb">test </span>your program without verifying it, you can invoke it with learnyounode run program.js. When you use run, you are invoking the <span class="nb">test </span>environment that learnyounode sets up <span class="k">for</span> each exercise.
+</span><span class='line'>
+</span><span class='line'>-------------------------------------------------------------------------------
+</span><span class='line'>
+</span><span class='line'> » To print these instructions again, run: learnyounode print
+</span><span class='line'> » To execute your program in a <span class="nb">test </span>environment, run: learnyounode run program.js
+</span><span class='line'> » To verify your program, run: learnyounode verify program.js
+</span><span class='line'> » For <span class="nb">help </span>run: learnyounode <span class="nb">help</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Donc il s&#8217;agit de créer un programme qui prend les nombres en entrée et faire la somme à la fin.</p>
+
+<p>Voici ma solution (atroce &hellip; )</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">;</span>
+</span><span class='line'><span class="nx">i</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
+</span><span class='line'><span class="nx">i</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span><span class="c1">// supprime les deux premiers arguments (&#39;node&#39;, &#39;programme.js&#39;)</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">i</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">){</span><span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">b</span><span class="p">)},</span><span class="mi">0</span><span class="p">));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Le logiciel donne une implémentation beaucoup plus simple(pas difficile)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>   <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+</span><span class='line'>      <span class="nx">result</span> <span class="o">+=</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Etc etc ..</p>
+
+<h2>Une liste de workshop.</h2>
+
+<p>Le site officiel donne la liste suivante en module de base.</p>
+
+<ul>
+<li><a href="https://www.github.com/sethvincent/javascripting">javascripting</a> Apprendre les bases du javascript.</li>
+<li><a href="https://www.github.com/jlord/git-it">git-it</a> pour apprendre Git et GitHub.</li>
+<li><a href="https://www.github.com/jesstelford/scope-chains-closures">Scope Chains &amp; Closures</a> Comprendre les scopes, les closures etc..</li>
+<li><a href="https://www.github.com/workshopper/learnyounode">learnyounode</a> les bases de node asynchronous i/o, http.</li>
+<li><a href="https://github.com/npm/how-to-npm">How to npm</a> Comment créer des modules Npm</li>
+<li><a href="https://www.github.com/substack/stream-adventure">stream-adventure</a> apprennez les streams et comment les composer avec <code>.pipe()</code>.</li>
+</ul>
+
+
+<h2>Mais il y en a plus.</h2>
+
+<p>On peux apprendre un peu près n&#8217;importe quel technologie en pratique.</p>
+
+<ul>
+<li><a href="https://github.com/timoxley/functional-javascript-workshop">Functional Javascript</a> : Base de la programmation fonctionnelle en javascript.</li>
+<li><a href="https://github.com/azat-co/expressworks">ExpressWorks</a>: Apprendre le framework Express.js.</li>
+<li><a href="https://github.com/stevekane/promise-it-wont-hurt">Promise It Won&rsquo;t Hurt</a>:  Apprendre les promesses pour les opération asynchrone.</li>
+<li><a href="https://github.com/bulkan/async-you">Async</a>:  La librairie Async.</li>
+<li><a href="https://github.com/sporto/planetproto">Planet Proto</a>:  Comprendre l&#8217;héritage prototypal.</li>
+<li><a href="https://github.com/finnp/test-anything">Test Anything</a>:  Comment tester son code</li>
+<li><a href="https://github.com/evanlucas/learnyoumongo">learnyoumongo</a>:  Débuter avec MongoDB et node.js</li>
+<li><a href="https://github.com/gl-modules/shader-school">Shader School</a>:  Comprendre les shaders.</li>
+<li><a href="https://github.com/othiym23/bug-clinic">Bug Clinic</a>:  Apprendre de nouveaux outils et debugger plus facilement.</li>
+<li><a href="https://github.com/alexmackey/IntroToWebGLWithThreeJS">Intro to WebGL</a>:  Débuter avec <a href="">three.js</a> et le WebGL.</li>
+<li><a href="https://github.com/mdunisch/lololodash">LololoDash</a>: Apprendre Lo-Dash (fork de underscore)</li>
+<li><a href="https://github.com/robertkowalski/learnyoucouchdb">learnyoucouchdb</a>:  Apprendre CouchDB.</li>
+<li><a href="https://github.com/tako-black/learnyoureact">learnyoureact</a>:  Apprenez React.js.</li>
+</ul>
+
+
+<h2>Des liens</h2>
+
+<ul>
+<li>le <a href="http://nodeschool.io">site officiel</a> et la version <a href="http://nodeschool.io/fr-fr/">française</a></li>
+<li>J&#8217;ai déjà parlé des <a href="/blog/2015/04/29/awesome-et-liste-de-liens/">awesome-list</a>. bien entendu elle existe pour les <a href="https://github.com/therebelrobot/awesome-workshopper">workshops</a>.</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>Vous voulez apprendre le js, react.js, écrire des tests je crois que vous savez par ou commencer.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2274,260 +2574,6 @@ Un Post un peu bizarre, puisque c&#8217;est un collègue qui m&#8217;a montré l
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/07/05/vim-et-debbuger/">Vim Et Debbuger</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-07-05T17:12:57+02:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>5:12 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Introduction</h2>
-
-<p>Je vais montrer aujourd&#8217;hui comment interfacer Vim et xdebug pour debugger du php.</p>
-
-<ul>
-<li>Installer xdebug</li>
-<li>Paramétrer xdebug</li>
-<li>Présentation de deux plugins <strong>Vdebug</strong> et <strong>DBGPavim</strong></li>
-<li>Comment installer les deux plugin avec</li>
-</ul>
-
-
-<h2>Installer xdebug</h2>
-
-<p>Je connais deux méthodes</p>
-
-<p>Utiliser PECL</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo pecl install xdebug</span></code></pre></td></tr></table></div></figure>
-
-
-<p>il faut alors ajouter dans votre <code>php.ini</code> la ligne suivante</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>zend_extension=/usr/lib/php5/20090626/xdebug.so</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<p>Ou plus propre rajouter dans un nouveau fichier  <code>/etc/php5/apache2/conf.d/xdebug.ini</code> et pareil pour la ligne de commande <code>/etc/php5/cli/conf.d/xdebug.ini</code></p>
-
-<p>utiliser apt-get sous Ubuntu</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install php5-xdebug</span></code></pre></td></tr></table></div></figure>
-
-
-<p>sur mon Ubuntu, les fichier conf.d était déjà crée</p>
-
-<h2>Paramétrer xdebug pour le debugger</h2>
-
-<p>Il faut rajouter les lignes suivantes le <code>xdebug.ini</code></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>xdebug.remote_enable=on
-</span><span class='line'>xdebug.remote_handler=dbgp
-</span><span class='line'>xdebug.remote_host=localhost
-</span><span class='line'>xdebug.remote_port=9000</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Puis aller sur l&#8217;url en ajoutant</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>http://monsite.com/?XDEBUG_SESSION_START=1</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Il y a des plugins Firefox et Chrome qui s&#8217;occupe de cela.</p>
-
-<p>Pour que le debugger soit lancer par défaut. Vous pouvez rajouter la ligne suivante</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ini'><span class='line'><span class="na">xdebug.remote_autostart</span><span class="o">=</span><span class="s">1</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Pour tester en ligne de commande.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>php -dxdebug.remote_autostart<span class="o">=</span><span class="m">1</span> test.php
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>un simple script bash fait l&#8217;affaire. <code>php-debug</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/bin/bash</span>
-</span><span class='line'>/usr/bin/php -dxdebug.remote_autostart<span class="o">=</span><span class="m">1</span> <span class="s2">&quot;$@&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Les plugins VIM</h2>
-
-<p>Je vais pas trop insister sur comment installer un plugin sous Vim. Ce n&#8217;est pas très compliqué. Il faut passer par un gestionnaire de plugin (la gestion des plugins par défaut dans Vim n&#8217;est pas pratique)</p>
-
-<h2> Vdebug</h2>
-
-<h3>Utilisation</h3>
-
-<ul>
-<li>appuyer sur <code>&lt;F5&gt;</code></li>
-<li>vous avez 20 seconde pour lancer le script ou aller sur le serveur apache.</li>
-<li>Une fois le signal capturé</li>
-</ul>
-
-
-<h3>Liste des raccourcis claviers</h3>
-
-<p><img class="center" src="/images/VDebug.png" width="600" height="375" title="Vdebug" alt="Screenshot de VDebug"></p>
-
-<ul>
-<li><code>&lt;F5&gt;</code>: start/run (to next breakpoint/end of script)</li>
-<li><code>&lt;F2&gt;</code>: step over</li>
-<li><code>&lt;F3&gt;</code>: step into</li>
-<li><code>&lt;F4&gt;</code>: step out</li>
-<li><code>&lt;F6&gt;</code>: stop debugging</li>
-<li><code>&lt;F7&gt;</code>: detach script from debugger</li>
-<li><code>&lt;F9&gt;</code>: run to cursor</li>
-<li><code>&lt;F10&gt;</code>: toggle line breakpoint</li>
-<li><code>&lt;F11&gt;</code>: show context variables (e.g. after &ldquo;eval&rdquo;)</li>
-<li><code>&lt;F12&gt;</code>: evaluate variable under cursor</li>
-<li><code>:VdebugEval &lt;code&gt;</code>: evaluate some code and display the result</li>
-<li><code>&lt;Leader&gt;e</code>: evaluate the expression under visual highlight and display the result</li>
-</ul>
-
-
-<p>La touche <code>&lt;Leader&gt;</code> est par défault <code>\</code> sur un clavier anglais. <code>&lt;Leader&gt;e</code> correspond à <code>\e</code>. Pas simple à taper sur un clavier azerty. la touche <code>&lt;Leader&gt;</code> est réglable grâce à cette configuration du <code>.vimrc</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">let </span><span class="nv">mapleader</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Sur mon poste, je tape <code>,e</code></p>
-
-<h3>Un avis</h3>
-
-<p>Marche plutôt bien, mais par défaut Le debugger commence au début du script et pas au premier breakpoint.</p>
-
-<p>Il faut rajouter cette ligne dans votre <code>.vimrc</code>.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">let </span>g:vdebug_options<span class="o">[</span><span class="s2">&quot;break_on_open&quot;</span><span class="o">]=</span>0
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>L&#8217;histoire des 20 secondes pour se connecter est un peu frustrante.</p>
-
-<p>Par contre le code python est super propre.</p>
-
-<h2>DBGPavim</h2>
-
-<p><img class="center" src="/images/DBGPAVIM.png" width="600" height="375" title="DBGPavim" alt="Screenshot de DBGPavim"></p>
-
-<p>Ce plugin résout les deux problèmes de Vdebug (aucune limitation de temps, démarre au premier point d&#8217;arrêt). Je le trouve moins intuitif. Mais il est visiblement plus puissant, il gère plusieurs sessions.</p>
-
-<p>Sur les screenshots la différence est plutôt minime.</p>
-
-<p>Les touches sont un peu près les mêmes.</p>
-
-<h2>Installations sous vim</h2>
-
-<p>Suivant le plugin que vous avez choisi</p>
-
-<p>Par <a href="https://github.com/tpope/vim-pathogen">Pathogen</a>:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>git clone git://github.com/joonty/vdebug.git bundle/vdebug
-</span><span class='line'>ou
-</span><span class='line'>git://github.com/joonty/vdebug.git brookhong/DBGPavim.git
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Ou avec les submodules de Git</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>git submodule add git://github.com/joonty/vdebug.git bundle/vdebug
-</span><span class='line'><span class="c"># ou </span>
-</span><span class='line'>git submodule add git://github.com/brookhong/DBGPavim.git bundle/DBGPavim
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Ajouter cette ligne à votre <code>.vimrc</code></p>
-
-<p>par <a href="https://github.com/gmarik/Vundle.vim">Vundle</a></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>Bundle <span class="s2">&quot;joonty/vdebug&quot;</span>
-</span><span class='line'><span class="c"># ou</span>
-</span><span class='line'>Bundle <span class="s1">&#39;brookhong/DBGPavim&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>par <a href="https://github.com/Shougo/neobundle.vim">NeoBundle</a> :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>NeoBundle <span class="s2">&quot;joonty/vdebug&quot;</span>
-</span><span class='line'><span class="c"># ou</span>
-</span><span class='line'>NeoBundle <span class="s1">&#39;brookhong/DBGPavim&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>En conclusion</h2>
-
-<p>Le debugger c&#8217;est chouette et cela rends un peu obsolète ce bon vieux <code>var_dump(); die();</code></p>
-
-<p>D&#8217;ailleurs sur le <code>var_dump</code>. Il est plus simple de taper cette commande directement.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>die<span class="o">(</span>var_dump<span class="o">(</span><span class="nv">$foo</span><span class="o">))</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Enfin sur les versions récentes de Symfony la commande <code>dump()</code> est pratique.</p>
-
-<p>Je vais reparler de xdebug. J&#8217;ai plein d&#8217;astuce à partager.</p>
-
-<h2>Des liens</h2>
-
-<ul>
-<li><a href="https://github.com/joonty/vdebug">Vdebug</a></li>
-<li><a href="https://github.com/brookhong/DBGPavim">DBGPAVIM</a></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/4">&larr; Older</a>
@@ -2545,6 +2591,10 @@ Un Post un peu bizarre, puisque c&#8217;est un collègue qui m&#8217;a montré l
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/11/05/git-grep/">Git Grep</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/11/02/diff-patch-git/">Diff Et Patch, Pas Besoin De Git</a>
       </li>
     
@@ -2558,10 +2608,6 @@ Un Post un peu bizarre, puisque c&#8217;est un collègue qui m&#8217;a montré l
     
       <li class="post">
         <a href="/blog/2015/10/18/les-fractales-en-php-mandelbrot/">Les Fractales en Php Mandelbrot</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/10/10/liste-chainees-implementation/">Listes Chainées : Implémentation</a>
       </li>
     
   </ul>

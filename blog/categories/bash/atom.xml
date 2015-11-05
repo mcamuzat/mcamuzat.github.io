@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Bash | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/bash/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-02T23:20:28+01:00</updated>
+  <updated>2015-11-05T23:05:36+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,122 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Git Grep]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/11/05/git-grep/"/>
+    <updated>2015-11-05T22:22:13+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/11/05/git-grep</id>
+    <content type="html"><![CDATA[<p>Dans le post <a href="blog/2015/11/02/diff-patch-git">précédent</a> j&#8217;ai parlé des commandes linux <code>patch</code> et <code>diff</code>. des fonctionnalités ou on utiliserait plutôt Git. Ici je vais faire le contraire : utiliser git sans utiliser les commandes linux. Je vais parler de <code>git grep</code>.</p>
+
+<h2>git grep</h2>
+
+<p>l&#8217;utilisation est très simple</p>
+
+<pre><code class="sh">git grep hello
+</code></pre>
+
+<p>On peut utiliser une regex
+le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code>less</code>).</p>
+
+<p><strong>Rappel des touches sur Less</strong></p>
+
+<table>
+<thead>
+<tr>
+<th> Touche      </th>
+<th style="text-align:center;"> Description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>g</code>               </td>
+<td style="text-align:center;"> début du fichier</td>
+</tr>
+<tr>
+<td> <code>G</code>               </td>
+<td style="text-align:center;"> fin  du fichier</td>
+</tr>
+<tr>
+<td> <code>/mot</code>            </td>
+<td style="text-align:center;"> cherche <code>mot</code>. <code>n</code> pour suivant <code>N</code> pour précédent</td>
+</tr>
+<tr>
+<td> <code>&amp;mot</code>            </td>
+<td style="text-align:center;"> seulement le mot</td>
+</tr>
+</tbody>
+</table>
+
+
+<p><code>git grep</code> utilise un peu près les mêmes options que le <code>grep</code>.</p>
+
+<p>par exemple</p>
+
+<pre><code class="sh">git grep -n -C 10 hello
+</code></pre>
+
+<ul>
+<li><code>-n</code> numérote les lignes</li>
+<li><code>-C 5</code> affiche un contexte de 5 lignes</li>
+</ul>
+
+
+<p>A noter que git grep n&#8217;utilise que les fichiers dans le dépôt qui sont déjà indexé. Donc il est plutôt rapide (alors qu&#8217;un grep devrait faire tous les répertoires).</p>
+
+<h2>Git grep et l&#8217;historique</h2>
+
+<p>Mais la vrai force de git grep est de pouvoir chercher sur toute les branches !</p>
+
+<pre><code class="sh">git grep -n -C 10 -e &lt;ma regex&gt; &lt;la branche&gt;
+</code></pre>
+
+<p>D&#8217;ailleurs si vous voulez savoir qui a commité a ajouté un bug qui contient le mot &ldquo;Panda&rdquo;
+<code>sh
+git rev-list --all | xargs git grep 'Panda'
+</code></p>
+
+<p>Il y a des alternatives
+<code>sh
+git log -G Panda
+git log -S Panda
+</code></p>
+
+<h2>Git grep et tig</h2>
+
+<p>Depuis la version 2 de <a href="https://github.com/jonas/tig">tig</a> (<strong>pas encore</strong> dans les dépots au moment ou j&#8217;écris ces lignes)
+il suffit d&#8217;appuyer sur <code>g</code> de faire la recherche.</p>
+
+<p>Les différentes commandes</p>
+
+<ul>
+<li><code>e</code> ouvrir dans l&#8217;éditeur</li>
+<li><code>b</code> ouvre la vue blame</li>
+<li><code>Enter</code> permet de se déplacer dans le fichiers.</li>
+</ul>
+
+
+<p><img class="center" src="/images/tiggrep.png" width="600" height="398" title="&lsquo;Git grep&rsquo; &lsquo;Git grep&rsquo;" ></p>
+
+<h2>Git grep et vim</h2>
+
+<ul>
+<li>Il est dispo dans le plugin <a href="https://github.com/tpope/vim-fugitive">Fugitive</a>.</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>L&#8217;intégration dans <em>tig</em> me plait beaucoup, j&#8217;ai beaucoup tapé le commande suivante pour faire mes recherches.
+<code>sh
+ find . -name '*.php'| xargs grep 'array_walk_recur'
+</code></p>
+
+<p>Je me suis forcé à lire un peu la documentation de git grep, et je ne le regrette pas.</p>
+
+<p>Enfin il existe des alternative à <code>grep</code> comme <a href="http://beyondgrep.com/">ack</a> ou plus récemment <a href="https://github.com/ggreer/the_silver_searcher">the silver searcher</a>. Je vais essayer d&#8217;en parler plus tard.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Lancer Des Commandes Dans Vim]]></title>
@@ -380,7 +496,7 @@ La philosophie de Linux est de créer plein de petits programmes et que ceux-ci 
 
 <p>Less est compatible avec les raccourcis VI donc les commandes suivantes marchent</p>
 
-<pre><code>gg # debut du fichier
+<pre><code>g # debut du fichier
 G # fin du fichier
 / #recherche
 &amp; #affiche seulement les lignes qui contiennent le mot 
@@ -436,96 +552,6 @@ h,j,k,l les directions
 <li><a href="http://www.emacswiki.org/emacs/Evil">evil-mode</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[MapReduce Du Pauvre]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/03/16/mapreduce-du-pauvre/"/>
-    <updated>2015-03-16T22:41:41+01:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/03/16/mapreduce-du-pauvre</id>
-    <content type="html"><![CDATA[<h1>MapReduce du pauvre.</h1>
-
-<h2>une commande linux</h2>
-
-<pre><code class="bash">find -name '*.php' | xargs -p 4 grep "ma chaine de caractère" | wc -l
-</code></pre>
-
-<p>Cela ne se voit pas mais je viens de faire un map/reduce</p>
-
-<ul>
-<li>je prend tout les fichiers php</li>
-<li>je lance un grep avec le résultat que je passe à travers le pipe.</li>
-<li>puis je compte le nombre de résultats.</li>
-</ul>
-
-
-<pre><code>[filter] -&gt; [map] -&gt; [reduce]
-</code></pre>
-
-<p>ici l&#8217;astuce tient dans une astuces <code>xargs -p 4</code> qui ordonne à xargs d&#8217;utiliser 4 processeurs en parrallèle ! Donc qui me permet d&#8217;aller quatre fois plus vite. On comprend l&#8217;interet du map/reduce. Je peux <strong>dispatcher</strong> le travail sur plusieurs instances(ici processeurs). On retrouve ce fonctionnement dans beaucoup de logiciels actuels. L&#8217;avantage ici est que j&#8217;utilise linux et que je n&#8217;ai installé aucun programme et en multiprocesseur je fais pleinenement confiance au kernel de mon linux. Il existe aussi un programme <code>parallel</code> mais je ne m&#8217;en suis jamais servi.</p>
-
-<h2>En php ?</h2>
-
-<p>Il existe bien entendu les fonctions <code>array_map</code>, <code>array_filter</code>, <code>array_reduce</code> mais il ne sont pas spécialement plus rapide qu&#8217;une boucle foreach. Il existe un map pour les Collection de doctrine.</p>
-
-<p>je vais montrer que l&#8217;on peux écrires toute les opérations possibles avec &lsquo;array_reduce&rsquo;.
-&#8220;`
-function mysum($array) {
-    return array_reduce($array, function($acc, $item) {
-        return $acc += $item;
-    });
-}
-function mymult($array) {
-    return array_reduce($array, function($acc, $item) {
-        return $acc *= $item;
-    },1);
-}</p>
-
-<p>function mymax($array) {
-    return array_reduce($array, function($acc, $item) {
-        return max($acc, $item);
-    });
-}// le min est un peu moins simple</p>
-
-<p>function map($function, $array) {
-    return array_reduce(
-        $array,
-        function ($acc, $input) use ($function) {
-            $acc[] = $function($input);
-            return $acc;
-        });
-}</p>
-
-<p>function filter($function, $array) {
-    return array_reduce(
-        $array,
-        function ($acc, $input) use ($function) {
-            if ($function($input)) {
-                $acc[] = $input;
-            }
-            return $acc;
-        });
-}</p>
-
-<p>function mycount($array) {
-    return array_reduce(
-        $array,
-        function ($acc, $input)  {
-        return ++$acc;
-},0);
-}</p>
-
-<p>$a = [1,2,3,4,5];
-var_dump(mysum($a)); // 15
-var_dump(mymult($a)); // 120
-var_dump(mymax($a)); // 5
-var_dump(mycount($a)); // 5
-var_dump(map(function($input) { return 2 * $input;}, $a)); // [2,4,6,8,10]
-var_dump(filter(function($input) { return ($input > 4); }, $a)); // [6]</p>
-
-<p>&#8220;`
-Map et Reduce sont des fonctions un peu particulières, elle prenent comme argument des fonctions. On parle de fonctions d&#8217;ordre supérieure, parfois de functor (mais çà c&#8217;est une autre histoire ..)</p>
 ]]></content>
   </entry>
   

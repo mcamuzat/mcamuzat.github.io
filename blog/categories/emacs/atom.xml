@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Emacs | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/emacs/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-02T23:20:28+01:00</updated>
+  <updated>2015-11-05T23:05:36+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -29,7 +29,7 @@
 
 <p>Less est compatible avec les raccourcis VI donc les commandes suivantes marchent</p>
 
-<pre><code>gg # debut du fichier
+<pre><code>g # debut du fichier
 G # fin du fichier
 / #recherche
 &amp; #affiche seulement les lignes qui contiennent le mot 

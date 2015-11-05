@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Tig | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/tig/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-02T23:20:28+01:00</updated>
+  <updated>2015-11-05T23:05:36+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,122 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Git Grep]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/11/05/git-grep/"/>
+    <updated>2015-11-05T22:22:13+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/11/05/git-grep</id>
+    <content type="html"><![CDATA[<p>Dans le post <a href="blog/2015/11/02/diff-patch-git">précédent</a> j&#8217;ai parlé des commandes linux <code>patch</code> et <code>diff</code>. des fonctionnalités ou on utiliserait plutôt Git. Ici je vais faire le contraire : utiliser git sans utiliser les commandes linux. Je vais parler de <code>git grep</code>.</p>
+
+<h2>git grep</h2>
+
+<p>l&#8217;utilisation est très simple</p>
+
+<pre><code class="sh">git grep hello
+</code></pre>
+
+<p>On peut utiliser une regex
+le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code>less</code>).</p>
+
+<p><strong>Rappel des touches sur Less</strong></p>
+
+<table>
+<thead>
+<tr>
+<th> Touche      </th>
+<th style="text-align:center;"> Description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>g</code>               </td>
+<td style="text-align:center;"> début du fichier</td>
+</tr>
+<tr>
+<td> <code>G</code>               </td>
+<td style="text-align:center;"> fin  du fichier</td>
+</tr>
+<tr>
+<td> <code>/mot</code>            </td>
+<td style="text-align:center;"> cherche <code>mot</code>. <code>n</code> pour suivant <code>N</code> pour précédent</td>
+</tr>
+<tr>
+<td> <code>&amp;mot</code>            </td>
+<td style="text-align:center;"> seulement le mot</td>
+</tr>
+</tbody>
+</table>
+
+
+<p><code>git grep</code> utilise un peu près les mêmes options que le <code>grep</code>.</p>
+
+<p>par exemple</p>
+
+<pre><code class="sh">git grep -n -C 10 hello
+</code></pre>
+
+<ul>
+<li><code>-n</code> numérote les lignes</li>
+<li><code>-C 5</code> affiche un contexte de 5 lignes</li>
+</ul>
+
+
+<p>A noter que git grep n&#8217;utilise que les fichiers dans le dépôt qui sont déjà indexé. Donc il est plutôt rapide (alors qu&#8217;un grep devrait faire tous les répertoires).</p>
+
+<h2>Git grep et l&#8217;historique</h2>
+
+<p>Mais la vrai force de git grep est de pouvoir chercher sur toute les branches !</p>
+
+<pre><code class="sh">git grep -n -C 10 -e &lt;ma regex&gt; &lt;la branche&gt;
+</code></pre>
+
+<p>D&#8217;ailleurs si vous voulez savoir qui a commité a ajouté un bug qui contient le mot &ldquo;Panda&rdquo;
+<code>sh
+git rev-list --all | xargs git grep 'Panda'
+</code></p>
+
+<p>Il y a des alternatives
+<code>sh
+git log -G Panda
+git log -S Panda
+</code></p>
+
+<h2>Git grep et tig</h2>
+
+<p>Depuis la version 2 de <a href="https://github.com/jonas/tig">tig</a> (<strong>pas encore</strong> dans les dépots au moment ou j&#8217;écris ces lignes)
+il suffit d&#8217;appuyer sur <code>g</code> de faire la recherche.</p>
+
+<p>Les différentes commandes</p>
+
+<ul>
+<li><code>e</code> ouvrir dans l&#8217;éditeur</li>
+<li><code>b</code> ouvre la vue blame</li>
+<li><code>Enter</code> permet de se déplacer dans le fichiers.</li>
+</ul>
+
+
+<p><img class="center" src="/images/tiggrep.png" width="600" height="398" title="&lsquo;Git grep&rsquo; &lsquo;Git grep&rsquo;" ></p>
+
+<h2>Git grep et vim</h2>
+
+<ul>
+<li>Il est dispo dans le plugin <a href="https://github.com/tpope/vim-fugitive">Fugitive</a>.</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>L&#8217;intégration dans <em>tig</em> me plait beaucoup, j&#8217;ai beaucoup tapé le commande suivante pour faire mes recherches.
+<code>sh
+ find . -name '*.php'| xargs grep 'array_walk_recur'
+</code></p>
+
+<p>Je me suis forcé à lire un peu la documentation de git grep, et je ne le regrette pas.</p>
+
+<p>Enfin il existe des alternative à <code>grep</code> comme <a href="http://beyondgrep.com/">ack</a> ou plus récemment <a href="https://github.com/ggreer/the_silver_searcher">the silver searcher</a>. Je vais essayer d&#8217;en parler plus tard.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Tig : Status]]></title>

@@ -9,8 +9,9 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="less comme tail -f On peux utiliser less pour suivre et parser les logs avec la commande 1
-less +F nom_du_fichier Ou tout simplement appuyer sur F &hellip;">
+  <meta name="description" content="Introduction Je vais montrer aujourd'hui comment interfacer Vim et xdebug pour debugger du php. Installer xdebug
+Paramétrer xdebug
+Présentation de &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -84,6 +85,260 @@ less +F nom_du_fichier Ou tout simplement appuyer sur F &hellip;">
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2015/07/05/vim-et-debbuger/">Vim Et Debbuger</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-07-05T17:12:57+02:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>5:12 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Introduction</h2>
+
+<p>Je vais montrer aujourd&#8217;hui comment interfacer Vim et xdebug pour debugger du php.</p>
+
+<ul>
+<li>Installer xdebug</li>
+<li>Paramétrer xdebug</li>
+<li>Présentation de deux plugins <strong>Vdebug</strong> et <strong>DBGPavim</strong></li>
+<li>Comment installer les deux plugin avec</li>
+</ul>
+
+
+<h2>Installer xdebug</h2>
+
+<p>Je connais deux méthodes</p>
+
+<p>Utiliser PECL</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo pecl install xdebug</span></code></pre></td></tr></table></div></figure>
+
+
+<p>il faut alors ajouter dans votre <code>php.ini</code> la ligne suivante</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>zend_extension=/usr/lib/php5/20090626/xdebug.so</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>Ou plus propre rajouter dans un nouveau fichier  <code>/etc/php5/apache2/conf.d/xdebug.ini</code> et pareil pour la ligne de commande <code>/etc/php5/cli/conf.d/xdebug.ini</code></p>
+
+<p>utiliser apt-get sous Ubuntu</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install php5-xdebug</span></code></pre></td></tr></table></div></figure>
+
+
+<p>sur mon Ubuntu, les fichier conf.d était déjà crée</p>
+
+<h2>Paramétrer xdebug pour le debugger</h2>
+
+<p>Il faut rajouter les lignes suivantes le <code>xdebug.ini</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>xdebug.remote_enable=on
+</span><span class='line'>xdebug.remote_handler=dbgp
+</span><span class='line'>xdebug.remote_host=localhost
+</span><span class='line'>xdebug.remote_port=9000</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Puis aller sur l&#8217;url en ajoutant</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>http://monsite.com/?XDEBUG_SESSION_START=1</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il y a des plugins Firefox et Chrome qui s&#8217;occupe de cela.</p>
+
+<p>Pour que le debugger soit lancer par défaut. Vous pouvez rajouter la ligne suivante</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ini'><span class='line'><span class="na">xdebug.remote_autostart</span><span class="o">=</span><span class="s">1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pour tester en ligne de commande.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>php -dxdebug.remote_autostart<span class="o">=</span><span class="m">1</span> test.php
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>un simple script bash fait l&#8217;affaire. <code>php-debug</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/bin/bash</span>
+</span><span class='line'>/usr/bin/php -dxdebug.remote_autostart<span class="o">=</span><span class="m">1</span> <span class="s2">&quot;$@&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Les plugins VIM</h2>
+
+<p>Je vais pas trop insister sur comment installer un plugin sous Vim. Ce n&#8217;est pas très compliqué. Il faut passer par un gestionnaire de plugin (la gestion des plugins par défaut dans Vim n&#8217;est pas pratique)</p>
+
+<h2> Vdebug</h2>
+
+<h3>Utilisation</h3>
+
+<ul>
+<li>appuyer sur <code>&lt;F5&gt;</code></li>
+<li>vous avez 20 seconde pour lancer le script ou aller sur le serveur apache.</li>
+<li>Une fois le signal capturé</li>
+</ul>
+
+
+<h3>Liste des raccourcis claviers</h3>
+
+<p><img class="center" src="/images/VDebug.png" width="600" height="375" title="Vdebug" alt="Screenshot de VDebug"></p>
+
+<ul>
+<li><code>&lt;F5&gt;</code>: start/run (to next breakpoint/end of script)</li>
+<li><code>&lt;F2&gt;</code>: step over</li>
+<li><code>&lt;F3&gt;</code>: step into</li>
+<li><code>&lt;F4&gt;</code>: step out</li>
+<li><code>&lt;F6&gt;</code>: stop debugging</li>
+<li><code>&lt;F7&gt;</code>: detach script from debugger</li>
+<li><code>&lt;F9&gt;</code>: run to cursor</li>
+<li><code>&lt;F10&gt;</code>: toggle line breakpoint</li>
+<li><code>&lt;F11&gt;</code>: show context variables (e.g. after &ldquo;eval&rdquo;)</li>
+<li><code>&lt;F12&gt;</code>: evaluate variable under cursor</li>
+<li><code>:VdebugEval &lt;code&gt;</code>: evaluate some code and display the result</li>
+<li><code>&lt;Leader&gt;e</code>: evaluate the expression under visual highlight and display the result</li>
+</ul>
+
+
+<p>La touche <code>&lt;Leader&gt;</code> est par défault <code>\</code> sur un clavier anglais. <code>&lt;Leader&gt;e</code> correspond à <code>\e</code>. Pas simple à taper sur un clavier azerty. la touche <code>&lt;Leader&gt;</code> est réglable grâce à cette configuration du <code>.vimrc</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">let </span><span class="nv">mapleader</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Sur mon poste, je tape <code>,e</code></p>
+
+<h3>Un avis</h3>
+
+<p>Marche plutôt bien, mais par défaut Le debugger commence au début du script et pas au premier breakpoint.</p>
+
+<p>Il faut rajouter cette ligne dans votre <code>.vimrc</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">let </span>g:vdebug_options<span class="o">[</span><span class="s2">&quot;break_on_open&quot;</span><span class="o">]=</span>0
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>L&#8217;histoire des 20 secondes pour se connecter est un peu frustrante.</p>
+
+<p>Par contre le code python est super propre.</p>
+
+<h2>DBGPavim</h2>
+
+<p><img class="center" src="/images/DBGPAVIM.png" width="600" height="375" title="DBGPavim" alt="Screenshot de DBGPavim"></p>
+
+<p>Ce plugin résout les deux problèmes de Vdebug (aucune limitation de temps, démarre au premier point d&#8217;arrêt). Je le trouve moins intuitif. Mais il est visiblement plus puissant, il gère plusieurs sessions.</p>
+
+<p>Sur les screenshots la différence est plutôt minime.</p>
+
+<p>Les touches sont un peu près les mêmes.</p>
+
+<h2>Installations sous vim</h2>
+
+<p>Suivant le plugin que vous avez choisi</p>
+
+<p>Par <a href="https://github.com/tpope/vim-pathogen">Pathogen</a>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git clone git://github.com/joonty/vdebug.git bundle/vdebug
+</span><span class='line'>ou
+</span><span class='line'>git://github.com/joonty/vdebug.git brookhong/DBGPavim.git
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ou avec les submodules de Git</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git submodule add git://github.com/joonty/vdebug.git bundle/vdebug
+</span><span class='line'><span class="c"># ou </span>
+</span><span class='line'>git submodule add git://github.com/brookhong/DBGPavim.git bundle/DBGPavim
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ajouter cette ligne à votre <code>.vimrc</code></p>
+
+<p>par <a href="https://github.com/gmarik/Vundle.vim">Vundle</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>Bundle <span class="s2">&quot;joonty/vdebug&quot;</span>
+</span><span class='line'><span class="c"># ou</span>
+</span><span class='line'>Bundle <span class="s1">&#39;brookhong/DBGPavim&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>par <a href="https://github.com/Shougo/neobundle.vim">NeoBundle</a> :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>NeoBundle <span class="s2">&quot;joonty/vdebug&quot;</span>
+</span><span class='line'><span class="c"># ou</span>
+</span><span class='line'>NeoBundle <span class="s1">&#39;brookhong/DBGPavim&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>En conclusion</h2>
+
+<p>Le debugger c&#8217;est chouette et cela rends un peu obsolète ce bon vieux <code>var_dump(); die();</code></p>
+
+<p>D&#8217;ailleurs sur le <code>var_dump</code>. Il est plus simple de taper cette commande directement.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>die<span class="o">(</span>var_dump<span class="o">(</span><span class="nv">$foo</span><span class="o">))</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Enfin sur les versions récentes de Symfony la commande <code>dump()</code> est pratique.</p>
+
+<p>Je vais reparler de xdebug. J&#8217;ai plein d&#8217;astuce à partager.</p>
+
+<h2>Des liens</h2>
+
+<ul>
+<li><a href="https://github.com/joonty/vdebug">Vdebug</a></li>
+<li><a href="https://github.com/brookhong/DBGPavim">DBGPAVIM</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2015/06/28/less-is-more-et-bash/">Less Is More Et BASH</a></h1>
     
     
@@ -117,7 +372,7 @@ less +F nom_du_fichier Ou tout simplement appuyer sur F &hellip;">
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>gg # debut du fichier
+</pre></td><td class='code'><pre><code class=''><span class='line'>g # debut du fichier
 </span><span class='line'>G # fin du fichier
 </span><span class='line'>/ #recherche
 </span><span class='line'>& #affiche seulement les lignes qui contiennent le mot 
@@ -1352,64 +1607,6 @@ Un jeux video en prosgresSQL pur. Il y a même une histoire. C&#8217;est assez c
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/04/29/awesome-et-liste-de-liens/">Awesome Et Liste De Liens</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-04-29T22:15:34+02:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:15 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Introduction</h2>
-
-<p>Les développeurs aiment les liens. Il y a toujours un article à partager et/ou sauvegarder. Pour les sauvegarder, Personnelement j&#8217;utilisai un fichier texte ou j&#8217;ajoutai en favori dans mon navigateur (avec plus ou moins de bonheur au moment du changement d&#8217;ordinateur). Des gens ont décidé de versionner leurs listes de liens sur Github.  Cela s&#8217;appelle  <strong>Awesome</strong>-(la techno ou le thème que vous vous voulez)</p>
-
-<p>par exemple:</p>
-
-<ul>
-<li>PHP : <a href="https://github.com/ziadoz/awesome-php">awesome-php</a></li>
-<li>Symfony2 : <a href="https://github.com/EmanueleMinotto/awesome-symfony2">awesome-symfony2</a></li>
-<li>Docker : <a href="https://github.com/veggiemonk/awesome-docker">awesome-docker</a></li>
-<li>Les meilleurs cours en ligne : <a href="https://github.com/prakhar1989/awesome-courses">awesome-courses</a></li>
-<li>React : <a href="https://github.com/enaqx/awesome-react">awesome-react</a></li>
-<li>Sysadmin: <a href="https://github.com/kahun/awesome-sysadmin">awesome-sysadmin</a></li>
-<li>Web Performance Optimization:<a href="https://github.com/davidsonfellipe/awesome-wpo">awesome-wpo</a></li>
-<li>etc ..</li>
-</ul>
-
-
-<h2>Des listes qui contiennent des listes.</h2>
-
-<p>Ben oui la liste est longue. C&#8217;est pour cela qu&#8217;il existe une awesome-list de awesome</p>
-
-<ul>
-<li><a href="https://github.com/bayandin/awesome-awesomeness">awesome-awesomeness</a></li>
-</ul>
-
-
-<h2>Une conclusion</h2>
-
-<p>Si vous cherchez à vous former dans une techno, je crois que vous savez par où commencer.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/5">&larr; Older</a>
@@ -1427,6 +1624,10 @@ Un jeux video en prosgresSQL pur. Il y a même une histoire. C&#8217;est assez c
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/11/05/git-grep/">Git Grep</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/11/02/diff-patch-git/">Diff Et Patch, Pas Besoin De Git</a>
       </li>
     
@@ -1440,10 +1641,6 @@ Un jeux video en prosgresSQL pur. Il y a même une histoire. C&#8217;est assez c
     
       <li class="post">
         <a href="/blog/2015/10/18/les-fractales-en-php-mandelbrot/">Les Fractales en Php Mandelbrot</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/10/10/liste-chainees-implementation/">Listes Chainées : Implémentation</a>
       </li>
     
   </ul>

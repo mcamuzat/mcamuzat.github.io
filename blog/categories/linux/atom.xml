@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-02T23:20:28+01:00</updated>
+  <updated>2015-11-05T23:05:36+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,122 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Git Grep]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/11/05/git-grep/"/>
+    <updated>2015-11-05T22:22:13+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/11/05/git-grep</id>
+    <content type="html"><![CDATA[<p>Dans le post <a href="blog/2015/11/02/diff-patch-git">précédent</a> j&#8217;ai parlé des commandes linux <code>patch</code> et <code>diff</code>. des fonctionnalités ou on utiliserait plutôt Git. Ici je vais faire le contraire : utiliser git sans utiliser les commandes linux. Je vais parler de <code>git grep</code>.</p>
+
+<h2>git grep</h2>
+
+<p>l&#8217;utilisation est très simple</p>
+
+<pre><code class="sh">git grep hello
+</code></pre>
+
+<p>On peut utiliser une regex
+le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code>less</code>).</p>
+
+<p><strong>Rappel des touches sur Less</strong></p>
+
+<table>
+<thead>
+<tr>
+<th> Touche      </th>
+<th style="text-align:center;"> Description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>g</code>               </td>
+<td style="text-align:center;"> début du fichier</td>
+</tr>
+<tr>
+<td> <code>G</code>               </td>
+<td style="text-align:center;"> fin  du fichier</td>
+</tr>
+<tr>
+<td> <code>/mot</code>            </td>
+<td style="text-align:center;"> cherche <code>mot</code>. <code>n</code> pour suivant <code>N</code> pour précédent</td>
+</tr>
+<tr>
+<td> <code>&amp;mot</code>            </td>
+<td style="text-align:center;"> seulement le mot</td>
+</tr>
+</tbody>
+</table>
+
+
+<p><code>git grep</code> utilise un peu près les mêmes options que le <code>grep</code>.</p>
+
+<p>par exemple</p>
+
+<pre><code class="sh">git grep -n -C 10 hello
+</code></pre>
+
+<ul>
+<li><code>-n</code> numérote les lignes</li>
+<li><code>-C 5</code> affiche un contexte de 5 lignes</li>
+</ul>
+
+
+<p>A noter que git grep n&#8217;utilise que les fichiers dans le dépôt qui sont déjà indexé. Donc il est plutôt rapide (alors qu&#8217;un grep devrait faire tous les répertoires).</p>
+
+<h2>Git grep et l&#8217;historique</h2>
+
+<p>Mais la vrai force de git grep est de pouvoir chercher sur toute les branches !</p>
+
+<pre><code class="sh">git grep -n -C 10 -e &lt;ma regex&gt; &lt;la branche&gt;
+</code></pre>
+
+<p>D&#8217;ailleurs si vous voulez savoir qui a commité a ajouté un bug qui contient le mot &ldquo;Panda&rdquo;
+<code>sh
+git rev-list --all | xargs git grep 'Panda'
+</code></p>
+
+<p>Il y a des alternatives
+<code>sh
+git log -G Panda
+git log -S Panda
+</code></p>
+
+<h2>Git grep et tig</h2>
+
+<p>Depuis la version 2 de <a href="https://github.com/jonas/tig">tig</a> (<strong>pas encore</strong> dans les dépots au moment ou j&#8217;écris ces lignes)
+il suffit d&#8217;appuyer sur <code>g</code> de faire la recherche.</p>
+
+<p>Les différentes commandes</p>
+
+<ul>
+<li><code>e</code> ouvrir dans l&#8217;éditeur</li>
+<li><code>b</code> ouvre la vue blame</li>
+<li><code>Enter</code> permet de se déplacer dans le fichiers.</li>
+</ul>
+
+
+<p><img class="center" src="/images/tiggrep.png" width="600" height="398" title="&lsquo;Git grep&rsquo; &lsquo;Git grep&rsquo;" ></p>
+
+<h2>Git grep et vim</h2>
+
+<ul>
+<li>Il est dispo dans le plugin <a href="https://github.com/tpope/vim-fugitive">Fugitive</a>.</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>L&#8217;intégration dans <em>tig</em> me plait beaucoup, j&#8217;ai beaucoup tapé le commande suivante pour faire mes recherches.
+<code>sh
+ find . -name '*.php'| xargs grep 'array_walk_recur'
+</code></p>
+
+<p>Je me suis forcé à lire un peu la documentation de git grep, et je ne le regrette pas.</p>
+
+<p>Enfin il existe des alternative à <code>grep</code> comme <a href="http://beyondgrep.com/">ack</a> ou plus récemment <a href="https://github.com/ggreer/the_silver_searcher">the silver searcher</a>. Je vais essayer d&#8217;en parler plus tard.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Diff Et Patch, Pas Besoin De Git]]></title>
@@ -136,1076 +252,428 @@ patching file README.md
 $ patch -p0 --merge &lt; README.diff
 </code>
 le résultat
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-<span class='line-number'>84</span>
-<span class='line-number'>85</span>
-<span class='line-number'>86</span>
-<span class='line-number'>87</span>
-<span class='line-number'>88</span>
-<span class='line-number'>89</span>
-<span class='line-number'>90</span>
-<span class='line-number'>91</span>
-<span class='line-number'>92</span>
-<span class='line-number'>93</span>
-<span class='line-number'>94</span>
-<span class='line-number'>95</span>
-<span class='line-number'>96</span>
-<span class='line-number'>97</span>
-<span class='line-number'>98</span>
-<span class='line-number'>99</span>
-<span class='line-number'>100</span>
-<span class='line-number'>101</span>
-<span class='line-number'>102</span>
-<span class='line-number'>103</span>
-<span class='line-number'>104</span>
-<span class='line-number'>105</span>
-<span class='line-number'>106</span>
-<span class='line-number'>107</span>
-<span class='line-number'>108</span>
-<span class='line-number'>109</span>
-<span class='line-number'>110</span>
-<span class='line-number'>111</span>
-<span class='line-number'>112</span>
-<span class='line-number'>113</span>
-<span class='line-number'>114</span>
-<span class='line-number'>115</span>
-<span class='line-number'>116</span>
-<span class='line-number'>117</span>
-<span class='line-number'>118</span>
-<span class='line-number'>119</span>
-<span class='line-number'>120</span>
-<span class='line-number'>121</span>
-<span class='line-number'>122</span>
-<span class='line-number'>123</span>
-<span class='line-number'>124</span>
-<span class='line-number'>125</span>
-<span class='line-number'>126</span>
-<span class='line-number'>127</span>
-<span class='line-number'>128</span>
-<span class='line-number'>129</span>
-<span class='line-number'>130</span>
-<span class='line-number'>131</span>
-<span class='line-number'>132</span>
-<span class='line-number'>133</span>
-<span class='line-number'>134</span>
-<span class='line-number'>135</span>
-<span class='line-number'>136</span>
-<span class='line-number'>137</span>
-<span class='line-number'>138</span>
-<span class='line-number'>139</span>
-<span class='line-number'>140</span>
-<span class='line-number'>141</span>
-<span class='line-number'>142</span>
-<span class='line-number'>143</span>
-<span class='line-number'>144</span>
-<span class='line-number'>145</span>
-<span class='line-number'>146</span>
-<span class='line-number'>147</span>
-<span class='line-number'>148</span>
-<span class='line-number'>149</span>
-<span class='line-number'>150</span>
-<span class='line-number'>151</span>
-<span class='line-number'>152</span>
-<span class='line-number'>153</span>
-<span class='line-number'>154</span>
-<span class='line-number'>155</span>
-<span class='line-number'>156</span>
-<span class='line-number'>157</span>
-<span class='line-number'>158</span>
-<span class='line-number'>159</span>
-<span class='line-number'>160</span>
-<span class='line-number'>161</span>
-<span class='line-number'>162</span>
-<span class='line-number'>163</span>
-<span class='line-number'>164</span>
-<span class='line-number'>165</span>
-<span class='line-number'>166</span>
-<span class='line-number'>167</span>
-<span class='line-number'>168</span>
-<span class='line-number'>169</span>
-<span class='line-number'>170</span>
-<span class='line-number'>171</span>
-<span class='line-number'>172</span>
-<span class='line-number'>173</span>
-<span class='line-number'>174</span>
-<span class='line-number'>175</span>
-<span class='line-number'>176</span>
-<span class='line-number'>177</span>
-<span class='line-number'>178</span>
-<span class='line-number'>179</span>
-<span class='line-number'>180</span>
-<span class='line-number'>181</span>
-<span class='line-number'>182</span>
-<span class='line-number'>183</span>
-<span class='line-number'>184</span>
-<span class='line-number'>185</span>
-<span class='line-number'>186</span>
-<span class='line-number'>187</span>
-<span class='line-number'>188</span>
-<span class='line-number'>189</span>
-<span class='line-number'>190</span>
-<span class='line-number'>191</span>
-<span class='line-number'>192</span>
-<span class='line-number'>193</span>
-<span class='line-number'>194</span>
-<span class='line-number'>195</span>
-<span class='line-number'>196</span>
-<span class='line-number'>197</span>
-<span class='line-number'>198</span>
-<span class='line-number'>199</span>
-<span class='line-number'>200</span>
-<span class='line-number'>201</span>
-<span class='line-number'>202</span>
-<span class='line-number'>203</span>
-<span class='line-number'>204</span>
-<span class='line-number'>205</span>
-<span class='line-number'>206</span>
-<span class='line-number'>207</span>
-<span class='line-number'>208</span>
-<span class='line-number'>209</span>
-<span class='line-number'>210</span>
-<span class='line-number'>211</span>
-<span class='line-number'>212</span>
-<span class='line-number'>213</span>
-<span class='line-number'>214</span>
-<span class='line-number'>215</span>
-<span class='line-number'>216</span>
-<span class='line-number'>217</span>
-<span class='line-number'>218</span>
-<span class='line-number'>219</span>
-<span class='line-number'>220</span>
-<span class='line-number'>221</span>
-<span class='line-number'>222</span>
-<span class='line-number'>223</span>
-<span class='line-number'>224</span>
-<span class='line-number'>225</span>
-<span class='line-number'>226</span>
-<span class='line-number'>227</span>
-<span class='line-number'>228</span>
-<span class='line-number'>229</span>
-<span class='line-number'>230</span>
-<span class='line-number'>231</span>
-<span class='line-number'>232</span>
-<span class='line-number'>233</span>
-<span class='line-number'>234</span>
-<span class='line-number'>235</span>
-<span class='line-number'>236</span>
-<span class='line-number'>237</span>
-<span class='line-number'>238</span>
-<span class='line-number'>239</span>
-<span class='line-number'>240</span>
-<span class='line-number'>241</span>
-<span class='line-number'>242</span>
-<span class='line-number'>243</span>
-<span class='line-number'>244</span>
-<span class='line-number'>245</span>
-<span class='line-number'>246</span>
-<span class='line-number'>247</span>
-<span class='line-number'>248</span>
-<span class='line-number'>249</span>
-<span class='line-number'>250</span>
-<span class='line-number'>251</span>
-<span class='line-number'>252</span>
-<span class='line-number'>253</span>
-<span class='line-number'>254</span>
-<span class='line-number'>255</span>
-<span class='line-number'>256</span>
-<span class='line-number'>257</span>
-<span class='line-number'>258</span>
-<span class='line-number'>259</span>
-<span class='line-number'>260</span>
-<span class='line-number'>261</span>
-<span class='line-number'>262</span>
-<span class='line-number'>263</span>
-<span class='line-number'>264</span>
-<span class='line-number'>265</span>
-<span class='line-number'>266</span>
-<span class='line-number'>267</span>
-<span class='line-number'>268</span>
-<span class='line-number'>269</span>
-<span class='line-number'>270</span>
-<span class='line-number'>271</span>
-<span class='line-number'>272</span>
-<span class='line-number'>273</span>
-<span class='line-number'>274</span>
-<span class='line-number'>275</span>
-<span class='line-number'>276</span>
-<span class='line-number'>277</span>
-<span class='line-number'>278</span>
-<span class='line-number'>279</span>
-<span class='line-number'>280</span>
-<span class='line-number'>281</span>
-<span class='line-number'>282</span>
-<span class='line-number'>283</span>
-<span class='line-number'>284</span>
-<span class='line-number'>285</span>
-<span class='line-number'>286</span>
-<span class='line-number'>287</span>
-<span class='line-number'>288</span>
-<span class='line-number'>289</span>
-<span class='line-number'>290</span>
-<span class='line-number'>291</span>
-<span class='line-number'>292</span>
-<span class='line-number'>293</span>
-<span class='line-number'>294</span>
-<span class='line-number'>295</span>
-<span class='line-number'>296</span>
-<span class='line-number'>297</span>
-<span class='line-number'>298</span>
-<span class='line-number'>299</span>
-<span class='line-number'>300</span>
-<span class='line-number'>301</span>
-<span class='line-number'>302</span>
-<span class='line-number'>303</span>
-<span class='line-number'>304</span>
-<span class='line-number'>305</span>
-<span class='line-number'>306</span>
-<span class='line-number'>307</span>
-<span class='line-number'>308</span>
-<span class='line-number'>309</span>
-<span class='line-number'>310</span>
-<span class='line-number'>311</span>
-<span class='line-number'>312</span>
-<span class='line-number'>313</span>
-<span class='line-number'>314</span>
-<span class='line-number'>315</span>
-<span class='line-number'>316</span>
-<span class='line-number'>317</span>
-<span class='line-number'>318</span>
-<span class='line-number'>319</span>
-<span class='line-number'>320</span>
-<span class='line-number'>321</span>
-<span class='line-number'>322</span>
-<span class='line-number'>323</span>
-<span class='line-number'>324</span>
-<span class='line-number'>325</span>
-<span class='line-number'>326</span>
-<span class='line-number'>327</span>
-<span class='line-number'>328</span>
-<span class='line-number'>329</span>
-<span class='line-number'>330</span>
-<span class='line-number'>331</span>
-<span class='line-number'>332</span>
-<span class='line-number'>333</span>
-<span class='line-number'>334</span>
-<span class='line-number'>335</span>
-<span class='line-number'>336</span>
-<span class='line-number'>337</span>
-<span class='line-number'>338</span>
-<span class='line-number'>339</span>
-<span class='line-number'>340</span>
-<span class='line-number'>341</span>
-<span class='line-number'>342</span>
-<span class='line-number'>343</span>
-<span class='line-number'>344</span>
-<span class='line-number'>345</span>
-<span class='line-number'>346</span>
-<span class='line-number'>347</span>
-<span class='line-number'>348</span>
-<span class='line-number'>349</span>
-<span class='line-number'>350</span>
-<span class='line-number'>351</span>
-<span class='line-number'>352</span>
-<span class='line-number'>353</span>
-<span class='line-number'>354</span>
-<span class='line-number'>355</span>
-<span class='line-number'>356</span>
-<span class='line-number'>357</span>
-<span class='line-number'>358</span>
-<span class='line-number'>359</span>
-<span class='line-number'>360</span>
-<span class='line-number'>361</span>
-<span class='line-number'>362</span>
-<span class='line-number'>363</span>
-<span class='line-number'>364</span>
-<span class='line-number'>365</span>
-<span class='line-number'>366</span>
-<span class='line-number'>367</span>
-<span class='line-number'>368</span>
-<span class='line-number'>369</span>
-<span class='line-number'>370</span>
-<span class='line-number'>371</span>
-<span class='line-number'>372</span>
-<span class='line-number'>373</span>
-<span class='line-number'>374</span>
-<span class='line-number'>375</span>
-<span class='line-number'>376</span>
-<span class='line-number'>377</span>
-<span class='line-number'>378</span>
-<span class='line-number'>379</span>
-<span class='line-number'>380</span>
-<span class='line-number'>381</span>
-<span class='line-number'>382</span>
-<span class='line-number'>383</span>
-<span class='line-number'>384</span>
-<span class='line-number'>385</span>
-<span class='line-number'>386</span>
-<span class='line-number'>387</span>
-<span class='line-number'>388</span>
-<span class='line-number'>389</span>
-<span class='line-number'>390</span>
-<span class='line-number'>391</span>
-<span class='line-number'>392</span>
-<span class='line-number'>393</span>
-<span class='line-number'>394</span>
-<span class='line-number'>395</span>
-<span class='line-number'>396</span>
-<span class='line-number'>397</span>
-<span class='line-number'>398</span>
-<span class='line-number'>399</span>
-<span class='line-number'>400</span>
-<span class='line-number'>401</span>
-<span class='line-number'>402</span>
-<span class='line-number'>403</span>
-<span class='line-number'>404</span>
-<span class='line-number'>405</span>
-<span class='line-number'>406</span>
-<span class='line-number'>407</span>
-<span class='line-number'>408</span>
-<span class='line-number'>409</span>
-<span class='line-number'>410</span>
-<span class='line-number'>411</span>
-<span class='line-number'>412</span>
-<span class='line-number'>413</span>
-<span class='line-number'>414</span>
-<span class='line-number'>415</span>
-<span class='line-number'>416</span>
-<span class='line-number'>417</span>
-<span class='line-number'>418</span>
-<span class='line-number'>419</span>
-<span class='line-number'>420</span>
-<span class='line-number'>421</span>
-<span class='line-number'>422</span>
-<span class='line-number'>423</span>
-<span class='line-number'>424</span>
-<span class='line-number'>425</span>
-<span class='line-number'>426</span>
-<span class='line-number'>427</span>
-<span class='line-number'>428</span>
-<span class='line-number'>429</span>
-<span class='line-number'>430</span>
-<span class='line-number'>431</span>
-<span class='line-number'>432</span>
-<span class='line-number'>433</span>
-<span class='line-number'>434</span>
-<span class='line-number'>435</span>
-<span class='line-number'>436</span>
-<span class='line-number'>437</span>
-<span class='line-number'>438</span>
-<span class='line-number'>439</span>
-<span class='line-number'>440</span>
-<span class='line-number'>441</span>
-<span class='line-number'>442</span>
-<span class='line-number'>443</span>
-<span class='line-number'>444</span>
-<span class='line-number'>445</span>
-<span class='line-number'>446</span>
-<span class='line-number'>447</span>
-<span class='line-number'>448</span>
-<span class='line-number'>449</span>
-<span class='line-number'>450</span>
-<span class='line-number'>451</span>
-<span class='line-number'>452</span>
-<span class='line-number'>453</span>
-<span class='line-number'>454</span>
-<span class='line-number'>455</span>
-<span class='line-number'>456</span>
-<span class='line-number'>457</span>
-<span class='line-number'>458</span>
-<span class='line-number'>459</span>
-<span class='line-number'>460</span>
-<span class='line-number'>461</span>
-<span class='line-number'>462</span>
-<span class='line-number'>463</span>
-<span class='line-number'>464</span>
-<span class='line-number'>465</span>
-<span class='line-number'>466</span>
-<span class='line-number'>467</span>
-<span class='line-number'>468</span>
-<span class='line-number'>469</span>
-<span class='line-number'>470</span>
-<span class='line-number'>471</span>
-<span class='line-number'>472</span>
-<span class='line-number'>473</span>
-<span class='line-number'>474</span>
-<span class='line-number'>475</span>
-<span class='line-number'>476</span>
-<span class='line-number'>477</span>
-<span class='line-number'>478</span>
-<span class='line-number'>479</span>
-<span class='line-number'>480</span>
-<span class='line-number'>481</span>
-<span class='line-number'>482</span>
-<span class='line-number'>483</span>
-<span class='line-number'>484</span>
-<span class='line-number'>485</span>
-<span class='line-number'>486</span>
-<span class='line-number'>487</span>
-<span class='line-number'>488</span>
-<span class='line-number'>489</span>
-<span class='line-number'>490</span>
-<span class='line-number'>491</span>
-<span class='line-number'>492</span>
-<span class='line-number'>493</span>
-<span class='line-number'>494</span>
-<span class='line-number'>495</span>
-<span class='line-number'>496</span>
-<span class='line-number'>497</span>
-</pre></td><td class='code'><pre><code class='diff'><span class='line'>Ceci est un exemple.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;
-</span><span class='line'>Ceci est une autre ligne
-</span><span class='line'>Ceci est une ligne ajoutée&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Mais celle ci aussi&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;blockquote&gt;&lt;blockquote&gt;&lt;blockquote&gt;&lt;blockquote&gt;&lt;blockquote&gt;&lt;blockquote&gt;&lt;blockquote&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;j&#39;ai ajouté cette ligne&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code&gt;L&#39;option `-p0` ou le plus souvent `-p1` demande à la commande `patch` d&#39;ignorer le chemin sur un niveau.
-</span><span class='line'>
-</span><span class='line'>Voici un exemple avec git et le même fichier
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;diff &amp;ndash;git a/README.md b/README.md
-</span><span class='line'><span class="gh">index 1030f85..5e8e5f9 100644</span>
-</span><span class='line'>&amp;mdash; a/README.md
-</span><span class='line'><span class="gi">+++ b/README.md</span>
-</span><span class='line'><span class="gu">@@ -1,6 +1,9 @@</span>
-</span><span class='line'> Ceci est un exemple.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;-Ceci est une ligne ajoutée&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;+
-</span><span class='line'><span class="gi">+</span>
-</span><span class='line'><span class="gi">+</span>
-</span><span class='line'><span class="gi">+j&#39;ai ajouté cette ligne</span>
-</span><span class='line'>&lt;code&gt;``
-</span><span class='line'>on voit que la ligne&lt;/code&gt;a/README.md&lt;code&gt;et&lt;/code&gt;b/README.md&lt;code&gt;, ici pour appliquer le patch il faut utiliser&lt;/code&gt;-p1&lt;code&gt;pour ignorer le premier niveau (supprime le&lt;/code&gt;a/&lt;code&gt;et&lt;/code&gt;b/`)&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Sous Git c&#39;est plus simple&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ git apply lefichier.diff
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h2&gt;Reverter&lt;/h2&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Enfin soyons complet il est possible de reverter un patch avec &lt;code&gt;-R&lt;/code&gt;
-</span><span class='line'>&lt;code&gt;bash
-</span><span class='line'>patch -R -p1 &amp;lt; mon patch
-</span><span class='line'>&lt;/code&gt;&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Avec git&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;git apply -R &amp;lt;mon fichier diff&amp;gt;
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h2&gt;Conclusion&lt;/h2&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Pas besoin d&#39;avoir git/mercurial/svn pour créer ou jouer des patchs.&lt;/p&gt;
-</span><span class='line'>]]&gt;&lt;/content&gt;
-</span><span class='line'>  &lt;/entry&gt;
-</span><span class='line'>
-</span><span class='line'>  &lt;entry&gt;
-</span><span class='line'>    &lt;title type=&quot;html&quot;&gt;&lt;![CDATA[Tig : Status]]&gt;&lt;/title&gt;
-</span><span class='line'>    &lt;link href=&quot;http://mcamuzat.github.io/blog/2015/10/04/tig-status/&quot;/&gt;
-</span><span class='line'>    &lt;updated&gt;2015-10-04T21:59:59+02:00&lt;/updated&gt;
-</span><span class='line'>    &lt;id&gt;http://mcamuzat.github.io/blog/2015/10/04/tig-status&lt;/id&gt;
-</span><span class='line'>    &lt;content type=&quot;html&quot;&gt;&lt;![CDATA[&lt;p&gt;Tig est un client git en ligne de commande&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Il n&#39;est pas compliqué à installer :&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;sudo apt-get install tig
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Néanmoins c&#39;est la version 1.2 dans les dépôts au moment ou j&#39;écris ces lignes.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;On peut installer la version 2 qui a plus de fonctionnalités et de raccourcis.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;git clone https://github.com/jonas/tig
-</span><span class='line'>make
-</span><span class='line'>make install
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;attention vous aurez probablement besoin d&#39;avoir installer la librairies &lt;code&gt;libncursesw&lt;/code&gt; pour l&#39;utf-8&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h2&gt;La vue principale&lt;/h2&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Elle permet de voir l&#39;historique du dépôt.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;<img class="center" src="/images/tig-defaut.png" width="600" height="398" title="&amp;lsquo;la vue par défault&amp;rsquo; &amp;lsquo;la vue par défaut&amp;rsquo;" >&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Appuyer sur &lt;code&gt;&amp;lt;Enter&amp;gt;&lt;/code&gt; pour voir la différence. (Dans la version 2, si le terminal fait plus de 160 caractères l&#39;écran se splitte en 2 verticalement)&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;<img class="center" src="/images/tig-diff.png" width="600" height="399" title="&amp;lsquo;quand on appuie sur la touche entrée, on affiche la différence&amp;rsquo; &amp;lsquo;l&#39;écran de différence&amp;rsquo;" >&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Screenshot de la version 2 avec les deux colonnes.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;<img class="center" src="/images/tig_view_v2.png" width="600" height="366" title="&amp;lsquo;dans la version 2, si le terminal&amp;rsquo; &amp;lsquo;Screenshot de la version 2 avec les deux colonnes.&amp;rsquo;" >&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Il va falloir apprendre les touches Vi car on se sert beaucoup de &lt;code&gt;j&lt;/code&gt; et &lt;code&gt;k&lt;/code&gt; (un rappel &lt;code&gt;j&lt;/code&gt; descend vers le bas et &lt;code&gt;k&lt;/code&gt; va vers le haut)&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;De cette écran voici les différents modes (je ne les cites pas tous)&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;ul&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;S&lt;/code&gt; ou &lt;code&gt;s&lt;/code&gt; pour voir le stage (équivalent de git status)&lt;/li&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;t&lt;/code&gt; tree view affichage en explorateur de fichier&lt;/li&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;r&lt;/code&gt; permet de voir les différentes branches (&lt;code&gt;H&lt;/code&gt; dans la version1&lt;/li&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;l&lt;/code&gt; voir les logs&lt;/li&gt;
-</span><span class='line'>&lt;/ul&gt;
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Je vais surtout m&#39;intéresser à la status view.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h2&gt;La vue Status&lt;/h2&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Les touches à connaitre.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;ul&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;u&lt;/code&gt; sur un noms de fichiers pour &lt;strong&gt;u&lt;/strong&gt;se cela fait l&#39;équivalent de &lt;code&gt;git add &amp;lt;nom du fichier&amp;gt;&lt;/code&gt;&lt;/li&gt;
-</span><span class='line'>&lt;/ul&gt;
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Si vous appuyer sur &lt;code&gt;u&lt;/code&gt; sur les lignes &lt;code&gt;Changes to be commited&lt;/code&gt;, &lt;code&gt;Changed but not updated&lt;/code&gt;, &lt;code&gt;Untracked files&lt;/code&gt; vous ajoutez tous les fichiers.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code&gt;Changes to be committed:
-</span><span class='line'>M   fichier1
-</span><span class='line'>Changed but not updatedy://&amp;lt;---(*curseur*)
-</span><span class='line'>M   fichier2
-</span><span class='line'>M   fichier3
-</span><span class='line'>M   fichier4
-</span><span class='line'>M   fichier5
-</span><span class='line'>M   fichier6
-</span><span class='line'>M   fichier7
-</span><span class='line'>Untracked files:
-</span><span class='line'>?   nouveau fichier
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Cela devient&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code&gt;Changes to be committed:
-</span><span class='line'>M   fichier1
-</span><span class='line'>M   fichier2
-</span><span class='line'>M   fichier3
-</span><span class='line'>M   fichier4
-</span><span class='line'>M   fichier5
-</span><span class='line'>M   fichier6
-</span><span class='line'>M   fichier7
-</span><span class='line'>Changed but not updatedy:
-</span><span class='line'>(no files)
-</span><span class='line'>Untracked files:
-</span><span class='line'>?   nouveau fichier
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Enfin on peut aussi prendre chunk par chunck (l&#39;équivalent de &lt;code&gt;git add -p&lt;/code&gt;)&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;<img class="center" src="/images/tig-revert.png" width="600" height="398" title="&amp;lsquo;la vue par défaut&amp;rsquo; &amp;lsquo;la vue par défaut&amp;rsquo;" >&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Il suffit d&#39;appuyer sur &lt;code&gt;Enter&lt;/code&gt; puis de se déplacer dans le commit avec &lt;code&gt;j&lt;/code&gt; et &lt;code&gt;k&lt;/code&gt; et appuyer sur &lt;code&gt;u&lt;/code&gt; pour ajouter ce chunk. Les chunks pour faire simple sont les textes séparés par des &lt;code&gt;@@ ... @@&lt;/code&gt;. On se déplace de chunk en chunk grâce à la touche &lt;code&gt;@&lt;/code&gt;.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Pour reverter le fichier, On utilise la touche &lt;code&gt;!&lt;/code&gt;.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Cela marche aussi sur un chunk. On peut donc reverter partiellement un fichier.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Il est possible d&#39;ajouter ligne par ligne dans un commit grâce à la touche &lt;code&gt;1&lt;/code&gt;.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Pour faire le git commit il suffit d&#39;appuyer sur &lt;code&gt;C&lt;/code&gt; comme &lt;strong&gt;C&lt;/strong&gt;ommit.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Enfin la touche &lt;code&gt;e&lt;/code&gt; comme &lt;strong&gt;e&lt;/strong&gt;dit ouvre le fichier dans l&#39;éditeur par défaut.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h2&gt;Le fichier &lt;code&gt;.tigrc&lt;/code&gt;&lt;/h2&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Le fichier &lt;code&gt;.tigrc&lt;/code&gt; permet de personnaliser l&#39;affichage et d&#39;ajouter des raccourcis claviers.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Voici quelques exemples de ma config.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code class=&quot;&quot;&gt;# Delete files in status view (useful for untracked files)
-</span><span class='line'>bind status D !@?rm %(file)
-</span><span class='line'>
-</span><span class='line'># Amend last commit with A
-</span><span class='line'>bind status A !git commit --amend
-</span><span class='line'>
-</span><span class='line'># Create and checkout a new branch; specify custom prompt
-</span><span class='line'>bind main B !git checkout -b &quot;%(prompt Enter new branch name: )&quot;
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Les raccourcis claviers que j&#39;ai rajouté&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;ul&gt;
-</span><span class='line'>&lt;li&gt;Dans la vue status la touche &lt;code&gt;D&lt;/code&gt; efface le fichier&lt;/li&gt;
-</span><span class='line'>&lt;li&gt;Dans la vue status la touche &lt;code&gt;A&lt;/code&gt; fait un &lt;code&gt;git commit --amend&lt;/code&gt;&lt;/li&gt;
-</span><span class='line'>&lt;li&gt;Dans la vue principale la touche &lt;code&gt;B&lt;/code&gt; permet de créer une branche.&lt;/li&gt;
-</span><span class='line'>&lt;/ul&gt;
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>&lt;h2&gt;Résumé de touches&lt;/h2&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;ul&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;s&lt;/code&gt; ou &lt;code&gt;S&lt;/code&gt; voir la vue status&lt;/li&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;u&lt;/code&gt; ajouter le commit/chunk&lt;/li&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;!&lt;/code&gt; revert&lt;/li&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;1&lt;/code&gt; ajoute une lignes au commit&lt;/li&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;@&lt;/code&gt; aller au chunck/diff suivant&lt;/li&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;D&lt;/code&gt; supprimer le fichier (&lt;em&gt;raccourcis perso&lt;/em&gt;)&lt;/li&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;A&lt;/code&gt; git amend&lt;/li&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;e&lt;/code&gt; ouvre dans l&#39;éditeur par défaut&lt;/li&gt;
-</span><span class='line'>&lt;/ul&gt;
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>&lt;h2&gt;Des liens&lt;/h2&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;ul&gt;
-</span><span class='line'>&lt;li&gt;&lt;a href=&quot;http://jonas.nitro.dk/tig/&quot;&gt;le site officiel&lt;/a&gt;&lt;/li&gt;
-</span><span class='line'>&lt;li&gt;la &lt;a href=&quot;https://github.com/pmiossec/tig-cheat-sheet&quot;&gt;cheat-sheet&lt;/a&gt; avec les raccourcis claviers (&lt;em&gt;indispensable&lt;/em&gt;)&lt;/li&gt;
-</span><span class='line'>&lt;/ul&gt;
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>&lt;h2&gt;Conclusion&lt;/h2&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Je vais revenir sur les autres vues bientôt.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Merci de m&#39;avoir lu.&lt;/p&gt;
-</span><span class='line'>]]&gt;&lt;/content&gt;
-</span><span class='line'>  &lt;/entry&gt;
-</span><span class='line'>
-</span><span class='line'>  &lt;entry&gt;
-</span><span class='line'>    &lt;title type=&quot;html&quot;&gt;&lt;![CDATA[Des Commandes Au Top]]&gt;&lt;/title&gt;
-</span><span class='line'>    &lt;link href=&quot;http://mcamuzat.github.io/blog/2015/09/27/des-commandes-au-top/&quot;/&gt;
-</span><span class='line'>    &lt;updated&gt;2015-09-27T16:04:40+02:00&lt;/updated&gt;
-</span><span class='line'>    &lt;id&gt;http://mcamuzat.github.io/blog/2015/09/27/des-commandes-au-top&lt;/id&gt;
-</span><span class='line'>    &lt;content type=&quot;html&quot;&gt;&lt;![CDATA[&lt;p&gt;J&#39;utilise souvent le programme htop. mais il y en a d&#39;autre.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h2&gt;atop&lt;/h2&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Plus austère. Beaucoup d&#39;information sur toutes les ressources. C&#39;est plus un outils d&#39;audit. Le logicel donne toutes informations possibles. processeurs, disques, carte réseau. En pratique il peut même être lancer au démarrage. En pratique on parle de &lt;code&gt;sar&lt;/code&gt; (&lt;strong&gt;S&lt;/strong&gt;ystem &lt;strong&gt;A&lt;/strong&gt;ctivity &lt;strong&gt;R&lt;/strong&gt;eport). Il permet de surveiller la tailles des processus avec la colonne &lt;code&gt;VGROW&lt;/code&gt; (&lt;em&gt;Virtual Memory Grow&lt;/em&gt;) et &lt;code&gt;RGROW&lt;/code&gt;(Resident memory Grow)
-</span><span class='line'><img class="center" src="/images/atop.png" width="600" height="381" title="&amp;lsquo;atop&amp;rsquo; &amp;lsquo;atop&amp;rsquo;" >&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;voir &lt;a href=&quot;https://en.wikipedia.org/wiki/Sar_%28Unix%29&quot;&gt;sar&lt;/a&gt;&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h2&gt;vtop&lt;/h2&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Un clone en Nodejs. voir le screenshot c&#39;est vraiment très joli&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;<img class="center" src="/images/vtop.png" width="600" height="383" title="&amp;lsquo;vtop&amp;rsquo; &amp;lsquo;vtop&amp;rsquo;" >&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;installation via npm
-</span><span class='line'>&lt;code&gt;sh
-</span><span class='line'>sudo npm install -g vtop
-</span><span class='line'>&lt;/code&gt;&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;dépot &lt;a href=&quot;https://github.com/MrRio/vtop&quot;&gt;Github&lt;/a&gt;&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h2&gt;Htop&lt;/h2&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h3&gt;Quelques options&lt;/h3&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h3&gt;filtrer par utilisateur&lt;/h3&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;$ htop -umarc
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;ou &lt;code&gt;u&lt;/code&gt; dans Htop&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h4&gt;Sélectionner un process&lt;/h4&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Utilisez la barre d&#39;espace pour sélectionner un process. Cela permet de le suivre.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;ul&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;F7&lt;/code&gt; ou  &lt;code&gt;F8&lt;/code&gt; pour augmenter la priorité du process&lt;/li&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;F9&lt;/code&gt; ou &lt;code&gt;k&lt;/code&gt; pour killer un process&lt;/li&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;F5&lt;/code&gt; affichage en arbre.&lt;/li&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;a&lt;/code&gt; pour assigner le process à un CPU.&lt;/li&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;U&lt;/code&gt; pour désélectionnér tous les process&lt;/li&gt;
-</span><span class='line'>&lt;/ul&gt;
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>&lt;h4&gt;Personnalisez l&#39;affichage&lt;/h4&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;La touche magique ici est &lt;code&gt;&amp;lt;F2&amp;gt;&lt;/code&gt;. Vous pouvez personnaliser les deux colonnes avec les raccourcis claviers suivants. La colonne toutes à droite donne les widgets disponibles&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;ul&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;&amp;lt;F5&amp;gt;&lt;/code&gt; ajouter le widget à la colonne de droite.&lt;/li&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;&amp;lt;F6&amp;gt;&lt;/code&gt; ajouter le widget à la colonne de gauche.&lt;/li&gt;
-</span><span class='line'>&lt;/ul&gt;
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Sur une colonne vous pouvez sélectionniez le type d&#39;affiche (texte simple, histogramme, etc..) via la touche &lt;code&gt;&amp;lt;F4&amp;gt;&lt;/code&gt;&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Voir le screenshot (&lt;code&gt;Text&lt;/code&gt;, &lt;code&gt;Graph&lt;/code&gt;,&lt;code&gt;Led&lt;/code&gt;, &lt;code&gt;Bar&lt;/code&gt;)
-</span><span class='line'><img class="center" src="/images/typeaffichage.png" width="600" height="133" title="&amp;lsquo;les quatre types d&#39;affichage&amp;rsquo; &amp;lsquo;les quatre types d&#39;affichage&amp;rsquo;" >&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h3&gt;Les codes couleurs&lt;/h3&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;La touche &lt;code&gt;h&lt;/code&gt; permet d&#39;obtenir de l&#39;aide, les raccourcis claviers et la significations des couleurs.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;<img class="center" src="/images/codecouleur.png" width="600" height="104" title="&amp;lsquo;les différentes couleurs et leurs significations&amp;rsquo; &amp;lsquo;les différentes couleurs et leurs significations&amp;rsquo;" >&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h2&gt;En conclusion&lt;/h2&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;J&#39;espère que vous appris un nouveau raccourci sur htop.&lt;/p&gt;
-</span><span class='line'>]]&gt;&lt;/content&gt;
-</span><span class='line'>  &lt;/entry&gt;
-</span><span class='line'>
-</span><span class='line'>  &lt;entry&gt;
-</span><span class='line'>    &lt;title type=&quot;html&quot;&gt;&lt;![CDATA[Lancer Des Commandes Dans Vim]]&gt;&lt;/title&gt;
-</span><span class='line'>    &lt;link href=&quot;http://mcamuzat.github.io/blog/2015/08/31/lancer-des-commandes-dans-vim/&quot;/&gt;
-</span><span class='line'>    &lt;updated&gt;2015-08-31T23:49:17+02:00&lt;/updated&gt;
-</span><span class='line'>    &lt;id&gt;http://mcamuzat.github.io/blog/2015/08/31/lancer-des-commandes-dans-vim&lt;/id&gt;
-</span><span class='line'>    &lt;content type=&quot;html&quot;&gt;&lt;![CDATA[&lt;p&gt;Soit le fichier texte suivant:&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code class=&quot;&quot;&gt; * Alpha
-</span><span class='line'> * Foxtrot
-</span><span class='line'> * Charlie
-</span><span class='line'> * Delta
-</span><span class='line'> * Echo
-</span><span class='line'> * Bravo
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Dans VIM il suffit de taper.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code class=&quot;&quot;&gt;:%sort ou :%!sort
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Pour obtenir
-</span><span class='line'>&lt;code&gt;
-</span><span class='line'> * Alpha
-</span><span class='line'> * Bravo
-</span><span class='line'> * Charlie
-</span><span class='line'> * Delta
-</span><span class='line'> * Echo
-</span><span class='line'> * Foxtrot
-</span><span class='line'>&lt;/code&gt;&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;On peux aussi lancer plein de commandes amusantes&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code&gt; * Doublon
-</span><span class='line'> * Pas unique
-</span><span class='line'> * Doublon
-</span><span class='line'> *
-</span><span class='line'> * ...
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code&gt;!sort | uniq -c | tr &quot;[A-Z]&quot; &quot;[a-z]&quot;
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Pour ceux qui ne se rappelle plus trop les commandes de Bash&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;ul&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;sort&lt;/code&gt; trie le texte&lt;/li&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;uniq -c&lt;/code&gt; prend toute les valeurs et les comptes c&#39;est l&#39;équivalent d&#39;un &lt;code&gt;GROUP BY&lt;/code&gt; en SQL&lt;/li&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;tr&lt;/code&gt; est l&#39;abréviation de &lt;strong&gt;tr&lt;/strong&gt;anspose je remplace les lettres en &lt;code&gt;[A-Z]&lt;/code&gt; par leur équivalent en minuscule.&lt;/li&gt;
-</span><span class='line'>&lt;/ul&gt;
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code&gt;      1  *
-</span><span class='line'>      1  * ...
-</span><span class='line'>      2  * doublon
-</span><span class='line'>      1  * pas unique
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Si vous sélectionnez le texte avec &lt;code&gt;v&lt;/code&gt; et que vous appuyer sur &lt;code&gt;:&lt;/code&gt;&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Alors vous devez voir la commande suivante
-</span><span class='line'>&lt;code&gt;
-</span><span class='line'>:&#39;&amp;lt;,&#39;&amp;gt;
-</span><span class='line'>&lt;/code&gt;
-</span><span class='line'>et Ajoutez la commande que vous allez appliquer à la sélection. Par exemple &lt;code&gt;:&#39;&amp;lt;,&#39;&amp;gt;!sort&lt;/code&gt;&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Plus rigolo. On peux appeler des langages que l&#39;on veut dans VIM&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code class=&quot;php&quot;&gt;&amp;lt;?php echo &quot;bonjour&quot;;
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Tapez &lt;code&gt;!!&lt;/code&gt;
-</span><span class='line'>vous devriez voir apparaître
-</span><span class='line'>&lt;code&gt;
-</span><span class='line'>:.!
-</span><span class='line'>&lt;/code&gt;
-</span><span class='line'>Compléter avec &lt;code&gt;:.!php&lt;/code&gt;&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;votre texte va se remplacer
-</span><span class='line'>&lt;code&gt;
-</span><span class='line'>bonjour
-</span><span class='line'>&lt;/code&gt;&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Cela marche aussi avec python&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;print &quot;olleh&quot;[::-1]
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Avec le curseur sur la ligne, appuyer sur &lt;code&gt;!!&lt;/code&gt; puis ajoutez &lt;code&gt;:.!python&lt;/code&gt;&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;La ligne devient&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code class=&quot;&quot;&gt;hello
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h2&gt;Exécuter une commande Bash depuis VIM&lt;/h2&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;La commande suivante&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code&gt;php app/console cache:clear --env=prod
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Si vous voulez exécuter la commande mais ne pas modifiez la ligne.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code&gt;:.w !bash
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;C&#39;est un peu moins simple.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;ul&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;:.&lt;/code&gt; représente la ligne actuelle.&lt;/li&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;w&lt;/code&gt; représente une écriture&lt;/li&gt;
-</span><span class='line'>&lt;li&gt;&lt;code&gt;!bash&lt;/code&gt; via Bash.&lt;/li&gt;
-</span><span class='line'>&lt;/ul&gt;
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;La documentation de VIM &lt;code&gt;:help :w_c&lt;/code&gt;&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h2&gt;en résumé&lt;/h2&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;ul&gt;
-</span><span class='line'>&lt;li&gt;Si vous voulez appliquer votre commande sur tout le fichier &lt;code&gt;:%!commande&lt;/code&gt;&lt;/li&gt;
-</span><span class='line'>&lt;li&gt;S vous voulez juste la ligne &lt;code&gt;:.!commande&lt;/code&gt; ou tapez &lt;code&gt;!!&lt;/code&gt;.&lt;/li&gt;
-</span><span class='line'>&lt;li&gt;Si vous voulez sur une sélection &lt;code&gt;v&lt;/code&gt; ou &lt;code&gt;V&lt;/code&gt; puis &lt;code&gt;:&lt;/code&gt; vous deviez voir ceci &lt;code&gt;:&#39;&amp;lt;,&#39;&amp;gt;&lt;/code&gt;, ajoutez la commande souhaitée.&lt;/li&gt;
-</span><span class='line'>&lt;/ul&gt;
-</span><span class='line'>
-</span><span class='line'>]]&gt;&lt;/content&gt;
-</span><span class='line'>  &lt;/entry&gt;
-</span><span class='line'>
-</span><span class='line'>  &lt;entry&gt;
-</span><span class='line'>    &lt;title type=&quot;html&quot;&gt;&lt;![CDATA[Histogramme Et Ligne De Commande]]&gt;&lt;/title&gt;
-</span><span class='line'>    &lt;link href=&quot;http://mcamuzat.github.io/blog/2015/07/19/histogramme-et-ligne-de-commande/&quot;/&gt;
-</span><span class='line'>    &lt;updated&gt;2015-07-19T18:16:57+02:00&lt;/updated&gt;
-</span><span class='line'>    &lt;id&gt;http://mcamuzat.github.io/blog/2015/07/19/histogramme-et-ligne-de-commande&lt;/id&gt;
-</span><span class='line'>    &lt;content type=&quot;html&quot;&gt;&lt;![CDATA[&lt;h2&gt;Un petit utilitaire.&lt;/h2&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;J&#39;ai reprogrammé en php un clone de &lt;a href=&quot;https://github.com/holman/spark&quot;&gt;spark&lt;/a&gt;.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Un petit exemple est plus parlant&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code&gt;spark([1,2,3,4,4,5,6,1,2]); // ▂▃▅▆▆▇█▂▃
-</span><span class='line'>spark([1,2,3,4,5,1,2,3,4,5]); //▂▄▅▇█▂▄▅▇█
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Voici l&#39;implémentation&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code class=&quot;php&quot;&gt;function spark($array) {
-</span><span class='line'>    $bars = array(&#39;▁&#39;,&#39;▂&#39;,&#39;▃&#39;,&#39;▄&#39;,&#39;▅&#39;,&#39;▆&#39;,&#39;▇&#39;,&#39;█&#39;);
-</span><span class='line'>    $divide = max($array);
-</span><span class='line'>    if ($divide == 0) {
-</span><span class='line'>        $divide = 1;
-</span><span class='line'>    }
-</span><span class='line'>    $countBars = count($bars)-1;
-</span><span class='line'>    $out = &#39;&#39;;
-</span><span class='line'>    foreach ($array as $tick)
-</span><span class='line'>        $out .= $bars[round(($tick / $divide) * $countBars)];
-</span><span class='line'>    echo $out;
-</span><span class='line'>}
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h2&gt;L&#39;appeler en ligne de commande.&lt;/h2&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;La documentation de spark donne cette ligne de commande
-</span><span class='line'>&lt;code&gt;
-</span><span class='line'>spark 0 30 55 80 33 150
-</span><span class='line'>&lt;/code&gt;&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Est ce qu&#39;on peux faire la même chose ? Il suffit de rajouter les deux lignes suivantes.
-</span><span class='line'>&lt;code&gt;php
-</span><span class='line'>$iDontCare =array_shift($argv);
-</span><span class='line'>spark($argv);
-</span><span class='line'>return 0;
-</span><span class='line'>&lt;/code&gt;&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;On utilise la variable &lt;code&gt;$argv&lt;/code&gt; qui est le tableau de paramètres passer dans la ligne de commande. L&#39;argument &lt;code&gt;$argv[0]&lt;/code&gt;est le nom du programme, c&#39;est pour cela que l&#39;on fait un &lt;code&gt;array_shift&lt;/code&gt; cela supprime la première valeur du tableau.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code&gt;php spark.php 0 30 55 80 33 150
-</span><span class='line'>▁▂▄▅▃█
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h2&gt;L&#39;appeler via les pipes&lt;/h2&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Un peu plus compliqué via les pipes du Shell.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Les implémentations des Pipes se présentent toujours un peu de la même manière. On utilise &lt;code&gt;STDIN&lt;/code&gt;  qui représente l&#39;entrée standard.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Un exemple qui traduit les caractères accentués. &lt;code&gt;é-&amp;gt;&amp;amp;eacute&lt;/code&gt;&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code class=&quot;php&quot;&gt;#!/usr/bin/env php
-</span><span class='line'>&amp;lt;?php
-</span><span class='line'>while (!feof(STDIN)) {
-</span><span class='line'>     echo htmlentities(fgets(STDIN));
-</span><span class='line'>}
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;La ligne &lt;code&gt;!/usr/bin/env php&lt;/code&gt; s&#39;appelle le &lt;a href=&quot;https://fr.wikipedia.org/wiki/Shebang&quot;&gt;shebang&lt;/a&gt;&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Puis rendre exécutable le fichier
-</span><span class='line'>&lt;code&gt;
-</span><span class='line'>chmod +x htmlentities.php
-</span><span class='line'>&lt;/code&gt;
-</span><span class='line'>Des exemples
-</span></code></pre></td></tr></table></div></figure>
-$ echo &lsquo;énergie&rsquo; | ./htmlentities.php</p>
+&#8220;`
+Ceci est un exemple.</p>
 
-<p>&eacute;nergie</p>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt;
+Ceci est une autre ligne
+Ceci est une ligne ajoutée</p>
 
-<p>$ cat file.txt | ./htmlentities
-&#8220;`</p>
+<h1>Mais celle ci aussi</h1>
 
-<p>Ce qui est cool c&#8217;est que l&#8217;on peux chainer les opérateur.</p>
+<blockquote><blockquote><blockquote><blockquote><blockquote><blockquote><blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote>
 
-<p>Un programme qui passe la première lettre en majuscule.</p>
+<p>j&#8217;ai ajouté cette ligne</p>
 
-<pre><code class="php">#!/usr/bin/env php
-&lt;?php
-while (!feof(STDIN)) {
-     echo ucfirst(trim(fgets(STDIN)));
-}
+<pre><code>L'option `-p0` ou le plus souvent `-p1` demande à la commande `patch` d'ignorer le chemin sur un niveau.
+
+Voici un exemple avec git et le même fichier
 </code></pre>
 
-<p>Un programme qui aime crier !!!!.</p>
+<p>diff &ndash;git a/README.md b/README.md
+index 1030f85..5e8e5f9 100644
+&mdash; a/README.md
++++ b/README.md
+@@ -1,6 +1,9 @@
+ Ceci est un exemple.</p>
 
-<pre><code class="php">#!/usr/bin/env php
-&lt;?php
-while (!feof(STDIN)) {
-     echo trim(fgets(STDIN)).'!!!!';
-}
+<p>-Ceci est une ligne ajoutée</p>
+
+<p>+
++
++
++j&#8217;ai ajouté cette ligne
+<code>``
+on voit que la ligne</code>a/README.md<code>et</code>b/README.md<code>, ici pour appliquer le patch il faut utiliser</code>-p1<code>pour ignorer le premier niveau (supprime le</code>a/<code>et</code>b/`)</p>
+
+<p>Sous Git c&#8217;est plus simple</p>
+
+<pre><code class="bash">$ git apply lefichier.diff
 </code></pre>
 
-<pre><code>$ echo 'récuperation' | ./shoot.php | ./capitalize.php | ./htmlentities.php
-R&amp;eacute;cup&amp;eacute;ration!!!!
+<h2>Reverter</h2>
+
+<p>Enfin soyons complet il est possible de reverter un patch avec <code>-R</code>
+<code>bash
+patch -R -p1 &lt; mon patch
+</code></p>
+
+<p>Avec git</p>
+
+<pre><code class="bash">git apply -R &lt;mon fichier diff&gt;
 </code></pre>
-
-<p>C&#8217;est un peu plus compliqué dans la vrai vie avec les retours à la ligne vide. Mais j&#8217;espère que vous avez compris mon idée.</p>
-
-<p>Retour à notre script.</p>
-
-<p>Voici la partie pour récupérer de la ligne de commande.
-<code>php
-// si je n'ai aucun argument ..
-if (count($argv) == 0) {
-    $str = '';
-    // recupère le flux d'entrée
-    while (!feof(STDIN)) {
-        $str .= fgets(STDIN);
-    }
-    // explode laisse la derniere ligne vide.
-    // d'ou le array_filter
-    spark(array_filter(explode("\n", $str),'strlen'));
-    return 0;
-}
-</code></p>
-
-<p>Essayons une commande sur le dépôt git du blog que vous lisez.
-<code>
-git shortlog -s | cut -f1 | php ~/prog/spark/spark.php
-</code>
-<code>sh
-$ git shortlog -s
-(...)
-   2  Manu
-   37  Marc Camuzat
-   1  Marcus Young
-(..)
-</code></p>
-
-<p>On ne garde que la colonne 1 avec <code>cut -f1</code> puis on passe au script php</p>
-
-<p>On obtient
-<code>
-▁▁▁▁▁▁▁▁▁▁▁▁▃▁▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▃▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
-</code></p>
 
 <h2>Conclusion</h2>
 
-<p>J&#8217;avais besoin pour un futur article (le prochain ?) de cette fonction.
-La philosophie de Linux est de créer plein de petits programmes et que ceux-ci communiquent via une interface très simple et universelle qui est le fichier texte. Ainsi il n&#8217;y a aucune dépendance le programme 1 est en bash, le programme 2 est en C, le programme 3 est en PHP. Et tout cela ne pose aucun problème.</p>
+<p>Pas besoin d&#8217;avoir git/mercurial/svn pour créer ou jouer des patchs.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Tig : Status]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/10/04/tig-status/"/>
+    <updated>2015-10-04T21:59:59+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/10/04/tig-status</id>
+    <content type="html"><![CDATA[<p>Tig est un client git en ligne de commande</p>
+
+<p>Il n&#8217;est pas compliqué à installer :</p>
+
+<pre><code class="bash">sudo apt-get install tig
+</code></pre>
+
+<p>Néanmoins c&#8217;est la version 1.2 dans les dépôts au moment ou j&#8217;écris ces lignes.</p>
+
+<p>On peut installer la version 2 qui a plus de fonctionnalités et de raccourcis.</p>
+
+<pre><code class="bash">git clone https://github.com/jonas/tig
+make
+make install
+</code></pre>
+
+<p>attention vous aurez probablement besoin d&#8217;avoir installer la librairies <code>libncursesw</code> pour l&#8217;utf-8</p>
+
+<h2>La vue principale</h2>
+
+<p>Elle permet de voir l&#8217;historique du dépôt.</p>
+
+<p><img class="center" src="/images/tig-defaut.png" width="600" height="398" title="&lsquo;la vue par défault&rsquo; &lsquo;la vue par défaut&rsquo;" ></p>
+
+<p>Appuyer sur <code>&lt;Enter&gt;</code> pour voir la différence. (Dans la version 2, si le terminal fait plus de 160 caractères l&#8217;écran se splitte en 2 verticalement)</p>
+
+<p><img class="center" src="/images/tig-diff.png" width="600" height="399" title="&lsquo;quand on appuie sur la touche entrée, on affiche la différence&rsquo; &lsquo;l'écran de différence&rsquo;" ></p>
+
+<p>Screenshot de la version 2 avec les deux colonnes.</p>
+
+<p><img class="center" src="/images/tig_view_v2.png" width="600" height="366" title="&lsquo;dans la version 2, si le terminal&rsquo; &lsquo;Screenshot de la version 2 avec les deux colonnes.&rsquo;" ></p>
+
+<p>Il va falloir apprendre les touches Vi car on se sert beaucoup de <code>j</code> et <code>k</code> (un rappel <code>j</code> descend vers le bas et <code>k</code> va vers le haut)</p>
+
+<p>De cette écran voici les différents modes (je ne les cites pas tous)</p>
+
+<ul>
+<li><code>S</code> ou <code>s</code> pour voir le stage (équivalent de git status)</li>
+<li><code>t</code> tree view affichage en explorateur de fichier</li>
+<li><code>r</code> permet de voir les différentes branches (<code>H</code> dans la version1</li>
+<li><code>l</code> voir les logs</li>
+</ul>
+
+
+<p>Je vais surtout m&#8217;intéresser à la status view.</p>
+
+<h2>La vue Status</h2>
+
+<p>Les touches à connaitre.</p>
+
+<ul>
+<li><code>u</code> sur un noms de fichiers pour <strong>u</strong>se cela fait l&#8217;équivalent de <code>git add &lt;nom du fichier&gt;</code></li>
+</ul>
+
+
+<p>Si vous appuyer sur <code>u</code> sur les lignes <code>Changes to be commited</code>, <code>Changed but not updated</code>, <code>Untracked files</code> vous ajoutez tous les fichiers.</p>
+
+<pre><code>Changes to be committed:
+M   fichier1
+Changed but not updatedy://&lt;---(*curseur*) 
+M   fichier2
+M   fichier3
+M   fichier4
+M   fichier5
+M   fichier6
+M   fichier7
+Untracked files:
+?   nouveau fichier
+</code></pre>
+
+<p>Cela devient</p>
+
+<pre><code>Changes to be committed:
+M   fichier1
+M   fichier2
+M   fichier3
+M   fichier4
+M   fichier5
+M   fichier6
+M   fichier7
+Changed but not updatedy:
+(no files)
+Untracked files:
+?   nouveau fichier
+</code></pre>
+
+<p>Enfin on peut aussi prendre chunk par chunck (l&#8217;équivalent de <code>git add -p</code>)</p>
+
+<p><img class="center" src="/images/tig-revert.png" width="600" height="398" title="&lsquo;la vue par défaut&rsquo; &lsquo;la vue par défaut&rsquo;" ></p>
+
+<p>Il suffit d&#8217;appuyer sur <code>Enter</code> puis de se déplacer dans le commit avec <code>j</code> et <code>k</code> et appuyer sur <code>u</code> pour ajouter ce chunk. Les chunks pour faire simple sont les textes séparés par des <code>@@ ... @@</code>. On se déplace de chunk en chunk grâce à la touche <code>@</code>.</p>
+
+<p>Pour reverter le fichier, On utilise la touche <code>!</code>.</p>
+
+<p>Cela marche aussi sur un chunk. On peut donc reverter partiellement un fichier.</p>
+
+<p>Il est possible d&#8217;ajouter ligne par ligne dans un commit grâce à la touche <code>1</code>.</p>
+
+<p>Pour faire le git commit il suffit d&#8217;appuyer sur <code>C</code> comme <strong>C</strong>ommit.</p>
+
+<p>Enfin la touche <code>e</code> comme <strong>e</strong>dit ouvre le fichier dans l&#8217;éditeur par défaut.</p>
+
+<h2>Le fichier <code>.tigrc</code></h2>
+
+<p>Le fichier <code>.tigrc</code> permet de personnaliser l&#8217;affichage et d&#8217;ajouter des raccourcis claviers.</p>
+
+<p>Voici quelques exemples de ma config.</p>
+
+<pre><code class=""># Delete files in status view (useful for untracked files)
+bind status D !@?rm %(file)
+
+# Amend last commit with A
+bind status A !git commit --amend
+
+# Create and checkout a new branch; specify custom prompt
+bind main B !git checkout -b "%(prompt Enter new branch name: )"
+</code></pre>
+
+<p>Les raccourcis claviers que j&#8217;ai rajouté</p>
+
+<ul>
+<li>Dans la vue status la touche <code>D</code> efface le fichier</li>
+<li>Dans la vue status la touche <code>A</code> fait un <code>git commit --amend</code></li>
+<li>Dans la vue principale la touche <code>B</code> permet de créer une branche.</li>
+</ul>
+
+
+<h2>Résumé de touches</h2>
+
+<ul>
+<li><code>s</code> ou <code>S</code> voir la vue status</li>
+<li><code>u</code> ajouter le commit/chunk</li>
+<li><code>!</code> revert</li>
+<li><code>1</code> ajoute une lignes au commit</li>
+<li><code>@</code> aller au chunck/diff suivant</li>
+<li><code>D</code> supprimer le fichier (<em>raccourcis perso</em>)</li>
+<li><code>A</code> git amend</li>
+<li><code>e</code> ouvre dans l&#8217;éditeur par défaut</li>
+</ul>
+
+
+<h2>Des liens</h2>
+
+<ul>
+<li><a href="http://jonas.nitro.dk/tig/">le site officiel</a></li>
+<li>la <a href="https://github.com/pmiossec/tig-cheat-sheet">cheat-sheet</a> avec les raccourcis claviers (<em>indispensable</em>)</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>Je vais revenir sur les autres vues bientôt.</p>
+
+<p>Merci de m&#8217;avoir lu.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Des Commandes Au Top]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/09/27/des-commandes-au-top/"/>
+    <updated>2015-09-27T16:04:40+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/09/27/des-commandes-au-top</id>
+    <content type="html"><![CDATA[<p>J&#8217;utilise souvent le programme htop. mais il y en a d&#8217;autre.</p>
+
+<h2>atop</h2>
+
+<p>Plus austère. Beaucoup d&#8217;information sur toutes les ressources. C&#8217;est plus un outils d&#8217;audit. Le logicel donne toutes informations possibles. processeurs, disques, carte réseau. En pratique il peut même être lancer au démarrage. En pratique on parle de <code>sar</code> (<strong>S</strong>ystem <strong>A</strong>ctivity <strong>R</strong>eport). Il permet de surveiller la tailles des processus avec la colonne <code>VGROW</code> (<em>Virtual Memory Grow</em>) et <code>RGROW</code>(Resident memory Grow)
+<img class="center" src="/images/atop.png" width="600" height="381" title="&lsquo;atop&rsquo; &lsquo;atop&rsquo;" ></p>
+
+<p>voir <a href="https://en.wikipedia.org/wiki/Sar_%28Unix%29">sar</a></p>
+
+<h2>vtop</h2>
+
+<p>Un clone en Nodejs. voir le screenshot c&#8217;est vraiment très joli</p>
+
+<p><img class="center" src="/images/vtop.png" width="600" height="383" title="&lsquo;vtop&rsquo; &lsquo;vtop&rsquo;" ></p>
+
+<p>installation via npm
+<code>sh
+sudo npm install -g vtop
+</code></p>
+
+<p>dépot <a href="https://github.com/MrRio/vtop">Github</a></p>
+
+<h2>Htop</h2>
+
+<h3>Quelques options</h3>
+
+<h3>filtrer par utilisateur</h3>
+
+<pre><code class="sh">$ htop -umarc
+</code></pre>
+
+<p>ou <code>u</code> dans Htop</p>
+
+<h4>Sélectionner un process</h4>
+
+<p>Utilisez la barre d&#8217;espace pour sélectionner un process. Cela permet de le suivre.</p>
+
+<ul>
+<li><code>F7</code> ou  <code>F8</code> pour augmenter la priorité du process</li>
+<li><code>F9</code> ou <code>k</code> pour killer un process</li>
+<li><code>F5</code> affichage en arbre.</li>
+<li><code>a</code> pour assigner le process à un CPU.</li>
+<li><code>U</code> pour désélectionnér tous les process</li>
+</ul>
+
+
+<h4>Personnalisez l&#8217;affichage</h4>
+
+<p>La touche magique ici est <code>&lt;F2&gt;</code>. Vous pouvez personnaliser les deux colonnes avec les raccourcis claviers suivants. La colonne toutes à droite donne les widgets disponibles</p>
+
+<ul>
+<li><code>&lt;F5&gt;</code> ajouter le widget à la colonne de droite.</li>
+<li><code>&lt;F6&gt;</code> ajouter le widget à la colonne de gauche.</li>
+</ul>
+
+
+<p>Sur une colonne vous pouvez sélectionniez le type d&#8217;affiche (texte simple, histogramme, etc..) via la touche <code>&lt;F4&gt;</code></p>
+
+<p>Voir le screenshot (<code>Text</code>, <code>Graph</code>,<code>Led</code>, <code>Bar</code>)
+<img class="center" src="/images/typeaffichage.png" width="600" height="133" title="&lsquo;les quatre types d'affichage&rsquo; &lsquo;les quatre types d'affichage&rsquo;" ></p>
+
+<h3>Les codes couleurs</h3>
+
+<p>La touche <code>h</code> permet d&#8217;obtenir de l&#8217;aide, les raccourcis claviers et la significations des couleurs.</p>
+
+<p><img class="center" src="/images/codecouleur.png" width="600" height="104" title="&lsquo;les différentes couleurs et leurs significations&rsquo; &lsquo;les différentes couleurs et leurs significations&rsquo;" ></p>
+
+<h2>En conclusion</h2>
+
+<p>J&#8217;espère que vous appris un nouveau raccourci sur htop.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Lancer Des Commandes Dans Vim]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/08/31/lancer-des-commandes-dans-vim/"/>
+    <updated>2015-08-31T23:49:17+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/08/31/lancer-des-commandes-dans-vim</id>
+    <content type="html"><![CDATA[<p>Soit le fichier texte suivant:</p>
+
+<pre><code class=""> * Alpha
+ * Foxtrot
+ * Charlie
+ * Delta
+ * Echo 
+ * Bravo
+</code></pre>
+
+<p>Dans VIM il suffit de taper.</p>
+
+<pre><code class="">:%sort ou :%!sort
+</code></pre>
+
+<p>Pour obtenir
+<code>
+ * Alpha
+ * Bravo
+ * Charlie
+ * Delta
+ * Echo
+ * Foxtrot
+</code></p>
+
+<p>On peux aussi lancer plein de commandes amusantes</p>
+
+<pre><code> * Doublon
+ * Pas unique
+ * Doublon
+ * 
+ * ...
+</code></pre>
+
+<pre><code>!sort | uniq -c | tr "[A-Z]" "[a-z]"
+</code></pre>
+
+<p>Pour ceux qui ne se rappelle plus trop les commandes de Bash</p>
+
+<ul>
+<li><code>sort</code> trie le texte</li>
+<li><code>uniq -c</code> prend toute les valeurs et les comptes c&#8217;est l&#8217;équivalent d&#8217;un <code>GROUP BY</code> en SQL</li>
+<li><code>tr</code> est l&#8217;abréviation de <strong>tr</strong>anspose je remplace les lettres en <code>[A-Z]</code> par leur équivalent en minuscule.</li>
+</ul>
+
+
+<pre><code>      1  * 
+      1  * ...
+      2  * doublon
+      1  * pas unique
+</code></pre>
+
+<p>Si vous sélectionnez le texte avec <code>v</code> et que vous appuyer sur <code>:</code></p>
+
+<p>Alors vous devez voir la commande suivante
+<code>
+:'&lt;,'&gt;
+</code>
+et Ajoutez la commande que vous allez appliquer à la sélection. Par exemple <code>:'&lt;,'&gt;!sort</code></p>
+
+<p>Plus rigolo. On peux appeler des langages que l&#8217;on veut dans VIM</p>
+
+<pre><code class="php">&lt;?php echo "bonjour";
+</code></pre>
+
+<p>Tapez <code>!!</code>
+vous devriez voir apparaître
+<code>
+:.!
+</code>
+Compléter avec <code>:.!php</code></p>
+
+<p>votre texte va se remplacer
+<code>
+bonjour
+</code></p>
+
+<p>Cela marche aussi avec python</p>
+
+<pre><code class="python">print "olleh"[::-1]
+</code></pre>
+
+<p>Avec le curseur sur la ligne, appuyer sur <code>!!</code> puis ajoutez <code>:.!python</code></p>
+
+<p>La ligne devient</p>
+
+<pre><code class="">hello
+</code></pre>
+
+<h2>Exécuter une commande Bash depuis VIM</h2>
+
+<p>La commande suivante</p>
+
+<pre><code>php app/console cache:clear --env=prod
+</code></pre>
+
+<p>Si vous voulez exécuter la commande mais ne pas modifiez la ligne.</p>
+
+<pre><code>:.w !bash
+</code></pre>
+
+<p>C&#8217;est un peu moins simple.</p>
+
+<ul>
+<li><code>:.</code> représente la ligne actuelle.</li>
+<li><code>w</code> représente une écriture</li>
+<li><code>!bash</code> via Bash.</li>
+</ul>
+
+
+<p>La documentation de VIM <code>:help :w_c</code></p>
+
+<h2>en résumé</h2>
+
+<ul>
+<li>Si vous voulez appliquer votre commande sur tout le fichier <code>:%!commande</code></li>
+<li>S vous voulez juste la ligne <code>:.!commande</code> ou tapez <code>!!</code>.</li>
+<li>Si vous voulez sur une sélection <code>v</code> ou <code>V</code> puis <code>:</code> vous deviez voir ceci <code>:'&lt;,'&gt;</code>, ajoutez la commande souhaitée.</li>
+</ul>
+
 ]]></content>
   </entry>
   
