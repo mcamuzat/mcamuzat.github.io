@@ -1,0 +1,2963 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Mon blog perso.</title>
+  <meta name="author" content="mcamuzat">
+
+  
+  <meta name="description" content="Docker-compose Dans le post précèdent sur docker, j'avais expliqué comment automatiser la création des containers grâce au Dockerfile aujourd'hui je &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mcamuzat.github.io/posts/5/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Mon blog perso." type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-60315965-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Mon blog perso.</a></h1>
+  
+    <h2>Un simple blog PHP/Linux/Programmation/Docker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="mcamuzat.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/05/03/docker-compose/">Docker-compose</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-05-03T21:33:31+02:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>9:33 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Docker-compose</h2>
+
+<p>Dans le post précèdent sur docker, j&#8217;avais expliqué comment automatiser la création des containers grâce au <code>Dockerfile</code> aujourd&#8217;hui je vais expliquer <code>docker-compose</code></p>
+
+<h2>Intro.</h2>
+
+<p>Dans un projet, il n&#8217;y a rarement qu&#8217;une seule instance. Voir il peut y avoir plusieurs fronts et une seule base de donnée. docker-compose est la justement pour organiser cela.</p>
+
+<p>Par exemple le <code>docker-compose.yml</code> suivant:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">web</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">php:5.6-apache</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">links</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">db:db</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">volumes</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">.:/var/www/html</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">db</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">postgres</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On déclare deux type de containers le container type <strong>web</strong> et le container de type <strong>db</strong>. à noter la ligne <code>links</code> qui fait que le container web partage/vois le container db</p>
+
+<p>Il suffit de faire <code>docker-compose up</code> (comme un <code>vagrant up</code>)  pour automatiquement lancer deux containers. un container web avec une image php-5.6, et un container avec PostGresSQL</p>
+
+<h2>Installation</h2>
+
+<p>Il existe deux façons de l&#8217;installer soit passer par <code>pip</code> (pip est l&#8217;équivalent de <code>npm</code> pour le python).</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo pip install -U docker-compose
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ou de passer par curl</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>curl -L https://github.com/docker/compose/releases/download/1.2.0/docker-compose-<span class="sb">`</span>uname -s<span class="sb">`</span>-<span class="sb">`</span>uname -m<span class="sb">`</span> &gt; /usr/local/bin/docker-compose
+</span><span class='line'>chmod +x /usr/local/bin/docker-compose
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Quelques commandes</h2>
+
+<p>Lancer les containers en mode démon (<code>-d</code>)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker-compose up -d
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cela crée deux containers</p>
+
+<p>Que l&#8217;on peux surveiller grâce à la commande suivante</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker-compose ps
+</span><span class='line'>    Name                   Command               State    Ports
+</span><span class='line'>-----------------------------------------------------------------
+</span><span class='line'>compose_db_1    /docker-entrypoint.sh postgres   Up      5432/tcp
+</span><span class='line'>compose_web_1   apache2-foreground               Up      80/tcp
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On peux voir les logs</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker-compose logs
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Plus intéressant on peux rajouter des containers..</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker-compose scale <span class="nv">web</span><span class="o">=</span>3
+</span><span class='line'>Creating compose_web_2...
+</span><span class='line'>Creating compose_web_3...
+</span><span class='line'>Starting compose_web_2...
+</span><span class='line'>Starting compose_web_3...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si je re-liste mes containers</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker-compose ps
+</span><span class='line'>    Name                   Command               State    Ports
+</span><span class='line'>-----------------------------------------------------------------
+</span><span class='line'>compose_db_1    /docker-entrypoint.sh postgres   Up      5432/tcp
+</span><span class='line'>compose_web_1   apache2-foreground               Up      80/tcp
+</span><span class='line'>compose_web_2   apache2-foreground               Up      80/tcp
+</span><span class='line'>compose_web_3   apache2-foreground               Up      80/tcp
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je viens de multiplier par 3 le nombre de container en une simple commande et sans stopper le système.</p>
+
+<h2>Conclusion</h2>
+
+<p>Si vous n&#8217;avez qu&#8217;un seul container docker-compose ne sert pas à grand chose. Mais si vous avez plusieurs containers. Cela ne vaux pas la peine de se priver. Docker-compose contient en fait la liste des container ainsi que leurs configurations si on devait les lancers en la ligne de commande.</p>
+
+<p>Dans le prochain post sur docker, je vais tenter <code>docker-machine</code>.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/04/29/awesome-et-liste-de-liens/">Awesome Et Liste De Liens</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-04-29T22:15:34+02:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:15 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Introduction</h2>
+
+<p>Les développeurs aiment les liens. Il y a toujours un article à partager et/ou sauvegarder. Pour les sauvegarder, Personnelement j&#8217;utilisai un fichier texte ou j&#8217;ajoutai en favori dans mon navigateur (avec plus ou moins de bonheur au moment du changement d&#8217;ordinateur). Des gens ont décidé de versionner leurs listes de liens sur Github.  Cela s&#8217;appelle  <strong>Awesome</strong>-(la techno ou le thème que vous vous voulez)</p>
+
+<p>par exemple:</p>
+
+<ul>
+<li>PHP : <a href="https://github.com/ziadoz/awesome-php">awesome-php</a></li>
+<li>Symfony2 : <a href="https://github.com/EmanueleMinotto/awesome-symfony2">awesome-symfony2</a></li>
+<li>Docker : <a href="https://github.com/veggiemonk/awesome-docker">awesome-docker</a></li>
+<li>Les meilleurs cours en ligne : <a href="https://github.com/prakhar1989/awesome-courses">awesome-courses</a></li>
+<li>React : <a href="https://github.com/enaqx/awesome-react">awesome-react</a></li>
+<li>Sysadmin: <a href="https://github.com/kahun/awesome-sysadmin">awesome-sysadmin</a></li>
+<li>Web Performance Optimization:<a href="https://github.com/davidsonfellipe/awesome-wpo">awesome-wpo</a></li>
+<li>etc ..</li>
+</ul>
+
+
+<h2>Des listes qui contiennent des listes.</h2>
+
+<p>Ben oui la liste est longue. C&#8217;est pour cela qu&#8217;il existe une awesome-list de awesome</p>
+
+<ul>
+<li><a href="https://github.com/bayandin/awesome-awesomeness">awesome-awesomeness</a></li>
+</ul>
+
+
+<h2>Une conclusion</h2>
+
+<p>Si vous cherchez à vous former dans une techno, je crois que vous savez par où commencer.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/04/26/docker-et-dockerfile/">Docker Et Dockerfile</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-04-26T19:44:44+02:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:44 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Introduction</h2>
+
+<p>Je continue dans mon exploration de Docker, aujourd&#8217;hui nous allons voir comment automatiser la création d&#8217;un container à l&#8217;aide d&#8217;un <code>Dockerfile</code>.</p>
+
+<p>Nous allons créer un container pour <a href="http://jonas.nitro.dk/tig/">tig</a>.. C&#8217;est un interface git qui marche sous un terminal. Pour moi, c&#8217;est un magnifique outil de travail. Je m&#8217;en sers très souvent (surtout la vue de status (touche <code>S</code>) puis <code>u</code> pour ajouter, <code>!</code> pour reverter, <code>C</code> pour commit, <code>e</code> pour lancer mon éditeur (Bien entendu Vim)</p>
+
+<p>Nous allons faire</p>
+
+<ul>
+<li>L&#8217;installation à la main</li>
+<li>Puis écrire le <code>Dockerfile</code> qui automatise la partie 1</li>
+<li>Optimiser un peu celui-ci en utilisant une autre distribution</li>
+<li>Faire des commit sous Github, puis sous DockerHub</li>
+</ul>
+
+
+<h2>Création du container à la main</h2>
+
+<p>Je commence avec une Ubuntu que je lance en mode interactif.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker run -it ubuntu:14.10
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je mets à jour ma distribution</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>apt-get update
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>J&#8217;installe tig (il est dans les dépôts officiels)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>apt-get install -y tig
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A cause du <code>apt-get update</code> Ubuntu a téléchargé toutes les sources des dépôts dans le répertoire <code>var/lib/apt/lists/</code> pour ne pas alourdir le container je vais effacer celui-ci</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>rm -rf /var/lib/apt/lists/*
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je lance <code>tig</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>root@0a475b7fbed7:/# tig
+</span><span class='line'>tig: Not a git repository
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il n&#8217;y a pas de dépot git à la racine c&#8217;est normal.</p>
+
+<p>je quitte mon container et je liste</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker ps -a
+</span><span class='line'>CONTAINER ID        IMAGE                                         COMMAND                CREATED             STATUS                            PORTS                                                                         NAMES
+</span><span class='line'>0a475b7fbed7        ubuntu:14.10                                  <span class="s2">&quot;/bin/bash&quot;</span>            <span class="m">13</span> minutes ago      Exited <span class="o">(</span>130<span class="o">)</span> About a minute ago
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je vais le committer.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker commit -m <span class="s2">&quot;add tig&quot;</span> -a <span class="s2">&quot;mcamuzat&quot;</span> admiring_yonath mcamuzat/tig:v1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je vais le relancer avec la commande suivante.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker run -t -i -v <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:/project mcamuzat/tig:v1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>En gros j&#8217;ai crée un lien symbolique qui pointe le répertoire courant de mon ordinateur vers le répertoire <code>project</code> du container.</p>
+
+<p>je me place dans le répertoire project.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">cd</span> /project
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>et je lance tig</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>tig
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si dans le répertoire courant il y a un dépôt git. Normalement l&#8217;interface de Tig apparait.</p>
+
+<p>Voila j&#8217;ai placé tig dans un container.</p>
+
+<h2>Automatisation via un DockerFile.</h2>
+
+<p>On se place dans un répertoire vide</p>
+
+<p>Je crée un fichier <code>DockerFile</code> avec le contenu suivant</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>FROM ubuntu:14.10
+</span><span class='line'>MAINTAINER Marc Camuzat &lt;marco@crans.org&gt;
+</span><span class='line'>RUN apt-get update <span class="se">\</span>
+</span><span class='line'>    <span class="o">&amp;&amp;</span> apt-get install -y mysql-client <span class="se">\</span>
+</span><span class='line'>    <span class="o">&amp;&amp;</span> rm -rf /var/lib/apt/lists/*
+</span><span class='line'>WORKDIR /project
+</span><span class='line'>VOLUME  /project
+</span><span class='line'>ENTRYPOINT <span class="o">[</span><span class="s2">&quot;tig&quot;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>WORKDIR</code> et <code>VOLUME</code> indique à Docker que le répertoire par défault est <code>project</code> et que l&#8217;on lance tig</p>
+
+<p>On va maintenant demander à docker de <em>builder</em> l&#8217;image à l&#8217;aide de la commande suivante</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker build -t mcamuzat/tig:v2 .
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On attend un peu.. Et on relance</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker run -t -i -v <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:/project mcamuzat/tig:v2
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>C&#8217;est beaucoup plus rapide.</p>
+
+<h2>Optimisons la taille.</h2>
+
+<p>Quand je liste mon image via la commande suivante</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>REPOSITORY              TAG                     IMAGE ID            CREATED             VIRTUAL SIZE
+</span><span class='line'>mcamuzat/tig            v2                      103a05c16a2b        <span class="m">3</span> minutes ago       234.6 MB
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Mon container fait 234 méga ! C&#8217;est beaucoup pour un simple utilitaire.
+pour simplifier je vais utiliser une autre distribution <a href="https://www.alpinelinux.org/">alpine-linux</a> (que je ne connaissais pas ..) et le dockerhub <a href="https://registry.hub.docker.com/u/gliderlabs/alpine/">suivant</a> qui réduit la distribution à 5 méga !</p>
+
+<p>Voici mon <code>DockerFile</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>FROM gliderlabs/alpine:3.1
+</span><span class='line'>RUN apk --update add tig
+</span><span class='line'>WORKDIR /project
+</span><span class='line'>VOLUME  /project
+</span><span class='line'>ENTRYPOINT <span class="o">[</span><span class="s2">&quot;tig&quot;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je relance un build.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker build -t mcamuzat/tig:v3 .
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Maintenant mon container ne fait plus que 24 Méga !</p>
+
+<h2>Publions sous Github</h2>
+
+<p>Nous allons créer un nouveau dépôt avec un README.</p>
+
+<p>Que je vais cloner.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git clone https://github.com/mcamuzat/tig-docker.git
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je vais ajouter mon DockerFile, Commiter et Pusher</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git add Dockerfile
+</span><span class='line'>git commit -m<span class="s2">&quot;initial commit&quot;</span>
+</span><span class='line'>git push origin master
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Et c&#8217;est tout.</p>
+
+<p>Résultat <a href="https://github.com/mcamuzat/tig-docker">ici</a></p>
+
+<h2>Publions sur DockerHub</h2>
+
+<p>Je pars du principe que vous avez un compte sur DockerHub.</p>
+
+<ul>
+<li>Cliquer sur le bouton <code>Add Repository-&gt;Automated Build</code></li>
+<li>choisir Github.</li>
+<li>Puis On va vous demander de relier votre compte DockerHub à Github.</li>
+<li>DockerHub va vous demander quel projet vous souhaitez builder automatiquement.</li>
+</ul>
+
+
+<p>Résultat <a href="https://registry.hub.docker.com/u/mcamuzat/tig/">ici</a></p>
+
+<h2>Conclusion</h2>
+
+<p>Le Dockerfile sert à automatiser la création d&#8217;image. il est plus simple de stocker le <code>Dockerfile</code> que le container (puisque Dockerhub s&#8217;occupe de faire build)</p>
+
+<p>J&#8217;ai crée mon premier dépôt. Ce n&#8217;est pas très compliqué. Dans un prochain article, je vais essayer d&#8217;expérimenter <code>docker compose</code>.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/04/22/correction-orthographique-et-vim/">Correction Orthographique Et VIM</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-04-22T22:26:43+02:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>10:26 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>J&#8217;ai assisté à un Meetup sur VIM.</p>
+
+<p>Le speaker parlait de la correction orthographique sous VIM. Je savais que c&#8217;était possible, mais je ne m&#8217;en suis jamais servis. J&#8217;ai donc décidé de réessayer.. Et j&#8217;ai vu de façon différente mes posts sur ce blog. Je suis repasser un peu sur tout.</p>
+
+<p>Voici la commande pour activer/installer la correction automatique</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>set spell spelllang=fr</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Normalement Vim va télécharger pour vous les différents fichiers sur le Ftp officiel.  Il y a une commande interactive pour vous aider dans l&#8217;installation. Si jamais il a un souci le wiki français indique de se placer dans son répertoire <code>spell</code> (chez moi <code>~/.vim/spell</code>) et de lancer les commandes suivantes</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>wget http://ftp.vim.org/vim/runtime/spell/fr.latin1.spl
+</span><span class='line'>wget http://ftp.vim.org/vim/runtime/spell/fr.latin1.sug
+</span><span class='line'>wget http://ftp.vim.org/vim/runtime/spell/fr.utf-8.spl
+</span><span class='line'>wget http://ftp.vim.org/vim/runtime/spell/fr.utf-8.sug
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>La touche magique ici est <code>z=</code> puis les touches du <code>0..n</code>. <code>]s</code> pour aller à l&#8217;erreur suivante <code>[s</code> pour l&#8217;erreur précédente. Il y a différentes touches pour ajouter à son propre dictionnaire. J&#8217;avoue que cela ne m&#8217;intéresse pas trop de suite.</p>
+
+<p>On peut aussi faire de l&#8217;auto complétion ou plutôt de l&#8217;auto correction pendant la saisie avec les touche <code>Ctrl-x</code> + <code>s</code>.</p>
+
+<h2>Résumé</h2>
+
+<table>
+<thead>
+<tr>
+<th> Touche      </th>
+<th style="text-align:center;"> Description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>z=</code>               </td>
+<td style="text-align:center;"> auto correct si <code>spell</code> est activée</td>
+</tr>
+<tr>
+<td> <code>[s</code>               </td>
+<td style="text-align:center;"> erreur précédente</td>
+</tr>
+<tr>
+<td> <code>]s</code>               </td>
+<td style="text-align:center;"> erreur suivante</td>
+</tr>
+<tr>
+<td> <code>Crtl-x s</code>      </td>
+<td style="text-align:center;">auto complétion via le dictionnaire </td>
+</tr>
+</tbody>
+</table>
+
+
+<p>Warning : <code>Ctrl-s</code> parfois freeze le terminal (option pratique quand je regarde les tests fonctionnels passés). Pour <em>defreezer</em> le terminal c&#8217;est <code>Ctrl-Q</code></p>
+
+<h2>Conclusion:</h2>
+
+<p>Il manque le correcteur grammatical :-)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/04/18/dockers-et-ci/">Docker Et CI</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-04-18T18:13:48+02:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:13 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Introduction</h2>
+
+<p>je continue sur ma découverte de Docker. Je vais parler de deux containers</p>
+
+<ul>
+<li><a href="https://github.com/jolicode/docker-images/tree/master/languages/php/phaudit">phaudit</a>  pour faire de la qualité de code</li>
+<li><a href="https://github.com/jolicode/JoliCi">JoliCi</a> pour l&#8217;intégration continu</li>
+</ul>
+
+
+<h2>Faire de la qualité avec Docker</h2>
+
+<p>Il y a un container fourni par <a href="https://github.com/jolicode/docker-images/tree/master/languages/php/phaudit">phaudit</a> qui contient déjà des outils pour auditer le code.</p>
+
+<p>Voici la ligne de commande pour l&#8217;installer</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>docker pull jolicode/phaudit</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Et je me place dans mon répertoire projet</p>
+
+<h3>Listes des programmes</h3>
+
+<ul>
+<li><a href="http://github.com/sebastianbergmann/phploc">PHPLoc</a> <code>phploc</code> donne le nombre de ligne, le nombre de classes etc ..</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>docker run -t -i -v `pwd`:/project jolicode/phaudit phploc src
+</span><span class='line'>Directories                                         10
+</span><span class='line'>Files                                               91
+</span><span class='line'>
+</span><span class='line'>Size
+</span><span class='line'>  Lines of Code (LOC)                             7295
+</span><span class='line'>  Comment Lines of Code (CLOC)                    3228 (44.25%)
+</span><span class='line'>  Non-Comment Lines of Code (NCLOC)               4067 (55.75%)
+</span><span class='line'>  Logical Lines of Code (LLOC)                     774 (10.61%)
+</span><span class='line'>    Classes                                        711 (91.86%)
+</span><span class='line'>      Average Class Length                           8
+</span><span class='line'>        Minimum Class Length                         0
+</span><span class='line'>        Maximum Class Length                        67
+</span><span class='line'>      Average Method Length                          1
+</span><span class='line'>        Minimum Method Length                        0
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><a href="http://phpmd.org/">PHP Mess Detector</a> <code>phpmd</code> donne un retour sur la qualité du code (nommage des variables etc..)</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>phaudit phpmd . text naming
+</span><span class='line'>/project/src/Allmy/Protocol/LineReceiver.php:38   Avoid variables with short names like $b. Configured minimum length is 3.
+</span><span class='line'>/project/src/Allmy/Reactor/StreamSelectReactor.php:32 Avoid variables with short names like $id. Configured minimum length is 3.
+</span><span class='line'>/project/src/Allmy/Reactor/StreamSelectReactor.php:43 Avoid variables with short names like $id. Configured minimum length is 3.
+</span><span class='line'>/project/src/Allmy/Reactor/StreamSelectReactor.php:53 Avoid variables with short names like $id. Configured minimum length is 3.
+</span><span class='line'>...
+</span><span class='line'>...</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><a href="http://pear.php.net/PHP_CodeSniffer">PHP_CodeSniffer</a>  <code>phpcs</code> erreur de convention de code (Psr-..) et  <code>phpcbf</code>pour les fixer automatiquement</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>docker run -t -i -v `pwd`:/project jolicode/phaudit phpcs src/Allmy/Reactor/StreamSelectReactor.php
+</span><span class='line'>FILE: /project/src/Allmy/Reactor/StreamSelectReactor.php
+</span><span class='line'>----------------------------------------------------------------------
+</span><span class='line'>FOUND 85 ERRORS AND 3 WARNINGS AFFECTING 63 LINES
+</span><span class='line'>----------------------------------------------------------------------
+</span><span class='line'>   2 | ERROR   | [ ] Missing file doc comment
+</span><span class='line'>  11 | ERROR   | [ ] Missing class doc comment
+</span><span class='line'>  15 | ERROR   | [ ] Private member variable "timers" must be
+</span><span class='line'>.....
+</span><span class='line'>.....
+</span><span class='line'>.....
+</span><span class='line'> 275 | ERROR   | [ ] Parameter tags must be grouped together in a doc
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><a href="http://github.com/sebastianbergmann/phpcpd">PHP Copy/Paste Detector</a> <code>phpcpd</code> détecte les copier/coller</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>docker run -t -i -v `pwd`:/project jolicode/phaudit phpcpd src
+</span><span class='line'>Found 2 exact clones with 101 duplicated lines in 4 files:
+</span><span class='line'>
+</span><span class='line'>  -   /project/src/Allmy/Stream/Factory.php:9-53
+</span><span class='line'>  /project/src/Allmy/Internet/Factory.php:9-53
+</span><span class='line'> 
+</span><span class='line'>  -   /project/src/Allmy/Transport/TcpServer.php:9-66
+</span><span class='line'>  /project/src/Allmy/Socket/Server.php:9-66
+</span><span class='line'> 
+</span><span class='line'>1.38% duplicated lines out of 7295 total lines of code.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>d&#8217;autre commandes que je connais un peu moins</p>
+
+<ul>
+<li><p><a href="http://pdepend.org/">PHP_Depend</a> <code>pdepend</code> donnes des analyses, dépendences, complexités etc..</p></li>
+<li><p><a href="http://github.com/sebastianbergmann/phpdcd">PHP Dead Code Detector</a> <code>phpdcd</code> détecte le code qui semble ne pas servir.</p></li>
+<li><p><a href="http://www.phpmetrics.org/">PhpMetrics</a> <code>phpmetrics</code> donnes des métriques (Je ne connais pas)</p></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>docker run -t -i -v `pwd`:/project jolicode/phaudit phpmetrics --report-cli .</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><a href="http://cs.sensiolabs.org/">PHP Coding Standards Fixer</a> as <code>php-cs-fixer</code> une autre commandes pour fixer le code par <a href="http://cs.sensiolabs.org/">Sensio</a></li>
+</ul>
+
+
+<p>L&#8217;astuce est de se créer l&#8217;alias suivant</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>alias phaudit="docker run --rm -ti \
+</span><span class='line'>    -v \`pwd\`:/project \
+</span><span class='line'>    jolicode/phaudit"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>alors les lignes de commandes précédentes deviennent plus simple</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>phaudit phpmd . text naming</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Tester sur toutes les versions de php</h2>
+
+<p>Fait par la même équipe.</p>
+
+<p>il est possible de faire une intégration continue en local. Il va lancer les builds en testant toutes versions de php spécifié dans un fichier <code>yml</code>.</p>
+
+<p>L&#8217;installation est très simple il suffit de télécharger le <code>.phar</code> à l&#8217;url <a href="https://github.com/jolicode/JoliCi/releases">suivante</a></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>wget url du fichier phar</span></code></pre></td></tr></table></div></figure>
+
+
+<p>il faut créer un fichier <code>.travis.yml</code> voici les lignes à ajouter pour un projet en php</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">language</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">php</span>
+</span><span class='line'><span class="l-Scalar-Plain">php</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="s">&quot;5.5&quot;</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="s">&quot;5.4&quot;</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="s">&quot;5.3&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>puis la commande suivante:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">php jolici.phar run</span>
+</span><span class='line'><span class="l-Scalar-Plain">Creating builds...</span>
+</span><span class='line'><span class="l-Scalar-Plain">3 builds created</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">Running job php = 5.5</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">PHPUnit 3.7.38 by Sebastian Bergmann.</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">Configuration read from /home/project/phpunit.xml.dist</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">......</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">Time</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">106 ms, Memory</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">3.50Mb</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">OK (6 tests, 34 assertions)</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">Running job php = 5.4</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">PHPUnit 3.7.38 by Sebastian Bergmann.</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">Configuration read from /home/project/phpunit.xml.dist</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">......</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">Time</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">131 ms, Memory</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">3.50Mb</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">OK (6 tests, 34 assertions)</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">Running job php = 5.3</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">PHPUnit 3.7.38 by Sebastian Bergmann.</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">Configuration read from /home/project/phpunit.xml.dist</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">......</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">Time</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">7 ms, Memory</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">6.25Mb</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">OK (6 tests, 34 assertions)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>En ajoutant un fichier <code>.yml</code> et sans installer aucune version de php, je peux tester sur trois plateformes mon code. C&#8217;est vraiment impressionnant.</p>
+
+<h2>Conclusion</h2>
+
+<p>Nous avons vus ensemble deux applications très simples qui permettent d&#8217;intégrer Docker dans notre workflow.</p>
+
+<p>Merci à l&#8217;équipe <a href="http://jolicode.com/">JoliCode</a>  pour ces deux outils.</p>
+
+<p>Je me suis inspiré de la présentation suivante.
+<a href="http://slides.com/jeremyderusse/docker-dev#/5/2">http://slides.com/jeremyderusse/docker-dev#/5/2</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/04/15/10print/">10print</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-04-15T22:38:15+02:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:38 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Je suis tombé un peu par hasard sur la critique du livre <a href="http://10print.org/">10 PRINT</a> , le pdf du livre est gratuit et plutôt joli, il parle de programmation, d&#8217;art et d&#8217;aléatoire.
+Tout le livre est centré sur le programme de basic suivant qui donne l&#8217;image de la couverture.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>10 PRINT CHR$(205.5+RND(1)); : GOTO 10
+</span><span class='line'>/\\\\\\//\\////\\/\/\/\//\///////\\/////\///\\/\\
+</span><span class='line'>\/\///\/\//\\//\\\/\\\/\///\\\\\\/\/\\\\\\/\\\/\\
+</span><span class='line'>\\////\/////\\\\\\\/\\\\\\\\\\\//////\/\/\\\\/\//
+</span><span class='line'>/\//\\\/\\\/\\///\\//\////\\/\/\//\\//\//\\/////\
+</span><span class='line'>///\\/\\\\///\\/\/////\\\/\\\///\//\\\\//\\//\//\
+</span><span class='line'>//\\\\//\\/\//\\//\///\\/////\///\/\//\/\//\//\\/
+</span><span class='line'>//\/\/\///\\\/\//\////\\\//\/\/\\\\\\//\\\\\///\/
+</span><span class='line'>//\\/\\\//\////\//\\\\\/\////\\\///\/\\/\//\\\///
+</span><span class='line'>//\//\/\\\\\//////\///\/\\\/\/\/\\//\\/\\\//\//\\
+</span><span class='line'>//\/\/\\\/\\/\/\////\//\\//\\//\/\///\/\/////\///
+</span><span class='line'>//\\//\\\/////\//\//\\/\\//\/\//\//\\/\//\\\\\//\</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bon la police d&#8217;écriture ne rend pas vraiment justice au code.</p>
+
+<p>C&#8217;est possible de faire le même motif en PHP et en peu de code ?</p>
+
+<p>Une solution</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$out</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;\\&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="k">for</span><span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">){</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="nv">$out</span><span class="p">[</span><span class="nb">array_rand</span><span class="p">(</span><span class="nv">$out</span><span class="p">)];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Attention <code>array_rand</code> renvoie la clé et non la valeur d&#8217;où le <code>$out[array_rand($out)]</code></p>
+
+<p>Et puis je me suis dit que array_rand ne sert pas à grand chose.</p>
+
+<p>Donc j&#8217;ai essayé</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$out</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;\\&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="k">for</span><span class="p">(</span><span class="nv">$i</span> <span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">){</span>
+</span><span class='line'> <span class="k">echo</span> <span class="nv">$out</span><span class="p">[</span><span class="nb">rand</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>pour générer des nombres aléatoire, il vaut mieux utiliser <code>mt_rand</code> qui d&#8217;après la documentation génère des nombres aléatoires plus intéressants (?). Pour des vrai nombres aléatoires pour les mots de passe,  on utilise des librairies voir cette <a href="http://blog.ircmaxell.com/2013/01/password-storage-talk-at-php-benelux-13.html">présentation</a>.</p>
+
+<p>Mais il est possible d&#8217;initialiser plus d&#8217;une constante dans la boucle for.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">for</span><span class="p">(</span><span class="nv">$i</span> <span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nv">$out</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;\\&#39;</span><span class="p">);</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">){</span>
+</span><span class='line'> <span class="k">echo</span> <span class="nv">$out</span><span class="p">[</span><span class="nb">mt_rand</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On peut aussi faire plus d&#8217;une action dans l&#8217;incrémentation.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">for</span><span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">$out</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;\\&#39;</span><span class="p">);</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">,</span> <span class="k">echo</span> <span class="nv">$out</span><span class="p">[</span><span class="nb">mt_rand</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+</span><span class='line'><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On minimise les variables et la notation avec les <code>[]</code></p>
+
+<p>Nous obtenons le code suivant</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">for</span><span class="p">(</span><span class="nv">$i</span> <span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nv">$o</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;\\&#39;</span><span class="p">];</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">,</span> <span class="k">echo</span> <span class="nv">$o</span><span class="p">[</span><span class="nb">mt_rand</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)]);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je n&#8217;avais jamais écris de boucle for sans corps(<code>{..}</code>).</p>
+
+<p>La documentation de PHP est plutôt claire sur le <a href="http://php.net/manual/fr/control-structures.for.php">for</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/04/12/docker-je-debute/">Docker Je Débute</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-04-12T22:25:27+02:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:25 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Docker</h2>
+
+<p>Suite à une présentation à une conférence. J&#8217;ai commencé à m&#8217;y mettre. J&#8217;écris ce post en tant que grand débutant..</p>
+
+<p>Docker est une solution de virtualisation d&#8217;instance, plus précisément de container. Il y a pas mal de différence avec les différentes visualisations de Virtual box/Xen/VmWare. On isole juste les process et le file-system. Ce qui fait que l&#8217;on consomme très peu de processeurs.</p>
+
+<h2>Installation</h2>
+
+<p>Installer docker n&#8217;est pas très compliqué sous ubuntu 14.04.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install docker.io
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Et c&#8217;est tout !</p>
+
+<p>Pour éviter de préfixer <code>sudo</code> à chaque commande il est plus facile d&#8217;ajouter son utilisateur au group docker.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo addgroup &lt;votre user&gt; docker
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Hello world sous docker</h2>
+
+<p>Lancer docker</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker run ubuntu:14.04 /bin/echo <span class="s1">&#39;Hello world&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cette commande fait plusieurs choses:</p>
+
+<ul>
+<li>si l&#8217;image <code>ubuntu:14.04</code> n&#8217;existe pas, elle va la télécharger.</li>
+<li>Puis on lance le container</li>
+<li>Puis on exécute echo &lsquo;Hello world&rsquo;</li>
+</ul>
+
+
+<p>D&#8217;ailleurs si on relance la même commande, on constate que l&#8217;image est déjà sur le disque dur.</p>
+
+<p>la commande prend moins d&#8217;une seconde. Pourtant on a chargé un container et lancer une commande !</p>
+
+<p>Essayons la commande suivante</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker run ubuntu:14.04 - it /bin/bash
+</span><span class='line'>root@b2634b81c3dc:/#
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Nous avons un bash intéractif. <code>-i</code> mode interactif, et <code>-t</code> affiche un pseudo terminal</p>
+
+<p>Il faut comprendre que  dès que la commande principale est finie, l&#8217;instance aussi. Dans le cas <code>Echo 'Hello World'</code> la commande se finit de suite. Dans le cas de <code>/bin/bash</code> On spécifie le mode interactif. Donc l&#8217;instance continue tant que l&#8217;on a pas quitté le bash.</p>
+
+<p>Ouvrons un nouveau terminal</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker ps
+</span><span class='line'>CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+</span><span class='line'>b2634b81c3dc        ubuntu:14.04        /bin/bash           <span class="m">43</span> seconds ago      Up <span class="m">42</span> seconds                           sharp_archimedes
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On voit que mon image est toujours en cours.</p>
+
+<p>La commande docker ps affiche tout les containers allumés pour afficher tout les containers allumés pendant la session. C&#8217;est <code>dockers ps -a</code></p>
+
+<p>On peux inspecter une instance avec la commande</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker inspect sharp_archimedes
+</span><span class='line'>docker inspect b2634b81c3dc
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cela renvoie un json.</p>
+
+<p>On peux aussi lister les images disponibles via la commande</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker images
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Vous voulez télécharger des images</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker pull centos
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Vous cherchez une images particulières</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker search php56
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>La liste des images disponibles est disponible sur <a href="https://hub.docker.com/">Docker Hub</a> . D&#8217;ailleurs Dockers est très couplé avec DockerHub. DockerHub est un le GitHub pour Docker. On peux très bien faire du Git sans GitHub. C&#8217;est la même chose pour docker.</p>
+
+<p>Docker et Git partage aussi la notion de commit et de push.</p>
+
+<p>relancons notre instance</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker run -it ubuntu:14.04 /bin/bash
+</span><span class='line'>root@f5882f7f608d:/#
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Installons un paquet au hasard</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install vim
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On quitte <code>Exit</code></p>
+
+<p>puis on commit</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo docker commit f5882f7f608do marc/vim
+</span><span class='line'>4f177bd27a9ff0f6dc2a830403925b5360bfe0b93d476f7fc3231110e7f71b1c
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si je liste les images.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker images
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>je vois apparaitre mon <code>marc/vim</code></p>
+
+<p>Je peux ainsi réutiliser mon container ainsi</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo docker run -it marc/vim vim
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On peux ainsi se créer ses propres containers. Mais c&#8217;est un peu laborieux. Docker utilise des <code>DockerFile</code> pour automatiser le process. Cela fera un prochain post</p>
+
+<h2>Résumé des commandes</h2>
+
+<ul>
+<li><code>docker run -i -t ubuntu:14.10 /bin/bash</code> lance en mode interactif et un terminal avec la commande Bash.</li>
+<li><code>docker run -i -t ubuntu:14.10 'hello world'</code></li>
+<li><code>docker ps</code> liste les containers en cours.</li>
+<li><code>docker ps -a</code> liste tout les containers.</li>
+<li><code>docker images</code> liste toutes les images.</li>
+<li><code>docker pull centos</code> pour télécharger une image (tout les images officielles sont sur le <a href="https://hub.docker.com/">Hub</a></li>
+<li><code>docker inspect uuid</code> affiche les informations sur l&#8217;instance.</li>
+<li><code>docker commit uuid name</code>pour commiter.</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>Bon j&#8217;avoue que je débute depuis 2 jours.  Ce qui m&#8217;impressionne dans Docker c&#8217;est la vitesse (moins d&#8217;une seconde pour démarrer). C&#8217;est plutôt simple d&#8217;utilisation. La notion de commit a l&#8217;air sympa (Même si au fond c&#8217;est l&#8217;équivalent d&#8217;un snapshot sous vmware). J&#8217;espère pouvoir faire mon premier dépôt sous DockerHub bientôt.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/04/06/suite-visiteur-pattern-visiteur-bool%C3%A9en/">Suite Visiteur Pattern : Visiteur Booleen</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-04-06T19:55:44+02:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:55 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Introduction:</h2>
+
+<p>Nous allons refaire la même chose que notre interpréteur d&#8217;expressions.
+Mais avec des expressions booléennes.
+Par exemple</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$expression</span> <span class="o">=</span> <span class="k">new</span> <span class="k">Or</span><span class="p">(</span> <span class="k">new</span> <span class="k">And</span><span class="p">(</span><span class="k">New</span> <span class="k">False</span><span class="p">(),</span> <span class="k">New</span> <span class="k">True</span><span class="p">()),</span> <span class="k">new</span> <span class="k">False</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Nous allons ensuite rajouter les comparaisons <code>==</code>, <code>&lt;</code>, etc ..</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$expression</span> <span class="o">=</span> <span class="k">new</span> <span class="k">Not</span><span class="p">(</span><span class="k">new</span> <span class="nx">NotEqual</span><span class="p">(</span><span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Variable</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">)));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Beaucoup de code. mais si vous avez compris la première partie. cela devrait aller.</p>
+
+<h2>Expression Booléenne</h2>
+
+<p>Nous définissons l&#8217;interface suivante.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Une expression Booléenne</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">interface</span> <span class="nx">BoolExpression</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">accept</span><span class="p">(</span><span class="nx">VisitorBoolExpression</span> <span class="nv">$v</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Une classe abstraite.</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">abstract</span> <span class="k">class</span> <span class="nc">Unary</span> <span class="k">implements</span> <span class="nx">BoolExpression</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">accept</span><span class="p">(</span><span class="nx">VisitorBoolExpression</span> <span class="nv">$v</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$v</span><span class="o">-&gt;</span><span class="na">visit</span><span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pour faire l&#8217;algèbre booléen j&#8217;ai besoin de <code>False</code> et de <code>True</code></p>
+
+<p>Voici le code.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">True</span> <span class="k">extends</span> <span class="nx">Unary</span> <span class="p">{}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">False</span> <span class="k">extends</span> <span class="nx">Unary</span> <span class="p">{}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>J&#8217;ai aussi besoin de la négation</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Not</span> <span class="k">extends</span> <span class="nx">Unary</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$value</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">value</span> <span class="o">=</span> <span class="nv">$expr</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getValue</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">value</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je vais rajouter la condition And, Or, Nand (No-et), Nor(Non-ou)</p>
+
+<p>Je définis une classe avec deux arguments dans le constructeur.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Binary</span> <span class="k">extends</span> <span class="nx">Unary</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$left</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$right</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$left</span><span class="p">,</span> <span class="nx">BoolExpression</span> <span class="nv">$right</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">left</span> <span class="o">=</span> <span class="nv">$left</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">right</span> <span class="o">=</span> <span class="nv">$right</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getLeft</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">left</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getRight</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">left</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Les classes sont alors très simples.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="c1">// Or et And sont des mots réservés en Php.</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">BinaryOr</span> <span class="k">extends</span> <span class="nx">Binary</span><span class="p">{}</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">BinaryAnd</span> <span class="k">extends</span> <span class="nx">Binary</span><span class="p">{}</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">BinaryNand</span> <span class="k">extends</span> <span class="nx">Binary</span><span class="p">{}</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">BinaryNor</span> <span class="k">extends</span> <span class="nx">Binary</span><span class="p">{}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>J&#8217;ai un peu près tout.</p>
+
+<p>On peut passer au Visiteur.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">interface</span> <span class="nx">VisitorBoolExpression</span><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visit</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">VisitorBoolEvaluation</span> <span class="k">implements</span> <span class="nx">VisitorBoolExpression</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">protected</span> <span class="nv">$context</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$context</span><span class="p">){</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">context</span> <span class="o">=</span> <span class="nv">$context</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visit</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">){</span>
+</span><span class='line'>        <span class="nv">$class</span> <span class="o">=</span> <span class="s1">&#39;visit&#39;</span><span class="o">.</span><span class="nb">get_class</span><span class="p">(</span><span class="nv">$expr</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="nv">$class</span><span class="p">(</span><span class="nv">$expr</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitTrue</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitFalse</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitNot</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="o">!</span><span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getValue</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitBinaryOr</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getLeft</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">)</span><span class="o">||</span><span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getRight</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitBinaryAnd</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getLeft</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">)</span><span class="o">&amp;&amp;</span><span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getRight</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitBinaryNor</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="o">!</span><span class="p">(</span><span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getLeft</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">)</span><span class="o">||</span><span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getRight</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitBinaryNand</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="o">!</span><span class="p">(</span><span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getLeft</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getRight</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">));</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>Quelques exemples.</p>
+
+<p>On réutilise notre mémoire du billet précédent. On utilise aussi <code>var_dump</code> plutôt que <code>echo</code> car <code>echo false</code> ne renvoie rien.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$memory</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Memory</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$memory</span><span class="o">-&gt;</span><span class="na">write</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ve</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VisitorBoolEvaluation</span><span class="p">(</span><span class="nv">$memory</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// une expression</span>
+</span><span class='line'><span class="nv">$expression</span> <span class="o">=</span>  <span class="k">new</span> <span class="k">True</span><span class="p">();</span>
+</span><span class='line'><span class="c1">// appelle le visiteur</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$ve</span><span class="p">))</span> <span class="c1">// affiche bool(true);</span>
+</span><span class='line'><span class="nv">$expression</span> <span class="o">=</span>  <span class="k">new</span> <span class="k">Not</span><span class="p">(</span><span class="k">new</span> <span class="k">False</span><span class="p">());</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$ve</span><span class="p">))</span> <span class="c1">// affiche bool(true);</span>
+</span><span class='line'><span class="nv">$expression</span> <span class="o">=</span>  <span class="k">new</span> <span class="nx">BinaryAnd</span><span class="p">(</span><span class="k">new</span> <span class="k">Not</span><span class="p">(</span><span class="k">new</span> <span class="k">False</span><span class="p">()),</span> <span class="k">new</span> <span class="nx">BinaryOr</span><span class="p">(</span><span class="k">new</span> <span class="k">True</span><span class="p">(),</span> <span class="k">new</span> <span class="k">False</span><span class="p">()));</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$ve</span><span class="p">))</span> <span class="c1">//Affiche bool(true);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>bien sur on peux refaire un autre visiteur pour traduire en chaînes de caractères</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">VisitorBoolPrint</span> <span class="k">implements</span> <span class="nx">VisitorBoolExpression</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">protected</span> <span class="nv">$context</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$context</span><span class="p">){</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">context</span> <span class="o">=</span> <span class="nv">$context</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visit</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">){</span>
+</span><span class='line'>        <span class="nv">$class</span> <span class="o">=</span> <span class="s1">&#39;visit&#39;</span><span class="o">.</span><span class="nb">get_class</span><span class="p">(</span><span class="nv">$expr</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="nv">$class</span><span class="p">(</span><span class="nv">$expr</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitTrue</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="s2">&quot;true&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitFalse</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="s2">&quot;false&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitNot</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="s2">&quot;!&quot;</span> <span class="o">.</span> <span class="nv">$epr</span><span class="o">-&gt;</span><span class="na">getValue</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitBinaryOr</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="s2">&quot;(&quot;</span> <span class="o">.</span> <span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getLeft</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">)</span>
+</span><span class='line'>        <span class="o">.</span><span class="s1">&#39;||&#39;</span> <span class="o">.</span><span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getRight</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">)</span><span class="o">.</span> <span class="s2">&quot;)&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="o">...</span>
+</span><span class='line'>    <span class="o">...</span>
+</span><span class='line'> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Le même exemple .</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$memory</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Memory</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$memory</span><span class="o">-&gt;</span><span class="na">write</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$ve</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VisitorBoolPrint</span><span class="p">(</span><span class="nv">$memory</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// une expression</span>
+</span><span class='line'><span class="nv">$expression</span> <span class="o">=</span>  <span class="k">new</span> <span class="k">True</span><span class="p">();</span>
+</span><span class='line'><span class="c1">// appelle le visiteur</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$ve</span><span class="p">))</span> <span class="c1">// affiche true;</span>
+</span><span class='line'><span class="nv">$expression</span> <span class="o">=</span>  <span class="k">new</span> <span class="k">Not</span><span class="p">(</span><span class="k">new</span> <span class="k">False</span><span class="p">());</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$ve</span><span class="p">))</span> <span class="c1">// affiche !false;</span>
+</span><span class='line'><span class="nv">$expression</span> <span class="o">=</span>  <span class="k">new</span> <span class="nx">BinaryAnd</span><span class="p">(</span><span class="k">new</span> <span class="k">Not</span><span class="p">(</span><span class="k">new</span> <span class="k">False</span><span class="p">()),</span> <span class="k">new</span> <span class="nx">BinaryOr</span><span class="p">(</span><span class="k">new</span> <span class="k">True</span><span class="p">(),</span> <span class="k">new</span> <span class="k">False</span><span class="p">()));</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$ve</span><span class="p">))</span> <span class="c1">//Affiche (!false&amp;&amp;(true||false));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Les comparaisons</h2>
+
+<p>Nous pouvons rajouter le <code>==</code>, <code>!=</code>, <code>&gt;</code> , <code>&lt;</code> !</p>
+
+<p>ajoutons de nouveau objet. les object prennent en entrée des expressions mais sortent des boléens.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">BinaryComparaison</span> <span class="k">extends</span> <span class="nx">Unary</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$left</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$right</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">Expression</span> <span class="nv">$left</span><span class="p">,</span> <span class="nx">Expression</span> <span class="nv">$right</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">left</span> <span class="o">=</span> <span class="nv">$left</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">right</span> <span class="o">=</span> <span class="nv">$right</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getLeft</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">left</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getRight</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">right</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Equal</span> <span class="k">extends</span> <span class="nx">BinaryComparaison</span><span class="p">{}</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">NotEqual</span> <span class="k">extends</span> <span class="nx">BinaryComparaison</span><span class="p">{}</span>
+</span><span class='line'><span class="c1">//Greater Than Equal</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Gte</span> <span class="k">extends</span> <span class="nx">BinaryComparaison</span><span class="p">{}</span>
+</span><span class='line'><span class="c1">// Lesser Than Equal</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Lte</span> <span class="k">extends</span> <span class="nx">BinaryComparaison</span><span class="p">{}</span>
+</span><span class='line'><span class="c1">// Lesser Than</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Lt</span> <span class="k">extends</span> <span class="nx">BinaryComparaison</span><span class="p">{}</span>
+</span><span class='line'><span class="c1">// Greater Than</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Gt</span> <span class="k">extends</span> <span class="nx">BinaryComparaison</span><span class="p">{}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pour mon visiteur je vais utiliser mon visiteur d&#8217;expression du post précédent.</p>
+
+<p>donc je modifie le constructeur.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$context</span><span class="p">,</span> <span class="nv">$ve</span><span class="p">){</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">context</span> <span class="o">=</span> <span class="nv">$context</span><span class="p">;</span>
+</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ve</span> <span class="o">=</span> <span class="nv">$ve</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>je ne montre que le égal, mais vous avez un peu près l&#8217;idée pour le reste.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">visitEqual</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span><span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getLeft</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ve</span><span class="p">)</span>  <span class="o">==</span> <span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getRight</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ve</span><span class="p">));</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Le visiteur booléen utilise un autre visiteur pour évaluer une expression.</p>
+
+<p>Un exemple d&#8217;utilisation</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$memory</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Memory</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$memory</span><span class="o">-&gt;</span><span class="na">write</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// une visiteur d&#39;expression</span>
+</span><span class='line'><span class="nv">$ve</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VisitorEvaluation</span><span class="p">(</span><span class="nv">$memory</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// un visiteur pour les expressions booléennes</span>
+</span><span class='line'><span class="nv">$vb</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VisitorBoolEvaluation</span><span class="p">(</span><span class="nv">$memory</span><span class="p">,</span> <span class="nv">$ve</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// une expression</span>
+</span><span class='line'><span class="nv">$expression</span> <span class="o">=</span>  <span class="k">new</span> <span class="k">Not</span><span class="p">(</span><span class="k">new</span> <span class="nx">Equal</span><span class="p">(</span> <span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Addition</span><span class="p">(</span><span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Variable</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">))));</span>
+</span><span class='line'><span class="nb">var_dump</span> <span class="p">(</span> <span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$vb</span><span class="p">)</span> <span class="p">);</span><span class="c1">// affiche bool(true)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>si je reprend mon autre visiteur <code>VisitorToPhp</code> avec le <code>visitorBoolPrint</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$memory</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Memory</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$memory</span><span class="o">-&gt;</span><span class="na">write</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$ve</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VisitorToPhp</span><span class="p">(</span><span class="nv">$memory</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$vb</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VisitorBoolPrint</span><span class="p">(</span><span class="nv">$memory</span><span class="p">,</span> <span class="nv">$ve</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// une expression</span>
+</span><span class='line'><span class="nv">$expression</span> <span class="o">=</span>  <span class="k">new</span> <span class="k">Not</span><span class="p">(</span><span class="k">new</span> <span class="nx">Equal</span><span class="p">(</span> <span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Addition</span><span class="p">(</span><span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Variable</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">))));</span>
+</span><span class='line'><span class="nb">var_dump</span> <span class="p">(</span> <span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$vb</span><span class="p">)</span> <span class="p">);</span> <span class="c1">//affiche  &quot;!(10==(5+$i))&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Une conclusion.</h2>
+
+<ul>
+<li>Dans le premier post : On a vu le visiteur pour évaluer/afficher des expressions.</li>
+<li>dans le second post : le visiteur pour les expressions booléennes et les comparaisons. Celui-ci utilise le premier visiteur pour faire les calculs.</li>
+</ul>
+
+
+<p>dans un prochain post, je vais montrer un troisième visiteur <code>visitorInstruction</code> pour évaluer des instructions d&#8217;un langage très simple. Mais cela est un peu long à écrire. Il y a un peu de théorie et des figures à faire.</p>
+
+<p>Merci de m&#8217;avoir lu.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/04/05/interpreteur-et-visiteur-pattern/">Interpréteur Et Visiteur Pattern</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-04-05T18:16:10+02:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>6:16 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>Introduction</h1>
+
+<p>Nous allons voir ensemble sur une série trois posts</p>
+
+<ul>
+<li>le design-pattern interpréteur</li>
+<li>les limitations et une solution qui va introduire le visiteur pattern</li>
+</ul>
+
+
+<h1>Mise en place</h1>
+
+<p>Nous allons créer un simple calculatrice.</p>
+
+<p>Nous définissons l&#8217;interface suivante</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Une expression arithmétique</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">interface</span> <span class="nx">Expression</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">interpret</span><span class="p">(</span><span class="nx">Context</span> <span class="nv">$context</span> <span class="o">=</span> <span class="k">null</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Evaluer des constantes</h2>
+
+<p>Voici le code pour évaluer des constantes</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">Class</span> <span class="nc">Constant</span> <span class="k">implements</span> <span class="nx">Expression</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$value</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">value</span> <span class="o">=</span> <span class="nv">$value</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">interpret</span><span class="p">(</span><span class="nx">Context</span> <span class="nv">$context</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">value</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Un exemple</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$constante</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+</span><span class='line'><span class="k">echo</span> <span class="nv">$constante</span><span class="o">-&gt;</span><span class="na">interpret</span><span class="p">();</span> <span class="c1">// affiche 5</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>jusqu&#8217;ici rien de complexe. Si j&#8217;interprète la constante que j&#8217;ai définie à 5, j&#8217;obtiens 5.</p>
+
+<h2>Evaluer des additions</h2>
+
+<p>voici le code pour interpréter les additions</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">Class</span> <span class="nc">Addition</span> <span class="k">Implements</span> <span class="nx">Expression</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$left</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$right</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">Expression</span> <span class="nv">$left</span><span class="p">,</span> <span class="nx">Expression</span> <span class="nv">$right</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">right</span> <span class="o">=</span> <span class="nv">$right</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">left</span> <span class="o">=</span> <span class="nv">$left</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">interpret</span><span class="p">(</span><span class="nx">Context</span> <span class="nv">$context</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">left</span><span class="o">-&gt;</span><span class="na">interpret</span><span class="p">(</span><span class="nv">$context</span><span class="p">)</span> <span class="o">+</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">right</span><span class="o">-&gt;</span><span class="na">interpret</span><span class="p">(</span><span class="nv">$context</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Un exemple</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$addition</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Addition</span><span class="p">(</span><span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">6</span><span class="p">));</span>
+</span><span class='line'><span class="k">echo</span> <span class="nv">$constante</span><span class="o">-&gt;</span><span class="na">interpret</span><span class="p">();</span> <span class="c1">// affiche 11</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On utilise la <strong>récursion</strong> pour interpréter la partie droite et gauche</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$addition</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Addition</span><span class="p">(</span><span class="k">new</span> <span class="nx">Addition</span><span class="p">(</span> <span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">6</span><span class="p">)),</span> <span class="k">new</span> <span class="nx">Constante</span><span class="p">(</span><span class="mi">4</span><span class="p">));</span>
+</span><span class='line'><span class="k">echo</span> <span class="nv">$constante</span><span class="o">-&gt;</span><span class="na">interpret</span><span class="p">();</span> <span class="c1">// affiche 15</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Faire la multiplication, la soustraction, la division ne sont pas plus compliquées. Il suffit de changer le signe dans la fonction interpret()</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="c1">// muliplication </span>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">interpret</span><span class="p">(</span><span class="nx">Context</span> <span class="nv">$context</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">left</span><span class="o">-&gt;</span><span class="na">interpret</span><span class="p">(</span><span class="nv">$context</span><span class="p">)</span> <span class="o">*</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">right</span><span class="o">-&gt;</span><span class="na">interpret</span><span class="p">(</span><span class="nv">$context</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Ajouter d&#8217;autres méthodes</h2>
+
+<p>Ajoutons la methode Abso qui renvoie la valeur absolue, la fonction min qui renvoie le minimum</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">Class</span> <span class="nc">Abso</span> <span class="k">Implements</span> <span class="nx">Expression</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">value</span> <span class="o">=</span> <span class="nv">$value</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">interpret</span><span class="p">(</span><span class="nx">Context</span> <span class="nv">$context</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">value</span><span class="o">-&gt;</span><span class="na">interpret</span><span class="p">(</span><span class="nv">$context</span><span class="p">));</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">Class</span> <span class="nc">Minimum</span> <span class="k">Implements</span> <span class="nx">Expression</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">Expression</span> <span class="nv">$left</span><span class="p">,</span> <span class="nx">Expression</span> <span class="nv">$right</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">right</span> <span class="o">=</span> <span class="nv">$right</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">left</span> <span class="o">=</span> <span class="nv">$left</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">interpret</span><span class="p">(</span><span class="nx">Context</span> <span class="nv">$context</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">right</span><span class="o">-&gt;</span><span class="na">interpret</span><span class="p">(</span><span class="nv">$context</span><span class="p">),</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">left</span><span class="o">-&gt;</span><span class="na">interpret</span><span class="p">(</span><span class="nv">$context</span><span class="p">));</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>un exemple</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$min</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Minimum</span><span class="p">(</span><span class="k">new</span> <span class="nx">Abso</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Addition</span><span class="p">(</span><span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">24</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">2</span><span class="p">)));</span>
+</span><span class='line'><span class="k">echo</span> <span class="nv">$min</span><span class="o">-&gt;</span><span class="na">interpret</span><span class="p">();</span> <span class="c1">// renvoie 10</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Tout n&#8217;est qu&#8217;une question de contexte</h2>
+
+<p>Nous allons ajouter les variables.</p>
+
+<p>Il nous faut d&#8217;abord implémenter le Context</p>
+
+<p>Voici la définition</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * Interface Context</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">interface</span> <span class="nx">Context</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// write a value in memory</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">write</span><span class="p">(</span><span class="nv">$name</span><span class="p">,</span> <span class="nv">$value</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">// get a value from the memory</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">read</span><span class="p">(</span><span class="nv">$name</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//return all the value</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getAll</span><span class="p">()</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">/**</span>
+</span><span class='line'><span class="sd"> * A Memory</span>
+</span><span class='line'><span class="sd"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Memory</span> <span class="k">implements</span> <span class="nx">Context</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$memory</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+</span><span class='line'>    <span class="c1">// write a value in memory</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">write</span><span class="p">(</span><span class="nv">$name</span><span class="p">,</span> <span class="nv">$value</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">memory</span><span class="p">[</span><span class="nv">$name</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$value</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// get a value from the memory</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">read</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">memory</span><span class="p">[</span><span class="nv">$name</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getAll</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">memory</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il ne nous reste plus qu&#8217;à implémenter la variable.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Variable</span> <span class="k">implements</span> <span class="nx">Expression</span>
+</span><span class='line'><span class="p">{</span>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span> <span class="o">=</span> <span class="nv">$name</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">interpret</span><span class="p">(</span><span class="nx">Context</span> <span class="nv">$context</span> <span class="o">=</span> <span class="k">null</span><span class="p">){</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$context</span><span class="o">-&gt;</span><span class="na">read</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On comprend l&#8217;intérêt du context. Il nous permet de passer un pseudo-scope..</p>
+
+<p>Un exemple:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$memory</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Memory</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$memory</span><span class="o">-&gt;</span><span class="na">write</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$expression</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Addition</span><span class="p">(</span><span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Variable</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">));</span>
+</span><span class='line'><span class="k">echo</span> <span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">interpret</span><span class="p">(</span><span class="nv">$memory</span><span class="p">);</span> <span class="c1">// 20</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$memory</span><span class="o">-&gt;</span><span class="na">write</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="k">echo</span> <span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">interpret</span><span class="p">(</span><span class="nv">$memory</span><span class="p">);</span> <span class="c1">// 10</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On peux rajouter plein d&#8217;autre expression. L&#8217;avantage est qu&#8217;il suffit de rajouter une méthode <code>-&gt;interpret(..)</code> pour chaque objet.</p>
+
+<h1>mais si on change le cahier des charges&hellip;</h1>
+
+<p>Changeons le cahier des charges. Je souhaite transformer mon Expression en chaine de caractères. Je peux m&#8217;en sortir en surchargeant la méthode <code>__tostring</code></p>
+
+<p>Par exemple :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$expression</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Addition</span> <span class="p">(</span><span class="k">new</span> <span class="nx">Addition</span><span class="p">(</span><span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">4</span><span class="p">)),</span> <span class="k">new</span> <span class="nx">Constante</span><span class="p">(</span><span class="mi">4</span><span class="p">));</span>
+</span><span class='line'><span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">__toString</span><span class="p">()</span> <span class="c1">// me donne ((3 + 4) + 4);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="c1">// pour la constante</span>
+</span><span class='line'>        <span class="k">public</span> <span class="k">function</span> <span class="nf">__toString</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">value</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// pour l&#39;addition</span>
+</span><span class='line'>         <span class="k">public</span> <span class="k">function</span> <span class="nf">__toString</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>                <span class="c1">// this-&gt;left-&gt;__toString()</span>
+</span><span class='line'>                <span class="k">return</span> <span class="s1">&#39;(&#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">left</span> <span class="o">.</span> <span class="s1">&#39; + &#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">right</span> <span class="o">.</span><span class="s1">&#39;)&#39;</span><span class="p">;</span>
+</span><span class='line'>         <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Rechangeons le cahier des charges : je veux la traduction en Php</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$expression</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Addition</span> <span class="p">(</span><span class="k">new</span> <span class="nx">Addition</span><span class="p">(</span><span class="k">new</span> <span class="nx">Variable</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">4</span><span class="p">)),</span> <span class="k">new</span> <span class="nx">Constante</span><span class="p">(</span><span class="mi">4</span><span class="p">));</span>
+</span><span class='line'><span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">__toPhp</span><span class="p">()</span> <span class="c1">// me donne (($i + 4) + 4);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>je suis un peu bloqué, je dois rajouter à chaque fois une méthode dans chaque Object. Je perd un peu de la simplicité du pattern..</p>
+
+<h2>Visiteur Pattern à la rescousse !</h2>
+
+<p>Je vais définir une méthode <code>accept(Visitor $visitor)</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">interface</span> <span class="nx">Expression</span><span class="p">{</span>
+</span><span class='line'>     <span class="k">public</span> <span class="k">function</span> <span class="nf">accept</span><span class="p">(</span><span class="nx">VisitorExpression</span> <span class="nv">$v</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>avec VisitorExpression définit ainsi</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">abstract</span> <span class="k">class</span> <span class="nc">VisitorExpression</span><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">abstract</span> <span class="k">function</span> <span class="nf">visite</span><span class="p">(</span><span class="nx">Expression</span> <span class="nv">$expr</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Voici comment se transforme l&#8217;addition, la constante et la variable (je ne mets pas tout..)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">Class</span> <span class="nc">Constant</span> <span class="k">implements</span> <span class="nx">Expression</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$value</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">value</span> <span class="o">=</span> <span class="nv">$value</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getValue</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">value</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">accept</span><span class="p">(</span><span class="nx">VisitorExpression</span> <span class="nv">$v</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$v</span><span class="o">-&gt;</span><span class="na">visit</span><span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">Class</span> <span class="nc">Addition</span> <span class="k">Implements</span> <span class="nx">Expression</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">Expression</span> <span class="nv">$left</span><span class="p">,</span> <span class="nx">Expression</span> <span class="nv">$right</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">right</span> <span class="o">=</span> <span class="nv">$right</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">left</span> <span class="o">=</span> <span class="nv">$left</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getLeft</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">left</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getRight</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">right</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">accept</span><span class="p">(</span><span class="nx">VisitorExpression</span> <span class="nv">$v</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$v</span><span class="o">-&gt;</span><span class="na">visit</span><span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Variable</span> <span class="k">implements</span> <span class="nx">Expression</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">private</span> <span class="nv">$name</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span> <span class="o">=</span> <span class="nv">$name</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getName</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">accept</span><span class="p">(</span><span class="nx">VisitorExpression</span> <span class="nv">$v</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$v</span><span class="o">-&gt;</span><span class="na">visit</span><span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Voici l&#8217;implémentation de notre Visiteur</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">VisitorEvaluation</span> <span class="k">extends</span> <span class="nx">VisitorExpression</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">protected</span> <span class="nv">$context</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$context</span><span class="p">){</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">context</span> <span class="o">=</span> <span class="nv">$context</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visit</span><span class="p">(</span><span class="nx">Expression</span> <span class="nv">$expr</span><span class="p">){</span>
+</span><span class='line'>        <span class="nv">$class</span> <span class="o">=</span> <span class="s1">&#39;visit&#39;</span><span class="o">.</span><span class="nb">get_class</span><span class="p">(</span><span class="nv">$expr</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="nv">$class</span><span class="p">(</span><span class="nv">$expr</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitAddition</span><span class="p">(</span><span class="nx">Expression</span> <span class="nv">$expr</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getLeft</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">)</span> <span class="o">+</span>
+</span><span class='line'>            <span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getRight</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitConstant</span><span class="p">(</span><span class="nx">Expression</span> <span class="nv">$expr</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getValue</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitVariable</span><span class="p">(</span><span class="nx">Expression</span> <span class="nv">$expr</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>         <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">context</span><span class="o">-&gt;</span><span class="na">read</span><span class="p">(</span><span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getName</span><span class="p">());</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>en pratique. On appelle la méthode <code>accept</code>. Celle-ci appelle la methode <code>visit($this)</code>. la méthode visit détermine la fonction à appeller.
+Si c&#8217;est une constante alors <code>visistConstant()</code> celle-ci résout la valeur. pour une addition c&#8217;est un plus compliqué on ré-appelle récursivement <code>accept</code> sur chaque partie de l&#8217;addition.</p>
+
+<p>Voici comment s&#8217;en servir</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="c1">// j&#39;ai besoin d&#39;une mémoire</span>
+</span><span class='line'><span class="nv">$memory</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Memory</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$memory</span><span class="o">-&gt;</span><span class="na">write</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// j&#39;ai besoin d&#39;un visiteur</span>
+</span><span class='line'><span class="nv">$ve</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VisitorEvaluation</span><span class="p">(</span><span class="nv">$memory</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// une expression</span>
+</span><span class='line'><span class="nv">$expression</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Addition</span><span class="p">(</span><span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Variable</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">));</span>
+</span><span class='line'><span class="c1">// appelle le visiteur</span>
+</span><span class='line'><span class="k">echo</span> <span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$ve</span><span class="p">);</span> <span class="c1">// 20</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On se rend compte qu&#8217;il n&#8217;y a plus de logique dans mes objet. Tout est sous-traité dans le visiteur.</p>
+
+<p>L&#8217;avantage de cette méthode est qu&#8217;il est très simple de changer le visiteur sans changer la logique.</p>
+
+<p>Par exemple le visiteur qui convertit en php</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">VisitorToPhp</span> <span class="k">extends</span> <span class="nx">VisitorEvaluation</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitAddition</span><span class="p">(</span><span class="nx">Expression</span> <span class="nv">$expr</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="s1">&#39;(&#39;</span> <span class="o">.</span>  <span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getLeft</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;+&#39;</span>
+</span><span class='line'>            <span class="o">.</span> <span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getRight</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">)</span><span class="o">.</span> <span class="s1">&#39;)&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitVariable</span><span class="p">(</span><span class="nx">Expression</span> <span class="nv">$expr</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>         <span class="k">return</span> <span class="s1">&#39;$&#39;</span><span class="o">.</span> <span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getName</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">convertMemory</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$output</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">foreach</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">context</span><span class="o">-&gt;</span><span class="na">getAll</span><span class="p">()</span> <span class="k">as</span> <span class="nv">$key</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$output</span> <span class="o">.=</span> <span class="s1">&#39;$&#39;</span><span class="o">.</span><span class="nv">$key</span> <span class="o">.</span> <span class="s1">&#39; = &#39;</span> <span class="o">.</span> <span class="nv">$value</span> <span class="o">.</span> <span class="s1">&#39;;&#39;</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$output</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getOutput</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="s1">&#39;echo&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">translate</span><span class="p">(</span><span class="nx">Expression</span> <span class="nv">$exp</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">convertMemory</span><span class="p">()</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getOutput</span><span class="p">()</span> <span class="o">.</span> <span class="nv">$exp</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Et celui qui convertit en Javascript !</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">VisitorToJs</span> <span class="k">extends</span> <span class="nx">VisitorToPhp</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitVariable</span><span class="p">(</span><span class="nx">Expression</span> <span class="nv">$expr</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>         <span class="k">return</span> <span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getName</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">convertMemory</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$output</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">foreach</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">context</span><span class="o">-&gt;</span><span class="na">getAll</span><span class="p">()</span> <span class="k">as</span> <span class="nv">$key</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$output</span> <span class="o">.=</span> <span class="s1">&#39;var &#39;</span><span class="o">.</span> <span class="nv">$key</span> <span class="o">.</span> <span class="s1">&#39; = &#39;</span> <span class="o">.</span> <span class="nv">$value</span> <span class="o">.</span> <span class="s1">&#39;;&#39;</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$output</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getOutput</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="s1">&#39;console.log&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$memory</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Memory</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$memory</span><span class="o">-&gt;</span><span class="na">write</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$ve</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VisitorEvaluation</span><span class="p">(</span><span class="nv">$memory</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// une expression</span>
+</span><span class='line'><span class="nv">$expression</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Addition</span><span class="p">(</span><span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Variable</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">));</span>
+</span><span class='line'><span class="c1">// appelle le visiteur evaluation simple</span>
+</span><span class='line'><span class="k">echo</span> <span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$ve</span><span class="p">);</span> <span class="c1">// 20</span>
+</span><span class='line'><span class="c1">// evaluation conversion php </span>
+</span><span class='line'><span class="nv">$php</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VisitorToPhp</span><span class="p">(</span><span class="nv">$memory</span><span class="p">);</span>
+</span><span class='line'><span class="k">echo</span> <span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$php</span><span class="p">);</span> <span class="c1">// (10 + $i)</span>
+</span><span class='line'><span class="nv">$js</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VisitorToJs</span><span class="p">(</span><span class="nv">$memory</span><span class="p">);</span>
+</span><span class='line'><span class="k">echo</span> <span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$js</span><span class="p">);</span> <span class="c1">// (10 + i)</span>
+</span><span class='line'><span class="c1">// j&#39;ai rajouté une méthode translate qui est un raccourci</span>
+</span><span class='line'><span class="k">echo</span> <span class="nv">$php</span><span class="o">-&gt;</span><span class="na">translate</span><span class="p">(</span><span class="nv">$expression</span><span class="p">);</span> <span class="c1">// $i = 10;echo(10+$i)</span>
+</span><span class='line'><span class="k">echo</span> <span class="nv">$js</span><span class="o">-&gt;</span><span class="na">translate</span><span class="p">(</span><span class="nv">$expression</span><span class="p">);</span> <span class="c1">// var i = 10;console.log(10+i)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Les limitations du visiteur pattern</p>
+
+<ul>
+<li>toute la logique est sur le visiteur. s&#8217;il y a un beaucoup de type d&#8217;expression (dans notre cas Addition, Constant, Variable, Abso, Multiplication ..) c&#8217;est autant de ligne à rajouter dans celui-ci.</li>
+<li>rajouter un <em>type</em>, oblige à le ré-implementer partout.</li>
+</ul>
+
+
+<p>Les avantages du visiteur pattern.
+On peut parfaitement imaginer un type document, et lui ajouter un visiteur <code>toJson</code>, <code>toPdf</code>, <code>toEbook</code>, <code>toHtml</code>. sans jamais changer le modèle.</p>
+
+<p>Nous continuerons avec le visiteur pattern dans un prochain post. Nous ajouterons un visiteur pour les expressions booléenes. puis nous ajouterons un visiteur pour des instructions. nous allons créer un mini-langage..</p>
+
+<p>Ce projet vient des notes que j&#8217;avais prise quand j&#8217;étais au CNAM sur le cours de Design-Pattern en Java. J&#8217;avais adoré!</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/03/30/comprendre-la-ligne-de-commande-de-vi/">Comprendre La Ligne De Commande De Vi</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-03-30T22:36:21+02:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:36 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Sous Vi quand on appuie sur <code>:</code> on a la ligne de commande</p>
+
+<p>Tout le monde connaît</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:wq // quitter et enregistrer
+</span><span class='line'>:q! // quitter sans enregistrer et sans confirmation !</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Mais en pratique il existe plein de commandes.</p>
+
+<p>Par exemple :</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:1,10d </span></code></pre></td></tr></table></div></figure>
+
+
+<p>efface la ligne 1 à 10 (<code>d</code> = delete)</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:1,10m 10</span></code></pre></td></tr></table></div></figure>
+
+
+<p>bouge les lignes de 1 à 10 de 10 ligne (ici <code>m</code> = move)</p>
+
+<p>le &ldquo;pattern&rdquo; est toujours le même</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>: (début, fin)action</span></code></pre></td></tr></table></div></figure>
+
+
+<table>
+<thead>
+<tr>
+<th> mouvements </th>
+<th style="text-align:center;"> traduction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>1,10</code>      </td>
+<td style="text-align:center;"> entre la ligne 1 et  la ligne 1 à 10 </td>
+</tr>
+<tr>
+<td> <code>.,10</code>      </td>
+<td style="text-align:center;"> <code>.</code> signifie la ligne actuelle      </td>
+</tr>
+<tr>
+<td> <code>10,$</code> </td>
+<td style="text-align:center;"> <code>$</code> signifie la dernière ligne</td>
+</tr>
+<tr>
+<td> <code>/mot1/,/mot2/</code> </td>
+<td style="text-align:center;"> entre le <code>mot1</code> et le <code>mot2</code></td>
+</tr>
+<tr>
+<td> <code>., +5</code> </td>
+<td style="text-align:center;"> entre la ligne actuelle (<code>.</code>) et les 5 lignes suivantes</td>
+</tr>
+<tr>
+<td> <code>%</code> </td>
+<td style="text-align:center;"> tout le fichier</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>quelques actions</p>
+
+<table>
+<thead>
+<tr>
+<th>racourcci</th>
+<th> traduction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>d</code> </td>
+<td> comme <strong>d</strong>elete</td>
+</tr>
+<tr>
+<td> <code>j</code> </td>
+<td> comme <strong>j</strong>oin</td>
+</tr>
+<tr>
+<td><code>sort</code></td>
+<td> trier (sort) les lignes</td>
+</tr>
+<tr>
+<td><code>w</code></td>
+<td> pour enregistrer</td>
+</tr>
+<tr>
+<td><code>y</code></td>
+<td> comme yank</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>le plus connu substitute</h2>
+
+<p>vous avez souvent vu cette syntaxe dans les commits <code>s/mot1/mot2</code></p>
+
+<p>ici <code>s</code> signifie <strong>substitute</strong>.</p>
+
+<p>par exemple</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:%s/mot1/mot2/g</span></code></pre></td></tr></table></div></figure>
+
+
+<p>va remplacer le mot 1 par le mot 2
+le <code>g</code> active le flag <code>global</code> et remplace si le mot apparait deux fois.</p>
+
+<p>par exemple</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$mot1 = $mot1 + 1;
+</span><span class='line'>
+</span><span class='line'>// s/mot1/mot2 
+</span><span class='line'>$mot2 = $mot1 + 1 ; // on ne change que le premier mot
+</span><span class='line'>
+</span><span class='line'>// s/mot1/mot2/g
+</span><span class='line'>$mot2 = $mot2 + 1 // tout les mots</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Encore un peu plus loin</h2>
+
+<p>la commande suivante permet de grouper les mots</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:g/mot/ #donne toute les lignes contenant mot</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>g</code> ici signifie <strong>g</strong>roup</p>
+
+<p>On peut chaîner les differentes actions
+par exemple</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:g/pattern/s/mot/mot2/g # toutes les lignes qui contiennent le pattern, remplace mot1 par mot2.
+</span><span class='line'>
+</span><span class='line'>:g/pattern/d # efface toute les lignes qui contiennent le pattern suivant
+</span><span class='line'>
+</span><span class='line'>:g/pattern/p # 'print toutes lignes qui contienne le pattern suivant</span></code></pre></td></tr></table></div></figure>
+
+
+<p>la derniere ligne est la plus connue. pattern est le plus souvent une <em>regex</em> donc la traduction <code>g/regex/p</code> ->donne la commande <code>grep</code> sous linux.</p>
+
+<p>en faite, toutes les commandes que j&#8217;ai données proviennent de <code>sed</code>. mais ce n&#8217;est pas un hasard. <code>vi</code> est l&#8217;abbreviation de <strong>V</strong>isual <strong>I</strong>nteraction of Sed. un <em>sed interactif</em>.</p>
+
+<p>J&#8217;espère que cela vous fera apprecier <code>sed</code> comme <code>vi</code>. on peut rester très longtemps sur toutes les commandes.</p>
+
+<p>j&#8217;avais expliqué dans un précédent articles les mouvements en mode normal sont</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Action + Nombre de fois + Mouvement
+</span><span class='line'>
+</span><span class='line'>Exemple:
+</span><span class='line'>d5w # *d*elete *5* word
+</span><span class='line'>yG  # copier jusqu'à la fin du fichier (G)
+</span><span class='line'>=4j # indenter (=) 4 lignes vers le bas 
+</span><span class='line'>di( # efface entre les parenthèses *d*elete *i*nside ( 
+</span><span class='line'>
+</span><span class='line'>Dans le mode commande
+</span><span class='line'>: début, fin action
+</span><span class='line'>
+</span><span class='line'>:%d # efface tout le fichier
+</span><span class='line'>:1,10y # copie dans le presse-papier la ligne 1 à 10
+</span><span class='line'>:%s/include_one/require_once/gc
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il me reste à vous parler des buffers et des macros. et on aura presque fait le tour de la magie de <code>vi</code>.</p>
+
+<h2>une commande de la vrai vie</h2>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:%s/\s\+$//</span></code></pre></td></tr></table></div></figure>
+
+
+<p>sur tout le fichier (<code>%</code>) remplace(<code>s</code>) un ou plus(<code>+</code>) espaces (<code>\s</code>) à la fin de la ligne (<code>$</code>) par du vide. cette commande supprime les espaces vides à la fin des lignes..</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/posts/6">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/posts/4">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/11/08/faire-des-jointures-sur-des-fichiers-csv/">Faire Des Jointures Sur Des Fichiers Csv</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/05/git-grep/">Git Grep</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/02/diff-patch-git/">Diff Et Patch, Pas Besoin De Git</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/01/listes-chainees-iterator/">Listes Chainées Iterator</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/25/retour-vers-le-futur-avec-vim/">Retour Vers Le Futur Avec Vim</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/mcamuzat">@mcamuzat</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'mcamuzat',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - mcamuzat -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

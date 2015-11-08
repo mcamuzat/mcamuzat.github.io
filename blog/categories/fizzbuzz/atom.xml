@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Fizzbuzz | Mon blog perso.]]></title>
+  <link href="http://mcamuzat.github.io/blog/categories/fizzbuzz/atom.xml" rel="self"/>
+  <link href="http://mcamuzat.github.io/"/>
+  <updated>2015-11-08T22:40:30+01:00</updated>
+  <id>http://mcamuzat.github.io/</id>
+  <author>
+    <name><![CDATA[mcamuzat]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[FizzBuzz Sans Boucle If]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/03/22/fizzbuzz-sans-boucle-if/"/>
+    <updated>2015-03-22T23:19:46+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/03/22/fizzbuzz-sans-boucle-if</id>
+    <content type="html"><![CDATA[<p>Bon, j&#8217;ai passé deux-trois entretiens ou on m&#8217;a demandé d&#8217;implémenter &ldquo;fizzbuz&rdquo;</p>
+
+<p>Les règles sont simples.</p>
+
+<ul>
+<li>Écrire un programme qui écrit les nombres de 1 à 100.</li>
+<li>Si le chiffre est divisible par 3 afficher seulement &ldquo;fizz&rdquo;</li>
+<li>Si le chiffre est divisible par 5 afficher seulement &ldquo;buzz&rdquo;</li>
+<li>Si divisible par 3 et 5 afficher &ldquo;fizzbuzz&rdquo;</li>
+<li>sinon afficher le chiffre tout seul</li>
+</ul>
+
+
+<p>Il y a plein de solutions possibles</p>
+
+<h2>la plus littérale</h2>
+
+<pre><code class="php">for ($i = 1; $i &lt;= 100; $i++) {
+    if ($i % 15 == 0) {
+        echo 'fizzbuzz'. "\n";
+    } elseif ($i % 3 == 0) {
+        echo 'buzz'. "\n";
+    } elseif ($i % 5 == 0) {
+        echo 'fizz'. "\n";
+    } else {
+    echo $i ."\n";
+    }
+}
+</code></pre>
+
+<h2>la version de wikipedia</h2>
+
+<pre><code class="php">for ($i = 1; $i &lt;= 100; $i++) {
+    $output = '';
+    if ( $i%3 == 0) {
+        $output .= 'fizz';
+    }
+    if ( $i%5 == 0) {
+        $output .= 'buzz';
+    }
+
+    if ($output == '') {
+        $output .= $i;
+    }
+    echo $output. "\n";
+}
+</code></pre>
+
+<h2>Ma version que j&#8217;avais programmé</h2>
+
+<p>Le <code>continue</code> n&#8217;est pas souvent utilisé. Mais je trouve qu&#8217;il remplit son rôle ici.</p>
+
+<pre><code class="php">for ($i = 1; $i &lt;= 100; $i++) {
+    if ($i % 15 == 0) {
+        echo 'fizzbuzz'. "\n";
+        continue;
+    }
+    if ($i % 3 == 0) {
+        echo 'buzz'. "\n";
+        continue;
+    }
+    if ($i % 5 == 0) {
+        echo 'fizz'. "\n";
+        continue;
+    }
+    echo $i ."\n";
+
+}
+</code></pre>
+
+<h2>Sans boucle if</h2>
+
+<p>Il existe une version qui n&#8217;utilise aucune boucle if.
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$resp</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+</span><span class='line'>    <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">fizzbuzz</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;,</span>
+</span><span class='line'>    <span class="k">false</span><span class="p">,</span>
+</span><span class='line'>    <span class="k">false</span><span class="p">,</span>
+</span><span class='line'>    <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">fizz</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;,</span>
+</span><span class='line'>    <span class="k">false</span><span class="p">,</span>
+</span><span class='line'>    <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">buzz</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;,</span>
+</span><span class='line'>    <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">fizz</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;,</span>
+</span><span class='line'>    <span class="k">false</span><span class="p">,</span>
+</span><span class='line'>    <span class="k">false</span><span class="p">,</span>
+</span><span class='line'>    <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">fizz</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;,</span>
+</span><span class='line'>    <span class="k">false</span><span class="p">,</span>
+</span><span class='line'>    <span class="k">false</span><span class="p">,</span>
+</span><span class='line'>    <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">fizz</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;,</span>
+</span><span class='line'>    <span class="k">false</span><span class="p">,</span>
+</span><span class='line'>    <span class="k">false</span>
+</span><span class='line'><span class="p">);</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span><span class="o">=</span> <span class="mi">100</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">(</span><span class="nv">$output</span> <span class="o">=</span> <span class="nv">$resp</span><span class="p">[</span><span class="nv">$i</span><span class="o">%</span><span class="mi">15</span><span class="p">])</span> <span class="o">||</span> <span class="p">(</span><span class="nv">$output</span> <span class="o">=</span> <span class="nv">$i</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="nv">$output</span><span class="o">.</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">\n</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;;</span>
+</span><span class='line'><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span>
+</span><span class='line'><span class="nx">En</span> <span class="nx">php</span> <span class="nx">on</span> <span class="nx">ne</span> <span class="nx">peux</span> <span class="nx">pas</span> <span class="nx">faire</span> <span class="nx">la</span> <span class="nx">commande</span> <span class="nx">suivante</span> <span class="nx">qui</span> <span class="nx">correcte</span> <span class="nx">en</span> <span class="nx">javascript</span><span class="p">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="k">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="nx">value</span> <span class="o">||</span> <span class="nx">defautvalue</span> <span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<pre><code>$output = $resp[i%15] || $i// =&gt; $output = true
+</code></pre>
+
+<p>C&#8217;est pour cela que l&#8217;on utilise cette ligne un peu bancale.
+<code>
+($output = $resp[$i%15]) || ($output = $i);
+</code>
+Il n&#8217;y a pas de boucle if. Si un jour on vous demande d&#8217;implémenter FizzBuzzb en essayer cette version.</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,322 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Less Is More Et BASH - Mon blog perso.</title>
+  <meta name="author" content="mcamuzat">
+
+  
+  <meta name="description" content="less comme tail -f On peux utiliser less pour suivre et parser les logs avec la commande 1
+less +F nom_du_fichier Ou tout simplement appuyer sur F &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mcamuzat.github.io/blog/2015/06/28/less-is-more-et-bash/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Mon blog perso." type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-60315965-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Mon blog perso.</a></h1>
+  
+    <h2>Un simple blog PHP/Linux/Programmation/Docker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="mcamuzat.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Less Is More Et BASH</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-06-28T19:19:59+02:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>28</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:19 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>less comme tail -f</h2>
+
+<p>On peux utiliser <code>less</code> pour suivre et parser les logs avec la commande</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>less +F nom_du_fichier</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ou tout simplement appuyer sur <code>F</code> quand le fichier est ouvert avec <code>less</code>.</p>
+
+<p>Less est compatible avec les raccourcis VI donc les commandes suivantes marchent</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>g # debut du fichier
+</span><span class='line'>G # fin du fichier
+</span><span class='line'>/ #recherche
+</span><span class='line'>& #affiche seulement les lignes qui contiennent le mot 
+</span><span class='line'>h,j,k,l les directions</span></code></pre></td></tr></table></div></figure>
+
+
+<p>les touche suivantes marche aussi avec <code>man</code></p>
+
+<p>Je vous conseille ce post sur les <a href="blog/2015/03/08/comprendre-les-raccourcis-claviers-de-vi-slash-vim/">mouvement vi</a></p>
+
+<h2>Éditer une ligne de commande trop complexe</h2>
+
+<p>Si on souhaite récupérer la commande actuelle sous BASH. C&#8217;est <code>Ctrl x + Ctrl e</code>. Cela ouvre la commande actuelle dans <code>vi</code> ou votre éditeur par défaut <code>$EDITOR</code> enregistrer et quitter.</p>
+
+<h2>Copier/Coller dans bash</h2>
+
+<ul>
+<li>Coupe toute la ligne : <code>Ctrl u</code></li>
+<li>Coupe à droite du curseur: <code>Ctrl k</code></li>
+<li>Coller <code>Ctrl y</code></li>
+</ul>
+
+
+<h3>Cas d&#8217;utilisation</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>vim /etc/hosts (oups j'ai oublié le sudo..)
+</span><span class='line'>&lt;Ctrl u&gt; sudo &lt;Ctrl k&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Annuler dans Bash</h1>
+
+<p>C&#8217;est <code>Ctrl _</code></p>
+
+<h1>En conclusion</h1>
+
+<p>Les raccourcis claviers <code>Ctrl _</code> et <code>Ctrl y</code> sont des raccourcis claviers de emacs.</p>
+
+<p>Bien qu&#8217;utilisateur Vim, j&#8217;aime beaucoup Emacs. Notamment le <code>org-mode</code>. Emacs est supérieur à Vim. (plus de mode, plus de personnalisation, une véritable interaction en REPL pour les langage type lisp). Il y a une tendance à utiliser Emacs avec le Evil-mode (ce qui en gros rajoute les raccourcis claviers de vim dans Emacs). Mais je pas encore passé le cap.</p>
+
+<p>Il est possible de passer son BASH en Vi-mode avec la commande suivante. Personnellement j&#8217;aime pas.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>set -o vi</span></code></pre></td></tr></table></div></figure>
+
+
+<p>L&#8217;article <a href="http://www.catonmat.net/blog/bash-vi-editing-mode-cheat-sheet/">suivant</a> aide un peu. Mais ce n&#8217;est pas évident de dé-apprendre les raccourcis claviers.</p>
+
+<h1>Quelques liens</h1>
+
+<ul>
+<li><a href="https://github.com/jlevy/the-art-of-command-line">the art of the command line</a></li>
+<li><a href="http://www.commandlinefu.com">commandlinefu</a></li>
+<li><a href="http://orgmode.org/index.html">org-mode</a></li>
+<li><a href="http://www.emacswiki.org/emacs/Evil">evil-mode</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mcamuzat</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-06-28T19:19:59+02:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>28</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:19 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/bash/'>bash</a>, <a class='category' href='/blog/categories/emacs/'>emacs</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/vim/'>vim</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mcamuzat.github.io/blog/2015/06/28/less-is-more-et-bash/" data-via="" data-counturl="http://mcamuzat.github.io/blog/2015/06/28/less-is-more-et-bash/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/06/21/if-hemingway-wrote-javascript/" title="Previous Post: If Hemingway wrote javascript">&laquo; If Hemingway wrote javascript</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/07/05/vim-et-debbuger/" title="Next Post: Vim et Debbuger">Vim et Debbuger &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/11/08/faire-des-jointures-sur-des-fichiers-csv/">Faire Des Jointures Sur Des Fichiers Csv</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/05/git-grep/">Git Grep</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/02/diff-patch-git/">Diff Et Patch, Pas Besoin De Git</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/01/listes-chainees-iterator/">Listes Chainées Iterator</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/25/retour-vers-le-futur-avec-vim/">Retour Vers Le Futur Avec Vim</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/mcamuzat">@mcamuzat</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'mcamuzat',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - mcamuzat -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

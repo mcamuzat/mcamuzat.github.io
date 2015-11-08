@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Promise | Mon blog perso.]]></title>
+  <link href="http://mcamuzat.github.io/blog/categories/promise/atom.xml" rel="self"/>
+  <link href="http://mcamuzat.github.io/"/>
+  <updated>2015-11-08T22:40:30+01:00</updated>
+  <id>http://mcamuzat.github.io/</id>
+  <author>
+    <name><![CDATA[mcamuzat]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Guzzle Asynchrone Avec Les Promises]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/09/21/guzzle-asynchrone-avec-les-promises/"/>
+    <updated>2015-09-21T21:39:06+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/09/21/guzzle-asynchrone-avec-les-promises</id>
+    <content type="html"><![CDATA[<p>Nous continuons sur les promises et le yield.</p>
+
+<ul>
+<li><a href="/blog/2015/09/05/les-promises-et-php-via-react/">partie 1 les promises</a></li>
+<li><a href="/blog/2015/09/06/php-yield-les-generateurs/">partie 2 le Yield</a></li>
+<li><a href="/blog/2015/09/13/yield-php-co-routine/">partie 3 les co-routines</a></li>
+</ul>
+
+
+<p>Je vais parler de <a href="https://github.com/guzzle">Guzzle</a> qui est un client HTTP. Nous allons voir la version 6 qui utilise Php5.5</p>
+
+<h2>Promise et Guzzle.</h2>
+
+<p><em>Guzzle</em> connait les promises et possède sa propre <a href="https://github.com/guzzle/promises">implémentation</a>.</p>
+
+<p>la signature de la fonction est un peu près la même que <a href="https://github.com/reactphp/promise">react/promise</a>.</p>
+
+<p>Attention <em>Guzzle</em> ne fait pas la différence entre le <em>Deferred</em> qui est un travail dont la réponse est encore inconnu et représenter par une <em>promise</em>. Dans <em>Guzzle</em> le travail et la réponse sont la même chose.</p>
+
+<pre><code class="php">use GuzzleHttp\Promise\Promise;
+
+$promise = new Promise();
+$promise-&gt;then(
+    // $onFulfilled
+    function ($value) {
+        echo 'Tout va bien.';
+    },
+    // $onRejected
+    function ($reason) {
+        echo 'On a un problème.';
+    }
+);
+
+$promise-&gt;resolve(null); // 'Tout va bien.';
+// Ou 
+$promise-&gt;reject(null); // 'On a un problème.';
+</code></pre>
+
+<p><em>Guzzle</em> est un client Web essayons un cas concret.</p>
+
+<pre><code class="php">$client = new GuzzleHttp\Client();
+
+$promise = $client-&gt;requestAsync('GET', 'http://httpbin.org/get');
+$promise-&gt;then(
+    function ($res) {
+        return $res-&gt;getStatusCode();
+    }
+)-&gt;then(function ($value) { echo "j'ai recu un code $value"} ;
+
+// Notre requète n'est pas encore partie. Il faut lancer manuellement l'appel.
+$client-&gt;wait();
+</code></pre>
+
+<p>L&#8217;avantage ici est que je décide quand je lance l&#8217;appel. Par exemple on peut lancer en parallèle les requêtes.</p>
+
+<pre><code class="php">$client = new Client(['base_uri' =&gt; 'http://httpbin.org/']);
+
+// Je crée toute mes requetes
+$promises = [
+    'image' =&gt; $client-&gt;getAsync('/image'),
+    'png'   =&gt; $client-&gt;getAsync('/image/png'),
+    'jpeg'  =&gt; $client-&gt;getAsync('/image/jpeg'),
+    'webp'  =&gt; $client-&gt;getAsync('/image/webp')
+];
+
+// je resouds tout en même temps
+
+$results = Promise\unwrap($promises);
+</code></pre>
+
+<p>On peux créer des pools. Si on souhaite limiter le nombre de requête en même temps.</p>
+
+<pre><code class="php">$client = new Client(['base_uri' =&gt; 'http://httpbin.org/']);
+
+$batch = [
+    'image' =&gt; '/image',
+    'png'   =&gt; '/image/png',
+    'jpeg'  =&gt; '/image/jpeg',
+    'webp'  =&gt; '/image/webp'
+];
+
+$requests = function ($batch) {
+    foreach ($batch as $url) {
+        yield new Request('GET', $url);
+    }
+};
+
+$pool = new Pool($client, $requests($batch), [
+    'fulfilled' =&gt; function ($response, $index) {
+        var_dump($index);
+    },
+    'concurrency =&gt; 2,
+]);
+$promise = $pool-&gt;promise();
+$promise-&gt;wait();
+</code></pre>
+
+<p>le résultat ici.</p>
+
+<pre><code class="php">int(3)
+int(0)
+int(1)
+int(2)
+</code></pre>
+
+<p>On reconnait aussi notre nouvel ami le <code>yield</code>.</p>
+
+<h2>Le premier arrivé</h2>
+
+<p>Nous allons utiliser l&#8217;instruction <code>any()</code> toutes les requêtes sont lancées en concurrences. C&#8217;est la première arrivée qui l&#8217;emporte.</p>
+
+<pre><code>$client = new Client(['base_uri' =&gt; 'http://httpbin.org/']);
+
+// je crée toute mes requetes
+$promises = [
+    'image' =&gt; $client-&gt;getAsync('/image'),
+    'png'   =&gt; $client-&gt;getAsync('/image/png'),
+    'jpeg'  =&gt; $client-&gt;getAsync('/image/jpeg'),
+    'webp'  =&gt; $client-&gt;getAsync('/image/webp')
+];
+
+$result = Promise\any($promises)-&gt;then(function($value){var_dump($value-&gt;getHeader('Content-Type'));});
+$result-&gt;wait();
+</code></pre>
+
+<p>Je veux juste les deux premières réponses <code>some(2, $promise)</code></p>
+
+<pre><code class="php">$client = new Client(['base_uri' =&gt; 'http://httpbin.org/']);
+
+// je crée toute mes requetes
+$promises = [
+    'image' =&gt; $client-&gt;getAsync('/image'),
+    'png'   =&gt; $client-&gt;getAsync('/image/png'),
+    'jpeg'  =&gt; $client-&gt;getAsync('/image/jpeg'),
+    'webp'  =&gt; $client-&gt;getAsync('/image/webp')
+];
+
+$result = Promise\some(2, $promises)
+    -&gt;then(function($results)
+    {foreach ($results as $value)
+        var_dump($value-&gt;getHeader('Content-Type'));
+    }
+);
+$result-&gt;wait();
+</code></pre>
+
+<h2>Yield + Promise == Coroutine promise</h2>
+
+<p>Bon Nous allons complexifier encore un peu.</p>
+
+<p>Soit le code suivant</p>
+
+<pre><code class="php">$client = new Client(['base_uri' =&gt; 'http://httpbin.org/']);
+
+$promiseGenerator = function () use ($client) {
+    yield $client-&gt;getAsync('/image');
+    yield $client-&gt;getAsync('/image/png');
+    yield $client-&gt;getAsync('/image/jpeg');
+    yield $client-&gt;getAsync('/image/webp');
+};
+
+$result = array();
+$promise = Promise\each_limit($promiseGenerator(), 2, function($value, $idx) use (&amp;$result) {$result[$idx] = $value;});
+
+$promise-&gt;wait();
+</code></pre>
+
+<p>Je mets à la suite toute les promises que je souhaite exécuter en ajoutant <code>yield</code> devant.</p>
+
+<p>Je laisse Guzzle gérer avec un limitation de 2. des que le programme a une place de libre, il appelle le générateur pour avoir un nouvelle promise.</p>
+
+<p>Mais il existe dans Guzzle des co-routines..</p>
+
+<pre><code class="php">$client = new Client(['base_uri' =&gt; 'http://httpbin.org/']);
+
+$myfunction = function ($url) use ($client) {
+    return Promise\coroutine(
+        function () use ($client, $url) {
+            try {
+                $value = (yield $client-&gt;getAsync($url));
+            } catch (\Exception $e) {
+                yield New RejectedPromise($e-&gt;getMessage());
+            }
+        }
+    );
+};
+
+$images = ['foo', 'baz', 'bar'];
+$promises = [];
+
+// Build an array of promises.
+foreach ($images as $image) {
+    $promises[] = $myfunction($image);
+}
+
+$aggregate = Promise\all($promises)-&gt;then(
+    function($values) {echo 'ok' ;}, function($values){echo 'nope';});
+
+$aggregate-&gt;wait();
+</code></pre>
+
+<p>Le code est complètement asynchrone.</p>
+
+<p>Il est intéressant de voir le code synchrone et non parallèle.</p>
+
+<pre><code class="php">$client = new Client(['base_uri' =&gt; 'http://httpbin.org/']);
+
+$getImages = function ($url) use ($client) {
+            try {
+                return $value = $client-&gt;get($url);
+            } catch (\Exception $e) {
+                $value = $e-&gt;getMessage();
+            }
+        };
+
+$images = ['foo', 'baz', 'bar'];
+$promises = [];
+
+// Build an array of promises.
+foreach ($images as $image) {
+    $result[] = $getImages($image);
+}
+</code></pre>
+
+<p>En gros, j&#8217;ai retiré le <code>async</code> et les <code>yields</code> mais les deux codes se ressemblent non ?</p>
+
+<h2>Conclusion</h2>
+
+<p>Les promises sont pratiques.</p>
+
+<ul>
+<li>elles sont chainables</li>
+<li>elles sont asynchrones, annulables, rejetables</li>
+<li>On peut faire des foreach dessus.</li>
+<li>On peut les combiner.</li>
+</ul>
+
+
+<p>Ce n&#8217;est pas vraiment un hasard. Les promises sont des <strong>Monades</strong>. Il n&#8217;est pas simple d&#8217;expliquer les monades. Les monades viennent de la programmation fonctionnelle et c&#8217;est surtout <a href="https://www.haskell.org/">haskell</a> qui a popularisé cette structure. J&#8217;espère que je reviendrai dessus.</p>
+
+<p><em>Guzzle</em> est vraiment très sympathique à utiliser. Le coté asynchrone n&#8217;est pas simple, la fonction <code>co-routine</code> n&#8217;est pas dans la documentation. Il a été très difficile de trouver un code d&#8217;exemple. Je regrette que parfois le seul moyen de déclencher la résolution est d&#8217;appeler de manière synchrone <code>-&gt;wait()</code> ce qui est dommage.</p>
+]]></content>
+  </entry>
+  
+</feed>

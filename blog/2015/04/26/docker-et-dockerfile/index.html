@@ -1,0 +1,473 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Docker Et Dockerfile - Mon blog perso.</title>
+  <meta name="author" content="mcamuzat">
+
+  
+  <meta name="description" content="Introduction Je continue dans mon exploration de Docker, aujourd'hui nous allons voir comment automatiser la création d'un container à l'aide d'un &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mcamuzat.github.io/blog/2015/04/26/docker-et-dockerfile/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Mon blog perso." type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-60315965-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Mon blog perso.</a></h1>
+  
+    <h2>Un simple blog PHP/Linux/Programmation/Docker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="mcamuzat.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Docker Et Dockerfile</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-04-26T19:44:44+02:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:44 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>Introduction</h2>
+
+<p>Je continue dans mon exploration de Docker, aujourd&#8217;hui nous allons voir comment automatiser la création d&#8217;un container à l&#8217;aide d&#8217;un <code>Dockerfile</code>.</p>
+
+<p>Nous allons créer un container pour <a href="http://jonas.nitro.dk/tig/">tig</a>.. C&#8217;est un interface git qui marche sous un terminal. Pour moi, c&#8217;est un magnifique outil de travail. Je m&#8217;en sers très souvent (surtout la vue de status (touche <code>S</code>) puis <code>u</code> pour ajouter, <code>!</code> pour reverter, <code>C</code> pour commit, <code>e</code> pour lancer mon éditeur (Bien entendu Vim)</p>
+
+<p>Nous allons faire</p>
+
+<ul>
+<li>L&#8217;installation à la main</li>
+<li>Puis écrire le <code>Dockerfile</code> qui automatise la partie 1</li>
+<li>Optimiser un peu celui-ci en utilisant une autre distribution</li>
+<li>Faire des commit sous Github, puis sous DockerHub</li>
+</ul>
+
+
+<h2>Création du container à la main</h2>
+
+<p>Je commence avec une Ubuntu que je lance en mode interactif.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker run -it ubuntu:14.10
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je mets à jour ma distribution</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>apt-get update
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>J&#8217;installe tig (il est dans les dépôts officiels)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>apt-get install -y tig
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A cause du <code>apt-get update</code> Ubuntu a téléchargé toutes les sources des dépôts dans le répertoire <code>var/lib/apt/lists/</code> pour ne pas alourdir le container je vais effacer celui-ci</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>rm -rf /var/lib/apt/lists/*
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je lance <code>tig</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>root@0a475b7fbed7:/# tig
+</span><span class='line'>tig: Not a git repository
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il n&#8217;y a pas de dépot git à la racine c&#8217;est normal.</p>
+
+<p>je quitte mon container et je liste</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker ps -a
+</span><span class='line'>CONTAINER ID        IMAGE                                         COMMAND                CREATED             STATUS                            PORTS                                                                         NAMES
+</span><span class='line'>0a475b7fbed7        ubuntu:14.10                                  <span class="s2">&quot;/bin/bash&quot;</span>            <span class="m">13</span> minutes ago      Exited <span class="o">(</span>130<span class="o">)</span> About a minute ago
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je vais le committer.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker commit -m <span class="s2">&quot;add tig&quot;</span> -a <span class="s2">&quot;mcamuzat&quot;</span> admiring_yonath mcamuzat/tig:v1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je vais le relancer avec la commande suivante.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker run -t -i -v <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:/project mcamuzat/tig:v1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>En gros j&#8217;ai crée un lien symbolique qui pointe le répertoire courant de mon ordinateur vers le répertoire <code>project</code> du container.</p>
+
+<p>je me place dans le répertoire project.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">cd</span> /project
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>et je lance tig</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>tig
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si dans le répertoire courant il y a un dépôt git. Normalement l&#8217;interface de Tig apparait.</p>
+
+<p>Voila j&#8217;ai placé tig dans un container.</p>
+
+<h2>Automatisation via un DockerFile.</h2>
+
+<p>On se place dans un répertoire vide</p>
+
+<p>Je crée un fichier <code>DockerFile</code> avec le contenu suivant</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>FROM ubuntu:14.10
+</span><span class='line'>MAINTAINER Marc Camuzat &lt;marco@crans.org&gt;
+</span><span class='line'>RUN apt-get update <span class="se">\</span>
+</span><span class='line'>    <span class="o">&amp;&amp;</span> apt-get install -y mysql-client <span class="se">\</span>
+</span><span class='line'>    <span class="o">&amp;&amp;</span> rm -rf /var/lib/apt/lists/*
+</span><span class='line'>WORKDIR /project
+</span><span class='line'>VOLUME  /project
+</span><span class='line'>ENTRYPOINT <span class="o">[</span><span class="s2">&quot;tig&quot;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>WORKDIR</code> et <code>VOLUME</code> indique à Docker que le répertoire par défault est <code>project</code> et que l&#8217;on lance tig</p>
+
+<p>On va maintenant demander à docker de <em>builder</em> l&#8217;image à l&#8217;aide de la commande suivante</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker build -t mcamuzat/tig:v2 .
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On attend un peu.. Et on relance</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker run -t -i -v <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:/project mcamuzat/tig:v2
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>C&#8217;est beaucoup plus rapide.</p>
+
+<h2>Optimisons la taille.</h2>
+
+<p>Quand je liste mon image via la commande suivante</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>REPOSITORY              TAG                     IMAGE ID            CREATED             VIRTUAL SIZE
+</span><span class='line'>mcamuzat/tig            v2                      103a05c16a2b        <span class="m">3</span> minutes ago       234.6 MB
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Mon container fait 234 méga ! C&#8217;est beaucoup pour un simple utilitaire.
+pour simplifier je vais utiliser une autre distribution <a href="https://www.alpinelinux.org/">alpine-linux</a> (que je ne connaissais pas ..) et le dockerhub <a href="https://registry.hub.docker.com/u/gliderlabs/alpine/">suivant</a> qui réduit la distribution à 5 méga !</p>
+
+<p>Voici mon <code>DockerFile</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>FROM gliderlabs/alpine:3.1
+</span><span class='line'>RUN apk --update add tig
+</span><span class='line'>WORKDIR /project
+</span><span class='line'>VOLUME  /project
+</span><span class='line'>ENTRYPOINT <span class="o">[</span><span class="s2">&quot;tig&quot;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je relance un build.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker build -t mcamuzat/tig:v3 .
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Maintenant mon container ne fait plus que 24 Méga !</p>
+
+<h2>Publions sous Github</h2>
+
+<p>Nous allons créer un nouveau dépôt avec un README.</p>
+
+<p>Que je vais cloner.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git clone https://github.com/mcamuzat/tig-docker.git
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je vais ajouter mon DockerFile, Commiter et Pusher</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git add Dockerfile
+</span><span class='line'>git commit -m<span class="s2">&quot;initial commit&quot;</span>
+</span><span class='line'>git push origin master
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Et c&#8217;est tout.</p>
+
+<p>Résultat <a href="https://github.com/mcamuzat/tig-docker">ici</a></p>
+
+<h2>Publions sur DockerHub</h2>
+
+<p>Je pars du principe que vous avez un compte sur DockerHub.</p>
+
+<ul>
+<li>Cliquer sur le bouton <code>Add Repository-&gt;Automated Build</code></li>
+<li>choisir Github.</li>
+<li>Puis On va vous demander de relier votre compte DockerHub à Github.</li>
+<li>DockerHub va vous demander quel projet vous souhaitez builder automatiquement.</li>
+</ul>
+
+
+<p>Résultat <a href="https://registry.hub.docker.com/u/mcamuzat/tig/">ici</a></p>
+
+<h2>Conclusion</h2>
+
+<p>Le Dockerfile sert à automatiser la création d&#8217;image. il est plus simple de stocker le <code>Dockerfile</code> que le container (puisque Dockerhub s&#8217;occupe de faire build)</p>
+
+<p>J&#8217;ai crée mon premier dépôt. Ce n&#8217;est pas très compliqué. Dans un prochain article, je vais essayer d&#8217;expérimenter <code>docker compose</code>.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mcamuzat</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-04-26T19:44:44+02:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:44 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/docker/'>docker</a>, <a class='category' href='/blog/categories/dockerhub/'>dockerhub</a>, <a class='category' href='/blog/categories/git/'>git</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/tig/'>tig</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mcamuzat.github.io/blog/2015/04/26/docker-et-dockerfile/" data-via="" data-counturl="http://mcamuzat.github.io/blog/2015/04/26/docker-et-dockerfile/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/04/22/correction-orthographique-et-vim/" title="Previous Post: Correction orthographique et VIM">&laquo; Correction orthographique et VIM</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/04/29/awesome-et-liste-de-liens/" title="Next Post: Awesome et liste de liens">Awesome et liste de liens &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/11/08/faire-des-jointures-sur-des-fichiers-csv/">Faire Des Jointures Sur Des Fichiers Csv</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/05/git-grep/">Git Grep</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/02/diff-patch-git/">Diff Et Patch, Pas Besoin De Git</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/01/listes-chainees-iterator/">Listes Chainées Iterator</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/25/retour-vers-le-futur-avec-vim/">Retour Vers Le Futur Avec Vim</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/mcamuzat">@mcamuzat</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'mcamuzat',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - mcamuzat -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

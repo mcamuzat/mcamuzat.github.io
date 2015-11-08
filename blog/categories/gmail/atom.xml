@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Gmail | Mon blog perso.]]></title>
+  <link href="http://mcamuzat.github.io/blog/categories/gmail/atom.xml" rel="self"/>
+  <link href="http://mcamuzat.github.io/"/>
+  <updated>2015-11-08T22:40:30+01:00</updated>
+  <id>http://mcamuzat.github.io/</id>
+  <author>
+    <name><![CDATA[mcamuzat]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Gmail Vim Mêmes Raccourcis]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/08/08/gmail-vim-memes-raccourcis/"/>
+    <updated>2015-08-08T18:52:17+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/08/08/gmail-vim-memes-raccourcis</id>
+    <content type="html"><![CDATA[<h2>Les raccourcis de Gmail ressemblent à vi.</h2>
+
+<p><em>Résumé : appuyer sur <code>?</code> dans gmail pour avoir le tableau complet, les raccourcis claviers suivant ne sont pas activés par défaut</em></p>
+
+<p>Le titre est un peu exagéré.. Je vais essayer de montrer que la <em>philosophie</em> est un peu la même.</p>
+
+<p>Mais sur Vi On utilise les flèches de direction <code>h</code>, <code>j</code>, <code>k</code>, <code>l</code> pour <code>gauche</code>, <code>bas</code>, <code>haut</code>, <code>droite</code> pour se déplacer (enfin surtout <code>j</code> et <code>k</code>). Et bien les touches <code>j</code>(bas)  et <code>k</code>(haut) marchent pareilles sous Gmail.</p>
+
+<p>Pour chercher sous Vi on utilise la touche <code>/</code> , essayez sous Gmail et vous aller directement dans la barre de recherche.</p>
+
+<h2>Une lettre = une idée..</h2>
+
+<p>Comme dans vi ou <code>w</code> signifie <strong>w</strong>ord, <code>d</code> signifie <strong>d</strong>elete, <code>u</code> <strong>u</strong>ndo on retrouve la même idée.</p>
+
+<p>Par exemple <code>c</code> est l&#8217;abréviation de <strong>c</strong>omposer.</p>
+
+<ul>
+<li><code>c</code> pour <strong>c</strong>ompose Nouveau message</li>
+<li><code>n</code> signifie <strong>n</strong>ext Message suivant</li>
+<li><code>p</code> signifie <strong>p</strong>revious Message précédent.</li>
+<li><code>r</code> pour reply <strong>r</strong>eply Répondre</li>
+<li><code>a</code> pour tous <strong>a</strong>ll. Repondre à tous</li>
+<li><code>f</code> pour transférer <strong>f</strong>orward.</li>
+<li><code>o</code> pour ouvrir le conversation.</li>
+</ul>
+
+
+<h2>La lettre en majuscule = la version minuscule en plus forte</h2>
+
+<p>Dans vi <code>i</code> insere du texte, <code>I</code> insere au début de la ligne, <code>a</code> ajoute du texte , <code>A</code> ajoute le texte à la fin de la ligne.</p>
+
+<ul>
+<li><code>C</code> compose un nouveau message dans une nouvelle fenêtre</li>
+<li><code>R</code> Répondre dans une nouvelle fenêtre</li>
+<li><code>A</code> Répondre à tous dans une nouvelle fenêtre.</li>
+<li><code>F</code> Transférer dans une nouvelle fenêtre.</li>
+</ul>
+
+
+<h2>Une lettre = un pictogramme.</h2>
+
+<p>Sous Vi certaine lettre sont des pictogrammes. Par exemple la touche <code>'</code> représente le marque page.</p>
+
+<p>Je n&#8217;ai encore jamais parlé des marques pages sous vi pour faire simple</p>
+
+<ul>
+<li>Ouvrez un fichier texte très long</li>
+<li>Allez vers le mileu du fichier  appuyer sur <code>m</code> puis <code>a</code></li>
+<li>Re-deplacez vous et appuyer sur <code>m</code> puis <code>b</code>.</li>
+<li>tapez <code>'a</code> vous ramene ou point a et <code>'b</code> au point b, <code>d'a</code> (effacer jusqu&#8217;au marque-page a)</li>
+</ul>
+
+
+<p><img class="center" src="/images/quote.png" width="431" height="174" title="&lsquo;Le guillement est une pictogramme de marques-pages&rsquo; &lsquo;le guillemet est le pictogramme du marque-page&rsquo;" ></p>
+
+<p>La lettre <code>=</code> est le pictogramme de deux lignes indentées. Quand j&#8217;appuie sur <code>=</code> j&#8217;indente le texte.</p>
+
+<p><img class="center" src="/images/indentation.png" width="600" height="276" title="&lsquo;Indentation&rsquo; &lsquo;Pour indenter on utilise la touche = &rsquo;" ></p>
+
+<p>La lettre <code>z</code> correspond au repli de texte</p>
+
+<p><img class="center" src="/images/repli.png" width="600" height="230" title="&lsquo;z = repli de texte ;&rsquo; &lsquo;Pour plier déplier le texte on utilise la touche z&rsquo;" ></p>
+
+<ul>
+<li><code>z</code> + <code>c</code> pour replier (c = close)</li>
+<li><code>z</code> + <code>o</code> pour deplier (o = open)</li>
+<li><code>z</code> + <code>a</code> pour alterner.</li>
+</ul>
+
+
+<p><img class="center" src="/images/plier.png" width="595" height="214" title="&lsquo;z = repli de texte&rsquo; &lsquo;Pour plier déplier le texte on utilise la touche z&rsquo;" ></p>
+
+<p>Sous gmail, c&#8217;est encore la même idée.  la touche <code>x</code> correspond à une checkbox. appuyer sur x pour sélectionner la conversation. le <code>#</code> correspond à supprimer, le <code>!</code> à SPAM!!!.</p>
+
+<p><img class="center" src="/images/checkanddelete.png" width="543" height="193" title="&lsquo;le x est le pictogramme d'un checkbox&rsquo; &lsquo;Mon terminal`" ></p>
+
+<h2>Le cas de <code>*</code></h2>
+
+<p>Pour tout selectionner tout les fichiers textes on utilise la commande <code>*.txt</code></p>
+
+<ul>
+<li><code>*</code> puis <code>a</code> : Sélectionner toutes les conversations</li>
+<li><code>*</code> puis <code>n</code> : Désélectionner toutes les conversations</li>
+<li><code>*</code> puis <code>r</code> : Sélectionner les conversations lues</li>
+<li><code>*</code> puis <code>u</code> : Sélectionner les conversations non lues</li>
+<li><code>*</code> puis <code>s</code> : Sélectionner les conversations dont le suivi est activé</li>
+<li><code>*</code> puis <code>t</code> : Sélectionner les conversations dont le suivi n’est pas activé</li>
+</ul>
+
+
+<p>puis après:</p>
+
+<ul>
+<li><code>e</code> : Archiver</li>
+<li><code>m</code> : Ignorer la conversation</li>
+<li><code>!</code> : Signaler comme spam</li>
+<li><code>#</code> : Supprimer</li>
+<li><code>z</code> : Annuler la dernière action</li>
+<li><code>I</code> : Marquer comme lu</li>
+<li><code>U</code> : Marquer comme non lu</li>
+<li><code>+</code> ou <code>=</code> : Marquer comme important</li>
+<li><code>-</code> : Marquer comme non important</li>
+</ul>
+
+
+<h2>Une lettre = Un verbe</h2>
+
+<p>la lettre g signifie <strong>g</strong>o</p>
+
+<ul>
+<li><code>g</code> puis <code>i</code> : Ouvrir la boîte de réception (<strong>i</strong>nput)</li>
+<li><code>g</code> puis <code>s</code> : Ouvrir les conversations dont le suivi est activé</li>
+<li><code>g</code> puis <code>t</code> : Ouvrir le dossier &ldquo;Messages envoyés&rdquo;</li>
+<li><code>g</code> puis <code>d</code> : Ouvrir le dossier &ldquo;Brouillons&rdquo; (<strong>d</strong>raft)</li>
+<li><code>g</code> puis <code>a</code> : Ouvrir le dossier &ldquo;Tous les messages&rdquo;</li>
+<li><code>g</code> puis <code>c</code> : Ouvrir le dossier &ldquo;Contacts&rdquo;</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>A mon travail, on utilise Gmail, Je recois beaucoup de mail (BitBucket, Hipchat, Slack, Redmine, Jira, Wordpress, Meetup, Ovh). J&#8217;avoue que des que j&#8217;ai décidé de traiter les mails via raccourcis clavier, j&#8217;ai trouvé cela assez pratique.</p>
+
+<p>On peux retrouver un tableau qui résume tout en tapant &ldquo;?&rdquo; dans Gmail.</p>
+]]></content>
+  </entry>
+  
+</feed>

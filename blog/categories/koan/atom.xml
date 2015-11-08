@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Koan | Mon blog perso.]]></title>
+  <link href="http://mcamuzat.github.io/blog/categories/koan/atom.xml" rel="self"/>
+  <link href="http://mcamuzat.github.io/"/>
+  <updated>2015-11-08T22:40:30+01:00</updated>
+  <id>http://mcamuzat.github.io/</id>
+  <author>
+    <name><![CDATA[mcamuzat]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Koan Et Programmation]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/05/25/koan-et-programmation/"/>
+    <updated>2015-05-25T20:53:23+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/05/25/koan-et-programmation</id>
+    <content type="html"><![CDATA[<p>Un koan est dixit wikipedia</p>
+
+<blockquote><blockquote><p>koan est une une brève anecdote ou un court échange entre un maître et son disciple, absurde, énigmatique ou paradoxal, ne sollicitant pas la logique ordinaire.</p></blockquote></blockquote>
+
+<p>Un exemple de Koan</p>
+
+<blockquote><blockquote><p>Quel est le son d’une seule main qui applaudit ?</p></blockquote></blockquote>
+
+<p>Il existe des Koan pour la programmation. Ce sont des mini problèmes pour s&#8217;initier à une technologie.</p>
+
+<h2>RubyKoan</h2>
+
+<p>Le plus connu et le premier est <a href="http://rubykoans.com/">RubyKoan</a>.</p>
+
+<p>Regardons ensemble la première utilisation.</p>
+
+<pre><code class="bash">cd koans
+/home/marc/.rvm/rubies/ruby-2.2.0/bin/ruby path_to_enlightenment.rb
+AboutAsserts#test_assert_truth has damaged your karma.
+
+The Master says:
+  You have not yet reached enlightenment.
+
+The answers you seek...
+  Failed assertion.
+
+Please meditate on the following code:
+  /home/marc/prog/ruby_koans/koans/about_asserts.rb:10:in `test_assert_truth'
+
+mountains are merely mountains
+your path thus far [X_________________________________________________] 0/282
+</code></pre>
+
+<p>J&#8217;ouvre le fichier <code>about_asserts.rb</code>.</p>
+
+<pre><code class="ruby">#!/usr/bin/env ruby
+# -*- ruby -*-
+
+require File.expand_path(File.dirname(__FILE__) + '/neo')
+
+class AboutAsserts &lt; Neo::Koan
+
+  # We shall contemplate truth by testing reality, via asserts.
+  def test_assert_truth
+    assert false                # This should be true
+  end
+</code></pre>
+
+<p>Il suffit de changer le <code>false</code> en <code>true</code></p>
+
+<p>Relancons, On avance petit à petit et toutes les notions du ruby sont expliquées.</p>
+
+<pre><code class="bash">cd koans
+/home/marc/.rvm/rubies/ruby-2.2.0/bin/ruby path_to_enlightenment.rb
+AboutAsserts#test_assert_truth has expanded your awareness.
+AboutAsserts#test_assert_with_message has damaged your karma.
+
+The Master says:
+  You have not yet reached enlightenment.
+  You are progressing. Excellent. 1 completed.
+
+The answers you seek...
+  This should be true -- Please fix this
+
+Please meditate on the following code:
+  /home/marc/prog/ruby_koans/koans/about_asserts.rb:16:in `test_assert_with_message'
+
+learn the rules so you know how to break them properly
+your path thus far [.X________________________________________________] 1/282
+</code></pre>
+
+<p>C&#8217;est un moyen facile et rapide pour apprendre un langage. Ceci dit j&#8217;ai personnellement fini les rubykoans. Mais 1 mois plus tard, j&#8217;étais incapable d&#8217;aligner une ligne de code en ruby. Faire passer les tests n&#8217;est pas très compliqué quelque soit le langage.</p>
+
+<p>Il y a aussi les Katas de programmation, Mais c&#8217;est plus un cahier des charges avec des tests d&#8217;acceptations (On parle de BDD) alors que les koan sont plutôt dans la notion d&#8217;unitaire.</p>
+
+<h2>Quelques Koan.</h2>
+
+<p>Bien sur les <a href="http://rubykoans.com/">RubyKoans</a> il existe une version <a href="http://koans.herokuapp.com/en/about_asserts">en ligne</a>.</p>
+
+<p>Les <a href="https://github.com/gregmalcolm/python_koans">python-koans</a> sont vraiment chouettes Il y a python 2.7 et python 3. Si les premiers problèmes sont faciles. Les derniers sont plutôt durs.</p>
+
+<p>En javascript on peux citer</p>
+
+<ul>
+<li><a href="https://github.com/mrdavidlaing/javascript-koans">javascript-koans</a></li>
+<li><a href="https://github.com/larrymyers/backbone-koans">backbone-koans</a></li>
+<li><a href="https://github.com/bjpbakker/angular-koans">angular-koans</a></li>
+</ul>
+
+
+<p>J&#8217;ai été un peu déçus de ne pas trouver des Koans en php. Cela reste très basique.
+je citerai:</p>
+
+<ul>
+<li><a href="https://github.com/TorontoPHPSoftwareCraftsmanship/PHPUnit-Koans">PHPUnit-koans</a></li>
+<li>et celui-ci par votre serviteur (mais c&#8217;était il y a bien longtemps) <a href="https://github.com/mcamuzat/PHPUnitRegexKoan">mcamuzat/PHPUnitRegexKoan</a></li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>Je vous avais parler des <a href="/blog/2015/04/29/awesome-et-liste-de-liens/">awesome-list</a> et bien il existe une liste de <a href="https://github.com/ahmdrefat/awesome-koans">awesome-koans</a>.</p>
+]]></content>
+  </entry>
+  
+</feed>

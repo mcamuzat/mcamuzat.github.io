@@ -1,0 +1,417 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Docker Je Débute - Mon blog perso.</title>
+  <meta name="author" content="mcamuzat">
+
+  
+  <meta name="description" content="Docker Suite à une présentation à une conférence. J'ai commencé à m'y mettre. J'écris ce post en tant que grand débutant.. Docker est une solution de &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mcamuzat.github.io/blog/2015/04/12/docker-je-debute/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Mon blog perso." type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-60315965-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Mon blog perso.</a></h1>
+  
+    <h2>Un simple blog PHP/Linux/Programmation/Docker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="mcamuzat.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Docker Je Débute</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-04-12T22:25:27+02:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:25 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>Docker</h2>
+
+<p>Suite à une présentation à une conférence. J&#8217;ai commencé à m&#8217;y mettre. J&#8217;écris ce post en tant que grand débutant..</p>
+
+<p>Docker est une solution de virtualisation d&#8217;instance, plus précisément de container. Il y a pas mal de différence avec les différentes visualisations de Virtual box/Xen/VmWare. On isole juste les process et le file-system. Ce qui fait que l&#8217;on consomme très peu de processeurs.</p>
+
+<h2>Installation</h2>
+
+<p>Installer docker n&#8217;est pas très compliqué sous ubuntu 14.04.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install docker.io
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Et c&#8217;est tout !</p>
+
+<p>Pour éviter de préfixer <code>sudo</code> à chaque commande il est plus facile d&#8217;ajouter son utilisateur au group docker.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo addgroup &lt;votre user&gt; docker
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Hello world sous docker</h2>
+
+<p>Lancer docker</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker run ubuntu:14.04 /bin/echo <span class="s1">&#39;Hello world&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cette commande fait plusieurs choses:</p>
+
+<ul>
+<li>si l&#8217;image <code>ubuntu:14.04</code> n&#8217;existe pas, elle va la télécharger.</li>
+<li>Puis on lance le container</li>
+<li>Puis on exécute echo &lsquo;Hello world&rsquo;</li>
+</ul>
+
+
+<p>D&#8217;ailleurs si on relance la même commande, on constate que l&#8217;image est déjà sur le disque dur.</p>
+
+<p>la commande prend moins d&#8217;une seconde. Pourtant on a chargé un container et lancer une commande !</p>
+
+<p>Essayons la commande suivante</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker run ubuntu:14.04 - it /bin/bash
+</span><span class='line'>root@b2634b81c3dc:/#
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Nous avons un bash intéractif. <code>-i</code> mode interactif, et <code>-t</code> affiche un pseudo terminal</p>
+
+<p>Il faut comprendre que  dès que la commande principale est finie, l&#8217;instance aussi. Dans le cas <code>Echo 'Hello World'</code> la commande se finit de suite. Dans le cas de <code>/bin/bash</code> On spécifie le mode interactif. Donc l&#8217;instance continue tant que l&#8217;on a pas quitté le bash.</p>
+
+<p>Ouvrons un nouveau terminal</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker ps
+</span><span class='line'>CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+</span><span class='line'>b2634b81c3dc        ubuntu:14.04        /bin/bash           <span class="m">43</span> seconds ago      Up <span class="m">42</span> seconds                           sharp_archimedes
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On voit que mon image est toujours en cours.</p>
+
+<p>La commande docker ps affiche tout les containers allumés pour afficher tout les containers allumés pendant la session. C&#8217;est <code>dockers ps -a</code></p>
+
+<p>On peux inspecter une instance avec la commande</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker inspect sharp_archimedes
+</span><span class='line'>docker inspect b2634b81c3dc
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cela renvoie un json.</p>
+
+<p>On peux aussi lister les images disponibles via la commande</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker images
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Vous voulez télécharger des images</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker pull centos
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Vous cherchez une images particulières</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker search php56
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>La liste des images disponibles est disponible sur <a href="https://hub.docker.com/">Docker Hub</a> . D&#8217;ailleurs Dockers est très couplé avec DockerHub. DockerHub est un le GitHub pour Docker. On peux très bien faire du Git sans GitHub. C&#8217;est la même chose pour docker.</p>
+
+<p>Docker et Git partage aussi la notion de commit et de push.</p>
+
+<p>relancons notre instance</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker run -it ubuntu:14.04 /bin/bash
+</span><span class='line'>root@f5882f7f608d:/#
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Installons un paquet au hasard</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install vim
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On quitte <code>Exit</code></p>
+
+<p>puis on commit</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo docker commit f5882f7f608do marc/vim
+</span><span class='line'>4f177bd27a9ff0f6dc2a830403925b5360bfe0b93d476f7fc3231110e7f71b1c
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si je liste les images.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker images
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>je vois apparaitre mon <code>marc/vim</code></p>
+
+<p>Je peux ainsi réutiliser mon container ainsi</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo docker run -it marc/vim vim
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On peux ainsi se créer ses propres containers. Mais c&#8217;est un peu laborieux. Docker utilise des <code>DockerFile</code> pour automatiser le process. Cela fera un prochain post</p>
+
+<h2>Résumé des commandes</h2>
+
+<ul>
+<li><code>docker run -i -t ubuntu:14.10 /bin/bash</code> lance en mode interactif et un terminal avec la commande Bash.</li>
+<li><code>docker run -i -t ubuntu:14.10 'hello world'</code></li>
+<li><code>docker ps</code> liste les containers en cours.</li>
+<li><code>docker ps -a</code> liste tout les containers.</li>
+<li><code>docker images</code> liste toutes les images.</li>
+<li><code>docker pull centos</code> pour télécharger une image (tout les images officielles sont sur le <a href="https://hub.docker.com/">Hub</a></li>
+<li><code>docker inspect uuid</code> affiche les informations sur l&#8217;instance.</li>
+<li><code>docker commit uuid name</code>pour commiter.</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>Bon j&#8217;avoue que je débute depuis 2 jours.  Ce qui m&#8217;impressionne dans Docker c&#8217;est la vitesse (moins d&#8217;une seconde pour démarrer). C&#8217;est plutôt simple d&#8217;utilisation. La notion de commit a l&#8217;air sympa (Même si au fond c&#8217;est l&#8217;équivalent d&#8217;un snapshot sous vmware). J&#8217;espère pouvoir faire mon premier dépôt sous DockerHub bientôt.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mcamuzat</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-04-12T22:25:27+02:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:25 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/container/'>container</a>, <a class='category' href='/blog/categories/docker/'>docker</a>, <a class='category' href='/blog/categories/linux/'>linux</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mcamuzat.github.io/blog/2015/04/12/docker-je-debute/" data-via="" data-counturl="http://mcamuzat.github.io/blog/2015/04/12/docker-je-debute/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/04/06/suite-visiteur-pattern-visiteur-bool%C3%A9en/" title="Previous Post: Suite visiteur pattern : Visiteur Booleen">&laquo; Suite visiteur pattern : Visiteur Booleen</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/04/15/10print/" title="Next Post: 10print">10print &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/11/08/faire-des-jointures-sur-des-fichiers-csv/">Faire Des Jointures Sur Des Fichiers Csv</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/05/git-grep/">Git Grep</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/02/diff-patch-git/">Diff Et Patch, Pas Besoin De Git</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/01/listes-chainees-iterator/">Listes Chainées Iterator</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/25/retour-vers-le-futur-avec-vim/">Retour Vers Le Futur Avec Vim</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/mcamuzat">@mcamuzat</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'mcamuzat',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - mcamuzat -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

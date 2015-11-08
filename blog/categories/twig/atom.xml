@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Twig | Mon blog perso.]]></title>
+  <link href="http://mcamuzat.github.io/blog/categories/twig/atom.xml" rel="self"/>
+  <link href="http://mcamuzat.github.io/"/>
+  <updated>2015-11-08T22:40:30+01:00</updated>
+  <id>http://mcamuzat.github.io/</id>
+  <author>
+    <name><![CDATA[mcamuzat]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Halt Compiler : Twig Et Php Dans Le Même Fichier]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/08/23/halt-compiler-twig-et-php-dans-le-meme-fichier/"/>
+    <updated>2015-08-23T17:20:41+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/08/23/halt-compiler-twig-et-php-dans-le-meme-fichier</id>
+    <content type="html"><![CDATA[<h2>Introduction</h2>
+
+<p>je vais parler de l&#8217;instruction <code>__halt_compiler()</code>.</p>
+
+<p>Cette instruction arrête l&#8217;interprétation du PHP. Instruction inutile ? Pas vraiment..</p>
+
+<p>Pour ce faire je vais montrer un exemple ou je vais mixer un fichier php et un fichier <a href="http://twig.sensiolabs.org/">twig</a> ensemble.</p>
+
+<h2>L&#8217;instruction <code>__halt_compiler()</code></h2>
+
+<p>D&#8217;après php.net</p>
+
+<blockquote><p>Stoppe l&#8217;exécution du compilateur. Ceci peut être très utile pour embarquer des données dans des scripts PHP, comme des fichiers d&#8217;installation.
+L&#8217;octet de la position du début des données peut être déterminé par la constante <code>__COMPILER_HALT_OFFSET__</code> qui n&#8217;est définie que s&#8217;il y a une fonction <code>__halt_compiler()</code> présente dans le fichier.</p></blockquote>
+
+<h2>Une première expérimentation</h2>
+
+<p>Soit le fichier php suivant :</p>
+
+<pre><code class="php">&lt;?php
+echo 'salut la compagnie!!';
+__halt_compiler();
+echo "j'apparais pas";
+</code></pre>
+
+<p>Comme prévu la deuxième ligne ne s&#8217;affiche pas.</p>
+
+<h2>Une seconde expérimentation.</h2>
+
+<pre><code class="php">&lt;?php
+$txt = file_get_contents(__FILE__, false, null, __COMPILER_HALT_OFFSET__);
+echo strtoupper($txt);
+__halt_compiler();
+Bonjour tout le monde!
+</code></pre>
+
+<p>La constante <code>__FILE__</code> représente le fichier actuelle, la constante <code>__COMPILER_HALT_OFFSET__</code> représente la position de l&#8217;instruction <code>__halt_compiler()</code>. On récupère le texte qui ne s&#8217;affiche pas.</p>
+
+<pre><code class="sh">BONJOUR TOUT LE MONDE!
+</code></pre>
+
+<h2>Mettre le fichier php et le fichier de template twig dans le même fichier</h2>
+
+<p>Un exemple un peu théorique car pas très optimisé.</p>
+
+<p>J&#8217;ai besoin de twig, voici le <code>composer.json</code></p>
+
+<pre><code class="json">{
+   "require": {
+        "twig/twig": "^1.20"
+    }
+}
+</code></pre>
+
+<p>Voici mon programme.</p>
+
+<pre><code class="php">&lt;?php
+require_once __DIR__ . '/vendor/autoload.php'; // Autoload files using Composer autoload
+
+function get_halt_data() {
+    return file_get_contents(__FILE__, false, null, __COMPILER_HALT_OFFSET__);
+}
+
+$loader = new Twig_Loader_Array(array(
+    'index' =&gt; get_halt_data()));
+$twig = new Twig_Environment($loader);
+
+echo $twig-&gt;render('index', array('name' =&gt; 'Fabien'));
+
+__halt_compiler();
+
+hello {\{name}\}
+</code></pre>
+
+<pre><code class="sh">hello fabien
+</code></pre>
+
+<p>Désolé pour les <code>{\{</code> sinon cela n&#8217;apparait pas sur le code.</p>
+
+<p>C&#8217;est relativement inefficace. Il doit avoir moyen de faire un peu plus propre en profitant du cache.</p>
+
+<p>Comme annoncé dans le titre , j&#8217;ai dans le même fichier le php et le template twig.</p>
+
+<h3>Un exemple plus concret <code>composer.phar</code></h3>
+
+<p>Ouvrons pour voir le fichier <code>composer.phar</code></p>
+
+<p>Voici ce que je vois. Nous retrouvons notre instruction du jour.</p>
+
+<pre><code class="php">...
+Phar::mapPhar('composer.phar');
+define('COMPOSER_DEV_WARNING_TIME', 1445255994);
+require 'phar://composer.phar/bin/composer';
+
+__HALT_COMPILER(); ?&gt;
+.. 
+</code></pre>
+
+<p>Les fichiers <code>.phar</code> en pratique n&#8217;utilise que cette astuce. Je connais assez peu.</p>
+
+<h2>Conclusion</h2>
+
+<ul>
+<li>Sur l&#8217;utilisation en template. Il y a le projet <a href="https://github.com/bobthecow/mustache.php">mustache.php</a> vous ne devriez pas être perdu avec le loader <a href="https://github.com/bobthecow/mustache.php/wiki/Template-Loading#inline-loader">suivant</a></li>
+<li>Sur l&#8217;utilisation de string dans un template twig, la lecture de cet <a href="https://techpunch.co.uk/development/render-string-twig-template-symfony2">article</a> est très bien.</li>
+<li>Sur les <code>.phar</code> la <a href="http://php.net/manual/en/phar.mapphar.php">documentation officielle</a> semble un bon début.</li>
+</ul>
+
+
+<p>Je vais essayer de continuer à parler d&#8217;autres instructions et structures peu connues (par exemple <code>__invoke</code> ou les <code>SplHeap</code>).</p>
+
+<p>Merci de m&#8217;avoir lu.</p>
+]]></content>
+  </entry>
+  
+</feed>

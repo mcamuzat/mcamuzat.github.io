@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Bash | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/bash/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-08T22:25:06+01:00</updated>
+  <updated>2015-11-08T22:40:30+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -122,6 +122,473 @@ NULL,SIRET4,Adresse4
 <p>Si un jour vous avez besoin de merger deux fichiers sans forcement sortir un script complexe, penser à linux.</p>
 
 <p>Pour le csv et PHP, c&#8217;est inclus dans l&#8217;instruction <code>fgetcsv</code> mais ce n&#8217;est pas la joie, la librairie suivante <a href="http://csv.thephpleague.com/">thephpleague/csv</a> rend cela nettement plus agréable.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Git Grep]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/11/05/git-grep/"/>
+    <updated>2015-11-05T22:22:13+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/11/05/git-grep</id>
+    <content type="html"><![CDATA[<p>Dans le post <a href="blog/2015/11/02/diff-patch-git">précédent</a> j&#8217;ai parlé des commandes linux <code>patch</code> et <code>diff</code>. des fonctionnalités ou on utiliserait plutôt Git. Ici je vais faire le contraire : utiliser git sans utiliser les commandes linux. Je vais parler de <code>git grep</code>.</p>
+
+<h2>git grep</h2>
+
+<p>l&#8217;utilisation est très simple</p>
+
+<pre><code class="sh">git grep hello
+</code></pre>
+
+<p>On peut utiliser une regex
+le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code>less</code>).</p>
+
+<p><strong>Rappel des touches sur Less</strong></p>
+
+<table>
+<thead>
+<tr>
+<th> Touche      </th>
+<th style="text-align:center;"> Description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>g</code>               </td>
+<td style="text-align:center;"> début du fichier</td>
+</tr>
+<tr>
+<td> <code>G</code>               </td>
+<td style="text-align:center;"> fin  du fichier</td>
+</tr>
+<tr>
+<td> <code>/mot</code>            </td>
+<td style="text-align:center;"> cherche <code>mot</code>. <code>n</code> pour suivant <code>N</code> pour précédent</td>
+</tr>
+<tr>
+<td> <code>&amp;mot</code>            </td>
+<td style="text-align:center;"> seulement le mot</td>
+</tr>
+</tbody>
+</table>
+
+
+<p><code>git grep</code> utilise un peu près les mêmes options que le <code>grep</code>.</p>
+
+<p>par exemple</p>
+
+<pre><code class="sh">git grep -n -C 10 hello
+</code></pre>
+
+<ul>
+<li><code>-n</code> numérote les lignes</li>
+<li><code>-C 5</code> affiche un contexte de 5 lignes</li>
+</ul>
+
+
+<p>A noter que git grep n&#8217;utilise que les fichiers dans le dépôt qui sont déjà indexé. Donc il est plutôt rapide (alors qu&#8217;un grep devrait faire tous les répertoires).</p>
+
+<h2>Git grep et l&#8217;historique</h2>
+
+<p>Mais la vrai force de git grep est de pouvoir chercher sur toute les branches !</p>
+
+<pre><code class="sh">git grep -n -C 10 -e &lt;ma regex&gt; &lt;la branche&gt;
+</code></pre>
+
+<p>D&#8217;ailleurs si vous voulez savoir qui a commité a ajouté un bug qui contient le mot &ldquo;Panda&rdquo;
+<code>sh
+git rev-list --all | xargs git grep 'Panda'
+</code></p>
+
+<p>Il y a des alternatives
+<code>sh
+git log -G Panda
+git log -S Panda
+</code></p>
+
+<h2>Git grep et tig</h2>
+
+<p>Depuis la version 2 de <a href="https://github.com/jonas/tig">tig</a> (<strong>pas encore</strong> dans les dépots au moment ou j&#8217;écris ces lignes)
+il suffit d&#8217;appuyer sur <code>g</code> de faire la recherche.</p>
+
+<p>Les différentes commandes</p>
+
+<ul>
+<li><code>e</code> ouvrir dans l&#8217;éditeur</li>
+<li><code>b</code> ouvre la vue blame</li>
+<li><code>Enter</code> permet de se déplacer dans le fichiers.</li>
+</ul>
+
+
+<p><img class="center" src="/images/tiggrep.png" width="600" height="398" title="&lsquo;Git grep&rsquo; &lsquo;Git grep&rsquo;" ></p>
+
+<h2>Git grep et vim</h2>
+
+<ul>
+<li>Il est dispo dans le plugin <a href="https://github.com/tpope/vim-fugitive">Fugitive</a>.</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>L&#8217;intégration dans <em>tig</em> me plait beaucoup, j&#8217;ai beaucoup tapé le commande suivante pour faire mes recherches.
+<code>sh
+ find . -name '*.php'| xargs grep 'array_walk_recur'
+</code></p>
+
+<p>Je me suis forcé à lire un peu la documentation de git grep, et je ne le regrette pas.</p>
+
+<p>Enfin il existe des alternative à <code>grep</code> comme <a href="http://beyondgrep.com/">ack</a> ou plus récemment <a href="https://github.com/ggreer/the_silver_searcher">the silver searcher</a>. Je vais essayer d&#8217;en parler plus tard.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Lancer Des Commandes Dans Vim]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/08/31/lancer-des-commandes-dans-vim/"/>
+    <updated>2015-08-31T23:49:17+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/08/31/lancer-des-commandes-dans-vim</id>
+    <content type="html"><![CDATA[<p>Soit le fichier texte suivant:</p>
+
+<pre><code class=""> * Alpha
+ * Foxtrot
+ * Charlie
+ * Delta
+ * Echo 
+ * Bravo
+</code></pre>
+
+<p>Dans VIM il suffit de taper.</p>
+
+<pre><code class="">:%sort ou :%!sort
+</code></pre>
+
+<p>Pour obtenir
+<code>
+ * Alpha
+ * Bravo
+ * Charlie
+ * Delta
+ * Echo
+ * Foxtrot
+</code></p>
+
+<p>On peux aussi lancer plein de commandes amusantes</p>
+
+<pre><code> * Doublon
+ * Pas unique
+ * Doublon
+ * 
+ * ...
+</code></pre>
+
+<pre><code>!sort | uniq -c | tr "[A-Z]" "[a-z]"
+</code></pre>
+
+<p>Pour ceux qui ne se rappelle plus trop les commandes de Bash</p>
+
+<ul>
+<li><code>sort</code> trie le texte</li>
+<li><code>uniq -c</code> prend toute les valeurs et les comptes c&#8217;est l&#8217;équivalent d&#8217;un <code>GROUP BY</code> en SQL</li>
+<li><code>tr</code> est l&#8217;abréviation de <strong>tr</strong>anspose je remplace les lettres en <code>[A-Z]</code> par leur équivalent en minuscule.</li>
+</ul>
+
+
+<pre><code>      1  * 
+      1  * ...
+      2  * doublon
+      1  * pas unique
+</code></pre>
+
+<p>Si vous sélectionnez le texte avec <code>v</code> et que vous appuyer sur <code>:</code></p>
+
+<p>Alors vous devez voir la commande suivante
+<code>
+:'&lt;,'&gt;
+</code>
+et Ajoutez la commande que vous allez appliquer à la sélection. Par exemple <code>:'&lt;,'&gt;!sort</code></p>
+
+<p>Plus rigolo. On peux appeler des langages que l&#8217;on veut dans VIM</p>
+
+<pre><code class="php">&lt;?php echo "bonjour";
+</code></pre>
+
+<p>Tapez <code>!!</code>
+vous devriez voir apparaître
+<code>
+:.!
+</code>
+Compléter avec <code>:.!php</code></p>
+
+<p>votre texte va se remplacer
+<code>
+bonjour
+</code></p>
+
+<p>Cela marche aussi avec python</p>
+
+<pre><code class="python">print "olleh"[::-1]
+</code></pre>
+
+<p>Avec le curseur sur la ligne, appuyer sur <code>!!</code> puis ajoutez <code>:.!python</code></p>
+
+<p>La ligne devient</p>
+
+<pre><code class="">hello
+</code></pre>
+
+<h2>Exécuter une commande Bash depuis VIM</h2>
+
+<p>La commande suivante</p>
+
+<pre><code>php app/console cache:clear --env=prod
+</code></pre>
+
+<p>Si vous voulez exécuter la commande mais ne pas modifiez la ligne.</p>
+
+<pre><code>:.w !bash
+</code></pre>
+
+<p>C&#8217;est un peu moins simple.</p>
+
+<ul>
+<li><code>:.</code> représente la ligne actuelle.</li>
+<li><code>w</code> représente une écriture</li>
+<li><code>!bash</code> via Bash.</li>
+</ul>
+
+
+<p>La documentation de VIM <code>:help :w_c</code></p>
+
+<h2>en résumé</h2>
+
+<ul>
+<li>Si vous voulez appliquer votre commande sur tout le fichier <code>:%!commande</code></li>
+<li>S vous voulez juste la ligne <code>:.!commande</code> ou tapez <code>!!</code>.</li>
+<li>Si vous voulez sur une sélection <code>v</code> ou <code>V</code> puis <code>:</code> vous deviez voir ceci <code>:'&lt;,'&gt;</code>, ajoutez la commande souhaitée.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Git Un Peu De Fun]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/08/15/git-un-peu-de-fun/"/>
+    <updated>2015-08-15T21:35:25+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/08/15/git-un-peu-de-fun</id>
+    <content type="html"><![CDATA[<p>Il est possible de faire des commits qui clignotent avec la commande suivante.</p>
+
+<pre><code class="sh">git commit --all-empty -m "^[[5m Bonjour ^[[0"
+</code></pre>
+
+<p><strong>Attention</strong> le caractère <code>^[</code> est la touche <code>Escape</code> (on parle de caractère d&#8217;échappement). Il n&#8217;est pas très simple à taper. Il faut appuyer sur <code>Ctrl+v</code> puis <code>&lt;ESC&gt;</code></p>
+
+<p>Bienvenue dans le monde du terminal et du ANSI. Il existe de véritable oeuvre d&#8217;art juste en mode texte. Et dans le temps les fichiers pirates contenaient souvent des fichiers textes avec Logo et présentation de la team.</p>
+
+<p>On peut rajouter des trucs plus rigolos</p>
+
+<pre><code class="sh">git commit --allow-empty -F &lt;(curl https://raw.githubusercontent.com/thiderman/doge/master/doge/static/doge.txt)
+</code></pre>
+
+<h2>Tout les terminaux ne sont pas égaux.</h2>
+
+<p>Voici un gif animé de mes commits</p>
+
+<p><img class="center" src="/images/outgnome.gif" width="554" height="410" title="&lsquo;So meme&rsquo; &lsquo;So meme&rsquo;" ></p>
+
+<p>Cela ne clignote pas beaucoup sur <code>gnometerminal</code> essayons avec  Xterm</p>
+
+<p><img class="center" src="/images/outxterm.gif" width="585" height="397" title="&lsquo;Gif animé&rsquo; &lsquo;On a un menu interactif&rsquo;" ></p>
+
+<p>C&#8217;est un peu mieux.</p>
+
+<h2>Mais peux-ton commiter si on a rien à commiter</h2>
+
+<p>Avec la commande <code>--allow-empty</code> c&#8217;est parfaitement possible.</p>
+
+<p>Mais a quoi cela sert ?</p>
+
+<ul>
+<li>A mettre des annotations</li>
+<li>A distinguer différentes parties</li>
+</ul>
+
+
+<h2>On se connait et paranoia ?</h2>
+
+<p>Dans une ligne de commande (aucun danger).
+<code>
+ssh whoami.filippo.io
+</code></p>
+
+<p>Le résultat est surprenant. Le logiciel me reconnait immédiatement (nom et prénom).</p>
+
+<p><img class="center" src="/images/clesssh.png" width="600" height="392" title="&lsquo;Je ne donne aucun login, pourtant le logiciel me reconnait&rsquo; &lsquo;On se connait&rsquo;" ></p>
+
+<p>Tout cela vient du fait que lorsque on se connecte en ssh, on envoie toujours sa clé publique.. Et la clé publique de mon ordinateur est connue, car je l&#8217;utilise pour me connecter sur github, pour éviter de renseigner à chaque fois mon mot de passe des que je commite. D&#8217;ailleurs votre clé publique est ici en <code>https://github.com/&lt;mon.compte&gt;.keys</code></p>
+
+<h2>Conclusion</h2>
+
+<ul>
+<li>Le contenu vient d&#8217;un post sur <a href="https://news.ycombinator.com/item?id=10058967">hacker-news</a>.</li>
+<li>pour le ANSI il y a des exemples magnifique sur <a href="http://blocktronics.org/">blocktronics</a> et aussi <a href="http://sixteencolors.net/">sixteencolors</a></li>
+</ul>
+
+
+<p>Voici quelques utilisations de git, cela ne sert pas à grand chose on est d&#8217;accord..</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Histogramme Et Ligne De Commande]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/07/19/histogramme-et-ligne-de-commande/"/>
+    <updated>2015-07-19T18:16:57+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/07/19/histogramme-et-ligne-de-commande</id>
+    <content type="html"><![CDATA[<h2>Un petit utilitaire.</h2>
+
+<p>J&#8217;ai reprogrammé en php un clone de <a href="https://github.com/holman/spark">spark</a>.</p>
+
+<p>Un petit exemple est plus parlant</p>
+
+<pre><code>spark([1,2,3,4,4,5,6,1,2]); // ▂▃▅▆▆▇█▂▃
+spark([1,2,3,4,5,1,2,3,4,5]); //▂▄▅▇█▂▄▅▇█
+</code></pre>
+
+<p>Voici l&#8217;implémentation</p>
+
+<pre><code class="php">function spark($array) {
+    $bars = array('▁','▂','▃','▄','▅','▆','▇','█');
+    $divide = max($array);
+    if ($divide == 0) {
+        $divide = 1;
+    }
+    $countBars = count($bars)-1;
+    $out = '';
+    foreach ($array as $tick)
+        $out .= $bars[round(($tick / $divide) * $countBars)];
+    echo $out;
+}
+</code></pre>
+
+<h2>L&#8217;appeler en ligne de commande.</h2>
+
+<p>La documentation de spark donne cette ligne de commande
+<code>
+spark 0 30 55 80 33 150
+</code></p>
+
+<p>Est ce qu&#8217;on peux faire la même chose ? Il suffit de rajouter les deux lignes suivantes.
+<code>php
+$iDontCare =array_shift($argv);
+spark($argv);
+return 0;
+</code></p>
+
+<p>On utilise la variable <code>$argv</code> qui est le tableau de paramètres passer dans la ligne de commande. L&#8217;argument <code>$argv[0]</code>est le nom du programme, c&#8217;est pour cela que l&#8217;on fait un <code>array_shift</code> cela supprime la première valeur du tableau.</p>
+
+<pre><code>php spark.php 0 30 55 80 33 150
+▁▂▄▅▃█
+</code></pre>
+
+<h2>L&#8217;appeler via les pipes</h2>
+
+<p>Un peu plus compliqué via les pipes du Shell.</p>
+
+<p>Les implémentations des Pipes se présentent toujours un peu de la même manière. On utilise <code>STDIN</code>  qui représente l&#8217;entrée standard.</p>
+
+<p>Un exemple qui traduit les caractères accentués. <code>é-&gt;&amp;eacute</code></p>
+
+<pre><code class="php">#!/usr/bin/env php
+&lt;?php
+while (!feof(STDIN)) {
+     echo htmlentities(fgets(STDIN));
+}
+</code></pre>
+
+<p>La ligne <code>!/usr/bin/env php</code> s&#8217;appelle le <a href="https://fr.wikipedia.org/wiki/Shebang">shebang</a></p>
+
+<p>Puis rendre exécutable le fichier
+<code>
+chmod +x htmlentities.php
+</code>
+Des exemples
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ echo &lsquo;énergie&rsquo; | ./htmlentities.php&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;&eacute;nergie&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;$ cat file.txt | ./htmlentities</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Ce qui est cool c&#8217;est que l&#8217;on peux chainer les opérateur.</p>
+
+<p>Un programme qui passe la première lettre en majuscule.</p>
+
+<pre><code class="php">#!/usr/bin/env php
+&lt;?php
+while (!feof(STDIN)) {
+     echo ucfirst(trim(fgets(STDIN)));
+}
+</code></pre>
+
+<p>Un programme qui aime crier !!!!.</p>
+
+<pre><code class="php">#!/usr/bin/env php
+&lt;?php
+while (!feof(STDIN)) {
+     echo trim(fgets(STDIN)).'!!!!';
+}
+</code></pre>
+
+<pre><code>$ echo 'récuperation' | ./shoot.php | ./capitalize.php | ./htmlentities.php
+R&amp;eacute;cup&amp;eacute;ration!!!!
+</code></pre>
+
+<p>C&#8217;est un peu plus compliqué dans la vrai vie avec les retours à la ligne vide. Mais j&#8217;espère que vous avez compris mon idée.</p>
+
+<p>Retour à notre script.</p>
+
+<p>Voici la partie pour récupérer de la ligne de commande.
+<code>php
+// si je n'ai aucun argument ..
+if (count($argv) == 0) {
+    $str = '';
+    // recupère le flux d'entrée
+    while (!feof(STDIN)) {
+        $str .= fgets(STDIN);
+    }
+    // explode laisse la derniere ligne vide.
+    // d'ou le array_filter
+    spark(array_filter(explode("\n", $str),'strlen'));
+    return 0;
+}
+</code></p>
+
+<p>Essayons une commande sur le dépôt git du blog que vous lisez.
+<code>
+git shortlog -s | cut -f1 | php ~/prog/spark/spark.php
+</code>
+<code>sh
+$ git shortlog -s
+(...)
+   2  Manu
+   37  Marc Camuzat
+   1  Marcus Young
+(..)
+</code></p>
+
+<p>On ne garde que la colonne 1 avec <code>cut -f1</code> puis on passe au script php</p>
+
+<p>On obtient
+<code>
+▁▁▁▁▁▁▁▁▁▁▁▁▃▁▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▃▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+</code></p>
+
+<h2>Conclusion</h2>
+
+<p>J&#8217;avais besoin pour un futur article (le prochain ?) de cette fonction.
+La philosophie de Linux est de créer plein de petits programmes et que ceux-ci communiquent via une interface très simple et universelle qui est le fichier texte. Ainsi il n&#8217;y a aucune dépendance le programme 1 est en bash, le programme 2 est en C, le programme 3 est en PHP. Et tout cela ne pose aucun problème.</p>
 ]]></content>
   </entry>
   

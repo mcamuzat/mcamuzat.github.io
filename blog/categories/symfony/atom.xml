@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Symfony | Mon blog perso.]]></title>
+  <link href="http://mcamuzat.github.io/blog/categories/symfony/atom.xml" rel="self"/>
+  <link href="http://mcamuzat.github.io/"/>
+  <updated>2015-11-08T22:40:30+01:00</updated>
+  <id>http://mcamuzat.github.io/</id>
+  <author>
+    <name><![CDATA[mcamuzat]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Array_walk, Array_map, Array_walk_recursive]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/08/26/array-walk/"/>
+    <updated>2015-08-26T22:30:55+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/08/26/array-walk</id>
+    <content type="html"><![CDATA[<p>Une question que l&#8217;on m&#8217;a posé.</p>
+
+<p>Quel instruction je n&#8217;ai jamais jamais réussi à utiliser dans php ? Dans le sens jamais trouvé d&#8217;utilisation pratique.</p>
+
+<p>Ma réponse est un <code>array_recursive_walk()</code> et dans la même idée les <code>RecursiveIteratorIterator</code></p>
+
+<p>Et puis on m&#8217;a demander la différence entre un <code>array_walk</code> et un <code>array_map</code>.</p>
+
+<h2><code>array_map</code></h2>
+
+<p>Voici quelques exemples</p>
+
+<pre><code class="php">// via un array_map
+$array = ['one', 'two', 'three']
+$out = array_map(uc_first, $array);
+</code></pre>
+
+<p><code>array_map</code> ne touche pas le tableau original.</p>
+
+<p>En fait <code>array_map</code> fait exactement ceci.</p>
+
+<pre><code>$out = [ ucfirst('one'), ucfirst('two'), ucfirst('three') ];
+</code></pre>
+
+<p>De manière générale</p>
+
+<pre><code>array_map(function($a),[a ,b, ..,z]) 
+[function(a), function(b), function(c), .. function(z)].
+</code></pre>
+
+<ul>
+<li>On renvoie un tableau de la <strong>même</strong> taille.</li>
+<li>la fonction appelé doit contenir un <strong>return</strong></li>
+<li>C&#8217;est de la programmation fonctionnelle (c&#8217;est le <strong>map</strong> de <strong>Map</strong>Reduce).</li>
+<li>On ne connais pas l&#8217;index (que l&#8217;on pourrai récupérer dans un <code>foreach($array as $key =&gt; $value)</code>).</li>
+</ul>
+
+
+<h2><code>Array_walk</code></h2>
+
+<pre><code class="php">$array = ['one', 'two', 'three']
+function toMaj(&amp;$input, $key) {
+    // ucfirst give error with 2 arguments
+    $input = ucfirst($input);
+}
+array_walk($array, 'toMaj');
+var_dump($array);
+</code></pre>
+
+<p>Constatons:</p>
+
+<ul>
+<li>Je passe par référence <code>&amp;input</code>.</li>
+<li>Donc je n&#8217;ai pas besoin de <code>return</code>.</li>
+<li>Donc nous sommes dans du <strong>procédural</strong>. (ce qui n&#8217;est pas forcément un défaut)</li>
+<li>J&#8217;ai économisé une variable</li>
+<li>On est obligé d&#8217;écrire des fonctions à deux arguments certaines fonctions comme <code>ucfirst</code> refusent d&#8217;avoir plusieurs arguments.</li>
+<li>Par contre, on connait l&#8217;index (<code>$key</code>) mais impossible de le modifier.</li>
+<li><code>array_walk</code> renvoie <code>true</code> or <code>false</code> ce qui n&#8217;aide pas beaucoup</li>
+</ul>
+
+
+<pre><code>$array = ['one', 'two', 'three']
+function toMaj(&amp;$input, $key) {
+    $input = $key.' : 'ucfirst($input);
+}
+array_walk($array, 'toMaj');
+var_dump($array);
+</code></pre>
+
+<p>Pour résumer
+les deux fonctions ont un peu près le même résultat.</p>
+
+<ul>
+<li><code>array_walk</code> prend un array et remplace chaque valeurs par Fonction(valeur).</li>
+<li><code>array_map</code> prend un array et recrée un array de la même taille.</li>
+</ul>
+
+
+<h2>Le <code>Array_recursive_walk</code></h2>
+
+<p>Un exemple de code.</p>
+
+<p>Je voulais faire un <code>CamelCase</code> -> <code>snake_case</code> mais comme le <code>array_walk</code> impossible de modifier les clés des index.</p>
+
+<p>Soit l&#8217;exemple suivant</p>
+
+<pre><code class="php">$array =  ["Tortue-ninja" =&gt; ["leonardo" , "donatello", "michelangelo","raphael"], "Mechant" =&gt; ["shredder", "krang"]];
+array_walk_recursive($array, function(&amp;$item, $key) {
+    if ($key === "Tortue-ninja") {
+        echo 'Cowabunga!';
+    }
+    $item = ucfirst($item);
+});
+
+var_dump($array);
+</code></pre>
+
+<p>Le programme n&#8217;affiche pas de <code>Cowabunga</code>, mais j&#8217;ai mis en majuscule toutes les valeurs.</p>
+
+<pre><code>array(2) {
+  'Tortue-ninja' =&gt;
+  array(4) {
+    [0] =&gt;
+    string(8) "Leonardo"
+    [1] =&gt;
+    string(9) "Donatello"
+    [2] =&gt;
+    string(12) "Michelangelo"
+    [3] =&gt;
+    string(7) "Raphael"
+  }
+  'mechant' =&gt;
+  array(2) {
+    [0] =&gt;
+    string(8) "Shredder"
+    [1] =&gt;
+    string(5) "Krang"
+  }
+}
+</code></pre>
+
+<p>On ne passe jamais sur le clé : <code>Tortue-ninja</code>, d&#8217;ailleurs la documentation est claire</p>
+
+<blockquote><p>Toute clé qui est associée à un tableau n&#8217;est pas passée à la fonction de rappel.</p></blockquote>
+
+<p>Un vrai exemple
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'>    <span class="nb">array_walk_recursive</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="o">&amp;</span><span class="nx">amp</span><span class="p">;</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span> <span class="nx">instanceof</span> <span class="nx">\Traversable</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$value</span> <span class="o">=</span> <span class="nb">iterator_to_array</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>`</p>
+
+<p>Un exemple que l&#8217;on retrouve dans <a href="">PHPUnit</a> et <a href="">Symfony2</a></p>
+
+<p>On veut logger des objets en les serialisant en Json. Certain objects (comme les ArrayCollection et autres..) sont <em>Traversables</em> (c&#8217;est à dire qu&#8217;il possède un Iterateur (On implémente <code>current</code>, <code>next</code>, <code>rewind</code>, <code>valid</code>). En php il est possible de transformer les Itérateurs en Array avec l&#8217;instruction <code>iterator_to_array()</code>. ainsi on transforme l&#8217;objet en Array pour avoir plus d&#8217;information.</p>
+
+<h2>En conclusion</h2>
+
+<p>Donc je n&#8217;ai jamais réussi à écrire un <code>array_walk_recursive</code> mais au moins j&#8217;ai réussi à écrire un post dessus.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[PHP Code Sniffer Mise en Place]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/08/01/php-code-sniffer-mise-en-place/"/>
+    <updated>2015-08-01T18:33:12+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/08/01/php-code-sniffer-mise-en-place</id>
+    <content type="html"><![CDATA[<h2>Qualité de code et php</h2>
+
+<p>Dans ce post nous allons voir les logiciels qui permettent de respecter les standards de code en PHP.</p>
+
+<p>En pratique il n&#8217;y en a que 2.</p>
+
+<ul>
+<li><a href="https://github.com/squizlabs/PHP_CodeSniffer">CodeSniffer</a></li>
+<li><a href="http://cs.sensiolabs.org/">PHP Coding Standards Fixer</a></li>
+</ul>
+
+
+<h2>CodeSniffer</h2>
+
+<p>Il y a différentes normes de codage :  les plus connus sont la <a href="http://www.php-fig.org/psr/psr-1/">psr-1</a> et la <a href="http://www.php-fig.org/psr/psr-2/">psr-2</a>. La psr-2 hérite de la psr-1. Mais certain Framework ont leur propres méthodes d&#8217;indentations. On peux personnaliser d&#8217;ailleurs les différentes règles. Les gouts et les couleurs de chacun sur le code est subjectif. L&#8217;intérêt de suivre les recommandations est que cela dépassionne le débat. Cela passe CodeSniffer ou cela ne passe pas. Pour participer au projet Open-source, il faut suivre la norme.</p>
+
+<p>La norme est pointilleuse sur les commentaires aussi. Si pas de commentaire pas de validation. On est quasiment forcer d&#8217;écrire la documentation. Cela a parfois un effet pervers ou le programmeur remplit sans trop réfléchir pour faire passer code sniffer.</p>
+
+<p>Très souvent on ajoute un <em>hook</em> sur les commits de git. Lorsque on commite, git déclenche le logiciel, si un des fichiers n&#8217;est pas valide CodeSniffer on refuse de commiter. C&#8217;est assez peu contraignant quand la codebase est déjà indentée. (quoique parfois cela tombe vraiment au mauvais moment).En général on vérifie seulement sur les fichiers modifiés. Re-indenter tout le projet est souvent trop compliqué, trop long et un peu suicidaire si vous avez des rebases et des merges.</p>
+
+<h2>Installation de CodeSniffer</h2>
+
+<p>Deux possibilités</p>
+
+<h3>Dans le projet</h3>
+
+<p>via une dépendance au projet en l&#8217;ajoutant dans le <code>composer.json</code></p>
+
+<pre><code class="json">{
+    "require-dev": {
+        "squizlabs/php_codesniffer": "2.*"
+    }
+}
+</code></pre>
+
+<p>Alors dans le projet
+<code>sh
+./vendor/bin/phpcs -h
+</code></p>
+
+<p>Personnellement je définie toujours un répertoire <code>bin</code> par défaut</p>
+
+<pre><code class="json">    "config": {
+        "bin-dir": "bin"
+    },
+</code></pre>
+
+<p>Ainsi la commande précédente devient</p>
+
+<pre><code class="sh">bin/phpcs 
+</code></pre>
+
+<h3>Installation globale</h3>
+
+<p>Soit l&#8217;installer de manière globale</p>
+
+<pre><code>composer global require "squizlabs/php_codesniffer=*"
+</code></pre>
+
+<p>Attention si vous utilisez Composer de manière globale ne pas oublier de rajouter dans votre <code>$PATH</code>
+<code>
+export PATH=~/.composer/vendor/bin:$PATH
+</code></p>
+
+<h3>Ajoutez les reglès symfony</h3>
+
+<p>par défaut phpcs vient avec les règles suivantes</p>
+
+<ul>
+<li><a href="http://www.php-fig.org/psr/psr-1/">psr-1</a></li>
+<li><a href="http://www.php-fig.org/psr/psr-2/">psr-2</a></li>
+<li><a href="https://github.com/squizlabs/PHP_CodeSniffer/tree/master/CodeSniffer/Standards/Squiz">Squiz</a></li>
+<li><a href="http://framework.zend.com/manual/1.12/fr/coding-standard.html">Zend</a></li>
+<li><a href="https://pear.php.net/manual/en/standards.php">Pear</a></li>
+<li><a href="https://github.com/squizlabs/PHP_CodeSniffer/tree/master/CodeSniffer/Standards/PHPCS">Phpcs</a></li>
+</ul>
+
+
+<p>Il manque Symfony..</p>
+
+<p>Voici une méthode simple (mais pas la méthode officielle) si vous voulez l&#8217;installer de manière globale. Je rajoute dans le répertoire <code>Standards</code> un répertoire <code>Symfony2</code></p>
+
+<pre><code>$ composer global require "squizlabs/php_codesniffer=*"
+$ cd ~/.composer/vendor/squizlabs/php_codesniffer/CodeSniffer/Standards
+$ git clone git@github.com:escapestudios/Symfony2-coding-standard.git Symfony2
+</code></pre>
+
+<p>On vérifie que les règles symfony2 sont bien installées</p>
+
+<pre><code>phpcs -i
+</code></pre>
+
+<p>Symfony2 en défaut. Ainsi pas besoin de préciser <code>--standard=Symfony2</code></p>
+
+<pre><code>phpcs --config-set default_standard Symfony2
+</code></pre>
+
+<h3>Php-cbf</h3>
+
+<p>Code sniffer est capable de corriger certaines fautes tout seul. Encore une fois essayer de faire au fur et à mesure. Le commit d&#8217;indentation avec 500 fichiers modifiés est un calvaire à gérer si vous faite des revues de codes ou pire un rebase.</p>
+
+<p>La syntaxe est la même que phpcs.
+<code>
+php-cbf src/
+</code></p>
+
+<h2>Php-cs-fixer</h2>
+
+<p>Écris par <a href="http://sensiolabs.com/">Sensio</a> les créateurs de <a href="http://symfony.com/">Symfony</a>. Ce logiciel fixe automatiquement l&#8217;indentation et différentes règles. L&#8217;avantage est qu&#8217;il est simple à installer pas besoin de cloner d&#8217;autre dépôt.</p>
+
+<h2>Avoir tout les outils via docker.</h2>
+
+<p>J&#8217;ai déjà présenté les différentes méthodes avec <a href="https://github.com/jolicode/docker-images/tree/master/languages/php/phaudit">phaudit</a> ans cette article <a href="/blog/2015/04/18/dockers-et-ci/">ici</a></p>
+
+<h2>Méthode par rapport à git</h2>
+
+<p>Pour lancer une vérification avant chaque commit
+Il suffit de créer un fichier <code>pre-commit.sh</code> dans le répertoire <code>.git/hook</code>. Il y a plein d&#8217;exemples sur le net. Je n&#8217;ai pas d&#8217;exemple à partager. Le code ne m&#8217;appartient plus..</p>
+
+<h2>Installation sous VIM.</h2>
+
+<p>C&#8217;est très simple Il faut installer le plugin <a href="https://github.com/scrooloose/syntastic">syntastic</a>. C&#8217;est un plugin qui gère un peu près tout les formats possibles.</p>
+
+<p>Code-sniffer doit être installé de manière <strong>globale</strong></p>
+
+<p>Il suffit de rajouter cette ligne dans votre <code>.vimrc</code></p>
+
+<pre><code>let g:syntastic_php_checkers=['php', 'phpcs']
+</code></pre>
+
+<p>A chaque fois que l&#8217;on enregistre le fichier, le plugin lance automatiquement d&#8217;abord <code>php</code> pour vérifier que le fichier est valide, puis <code>phpcs</code>.</p>
+
+<p>Le résultat est très intuitif on a une flèche <code>&gt;</code> à chaque ligne qui pose problème. Il suffit de passer le curseur pour connaitre l&#8217;erreur. Enfin un screenshot sera plus clair.</p>
+
+<p><img class="center" src="/images/syntastic.png" width="600" height="212" title="&lsquo;Screenshot de syntastic&rsquo; &lsquo;syntastic&rsquo;" ></p>
+
+<h2>Conclusion</h2>
+
+<p>Respecter la norme psr-2 ou autre n&#8217;est pas très compliqué, avec l&#8217;habitude c&#8217;est même plutôt facile. Il est plus facile de d&#8217;intervenir sur un code propre. Sur la mise en place, on a vu qu&#8217;il y a deux possibilités soit des warning dans le code soit une correction automatique. Je ne suis pas <em>fan</em> pas la correction automatique. Je ne veux pas que le logiciel prennent des décisions pour moi.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Des Tests Behat Plus Rapides Sous Symfony]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/07/06/des-tests-plus-rapides-sous-symfony/"/>
+    <updated>2015-07-06T19:46:43+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/07/06/des-tests-plus-rapides-sous-symfony</id>
+    <content type="html"><![CDATA[<h2>Introduction</h2>
+
+<p>Nous allons voir comment multiplier par 5 voir 10 les tests et l&#8217;environnement de test et de dev. L&#8217;astuce ici est de mettre le répertoire <code>cache</code> et <code>log</code> dans la Ram de l&#8217;ordinateur. Ainsi plus d&#8217;écriture sur le disque dur. C&#8217;est très pratique aussi pour les tests Behat. Attention à ne pas utiliser cette astuce sur une instance en production.</p>
+
+<h2>Mise en Oeuvre</h2>
+
+<h3>Méthode 1 : modification du code</h3>
+
+<p>Il suffit de modifier le <code>AppKernel.php</code></p>
+
+<pre><code class="php">public function getCacheDir()
+{
+    if (in_array($this-&gt;environment, array('dev', 'test'))) {
+        return '/run/shm/&lt;MonProjet&gt;/cache/' . $this-&gt;environment;
+    }
+
+    return parent::getCacheDir();
+}
+
+public function getLogDir()
+{
+    if (in_array($this-&gt;environment, array('dev', 'test'))) {
+        return '/run/shm/&lt;Monprojet&gt;/logs';
+    }
+
+    return parent::getLogDir();
+}
+</code></pre>
+
+<p>Il faut bien entendu créer les répertoires suivants. <code>/run/shm/&lt;Monprojet&gt;/logs</code> et <code>/run/shm/&lt;Monprojet&gt;/cache</code>.</p>
+
+<p>Le problème de cette méthode est que l&#8217;on modifie le code. Et que ce genre de modification ne marche pas très bien avec les tests automatiques Jenkins. Bref pratique sur son poste mais pas en production.</p>
+
+<h3>Fixer les problèmes de droit.</h3>
+
+<p>Suivant comme est configuré votre projet et votre apache. Il peux y avoir des problème de droit.</p>
+
+<h4>Solution a : mettre les permissions à l&#8217;utilisateur apache</h4>
+
+<pre><code>chown -R www-data:www-data /run/shm/&lt;MonProjet&gt;
+</code></pre>
+
+<h4>Solution b : mettre l&#8217;utilisateur actuel en utilisateur apache.</h4>
+
+<p>Normalement apache utilise l&#8217;utilisateur www-data, mais rien n&#8217;empêche de changer celui-ci par votre utilisateur.</p>
+
+<p>Il suffit de modifier votre <code>/etc/apache2/httpd.conf</code></p>
+
+<pre><code>User &lt;mon user&gt; 
+Group &lt;mon user&gt;
+</code></pre>
+
+<p>que je lance symfony de la console, ou du site c&#8217;est toujours le même utilisateur.</p>
+
+<h4>Solution c : Fixer juste pour le projet votre utilisateur.</h4>
+
+<p>La solution la plus simple à mettre en oeuvre est <code>mpm-itk</code></p>
+
+<pre><code>sudo apt-get install apache2-mpm-itk
+</code></pre>
+
+<p>Dans mon fichier de conf <code>/etc/apache2/site-available/&lt;monprojet&gt;.conf</code></p>
+
+<p>J&#8217;ajoute les lignes suivantes</p>
+
+<pre><code>    &lt;IfModule mpm_itk_module&gt;
+    AssignUserId &lt;mon user&gt; &lt;mon group&gt;
+    &lt;/IfModule&gt;
+</code></pre>
+
+<p>Il faut redémarrer apache. Les plus courageux tenterons le fast-cgi et autre fpm</p>
+
+<h4>Un petit HS:</h4>
+
+<ul>
+<li>Vous pouvez créer un utilisateur par projet.</li>
+<li>Et installer le projet dans /home/projet1</li>
+<li>dans le /etc/apache2/site-available/projet1.conf</li>
+</ul>
+
+
+<pre><code>    &lt;IfModule mpm_itk_module&gt;
+    AssignUserId &lt;projet1&gt; &lt;projet1&gt;
+    &lt;/IfModule&gt;
+</code></pre>
+
+<p>Si l&#8217;utilisateur <em>projet1</em> est compromis, il ne peux modifier que son home. Il y a plus de risque avec l&#8217;utilisateur apache <code>www-data</code> qui peux modifier l&#8217;ensemble de projet dans le /www/var.</p>
+
+<h3>Solution N°2 : Aucune modification du code.</h3>
+
+<p>Nous allons tout simplement supprimer les répertoires <code>cache</code> et <code>logs</code> du projet et remplacer par un lien symbolique.
+<code>
+rm -rf app/cache
+ln -s /run/shm/&lt;mon projet&gt;/cache  app/cache
+ln -s /run/shm/&lt;mon projet&gt;/logs  app/logs
+</code></p>
+
+<p>Le code n&#8217;est pas modifié. Donc pas de commit bizarre et pas de problème en Prod. Le seul souci est qu&#8217;il y a souvent un <code>.gitkeep</code> sur <code>cache</code> et <code>log</code> donc les <code>git stash</code> et autre se comporte un peu bizarrement.</p>
+
+<h3>des chiffres</h3>
+
+<p>J&#8217;ai pris un projet de mon boulot voici la différence pour les tests Behat</p>
+
+<pre><code class="">Avant
+49 scenarios (49 passed)
+396 steps (396 passed)
+5m12.80s (66.61Mb)
+
+Après
+49 scenarios (49 passed)
+396 steps (396 passed)
+0m23.74s (72.85Mb)
+</code></pre>
+
+<p>je suis passé de 5 minutes à 24 secondes. Les fixtures sur le SQLite sont plus rapides. Bref un gain de temps énorme.</p>
+
+<h2>Conclusion</h2>
+
+<p>Nous avons vu deux solutions.
+Un Post un peu bizarre, puisque c&#8217;est un collègue qui m&#8217;a montré l&#8217;astuce. J&#8217;avais envie d&#8217;écrire un post dessus. Merci à <a href="https://github.com/floyoops">lui</a></p>
+
+<h2>Des liens</h2>
+
+<ul>
+<li><a href="http://www.whitewashing.de/2013/08/19/speedup_symfony2_on_vagrant_boxes.html">le liens le plus cité</a></li>
+<li>sur Npm-itk en <a href="http://bibabox.fr/apache2-mpm-itk-utiliser-un-utiliser-un-utilisateur-different-pour-chaque-vhost/">français</a> ou en <a href="http://blog.stuartherbert.com/php/2008/04/19/using-mpm-itk-to-secure-a-shared-server/">anglais</a> les deux sont biens.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

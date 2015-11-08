@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Tig | Mon blog perso.]]></title>
+  <link href="http://mcamuzat.github.io/blog/categories/tig/atom.xml" rel="self"/>
+  <link href="http://mcamuzat.github.io/"/>
+  <updated>2015-11-08T22:40:30+01:00</updated>
+  <id>http://mcamuzat.github.io/</id>
+  <author>
+    <name><![CDATA[mcamuzat]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Git Grep]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/11/05/git-grep/"/>
+    <updated>2015-11-05T22:22:13+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/11/05/git-grep</id>
+    <content type="html"><![CDATA[<p>Dans le post <a href="blog/2015/11/02/diff-patch-git">précédent</a> j&#8217;ai parlé des commandes linux <code>patch</code> et <code>diff</code>. des fonctionnalités ou on utiliserait plutôt Git. Ici je vais faire le contraire : utiliser git sans utiliser les commandes linux. Je vais parler de <code>git grep</code>.</p>
+
+<h2>git grep</h2>
+
+<p>l&#8217;utilisation est très simple</p>
+
+<pre><code class="sh">git grep hello
+</code></pre>
+
+<p>On peut utiliser une regex
+le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code>less</code>).</p>
+
+<p><strong>Rappel des touches sur Less</strong></p>
+
+<table>
+<thead>
+<tr>
+<th> Touche      </th>
+<th style="text-align:center;"> Description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>g</code>               </td>
+<td style="text-align:center;"> début du fichier</td>
+</tr>
+<tr>
+<td> <code>G</code>               </td>
+<td style="text-align:center;"> fin  du fichier</td>
+</tr>
+<tr>
+<td> <code>/mot</code>            </td>
+<td style="text-align:center;"> cherche <code>mot</code>. <code>n</code> pour suivant <code>N</code> pour précédent</td>
+</tr>
+<tr>
+<td> <code>&amp;mot</code>            </td>
+<td style="text-align:center;"> seulement le mot</td>
+</tr>
+</tbody>
+</table>
+
+
+<p><code>git grep</code> utilise un peu près les mêmes options que le <code>grep</code>.</p>
+
+<p>par exemple</p>
+
+<pre><code class="sh">git grep -n -C 10 hello
+</code></pre>
+
+<ul>
+<li><code>-n</code> numérote les lignes</li>
+<li><code>-C 5</code> affiche un contexte de 5 lignes</li>
+</ul>
+
+
+<p>A noter que git grep n&#8217;utilise que les fichiers dans le dépôt qui sont déjà indexé. Donc il est plutôt rapide (alors qu&#8217;un grep devrait faire tous les répertoires).</p>
+
+<h2>Git grep et l&#8217;historique</h2>
+
+<p>Mais la vrai force de git grep est de pouvoir chercher sur toute les branches !</p>
+
+<pre><code class="sh">git grep -n -C 10 -e &lt;ma regex&gt; &lt;la branche&gt;
+</code></pre>
+
+<p>D&#8217;ailleurs si vous voulez savoir qui a commité a ajouté un bug qui contient le mot &ldquo;Panda&rdquo;
+<code>sh
+git rev-list --all | xargs git grep 'Panda'
+</code></p>
+
+<p>Il y a des alternatives
+<code>sh
+git log -G Panda
+git log -S Panda
+</code></p>
+
+<h2>Git grep et tig</h2>
+
+<p>Depuis la version 2 de <a href="https://github.com/jonas/tig">tig</a> (<strong>pas encore</strong> dans les dépots au moment ou j&#8217;écris ces lignes)
+il suffit d&#8217;appuyer sur <code>g</code> de faire la recherche.</p>
+
+<p>Les différentes commandes</p>
+
+<ul>
+<li><code>e</code> ouvrir dans l&#8217;éditeur</li>
+<li><code>b</code> ouvre la vue blame</li>
+<li><code>Enter</code> permet de se déplacer dans le fichiers.</li>
+</ul>
+
+
+<p><img class="center" src="/images/tiggrep.png" width="600" height="398" title="&lsquo;Git grep&rsquo; &lsquo;Git grep&rsquo;" ></p>
+
+<h2>Git grep et vim</h2>
+
+<ul>
+<li>Il est dispo dans le plugin <a href="https://github.com/tpope/vim-fugitive">Fugitive</a>.</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>L&#8217;intégration dans <em>tig</em> me plait beaucoup, j&#8217;ai beaucoup tapé le commande suivante pour faire mes recherches.
+<code>sh
+ find . -name '*.php'| xargs grep 'array_walk_recur'
+</code></p>
+
+<p>Je me suis forcé à lire un peu la documentation de git grep, et je ne le regrette pas.</p>
+
+<p>Enfin il existe des alternative à <code>grep</code> comme <a href="http://beyondgrep.com/">ack</a> ou plus récemment <a href="https://github.com/ggreer/the_silver_searcher">the silver searcher</a>. Je vais essayer d&#8217;en parler plus tard.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Tig : Status]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/10/04/tig-status/"/>
+    <updated>2015-10-04T21:59:59+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/10/04/tig-status</id>
+    <content type="html"><![CDATA[<p>Tig est un client git en ligne de commande</p>
+
+<p>Il n&#8217;est pas compliqué à installer :</p>
+
+<pre><code class="bash">sudo apt-get install tig
+</code></pre>
+
+<p>Néanmoins c&#8217;est la version 1.2 dans les dépôts au moment ou j&#8217;écris ces lignes.</p>
+
+<p>On peut installer la version 2 qui a plus de fonctionnalités et de raccourcis.</p>
+
+<pre><code class="bash">git clone https://github.com/jonas/tig
+make
+make install
+</code></pre>
+
+<p>attention vous aurez probablement besoin d&#8217;avoir installer la librairies <code>libncursesw</code> pour l&#8217;utf-8</p>
+
+<h2>La vue principale</h2>
+
+<p>Elle permet de voir l&#8217;historique du dépôt.</p>
+
+<p><img class="center" src="/images/tig-defaut.png" width="600" height="398" title="&lsquo;la vue par défault&rsquo; &lsquo;la vue par défaut&rsquo;" ></p>
+
+<p>Appuyer sur <code>&lt;Enter&gt;</code> pour voir la différence. (Dans la version 2, si le terminal fait plus de 160 caractères l&#8217;écran se splitte en 2 verticalement)</p>
+
+<p><img class="center" src="/images/tig-diff.png" width="600" height="399" title="&lsquo;quand on appuie sur la touche entrée, on affiche la différence&rsquo; &lsquo;l'écran de différence&rsquo;" ></p>
+
+<p>Screenshot de la version 2 avec les deux colonnes.</p>
+
+<p><img class="center" src="/images/tig_view_v2.png" width="600" height="366" title="&lsquo;dans la version 2, si le terminal&rsquo; &lsquo;Screenshot de la version 2 avec les deux colonnes.&rsquo;" ></p>
+
+<p>Il va falloir apprendre les touches Vi car on se sert beaucoup de <code>j</code> et <code>k</code> (un rappel <code>j</code> descend vers le bas et <code>k</code> va vers le haut)</p>
+
+<p>De cette écran voici les différents modes (je ne les cites pas tous)</p>
+
+<ul>
+<li><code>S</code> ou <code>s</code> pour voir le stage (équivalent de git status)</li>
+<li><code>t</code> tree view affichage en explorateur de fichier</li>
+<li><code>r</code> permet de voir les différentes branches (<code>H</code> dans la version1</li>
+<li><code>l</code> voir les logs</li>
+</ul>
+
+
+<p>Je vais surtout m&#8217;intéresser à la status view.</p>
+
+<h2>La vue Status</h2>
+
+<p>Les touches à connaitre.</p>
+
+<ul>
+<li><code>u</code> sur un noms de fichiers pour <strong>u</strong>se cela fait l&#8217;équivalent de <code>git add &lt;nom du fichier&gt;</code></li>
+</ul>
+
+
+<p>Si vous appuyer sur <code>u</code> sur les lignes <code>Changes to be commited</code>, <code>Changed but not updated</code>, <code>Untracked files</code> vous ajoutez tous les fichiers.</p>
+
+<pre><code>Changes to be committed:
+M   fichier1
+Changed but not updatedy://&lt;---(*curseur*) 
+M   fichier2
+M   fichier3
+M   fichier4
+M   fichier5
+M   fichier6
+M   fichier7
+Untracked files:
+?   nouveau fichier
+</code></pre>
+
+<p>Cela devient</p>
+
+<pre><code>Changes to be committed:
+M   fichier1
+M   fichier2
+M   fichier3
+M   fichier4
+M   fichier5
+M   fichier6
+M   fichier7
+Changed but not updatedy:
+(no files)
+Untracked files:
+?   nouveau fichier
+</code></pre>
+
+<p>Enfin on peut aussi prendre chunk par chunck (l&#8217;équivalent de <code>git add -p</code>)</p>
+
+<p><img class="center" src="/images/tig-revert.png" width="600" height="398" title="&lsquo;la vue par défaut&rsquo; &lsquo;la vue par défaut&rsquo;" ></p>
+
+<p>Il suffit d&#8217;appuyer sur <code>Enter</code> puis de se déplacer dans le commit avec <code>j</code> et <code>k</code> et appuyer sur <code>u</code> pour ajouter ce chunk. Les chunks pour faire simple sont les textes séparés par des <code>@@ ... @@</code>. On se déplace de chunk en chunk grâce à la touche <code>@</code>.</p>
+
+<p>Pour reverter le fichier, On utilise la touche <code>!</code>.</p>
+
+<p>Cela marche aussi sur un chunk. On peut donc reverter partiellement un fichier.</p>
+
+<p>Il est possible d&#8217;ajouter ligne par ligne dans un commit grâce à la touche <code>1</code>.</p>
+
+<p>Pour faire le git commit il suffit d&#8217;appuyer sur <code>C</code> comme <strong>C</strong>ommit.</p>
+
+<p>Enfin la touche <code>e</code> comme <strong>e</strong>dit ouvre le fichier dans l&#8217;éditeur par défaut.</p>
+
+<h2>Le fichier <code>.tigrc</code></h2>
+
+<p>Le fichier <code>.tigrc</code> permet de personnaliser l&#8217;affichage et d&#8217;ajouter des raccourcis claviers.</p>
+
+<p>Voici quelques exemples de ma config.</p>
+
+<pre><code class=""># Delete files in status view (useful for untracked files)
+bind status D !@?rm %(file)
+
+# Amend last commit with A
+bind status A !git commit --amend
+
+# Create and checkout a new branch; specify custom prompt
+bind main B !git checkout -b "%(prompt Enter new branch name: )"
+</code></pre>
+
+<p>Les raccourcis claviers que j&#8217;ai rajouté</p>
+
+<ul>
+<li>Dans la vue status la touche <code>D</code> efface le fichier</li>
+<li>Dans la vue status la touche <code>A</code> fait un <code>git commit --amend</code></li>
+<li>Dans la vue principale la touche <code>B</code> permet de créer une branche.</li>
+</ul>
+
+
+<h2>Résumé de touches</h2>
+
+<ul>
+<li><code>s</code> ou <code>S</code> voir la vue status</li>
+<li><code>u</code> ajouter le commit/chunk</li>
+<li><code>!</code> revert</li>
+<li><code>1</code> ajoute une lignes au commit</li>
+<li><code>@</code> aller au chunck/diff suivant</li>
+<li><code>D</code> supprimer le fichier (<em>raccourcis perso</em>)</li>
+<li><code>A</code> git amend</li>
+<li><code>e</code> ouvre dans l&#8217;éditeur par défaut</li>
+</ul>
+
+
+<h2>Des liens</h2>
+
+<ul>
+<li><a href="http://jonas.nitro.dk/tig/">le site officiel</a></li>
+<li>la <a href="https://github.com/pmiossec/tig-cheat-sheet">cheat-sheet</a> avec les raccourcis claviers (<em>indispensable</em>)</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>Je vais revenir sur les autres vues bientôt.</p>
+
+<p>Merci de m&#8217;avoir lu.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Docker Et Dockerfile]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/04/26/docker-et-dockerfile/"/>
+    <updated>2015-04-26T19:44:44+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/04/26/docker-et-dockerfile</id>
+    <content type="html"><![CDATA[<h2>Introduction</h2>
+
+<p>Je continue dans mon exploration de Docker, aujourd&#8217;hui nous allons voir comment automatiser la création d&#8217;un container à l&#8217;aide d&#8217;un <code>Dockerfile</code>.</p>
+
+<p>Nous allons créer un container pour <a href="http://jonas.nitro.dk/tig/">tig</a>.. C&#8217;est un interface git qui marche sous un terminal. Pour moi, c&#8217;est un magnifique outil de travail. Je m&#8217;en sers très souvent (surtout la vue de status (touche <code>S</code>) puis <code>u</code> pour ajouter, <code>!</code> pour reverter, <code>C</code> pour commit, <code>e</code> pour lancer mon éditeur (Bien entendu Vim)</p>
+
+<p>Nous allons faire</p>
+
+<ul>
+<li>L&#8217;installation à la main</li>
+<li>Puis écrire le <code>Dockerfile</code> qui automatise la partie 1</li>
+<li>Optimiser un peu celui-ci en utilisant une autre distribution</li>
+<li>Faire des commit sous Github, puis sous DockerHub</li>
+</ul>
+
+
+<h2>Création du container à la main</h2>
+
+<p>Je commence avec une Ubuntu que je lance en mode interactif.</p>
+
+<pre><code class="sh">docker run -it ubuntu:14.10
+</code></pre>
+
+<p>Je mets à jour ma distribution
+<code>
+apt-get update
+</code></p>
+
+<p>J&#8217;installe tig (il est dans les dépôts officiels)</p>
+
+<pre><code class="sh">apt-get install -y tig
+</code></pre>
+
+<p>A cause du <code>apt-get update</code> Ubuntu a téléchargé toutes les sources des dépôts dans le répertoire <code>var/lib/apt/lists/</code> pour ne pas alourdir le container je vais effacer celui-ci
+<code>
+rm -rf /var/lib/apt/lists/*
+</code></p>
+
+<p>Je lance <code>tig</code>
+<code>
+root@0a475b7fbed7:/# tig
+tig: Not a git repository
+</code></p>
+
+<p>Il n&#8217;y a pas de dépot git à la racine c&#8217;est normal.</p>
+
+<p>je quitte mon container et je liste</p>
+
+<pre><code>docker ps -a
+CONTAINER ID        IMAGE                                         COMMAND                CREATED             STATUS                            PORTS                                                                         NAMES
+0a475b7fbed7        ubuntu:14.10                                  "/bin/bash"            13 minutes ago      Exited (130) About a minute ago
+</code></pre>
+
+<p>Je vais le committer.
+<code>
+docker commit -m "add tig" -a "mcamuzat" admiring_yonath mcamuzat/tig:v1
+</code></p>
+
+<p>Je vais le relancer avec la commande suivante.
+<code>
+docker run -t -i -v `pwd`:/project mcamuzat/tig:v1
+</code></p>
+
+<p>En gros j&#8217;ai crée un lien symbolique qui pointe le répertoire courant de mon ordinateur vers le répertoire <code>project</code> du container.</p>
+
+<p>je me place dans le répertoire project.
+<code>
+cd /project
+</code></p>
+
+<p>et je lance tig
+<code>
+tig
+</code></p>
+
+<p>Si dans le répertoire courant il y a un dépôt git. Normalement l&#8217;interface de Tig apparait.</p>
+
+<p>Voila j&#8217;ai placé tig dans un container.</p>
+
+<h2>Automatisation via un DockerFile.</h2>
+
+<p>On se place dans un répertoire vide</p>
+
+<p>Je crée un fichier <code>DockerFile</code> avec le contenu suivant</p>
+
+<pre><code>FROM ubuntu:14.10
+MAINTAINER Marc Camuzat &lt;marco@crans.org&gt;
+RUN apt-get update \
+    &amp;&amp; apt-get install -y mysql-client \
+    &amp;&amp; rm -rf /var/lib/apt/lists/*
+WORKDIR /project
+VOLUME  /project
+ENTRYPOINT ["tig"]
+</code></pre>
+
+<p><code>WORKDIR</code> et <code>VOLUME</code> indique à Docker que le répertoire par défault est <code>project</code> et que l&#8217;on lance tig</p>
+
+<p>On va maintenant demander à docker de <em>builder</em> l&#8217;image à l&#8217;aide de la commande suivante</p>
+
+<pre><code>docker build -t mcamuzat/tig:v2 .
+</code></pre>
+
+<p>On attend un peu.. Et on relance
+<code>
+docker run -t -i -v `pwd`:/project mcamuzat/tig:v2
+</code></p>
+
+<p>C&#8217;est beaucoup plus rapide.</p>
+
+<h2>Optimisons la taille.</h2>
+
+<p>Quand je liste mon image via la commande suivante</p>
+
+<pre><code>REPOSITORY              TAG                     IMAGE ID            CREATED             VIRTUAL SIZE
+mcamuzat/tig            v2                      103a05c16a2b        3 minutes ago       234.6 MB
+</code></pre>
+
+<p>Mon container fait 234 méga ! C&#8217;est beaucoup pour un simple utilitaire.
+pour simplifier je vais utiliser une autre distribution <a href="https://www.alpinelinux.org/">alpine-linux</a> (que je ne connaissais pas ..) et le dockerhub <a href="https://registry.hub.docker.com/u/gliderlabs/alpine/">suivant</a> qui réduit la distribution à 5 méga !</p>
+
+<p>Voici mon <code>DockerFile</code></p>
+
+<pre><code>FROM gliderlabs/alpine:3.1
+RUN apk --update add tig
+WORKDIR /project
+VOLUME  /project
+ENTRYPOINT ["tig"]
+</code></pre>
+
+<p>Je relance un build.</p>
+
+<pre><code>docker build -t mcamuzat/tig:v3 .
+</code></pre>
+
+<p>Maintenant mon container ne fait plus que 24 Méga !</p>
+
+<h2>Publions sous Github</h2>
+
+<p>Nous allons créer un nouveau dépôt avec un README.</p>
+
+<p>Que je vais cloner.
+<code>
+git clone https://github.com/mcamuzat/tig-docker.git
+</code></p>
+
+<p>Je vais ajouter mon DockerFile, Commiter et Pusher
+<code>
+git add Dockerfile
+git commit -m"initial commit"
+git push origin master
+</code></p>
+
+<p>Et c&#8217;est tout.</p>
+
+<p>Résultat <a href="https://github.com/mcamuzat/tig-docker">ici</a></p>
+
+<h2>Publions sur DockerHub</h2>
+
+<p>Je pars du principe que vous avez un compte sur DockerHub.</p>
+
+<ul>
+<li>Cliquer sur le bouton <code>Add Repository-&gt;Automated Build</code></li>
+<li>choisir Github.</li>
+<li>Puis On va vous demander de relier votre compte DockerHub à Github.</li>
+<li>DockerHub va vous demander quel projet vous souhaitez builder automatiquement.</li>
+</ul>
+
+
+<p>Résultat <a href="https://registry.hub.docker.com/u/mcamuzat/tig/">ici</a></p>
+
+<h2>Conclusion</h2>
+
+<p>Le Dockerfile sert à automatiser la création d&#8217;image. il est plus simple de stocker le <code>Dockerfile</code> que le container (puisque Dockerhub s&#8217;occupe de faire build)</p>
+
+<p>J&#8217;ai crée mon premier dépôt. Ce n&#8217;est pas très compliqué. Dans un prochain article, je vais essayer d&#8217;expérimenter <code>docker compose</code>.</p>
+]]></content>
+  </entry>
+  
+</feed>

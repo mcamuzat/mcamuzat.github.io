@@ -1,0 +1,440 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Tig : Status - Mon blog perso.</title>
+  <meta name="author" content="mcamuzat">
+
+  
+  <meta name="description" content="Tig est un client git en ligne de commande Il n'est pas compliqué à installer : 1
+sudo apt-get install tig Néanmoins c'est la version 1.2 dans les &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mcamuzat.github.io/blog/2015/10/04/tig-status/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Mon blog perso." type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-60315965-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Mon blog perso.</a></h1>
+  
+    <h2>Un simple blog PHP/Linux/Programmation/Docker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="mcamuzat.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Tig : Status</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-10-04T21:59:59+02:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>9:59 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Tig est un client git en ligne de commande</p>
+
+<p>Il n&#8217;est pas compliqué à installer :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install tig
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Néanmoins c&#8217;est la version 1.2 dans les dépôts au moment ou j&#8217;écris ces lignes.</p>
+
+<p>On peut installer la version 2 qui a plus de fonctionnalités et de raccourcis.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git clone https://github.com/jonas/tig
+</span><span class='line'>make
+</span><span class='line'>make install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>attention vous aurez probablement besoin d&#8217;avoir installer la librairies <code>libncursesw</code> pour l&#8217;utf-8</p>
+
+<h2>La vue principale</h2>
+
+<p>Elle permet de voir l&#8217;historique du dépôt.</p>
+
+<p><img class="center" src="/images/tig-defaut.png" width="600" height="398" title="la vue par défault" alt="la vue par défaut"></p>
+
+<p>Appuyer sur <code>&lt;Enter&gt;</code> pour voir la différence. (Dans la version 2, si le terminal fait plus de 160 caractères l&#8217;écran se splitte en 2 verticalement)</p>
+
+<p><img class="center" src="/images/tig-diff.png" width="600" height="399" title="quand on appuie sur la touche entrée, on affiche la différence" alt="l"></p>
+
+<p>Screenshot de la version 2 avec les deux colonnes.</p>
+
+<p><img class="center" src="/images/tig_view_v2.png" width="600" height="366" title="dans la version 2, si le terminal" alt="Screenshot de la version 2 avec les deux colonnes."></p>
+
+<p>Il va falloir apprendre les touches Vi car on se sert beaucoup de <code>j</code> et <code>k</code> (un rappel <code>j</code> descend vers le bas et <code>k</code> va vers le haut)</p>
+
+<p>De cette écran voici les différents modes (je ne les cites pas tous)</p>
+
+<ul>
+<li><code>S</code> ou <code>s</code> pour voir le stage (équivalent de git status)</li>
+<li><code>t</code> tree view affichage en explorateur de fichier</li>
+<li><code>r</code> permet de voir les différentes branches (<code>H</code> dans la version1</li>
+<li><code>l</code> voir les logs</li>
+</ul>
+
+
+<p>Je vais surtout m&#8217;intéresser à la status view.</p>
+
+<h2>La vue Status</h2>
+
+<p>Les touches à connaitre.</p>
+
+<ul>
+<li><code>u</code> sur un noms de fichiers pour <strong>u</strong>se cela fait l&#8217;équivalent de <code>git add &lt;nom du fichier&gt;</code></li>
+</ul>
+
+
+<p>Si vous appuyer sur <code>u</code> sur les lignes <code>Changes to be commited</code>, <code>Changed but not updated</code>, <code>Untracked files</code> vous ajoutez tous les fichiers.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Changes to be committed:
+</span><span class='line'>M   fichier1
+</span><span class='line'>Changed but not updatedy://&lt;---<span class="o">(</span>*curseur*<span class="o">)</span>
+</span><span class='line'>M   fichier2
+</span><span class='line'>M   fichier3
+</span><span class='line'>M   fichier4
+</span><span class='line'>M   fichier5
+</span><span class='line'>M   fichier6
+</span><span class='line'>M   fichier7
+</span><span class='line'>Untracked files:
+</span><span class='line'>?   nouveau fichier
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cela devient</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Changes to be committed:
+</span><span class='line'>M   fichier1
+</span><span class='line'>M   fichier2
+</span><span class='line'>M   fichier3
+</span><span class='line'>M   fichier4
+</span><span class='line'>M   fichier5
+</span><span class='line'>M   fichier6
+</span><span class='line'>M   fichier7
+</span><span class='line'>Changed but not updatedy:
+</span><span class='line'><span class="o">(</span>no files<span class="o">)</span>
+</span><span class='line'>Untracked files:
+</span><span class='line'>?   nouveau fichier
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Enfin on peut aussi prendre chunk par chunck (l&#8217;équivalent de <code>git add -p</code>)</p>
+
+<p><img class="center" src="/images/tig-revert.png" width="600" height="398" title="la vue par défaut" alt="la vue par défaut"></p>
+
+<p>Il suffit d&#8217;appuyer sur <code>Enter</code> puis de se déplacer dans le commit avec <code>j</code> et <code>k</code> et appuyer sur <code>u</code> pour ajouter ce chunk. Les chunks pour faire simple sont les textes séparés par des <code>@@ ... @@</code>. On se déplace de chunk en chunk grâce à la touche <code>@</code>.</p>
+
+<p>Pour reverter le fichier, On utilise la touche <code>!</code>.</p>
+
+<p>Cela marche aussi sur un chunk. On peut donc reverter partiellement un fichier.</p>
+
+<p>Il est possible d&#8217;ajouter ligne par ligne dans un commit grâce à la touche <code>1</code>.</p>
+
+<p>Pour faire le git commit il suffit d&#8217;appuyer sur <code>C</code> comme <strong>C</strong>ommit.</p>
+
+<p>Enfin la touche <code>e</code> comme <strong>e</strong>dit ouvre le fichier dans l&#8217;éditeur par défaut.</p>
+
+<h2>Le fichier <code>.tigrc</code></h2>
+
+<p>Le fichier <code>.tigrc</code> permet de personnaliser l&#8217;affichage et d&#8217;ajouter des raccourcis claviers.</p>
+
+<p>Voici quelques exemples de ma config.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># Delete files in status view (useful for untracked files)</span>
+</span><span class='line'><span class="nb">bind </span>status D !@?rm %<span class="o">(</span>file<span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Amend last commit with A</span>
+</span><span class='line'><span class="nb">bind </span>status A !git commit --amend
+</span><span class='line'>
+</span><span class='line'><span class="c"># Create and checkout a new branch; specify custom prompt</span>
+</span><span class='line'><span class="nb">bind </span>main B !git checkout -b <span class="s2">&quot;%(prompt Enter new branch name: )&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Les raccourcis claviers que j&#8217;ai rajouté</p>
+
+<ul>
+<li>Dans la vue status la touche <code>D</code> efface le fichier</li>
+<li>Dans la vue status la touche <code>A</code> fait un <code>git commit --amend</code></li>
+<li>Dans la vue principale la touche <code>B</code> permet de créer une branche.</li>
+</ul>
+
+
+<h2>Résumé de touches</h2>
+
+<ul>
+<li><code>s</code> ou <code>S</code> voir la vue status</li>
+<li><code>u</code> ajouter le commit/chunk</li>
+<li><code>!</code> revert</li>
+<li><code>1</code> ajoute une lignes au commit</li>
+<li><code>@</code> aller au chunck/diff suivant</li>
+<li><code>D</code> supprimer le fichier (<em>raccourcis perso</em>)</li>
+<li><code>A</code> git amend</li>
+<li><code>e</code> ouvre dans l&#8217;éditeur par défaut</li>
+</ul>
+
+
+<h2>Des liens</h2>
+
+<ul>
+<li><a href="http://jonas.nitro.dk/tig/">le site officiel</a></li>
+<li>la <a href="https://github.com/pmiossec/tig-cheat-sheet">cheat-sheet</a> avec les raccourcis claviers (<em>indispensable</em>)</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>Je vais revenir sur les autres vues bientôt.</p>
+
+<p>Merci de m&#8217;avoir lu.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mcamuzat</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-10-04T21:59:59+02:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>9:59 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/git/'>git</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/tig/'>tig</a>, <a class='category' href='/blog/categories/vim/'>vim</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mcamuzat.github.io/blog/2015/10/04/tig-status/" data-via="" data-counturl="http://mcamuzat.github.io/blog/2015/10/04/tig-status/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/10/03/spl-surcharge-magique/" title="Previous Post: SPL surcharge magique">&laquo; SPL surcharge magique</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/10/10/liste-chainees-implementation/" title="Next Post: Listes chainées : implémentation">Listes chainées : implémentation &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/11/08/faire-des-jointures-sur-des-fichiers-csv/">Faire Des Jointures Sur Des Fichiers Csv</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/05/git-grep/">Git Grep</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/02/diff-patch-git/">Diff Et Patch, Pas Besoin De Git</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/01/listes-chainees-iterator/">Listes Chainées Iterator</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/25/retour-vers-le-futur-avec-vim/">Retour Vers Le Futur Avec Vim</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/mcamuzat">@mcamuzat</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'mcamuzat',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - mcamuzat -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

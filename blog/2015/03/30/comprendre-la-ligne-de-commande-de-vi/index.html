@@ -1,0 +1,456 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Comprendre La Ligne De Commande De Vi - Mon blog perso.</title>
+  <meta name="author" content="mcamuzat">
+
+  
+  <meta name="description" content="Sous Vi quand on appuie sur : on a la ligne de commande Tout le monde connaît 1
+2
+:wq // quitter et enregistrer
+:q! // quitter sans enregistrer et &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mcamuzat.github.io/blog/2015/03/30/comprendre-la-ligne-de-commande-de-vi/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Mon blog perso." type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-60315965-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Mon blog perso.</a></h1>
+  
+    <h2>Un simple blog PHP/Linux/Programmation/Docker</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="mcamuzat.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Comprendre La Ligne De Commande De Vi</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-03-30T22:36:21+02:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:36 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Sous Vi quand on appuie sur <code>:</code> on a la ligne de commande</p>
+
+<p>Tout le monde connaît</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:wq // quitter et enregistrer
+</span><span class='line'>:q! // quitter sans enregistrer et sans confirmation !</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Mais en pratique il existe plein de commandes.</p>
+
+<p>Par exemple :</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:1,10d </span></code></pre></td></tr></table></div></figure>
+
+
+<p>efface la ligne 1 à 10 (<code>d</code> = delete)</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:1,10m 10</span></code></pre></td></tr></table></div></figure>
+
+
+<p>bouge les lignes de 1 à 10 de 10 ligne (ici <code>m</code> = move)</p>
+
+<p>le &ldquo;pattern&rdquo; est toujours le même</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>: (début, fin)action</span></code></pre></td></tr></table></div></figure>
+
+
+<table>
+<thead>
+<tr>
+<th> mouvements </th>
+<th style="text-align:center;"> traduction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>1,10</code>      </td>
+<td style="text-align:center;"> entre la ligne 1 et  la ligne 1 à 10 </td>
+</tr>
+<tr>
+<td> <code>.,10</code>      </td>
+<td style="text-align:center;"> <code>.</code> signifie la ligne actuelle      </td>
+</tr>
+<tr>
+<td> <code>10,$</code> </td>
+<td style="text-align:center;"> <code>$</code> signifie la dernière ligne</td>
+</tr>
+<tr>
+<td> <code>/mot1/,/mot2/</code> </td>
+<td style="text-align:center;"> entre le <code>mot1</code> et le <code>mot2</code></td>
+</tr>
+<tr>
+<td> <code>., +5</code> </td>
+<td style="text-align:center;"> entre la ligne actuelle (<code>.</code>) et les 5 lignes suivantes</td>
+</tr>
+<tr>
+<td> <code>%</code> </td>
+<td style="text-align:center;"> tout le fichier</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>quelques actions</p>
+
+<table>
+<thead>
+<tr>
+<th>racourcci</th>
+<th> traduction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>d</code> </td>
+<td> comme <strong>d</strong>elete</td>
+</tr>
+<tr>
+<td> <code>j</code> </td>
+<td> comme <strong>j</strong>oin</td>
+</tr>
+<tr>
+<td><code>sort</code></td>
+<td> trier (sort) les lignes</td>
+</tr>
+<tr>
+<td><code>w</code></td>
+<td> pour enregistrer</td>
+</tr>
+<tr>
+<td><code>y</code></td>
+<td> comme yank</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>le plus connu substitute</h2>
+
+<p>vous avez souvent vu cette syntaxe dans les commits <code>s/mot1/mot2</code></p>
+
+<p>ici <code>s</code> signifie <strong>substitute</strong>.</p>
+
+<p>par exemple</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:%s/mot1/mot2/g</span></code></pre></td></tr></table></div></figure>
+
+
+<p>va remplacer le mot 1 par le mot 2
+le <code>g</code> active le flag <code>global</code> et remplace si le mot apparait deux fois.</p>
+
+<p>par exemple</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$mot1 = $mot1 + 1;
+</span><span class='line'>
+</span><span class='line'>// s/mot1/mot2 
+</span><span class='line'>$mot2 = $mot1 + 1 ; // on ne change que le premier mot
+</span><span class='line'>
+</span><span class='line'>// s/mot1/mot2/g
+</span><span class='line'>$mot2 = $mot2 + 1 // tout les mots</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Encore un peu plus loin</h2>
+
+<p>la commande suivante permet de grouper les mots</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:g/mot/ #donne toute les lignes contenant mot</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>g</code> ici signifie <strong>g</strong>roup</p>
+
+<p>On peut chaîner les differentes actions
+par exemple</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:g/pattern/s/mot/mot2/g # toutes les lignes qui contiennent le pattern, remplace mot1 par mot2.
+</span><span class='line'>
+</span><span class='line'>:g/pattern/d # efface toute les lignes qui contiennent le pattern suivant
+</span><span class='line'>
+</span><span class='line'>:g/pattern/p # 'print toutes lignes qui contienne le pattern suivant</span></code></pre></td></tr></table></div></figure>
+
+
+<p>la derniere ligne est la plus connue. pattern est le plus souvent une <em>regex</em> donc la traduction <code>g/regex/p</code> ->donne la commande <code>grep</code> sous linux.</p>
+
+<p>en faite, toutes les commandes que j&#8217;ai données proviennent de <code>sed</code>. mais ce n&#8217;est pas un hasard. <code>vi</code> est l&#8217;abbreviation de <strong>V</strong>isual <strong>I</strong>nteraction of Sed. un <em>sed interactif</em>.</p>
+
+<p>J&#8217;espère que cela vous fera apprecier <code>sed</code> comme <code>vi</code>. on peut rester très longtemps sur toutes les commandes.</p>
+
+<p>j&#8217;avais expliqué dans un précédent articles les mouvements en mode normal sont</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Action + Nombre de fois + Mouvement
+</span><span class='line'>
+</span><span class='line'>Exemple:
+</span><span class='line'>d5w # *d*elete *5* word
+</span><span class='line'>yG  # copier jusqu'à la fin du fichier (G)
+</span><span class='line'>=4j # indenter (=) 4 lignes vers le bas 
+</span><span class='line'>di( # efface entre les parenthèses *d*elete *i*nside ( 
+</span><span class='line'>
+</span><span class='line'>Dans le mode commande
+</span><span class='line'>: début, fin action
+</span><span class='line'>
+</span><span class='line'>:%d # efface tout le fichier
+</span><span class='line'>:1,10y # copie dans le presse-papier la ligne 1 à 10
+</span><span class='line'>:%s/include_one/require_once/gc
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il me reste à vous parler des buffers et des macros. et on aura presque fait le tour de la magie de <code>vi</code>.</p>
+
+<h2>une commande de la vrai vie</h2>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:%s/\s\+$//</span></code></pre></td></tr></table></div></figure>
+
+
+<p>sur tout le fichier (<code>%</code>) remplace(<code>s</code>) un ou plus(<code>+</code>) espaces (<code>\s</code>) à la fin de la ligne (<code>$</code>) par du vide. cette commande supprime les espaces vides à la fin des lignes..</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mcamuzat</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-03-30T22:36:21+02:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:36 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/editeur/'>editeur</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/vim/'>vim</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mcamuzat.github.io/blog/2015/03/30/comprendre-la-ligne-de-commande-de-vi/" data-via="" data-counturl="http://mcamuzat.github.io/blog/2015/03/30/comprendre-la-ligne-de-commande-de-vi/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/03/22/fizzbuzz-sans-boucle-if/" title="Previous Post: FizzBuzz sans boucle If">&laquo; FizzBuzz sans boucle If</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/04/05/interpreteur-et-visiteur-pattern/" title="Next Post: Interpréteur et Visiteur Pattern">Interpréteur et Visiteur Pattern &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/11/08/faire-des-jointures-sur-des-fichiers-csv/">Faire Des Jointures Sur Des Fichiers Csv</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/05/git-grep/">Git Grep</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/02/diff-patch-git/">Diff Et Patch, Pas Besoin De Git</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/01/listes-chainees-iterator/">Listes Chainées Iterator</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/25/retour-vers-le-futur-avec-vim/">Retour Vers Le Futur Avec Vim</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/mcamuzat">@mcamuzat</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'mcamuzat',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - mcamuzat -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

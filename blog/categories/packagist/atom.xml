@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Packagist | Mon blog perso.]]></title>
+  <link href="http://mcamuzat.github.io/blog/categories/packagist/atom.xml" rel="self"/>
+  <link href="http://mcamuzat.github.io/"/>
+  <updated>2015-11-08T22:40:30+01:00</updated>
+  <id>http://mcamuzat.github.io/</id>
+  <author>
+    <name><![CDATA[mcamuzat]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Créer Son Dépôt Sous Packagist]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/07/24/creer-son-depot-sous-packagist/"/>
+    <updated>2015-07-24T17:50:58+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/07/24/creer-son-depot-sous-packagist</id>
+    <content type="html"><![CDATA[<h2>Introduction</h2>
+
+<p>J&#8217;avais montré dans le précédent <a href="/blog/2015/07/19/histogramme-et-ligne-de-commande/">Post</a>, une fonction qui permet de créer des histogrammes.</p>
+
+<p>J&#8217;ai décidé de la publier sous <a href="https://packagist.org/">Packagist</a>. Je n&#8217;avais jamais fais. Je vous propose de suivre mon cheminement</p>
+
+<ul>
+<li>Je mets au propre le fichier</li>
+<li>J&#8217;ajoute le <code>composer.json</code></li>
+<li>j&#8217;ajoute les tests unitaires</li>
+<li>Je crée le dépôt sur Github</li>
+<li>J&#8217;enregistre le dépôt sur Packagist</li>
+</ul>
+
+
+<h2>Industrialisation</h2>
+
+<p>Nous sommes partis du code suivant.</p>
+
+<pre><code class="php">function spark($array) {
+    $bars = array('▁','▂','▃','▄','▅','▆','▇','█');
+    $divide = max($array);
+    if ($divide == 0) {
+        $divide = 1;
+    }
+    $countBars = count($bars)-1;
+    $out = '';
+    foreach ($array as $tick)
+        $out .= $bars[round(($tick / $divide) * $countBars)];
+    echo $out;
+}
+
+// si je n'ai aucun argument ..
+if (count($argv) == 0) {
+    $str = '';
+    // recupère le flux d'entrée
+    while (!feof(STDIN)) {
+        $str .= fgets(STDIN);
+    }
+    // explode laisse la derniere ligne vide.
+    // d'ou le array_filter
+    spark(array_filter(explode("\n", $str),'strlen'));
+    return 0;
+}
+
+$iDontCare =array_shift($argv);
+spark($argv);
+return 0;
+</code></pre>
+
+<p>Je vais découper cela en plusieurs fichiers et répertoires.</p>
+
+<pre><code class="">.
+├── bin
+│   └── spark
+├── composer.json
+├── LICENSE
+├── phpunit.xml.dist
+├── src
+│   └── Spark
+│       └── Spark.php
+└── tests
+    ├── bootstrap.php
+    └── Spark
+        └── SparkTest.php
+</code></pre>
+
+<p>Voici <code>Spark.php</code></p>
+
+<pre><code class="php">&lt;?php
+namespace Spark;
+
+class Spark
+{
+
+    private static $bars = array('▁','▂','▃','▄','▅','▆','▇','█');
+    /**
+     *
+     */
+    public static function spark($array)
+    {
+        $divide = max($array);
+
+        if ($divide == 0) {
+            $divide = 1;
+        }
+        $countTick = count(self::$bars)-1;
+        $out = '';
+        foreach ($array as $tick) {
+            $out .= self::$bars[round(($tick / $divide) * $countTick)];
+        }
+        return $out;
+    }
+}
+</code></pre>
+
+<p>Et le fichier <code>spark</code> dans le répertoire <code>bin</code></p>
+
+<pre><code class="php">#!/usr/bin/env php
+&lt;?php
+
+require_once __DIR__ . '/../vendor/autoload.php'; // Autoload files using Composer autoload
+
+use Spark\Spark;
+
+$iDontCare =array_shift($argv);
+if (count($argv) == 0) {
+    $str = '';
+    while (!feof(STDIN)) {
+        $str .= fgets(STDIN);
+    }
+    echo Spark::spark(array_filter(explode("\n", $str),'strlen'));
+    return 0;
+}
+echo Spark::spark($argv);
+return 0;
+</code></pre>
+
+<h2>Le Composer.json</h2>
+
+<p><strong>Pour publier sur Packagist il faut un <code>composer.json</code></strong></p>
+
+<p>C&#8217;est plutôt simple en fait. Il suffit de lancer la commande <code>composer init</code>. Tout se fait de manière interactive.</p>
+
+<p>à la fin j&#8217;obtiens.</p>
+
+<pre><code class="javascript">{
+    "name": "mcamuzat/spark",
+    "description": "histogram in command line. Clone of holman/spark",
+    "require-dev": {
+        "phpunit/phpunit": "~4.0",
+        "squizlabs/php_codesniffer": "2.*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marc Camuzat",
+            "email": "marc.camuzat@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-0": {
+            "Spark": "src/"
+        }
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "bin": ["bin/spark"]
+}
+</code></pre>
+
+<p>Je crée le Namespace et j&#8217;ajoute que j&#8217;ai un fichier à marquer comme exécutable de le répertoire <code>bin/spark</code>. Je n&#8217;ai aucune dépendance.</p>
+
+<h2>Ajoutons les tests.</h2>
+
+<p>Il faut un minimum de tests.</p>
+
+<p>Pour avoir des tests il faut 3 fichiers</p>
+
+<ul>
+<li>Un <code>phpunit.xml.dist</code></li>
+<li>Un <code>bootstrap.php</code> pour qui se borne à appeler l&#8217;autoload de composer</li>
+<li>Enfin un fichier de test</li>
+</ul>
+
+
+<p>Et installer PHPUnit (qui est déjà dans mon <code>composer.json</code>)</p>
+
+<p>Le <code>phpunit.xml.dist</code></p>
+
+<pre><code class="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+
+&lt;phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         syntaxCheck="false"
+         bootstrap="tests/bootstrap.php"
+&gt;
+    &lt;testsuites&gt;
+        &lt;testsuite name="Spark Test Suite"&gt;
+            &lt;directory&gt;./tests/&lt;/directory&gt;
+        &lt;/testsuite&gt;
+    &lt;/testsuites&gt;
+
+    &lt;filter&gt;
+        &lt;whitelist&gt;
+            &lt;directory&gt;./src/&lt;/directory&gt;
+        &lt;/whitelist&gt;
+    &lt;/filter&gt;
+&lt;/phpunit&gt;
+</code></pre>
+
+<p>On appelle le <code>bootstrap.php</code> qui fait venir l&#8217;autoloader</p>
+
+<pre><code class="php">&lt;?php
+$loader = @include __DIR__.'/../vendor/autoload.php';
+if (!$loader) {
+    $loader = require __DIR__.'/../../../../vendor/autoload.php';
+}
+</code></pre>
+
+<p>Et enfin les tests</p>
+
+<pre><code class="php">&lt;?php
+namespace Spark;
+use Spark\Spark;
+class SparkTest extends \PHPUnit_Framework_TestCase
+{
+    public function testItCreateAStringFromData()
+    {
+        $out = Spark::spark(array(1,5,22,13,5));
+        $this-&gt;assertEquals('▁▃█▅▃', $out);
+    }
+    public function testItDontCareifInputIsString()
+    {
+        $out = Spark::spark(array("2","4","8"));
+        $this-&gt;assertEquals('▃▅█', $out);
+    }
+    public function testItWorkWithFloatNumber()
+    {
+        $out = Spark::spark(array("0.2","0.8","0.4"));
+        $this-&gt;assertEquals('▃█▅', $out);
+    }
+    public function testItNotDivideBy0()
+    {
+        $out = Spark::spark(array(0,0,0));
+        $this-&gt;assertEquals('▁▁▁', $out);
+    }
+}
+</code></pre>
+
+<p>Lançons les tests</p>
+
+<pre><code class="sh">$ bin/phpunit 
+PHPUnit 4.8-ge1cc585 by Sebastian Bergmann and contributors.
+
+....
+
+Time: 722 ms, Memory: 4.50Mb
+
+OK (4 tests, 4 assertions)
+</code></pre>
+
+<h2>Publication</h2>
+
+<p>Je crée le dépôt sur <a href="https://github.com/mcamuzat/spark">GitHub</a> que je clone</p>
+
+<pre><code>git clone mcamuzat/spark.git
+git add .
+git commit -m"initialize repo"
+git push -u origin master
+</code></pre>
+
+<p>Je me suis inscris sur <a href="https://packagist.org/">Packagist</a>.</p>
+
+<p>Il suffit de cliquer sur <strong>Submit</strong></p>
+
+<p><img class="center" src="/images/packagist_ajout.png" width="600" height="258" title="&lsquo;Ajouter un dépôt sur Packagist&rsquo; &lsquo;Ajouter un dépôt sur packagist&rsquo;" ></p>
+
+<p>Et de mettre l&#8217;url de Github. Et c&#8217;est tout !</p>
+
+<h2>Des liens</h2>
+
+<ul>
+<li>Le projet sur <a href="https://github.com/mcamuzat/spark">Github</a></li>
+<li>Le projet sur <a href="https://packagist.org/packages/mcamuzat/spark">Packagist</a></li>
+</ul>
+
+
+<h2>En conclusion</h2>
+
+<p>Il manque encore le <code>README</code> sur Github, car pour l&#8217;instant l&#8217;intérêt du programme est encore un peu mystérieux pour une personne extérieure.</p>
+
+<p>J&#8217;espère que si vous voulez créer votre propre librairie sur Packagist, ce tutoriel vous servira.</p>
+]]></content>
+  </entry>
+  
+</feed>
