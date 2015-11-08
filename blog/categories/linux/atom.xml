@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Mon blog perso.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-05T23:05:36+01:00</updated>
+  <updated>2015-11-08T22:25:06+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -14,666 +14,114 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Git Grep]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/11/05/git-grep/"/>
-    <updated>2015-11-05T22:22:13+01:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/11/05/git-grep</id>
-    <content type="html"><![CDATA[<p>Dans le post <a href="blog/2015/11/02/diff-patch-git">précédent</a> j&#8217;ai parlé des commandes linux <code>patch</code> et <code>diff</code>. des fonctionnalités ou on utiliserait plutôt Git. Ici je vais faire le contraire : utiliser git sans utiliser les commandes linux. Je vais parler de <code>git grep</code>.</p>
+    <title type="html"><![CDATA[Faire Des Jointures Sur Des Fichiers Csv]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/11/08/faire-des-jointures-sur-des-fichiers-csv/"/>
+    <updated>2015-11-08T20:27:16+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/11/08/faire-des-jointures-sur-des-fichiers-csv</id>
+    <content type="html"><![CDATA[<h2>Introduction</h2>
 
-<h2>git grep</h2>
+<p>Un problème que j&#8217;ai eu au travail.</p>
 
-<p>l&#8217;utilisation est très simple</p>
+<p>Soit les deux fichiers suivants csv suivant</p>
 
-<pre><code class="sh">git grep hello
+<pre><code>ID_1,Noms1,Personne1
+ID_2,Noms2,Personne1
+ID_2,Noms2,Personne2
+ID_3,Noms3,Personne1
+ID_5,Noms5,Personne5
 </code></pre>
 
-<p>On peut utiliser une regex
-le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code>less</code>).</p>
-
-<p><strong>Rappel des touches sur Less</strong></p>
-
-<table>
-<thead>
-<tr>
-<th> Touche      </th>
-<th style="text-align:center;"> Description </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td> <code>g</code>               </td>
-<td style="text-align:center;"> début du fichier</td>
-</tr>
-<tr>
-<td> <code>G</code>               </td>
-<td style="text-align:center;"> fin  du fichier</td>
-</tr>
-<tr>
-<td> <code>/mot</code>            </td>
-<td style="text-align:center;"> cherche <code>mot</code>. <code>n</code> pour suivant <code>N</code> pour précédent</td>
-</tr>
-<tr>
-<td> <code>&amp;mot</code>            </td>
-<td style="text-align:center;"> seulement le mot</td>
-</tr>
-</tbody>
-</table>
-
-
-<p><code>git grep</code> utilise un peu près les mêmes options que le <code>grep</code>.</p>
-
-<p>par exemple</p>
-
-<pre><code class="sh">git grep -n -C 10 hello
+<pre><code>SIRET1,Adresse1,Noms1Annuaire,ID_1
+SIRET2,Adresse2,Noms2Annuaire,ID_2
+SIRET3,Adresse3,Noms3Annuaire,ID_3
+SIRET4,Adresse4,Noms4Annuaire,ID_4
 </code></pre>
+
+<p>Je souhaite faire un merge de ces deux csv. Comment faire ?</p>
+
+<p>En solution 1 j&#8217;ai pensé.</p>
 
 <ul>
-<li><code>-n</code> numérote les lignes</li>
-<li><code>-C 5</code> affiche un contexte de 5 lignes</li>
+<li>Créer une table temporaire</li>
+<li>dumper les deux fichiers</li>
+<li>faire un jointure sql</li>
+<li>faire un export</li>
 </ul>
 
 
-<p>A noter que git grep n&#8217;utilise que les fichiers dans le dépôt qui sont déjà indexé. Donc il est plutôt rapide (alors qu&#8217;un grep devrait faire tous les répertoires).</p>
+<p>Et puis je me suis souvenu de la commande <code>join</code></p>
 
-<h2>Git grep et l&#8217;historique</h2>
+<p>Voici la commande que j&#8217;ai utilisé</p>
 
-<p>Mais la vrai force de git grep est de pouvoir chercher sur toute les branches !</p>
-
-<pre><code class="sh">git grep -n -C 10 -e &lt;ma regex&gt; &lt;la branche&gt;
+<pre><code class="sh">join -11 -24 file1.csv file2.csv  -t,
 </code></pre>
 
-<p>D&#8217;ailleurs si vous voulez savoir qui a commité a ajouté un bug qui contient le mot &ldquo;Panda&rdquo;
-<code>sh
-git rev-list --all | xargs git grep 'Panda'
-</code></p>
-
-<p>Il y a des alternatives
-<code>sh
-git log -G Panda
-git log -S Panda
-</code></p>
-
-<h2>Git grep et tig</h2>
-
-<p>Depuis la version 2 de <a href="https://github.com/jonas/tig">tig</a> (<strong>pas encore</strong> dans les dépots au moment ou j&#8217;écris ces lignes)
-il suffit d&#8217;appuyer sur <code>g</code> de faire la recherche.</p>
-
-<p>Les différentes commandes</p>
+<p>Voici le détail de la commande</p>
 
 <ul>
-<li><code>e</code> ouvrir dans l&#8217;éditeur</li>
-<li><code>b</code> ouvre la vue blame</li>
-<li><code>Enter</code> permet de se déplacer dans le fichiers.</li>
+<li><code>-11</code> <code>-24</code> faire une jointure entre la colonne <strong>1</strong> du <code>file1.csv</code> et la colonne <strong>4</strong> du <code>file2.csv</code></li>
+<li><code>-t,</code> définie le séparateur dans le fichier ici c&#8217;est un <code>csv</code> <strong>C</strong>omma <strong>S</strong>epared <strong>V</strong>alue, donc le séparateur est <code>,</code></li>
 </ul>
 
 
-<p><img class="center" src="/images/tiggrep.png" width="600" height="398" title="&lsquo;Git grep&rsquo; &lsquo;Git grep&rsquo;" ></p>
-
-<h2>Git grep et vim</h2>
-
-<ul>
-<li>Il est dispo dans le plugin <a href="https://github.com/tpope/vim-fugitive">Fugitive</a>.</li>
-</ul>
-
-
-<h2>Conclusion</h2>
-
-<p>L&#8217;intégration dans <em>tig</em> me plait beaucoup, j&#8217;ai beaucoup tapé le commande suivante pour faire mes recherches.
-<code>sh
- find . -name '*.php'| xargs grep 'array_walk_recur'
-</code></p>
-
-<p>Je me suis forcé à lire un peu la documentation de git grep, et je ne le regrette pas.</p>
-
-<p>Enfin il existe des alternative à <code>grep</code> comme <a href="http://beyondgrep.com/">ack</a> ou plus récemment <a href="https://github.com/ggreer/the_silver_searcher">the silver searcher</a>. Je vais essayer d&#8217;en parler plus tard.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Diff Et Patch, Pas Besoin De Git]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/11/02/diff-patch-git/"/>
-    <updated>2015-11-02T22:24:03+01:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/11/02/diff-patch-git</id>
-    <content type="html"><![CDATA[<p>Nous allons jouer un peu avec les diff et les patchs.</p>
-
-<h1> Mise en place</h1>
-
-<p>Soit le fichier suivant <code>README.md</code></p>
-
-<pre><code>Ceci est un exemple.
-
-
-Ceci est une ligne ajoutée
-</code></pre>
-
-<p>Modifions le fichier par ceci.
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Ceci est un exemple.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;j'ai ajouté cette ligne</span></code></pre></td></tr></table></div></figure></p>
-
-<p>Enregistrons celui-ci en <code>README2.md</code></p>
-
-<p>Et lançons la commande suivante</p>
-
-<pre><code class="sh">diff README.md README2.md
-</code></pre>
-
-<p>Nous obtenons le résultat suivant</p>
-
-<pre><code class="diff">4d3
-&lt; Ceci est une ligne ajoutée
-6a6,9
-&gt; 
-&gt; 
-&gt; 
-&gt; j'ai ajouté cette ligne
-</code></pre>
-
-<p>Il y a en fait plusieurs formats</p>
-
-<p>Essayez la commande suivante</p>
-
-<pre><code class="sh">diff -u README.md README2.md &gt; readme.diff
-</code></pre>
-
-<p>On obtient le fichier suivant
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='diff'><span class='line'>&amp;mdash; README.md   2015-11-02 22:07:43.728854981 +0100
-</span><span class='line'><span class="gi">+++ README2.md  2015-11-02 22:13:58.244839112 +0100</span>
-</span><span class='line'><span class="gu">@@ -1,6 +1,9 @@</span>
-</span><span class='line'> Ceci est un exemple.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;-Ceci est une ligne ajoutée&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;+
-</span><span class='line'><span class="gi">+</span>
-</span><span class='line'><span class="gi">+</span>
-</span><span class='line'><span class="gi">+j&#39;ai ajouté cette ligne</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>Cette vision doit vous être assez familière si vous faite du git, svn ou mercurial</p>
-
-<p>c&#8217;est la sortie d&#8217;un <code>git diff</code> si on avait modifié ce fichier.</p>
-
-<h2>Jouer un patch</h2>
-
-<p>Pour ce convaincre nous allons demander à linux de jouer le fichier <code>.diff</code> qui est tout simplement un patch</p>
-
-<p>Grâce à la commande suivante.</p>
-
-<pre><code class="sh">$ patch -p0 &lt; README.diff 
-patching file README.md
-</code></pre>
-
-<p>Comme toute modification je peux avoir des conflits. Si je modifie mon <code>README.md</code>
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='diff'><span class='line'>Ceci est un exemple.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Ceci est une autre ligne
-</span><span class='line'>Ceci est une ligne ajoutée
-</span><span class='line'>Mais celle ci aussi&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;patching file README.md
-</span><span class='line'>Hunk #1 FAILED at 1.
-</span><span class='line'>1 out of 1 hunk FAILED &amp;ndash; saving rejects to file README.md.rej
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>Vous retrouvez les fameux <code>.orig</code> et <code>.rej</code> qui pourrissent un peu la vie de ceux qui font du mercurial ou git (<code>hg purge</code> et <code>git clean</code> est probablement ce que vous cherchez).</p>
-
-<h2>Merger</h2>
-
-<p>Si vous voulez un merge. c&#8217;est possible
+<p>Voici le résultat
 <code>
-$ patch -p0 --merge &lt; README.diff
-</code>
-le résultat
-&#8220;`
-Ceci est un exemple.</p>
-
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt;
-Ceci est une autre ligne
-Ceci est une ligne ajoutée</p>
-
-<h1>Mais celle ci aussi</h1>
-
-<blockquote><blockquote><blockquote><blockquote><blockquote><blockquote><blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote>
-
-<p>j&#8217;ai ajouté cette ligne</p>
-
-<pre><code>L'option `-p0` ou le plus souvent `-p1` demande à la commande `patch` d'ignorer le chemin sur un niveau.
-
-Voici un exemple avec git et le même fichier
-</code></pre>
-
-<p>diff &ndash;git a/README.md b/README.md
-index 1030f85..5e8e5f9 100644
-&mdash; a/README.md
-+++ b/README.md
-@@ -1,6 +1,9 @@
- Ceci est un exemple.</p>
-
-<p>-Ceci est une ligne ajoutée</p>
-
-<p>+
-+
-+
-+j&#8217;ai ajouté cette ligne
-<code>``
-on voit que la ligne</code>a/README.md<code>et</code>b/README.md<code>, ici pour appliquer le patch il faut utiliser</code>-p1<code>pour ignorer le premier niveau (supprime le</code>a/<code>et</code>b/`)</p>
-
-<p>Sous Git c&#8217;est plus simple</p>
-
-<pre><code class="bash">$ git apply lefichier.diff
-</code></pre>
-
-<h2>Reverter</h2>
-
-<p>Enfin soyons complet il est possible de reverter un patch avec <code>-R</code>
-<code>bash
-patch -R -p1 &lt; mon patch
+ID_1,Noms1,Personne1,SIRET1,Adresse1,Noms1Annuaire
+ID_2,Noms2,Personne1,SIRET2,Adresse2,Noms2Annuaire
+ID_2,Noms2,Personne2,SIRET2,Adresse2,Noms2Annuaire
+ID_3,Noms3,Personne1,SIRET3,Adresse3,Noms3Annuaire
 </code></p>
 
-<p>Avec git</p>
+<p>C&#8217;est une jointure classique <code>ID_5</code> n&#8217;apparait pas dans le résultats pas plus que <code>Adresse4</code></p>
 
-<pre><code class="bash">git apply -R &lt;mon fichier diff&gt;
+<h2>Faire un select</h2>
+
+<p>On précise les colonnes que l&#8217;on souhaite avec l&#8217;option <code>-o</code></p>
+
+<pre><code>join -11 -24 file1.txt file2.txt  -t, -o1.2,2.1
+</code></pre>
+
+<p><code>-o1.2,2.1</code> la colonne <strong>2</strong> du <code>file1.csv</code> et la colonne <strong>1</strong> du <code>file2.csv</code></p>
+
+<pre><code>Noms1,SIRET1
+Noms2,SIRET2
+Noms2,SIRET2
+Noms3,SIRET3
+</code></pre>
+
+<h2>Left-join et Right Join</h2>
+
+<p>C&#8217;est possible à émuler avec l&#8217;option <code>-a</code> et <code>-e</code> <code>-a</code> affiche le fichier <strong>1</strong> ou <strong>2</strong>  même s&#8217;il n&#8217;y a pas de jointure et  et <code>-e</code>  la valeur par défaut à l&#8217;affichage</p>
+
+<p>deux possibilités</p>
+
+<pre><code class="sh"># Left-join
+join -11 -24 file1.txt file2.txt  -t, -o1.2,2.1,2.2 -a 1 -e NULL
+</code></pre>
+
+<pre><code class="">Noms1,SIRET1,Adresse1
+Noms2,SIRET2,Adresse2
+Noms2,SIRET2,Adresse2
+Noms3,SIRET3,Adresse3
+Noms5,NULL,NULL
+</code></pre>
+
+<pre><code class="sh"># Right-join
+join -11 -24 file1.txt file2.txt  -t, -o1.2,2.1,2.2 -a 2 -e NULL
+</code></pre>
+
+<pre><code>Noms1,SIRET1,Adresse1
+Noms2,SIRET2,Adresse2
+Noms2,SIRET2,Adresse2
+Noms3,SIRET3,Adresse3
+NULL,SIRET4,Adresse4
 </code></pre>
 
 <h2>Conclusion</h2>
 
-<p>Pas besoin d&#8217;avoir git/mercurial/svn pour créer ou jouer des patchs.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Tig : Status]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/10/04/tig-status/"/>
-    <updated>2015-10-04T21:59:59+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/10/04/tig-status</id>
-    <content type="html"><![CDATA[<p>Tig est un client git en ligne de commande</p>
+<p>Si un jour vous avez besoin de merger deux fichiers sans forcement sortir un script complexe, penser à linux.</p>
 
-<p>Il n&#8217;est pas compliqué à installer :</p>
-
-<pre><code class="bash">sudo apt-get install tig
-</code></pre>
-
-<p>Néanmoins c&#8217;est la version 1.2 dans les dépôts au moment ou j&#8217;écris ces lignes.</p>
-
-<p>On peut installer la version 2 qui a plus de fonctionnalités et de raccourcis.</p>
-
-<pre><code class="bash">git clone https://github.com/jonas/tig
-make
-make install
-</code></pre>
-
-<p>attention vous aurez probablement besoin d&#8217;avoir installer la librairies <code>libncursesw</code> pour l&#8217;utf-8</p>
-
-<h2>La vue principale</h2>
-
-<p>Elle permet de voir l&#8217;historique du dépôt.</p>
-
-<p><img class="center" src="/images/tig-defaut.png" width="600" height="398" title="&lsquo;la vue par défault&rsquo; &lsquo;la vue par défaut&rsquo;" ></p>
-
-<p>Appuyer sur <code>&lt;Enter&gt;</code> pour voir la différence. (Dans la version 2, si le terminal fait plus de 160 caractères l&#8217;écran se splitte en 2 verticalement)</p>
-
-<p><img class="center" src="/images/tig-diff.png" width="600" height="399" title="&lsquo;quand on appuie sur la touche entrée, on affiche la différence&rsquo; &lsquo;l'écran de différence&rsquo;" ></p>
-
-<p>Screenshot de la version 2 avec les deux colonnes.</p>
-
-<p><img class="center" src="/images/tig_view_v2.png" width="600" height="366" title="&lsquo;dans la version 2, si le terminal&rsquo; &lsquo;Screenshot de la version 2 avec les deux colonnes.&rsquo;" ></p>
-
-<p>Il va falloir apprendre les touches Vi car on se sert beaucoup de <code>j</code> et <code>k</code> (un rappel <code>j</code> descend vers le bas et <code>k</code> va vers le haut)</p>
-
-<p>De cette écran voici les différents modes (je ne les cites pas tous)</p>
-
-<ul>
-<li><code>S</code> ou <code>s</code> pour voir le stage (équivalent de git status)</li>
-<li><code>t</code> tree view affichage en explorateur de fichier</li>
-<li><code>r</code> permet de voir les différentes branches (<code>H</code> dans la version1</li>
-<li><code>l</code> voir les logs</li>
-</ul>
-
-
-<p>Je vais surtout m&#8217;intéresser à la status view.</p>
-
-<h2>La vue Status</h2>
-
-<p>Les touches à connaitre.</p>
-
-<ul>
-<li><code>u</code> sur un noms de fichiers pour <strong>u</strong>se cela fait l&#8217;équivalent de <code>git add &lt;nom du fichier&gt;</code></li>
-</ul>
-
-
-<p>Si vous appuyer sur <code>u</code> sur les lignes <code>Changes to be commited</code>, <code>Changed but not updated</code>, <code>Untracked files</code> vous ajoutez tous les fichiers.</p>
-
-<pre><code>Changes to be committed:
-M   fichier1
-Changed but not updatedy://&lt;---(*curseur*) 
-M   fichier2
-M   fichier3
-M   fichier4
-M   fichier5
-M   fichier6
-M   fichier7
-Untracked files:
-?   nouveau fichier
-</code></pre>
-
-<p>Cela devient</p>
-
-<pre><code>Changes to be committed:
-M   fichier1
-M   fichier2
-M   fichier3
-M   fichier4
-M   fichier5
-M   fichier6
-M   fichier7
-Changed but not updatedy:
-(no files)
-Untracked files:
-?   nouveau fichier
-</code></pre>
-
-<p>Enfin on peut aussi prendre chunk par chunck (l&#8217;équivalent de <code>git add -p</code>)</p>
-
-<p><img class="center" src="/images/tig-revert.png" width="600" height="398" title="&lsquo;la vue par défaut&rsquo; &lsquo;la vue par défaut&rsquo;" ></p>
-
-<p>Il suffit d&#8217;appuyer sur <code>Enter</code> puis de se déplacer dans le commit avec <code>j</code> et <code>k</code> et appuyer sur <code>u</code> pour ajouter ce chunk. Les chunks pour faire simple sont les textes séparés par des <code>@@ ... @@</code>. On se déplace de chunk en chunk grâce à la touche <code>@</code>.</p>
-
-<p>Pour reverter le fichier, On utilise la touche <code>!</code>.</p>
-
-<p>Cela marche aussi sur un chunk. On peut donc reverter partiellement un fichier.</p>
-
-<p>Il est possible d&#8217;ajouter ligne par ligne dans un commit grâce à la touche <code>1</code>.</p>
-
-<p>Pour faire le git commit il suffit d&#8217;appuyer sur <code>C</code> comme <strong>C</strong>ommit.</p>
-
-<p>Enfin la touche <code>e</code> comme <strong>e</strong>dit ouvre le fichier dans l&#8217;éditeur par défaut.</p>
-
-<h2>Le fichier <code>.tigrc</code></h2>
-
-<p>Le fichier <code>.tigrc</code> permet de personnaliser l&#8217;affichage et d&#8217;ajouter des raccourcis claviers.</p>
-
-<p>Voici quelques exemples de ma config.</p>
-
-<pre><code class=""># Delete files in status view (useful for untracked files)
-bind status D !@?rm %(file)
-
-# Amend last commit with A
-bind status A !git commit --amend
-
-# Create and checkout a new branch; specify custom prompt
-bind main B !git checkout -b "%(prompt Enter new branch name: )"
-</code></pre>
-
-<p>Les raccourcis claviers que j&#8217;ai rajouté</p>
-
-<ul>
-<li>Dans la vue status la touche <code>D</code> efface le fichier</li>
-<li>Dans la vue status la touche <code>A</code> fait un <code>git commit --amend</code></li>
-<li>Dans la vue principale la touche <code>B</code> permet de créer une branche.</li>
-</ul>
-
-
-<h2>Résumé de touches</h2>
-
-<ul>
-<li><code>s</code> ou <code>S</code> voir la vue status</li>
-<li><code>u</code> ajouter le commit/chunk</li>
-<li><code>!</code> revert</li>
-<li><code>1</code> ajoute une lignes au commit</li>
-<li><code>@</code> aller au chunck/diff suivant</li>
-<li><code>D</code> supprimer le fichier (<em>raccourcis perso</em>)</li>
-<li><code>A</code> git amend</li>
-<li><code>e</code> ouvre dans l&#8217;éditeur par défaut</li>
-</ul>
-
-
-<h2>Des liens</h2>
-
-<ul>
-<li><a href="http://jonas.nitro.dk/tig/">le site officiel</a></li>
-<li>la <a href="https://github.com/pmiossec/tig-cheat-sheet">cheat-sheet</a> avec les raccourcis claviers (<em>indispensable</em>)</li>
-</ul>
-
-
-<h2>Conclusion</h2>
-
-<p>Je vais revenir sur les autres vues bientôt.</p>
-
-<p>Merci de m&#8217;avoir lu.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Des Commandes Au Top]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/09/27/des-commandes-au-top/"/>
-    <updated>2015-09-27T16:04:40+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/09/27/des-commandes-au-top</id>
-    <content type="html"><![CDATA[<p>J&#8217;utilise souvent le programme htop. mais il y en a d&#8217;autre.</p>
-
-<h2>atop</h2>
-
-<p>Plus austère. Beaucoup d&#8217;information sur toutes les ressources. C&#8217;est plus un outils d&#8217;audit. Le logicel donne toutes informations possibles. processeurs, disques, carte réseau. En pratique il peut même être lancer au démarrage. En pratique on parle de <code>sar</code> (<strong>S</strong>ystem <strong>A</strong>ctivity <strong>R</strong>eport). Il permet de surveiller la tailles des processus avec la colonne <code>VGROW</code> (<em>Virtual Memory Grow</em>) et <code>RGROW</code>(Resident memory Grow)
-<img class="center" src="/images/atop.png" width="600" height="381" title="&lsquo;atop&rsquo; &lsquo;atop&rsquo;" ></p>
-
-<p>voir <a href="https://en.wikipedia.org/wiki/Sar_%28Unix%29">sar</a></p>
-
-<h2>vtop</h2>
-
-<p>Un clone en Nodejs. voir le screenshot c&#8217;est vraiment très joli</p>
-
-<p><img class="center" src="/images/vtop.png" width="600" height="383" title="&lsquo;vtop&rsquo; &lsquo;vtop&rsquo;" ></p>
-
-<p>installation via npm
-<code>sh
-sudo npm install -g vtop
-</code></p>
-
-<p>dépot <a href="https://github.com/MrRio/vtop">Github</a></p>
-
-<h2>Htop</h2>
-
-<h3>Quelques options</h3>
-
-<h3>filtrer par utilisateur</h3>
-
-<pre><code class="sh">$ htop -umarc
-</code></pre>
-
-<p>ou <code>u</code> dans Htop</p>
-
-<h4>Sélectionner un process</h4>
-
-<p>Utilisez la barre d&#8217;espace pour sélectionner un process. Cela permet de le suivre.</p>
-
-<ul>
-<li><code>F7</code> ou  <code>F8</code> pour augmenter la priorité du process</li>
-<li><code>F9</code> ou <code>k</code> pour killer un process</li>
-<li><code>F5</code> affichage en arbre.</li>
-<li><code>a</code> pour assigner le process à un CPU.</li>
-<li><code>U</code> pour désélectionnér tous les process</li>
-</ul>
-
-
-<h4>Personnalisez l&#8217;affichage</h4>
-
-<p>La touche magique ici est <code>&lt;F2&gt;</code>. Vous pouvez personnaliser les deux colonnes avec les raccourcis claviers suivants. La colonne toutes à droite donne les widgets disponibles</p>
-
-<ul>
-<li><code>&lt;F5&gt;</code> ajouter le widget à la colonne de droite.</li>
-<li><code>&lt;F6&gt;</code> ajouter le widget à la colonne de gauche.</li>
-</ul>
-
-
-<p>Sur une colonne vous pouvez sélectionniez le type d&#8217;affiche (texte simple, histogramme, etc..) via la touche <code>&lt;F4&gt;</code></p>
-
-<p>Voir le screenshot (<code>Text</code>, <code>Graph</code>,<code>Led</code>, <code>Bar</code>)
-<img class="center" src="/images/typeaffichage.png" width="600" height="133" title="&lsquo;les quatre types d'affichage&rsquo; &lsquo;les quatre types d'affichage&rsquo;" ></p>
-
-<h3>Les codes couleurs</h3>
-
-<p>La touche <code>h</code> permet d&#8217;obtenir de l&#8217;aide, les raccourcis claviers et la significations des couleurs.</p>
-
-<p><img class="center" src="/images/codecouleur.png" width="600" height="104" title="&lsquo;les différentes couleurs et leurs significations&rsquo; &lsquo;les différentes couleurs et leurs significations&rsquo;" ></p>
-
-<h2>En conclusion</h2>
-
-<p>J&#8217;espère que vous appris un nouveau raccourci sur htop.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Lancer Des Commandes Dans Vim]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/08/31/lancer-des-commandes-dans-vim/"/>
-    <updated>2015-08-31T23:49:17+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/08/31/lancer-des-commandes-dans-vim</id>
-    <content type="html"><![CDATA[<p>Soit le fichier texte suivant:</p>
-
-<pre><code class=""> * Alpha
- * Foxtrot
- * Charlie
- * Delta
- * Echo 
- * Bravo
-</code></pre>
-
-<p>Dans VIM il suffit de taper.</p>
-
-<pre><code class="">:%sort ou :%!sort
-</code></pre>
-
-<p>Pour obtenir
-<code>
- * Alpha
- * Bravo
- * Charlie
- * Delta
- * Echo
- * Foxtrot
-</code></p>
-
-<p>On peux aussi lancer plein de commandes amusantes</p>
-
-<pre><code> * Doublon
- * Pas unique
- * Doublon
- * 
- * ...
-</code></pre>
-
-<pre><code>!sort | uniq -c | tr "[A-Z]" "[a-z]"
-</code></pre>
-
-<p>Pour ceux qui ne se rappelle plus trop les commandes de Bash</p>
-
-<ul>
-<li><code>sort</code> trie le texte</li>
-<li><code>uniq -c</code> prend toute les valeurs et les comptes c&#8217;est l&#8217;équivalent d&#8217;un <code>GROUP BY</code> en SQL</li>
-<li><code>tr</code> est l&#8217;abréviation de <strong>tr</strong>anspose je remplace les lettres en <code>[A-Z]</code> par leur équivalent en minuscule.</li>
-</ul>
-
-
-<pre><code>      1  * 
-      1  * ...
-      2  * doublon
-      1  * pas unique
-</code></pre>
-
-<p>Si vous sélectionnez le texte avec <code>v</code> et que vous appuyer sur <code>:</code></p>
-
-<p>Alors vous devez voir la commande suivante
-<code>
-:'&lt;,'&gt;
-</code>
-et Ajoutez la commande que vous allez appliquer à la sélection. Par exemple <code>:'&lt;,'&gt;!sort</code></p>
-
-<p>Plus rigolo. On peux appeler des langages que l&#8217;on veut dans VIM</p>
-
-<pre><code class="php">&lt;?php echo "bonjour";
-</code></pre>
-
-<p>Tapez <code>!!</code>
-vous devriez voir apparaître
-<code>
-:.!
-</code>
-Compléter avec <code>:.!php</code></p>
-
-<p>votre texte va se remplacer
-<code>
-bonjour
-</code></p>
-
-<p>Cela marche aussi avec python</p>
-
-<pre><code class="python">print "olleh"[::-1]
-</code></pre>
-
-<p>Avec le curseur sur la ligne, appuyer sur <code>!!</code> puis ajoutez <code>:.!python</code></p>
-
-<p>La ligne devient</p>
-
-<pre><code class="">hello
-</code></pre>
-
-<h2>Exécuter une commande Bash depuis VIM</h2>
-
-<p>La commande suivante</p>
-
-<pre><code>php app/console cache:clear --env=prod
-</code></pre>
-
-<p>Si vous voulez exécuter la commande mais ne pas modifiez la ligne.</p>
-
-<pre><code>:.w !bash
-</code></pre>
-
-<p>C&#8217;est un peu moins simple.</p>
-
-<ul>
-<li><code>:.</code> représente la ligne actuelle.</li>
-<li><code>w</code> représente une écriture</li>
-<li><code>!bash</code> via Bash.</li>
-</ul>
-
-
-<p>La documentation de VIM <code>:help :w_c</code></p>
-
-<h2>en résumé</h2>
-
-<ul>
-<li>Si vous voulez appliquer votre commande sur tout le fichier <code>:%!commande</code></li>
-<li>S vous voulez juste la ligne <code>:.!commande</code> ou tapez <code>!!</code>.</li>
-<li>Si vous voulez sur une sélection <code>v</code> ou <code>V</code> puis <code>:</code> vous deviez voir ceci <code>:'&lt;,'&gt;</code>, ajoutez la commande souhaitée.</li>
-</ul>
-
+<p>Pour le csv et PHP, c&#8217;est inclus dans l&#8217;instruction <code>fgetcsv</code> mais ce n&#8217;est pas la joie, la librairie suivante <a href="http://csv.thephpleague.com/">thephpleague/csv</a> rend cela nettement plus agréable.</p>
 ]]></content>
   </entry>
   
