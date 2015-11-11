@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "git grep"
+title: "Git grep"
 date: 2015-11-05 22:22:13 +0100
 comments: true
 categories: ["linux", "git", "tig", "bash"] 

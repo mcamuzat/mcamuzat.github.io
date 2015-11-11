@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "array_walk, array_map, array_walk_recursive"
+title: "Array_walk, array_map, array_walk_recursive"
 date: 2015-08-26 22:30:55 +0200
 comments: true
 categories: ["php", "symfony", "Phpunit"] 

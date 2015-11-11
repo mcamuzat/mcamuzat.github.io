@@ -3,7 +3,7 @@
 # ----------------------- #
 
 url: http://mcamuzat.github.io
-title: Mon blog perso.
+title: Journal d'un panda.
 subtitle: Un simple blog PHP/Linux/Programmation/Docker
 author: mcamuzat
 simple_search: https://www.google.com/search
@@ -47,7 +47,7 @@ recent_posts: 5       # Posts in the sidebar Recent Posts section
 excerpt_link: "Read on &rarr;"  # "Continue reading" link text at the bottom of excerpted articles
 excerpt_separator: "<!--more-->"
 
-titlecase: true       # Converts page and post titles to titlecase
+titlecase: false       # Converts page and post titles to titlecase
 
 # list each of the sidebar modules you want to include, in the order you want them to appear.
 # To add custom asides, create files in /source/_includes/custom/asides/ and add them to the list like 'custom/asides/custom_aside_name.html'
@@ -99,3 +99,6 @@ google_analytics_tracking_id: UA-60315965-1
 
 # Facebook Like
 facebook_like: false
+
+# Image logo
+logo: panda.png

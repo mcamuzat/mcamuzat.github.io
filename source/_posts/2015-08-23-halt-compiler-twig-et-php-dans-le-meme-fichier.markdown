@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "halt compiler : twig et php dans le même fichier"
+title: "Halt compiler : twig et php dans le même fichier"
 date: 2015-08-23 17:20:41 +0200
 comments: true
 categories: ["php", "twig", "composer", "phar"] 

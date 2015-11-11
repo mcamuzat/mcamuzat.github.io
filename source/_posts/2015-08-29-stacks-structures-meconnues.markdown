@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "les stacks des structures méconnues"
+title: "Les stacks des structures méconnues"
 date: 2015-08-29 16:34:41 +0200
 comments: true
 categories: ["php", "spl", "algorithme", "Structure"] 

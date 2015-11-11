@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "diff et patch, pas besoin de git"
+title: "Diff et patch, pas besoin de git"
 date: 2015-11-02 22:24:03 +0100
 comments: true
 categories: ["linux", "git", "mercurial"] 

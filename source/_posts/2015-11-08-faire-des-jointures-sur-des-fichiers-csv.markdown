@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "faire des jointures sur des fichiers csv"
+title: "Faire des jointures sur des fichiers csv"
 date: 2015-11-08 20:27:16 +0100
 comments: true
 categories: ["Linux", "Bash"] 
