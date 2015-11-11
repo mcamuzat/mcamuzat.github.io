@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Livre | Mon blog perso.]]></title>
+  <title><![CDATA[Category: livre | Journal d'un panda.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/livre/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-08T22:40:30+01:00</updated>
+  <updated>2015-11-11T17:52:18+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Les Quines]]></title>
+    <title type="html"><![CDATA[Les quines]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/07/11/les-quines/"/>
     <updated>2015-07-11T19:39:53+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/07/11/les-quines</id>
@@ -87,7 +87,7 @@ quelques phrases issues de ce livre passionnant</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[If Hemingway Wrote Javascript]]></title>
+    <title type="html"><![CDATA[If Hemingway wrote javascript]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/06/21/if-hemingway-wrote-javascript/"/>
     <updated>2015-06-21T19:06:54+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/06/21/if-hemingway-wrote-javascript</id>

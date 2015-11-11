@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Linux | Mon blog perso.]]></title>
+  <title><![CDATA[Category: linux | Journal d'un panda.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-08T22:40:30+01:00</updated>
+  <updated>2015-11-11T17:52:18+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Faire Des Jointures Sur Des Fichiers Csv]]></title>
+    <title type="html"><![CDATA[Faire des jointures sur des fichiers csv]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/11/08/faire-des-jointures-sur-des-fichiers-csv/"/>
     <updated>2015-11-08T20:27:16+01:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/11/08/faire-des-jointures-sur-des-fichiers-csv</id>
@@ -126,7 +126,7 @@ NULL,SIRET4,Adresse4
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Git Grep]]></title>
+    <title type="html"><![CDATA[Git grep]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/11/05/git-grep/"/>
     <updated>2015-11-05T22:22:13+01:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/11/05/git-grep</id>
@@ -219,7 +219,7 @@ il suffit d&#8217;appuyer sur <code>g</code> de faire la recherche.</p>
 </ul>
 
 
-<p><img class="center" src="/images/tiggrep.png" width="600" height="398" title="&lsquo;Git grep&rsquo; &lsquo;Git grep&rsquo;" ></p>
+<p>{% img center /images/tiggrep.png 600 398 &lsquo;Git grep&rsquo; &lsquo;Git grep&rsquo; %}</p>
 
 <h2>Git grep et vim</h2>
 
@@ -242,7 +242,7 @@ il suffit d&#8217;appuyer sur <code>g</code> de faire la recherche.</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Diff Et Patch, Pas Besoin De Git]]></title>
+    <title type="html"><![CDATA[Diff et patch, pas besoin de git]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/11/02/diff-patch-git/"/>
     <updated>2015-11-02T22:24:03+01:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/11/02/diff-patch-git</id>
@@ -259,12 +259,11 @@ Ceci est une ligne ajoutée
 </code></pre>
 
 <p>Modifions le fichier par ceci.
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Ceci est un exemple.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;j'ai ajouté cette ligne</span></code></pre></td></tr></table></div></figure></p>
+&#8220;`
+Ceci est un exemple.</p>
+
+<p>j&#8217;ai ajouté cette ligne
+&#8220;`</p>
 
 <p>Enregistrons celui-ci en <code>README2.md</code></p>
 
@@ -292,29 +291,19 @@ Ceci est une ligne ajoutée
 </code></pre>
 
 <p>On obtient le fichier suivant
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='diff'><span class='line'>&amp;mdash; README.md   2015-11-02 22:07:43.728854981 +0100
-</span><span class='line'><span class="gi">+++ README2.md  2015-11-02 22:13:58.244839112 +0100</span>
-</span><span class='line'><span class="gu">@@ -1,6 +1,9 @@</span>
-</span><span class='line'> Ceci est un exemple.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;-Ceci est une ligne ajoutée&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;+
-</span><span class='line'><span class="gi">+</span>
-</span><span class='line'><span class="gi">+</span>
-</span><span class='line'><span class="gi">+j&#39;ai ajouté cette ligne</span>
-</span></code></pre></td></tr></table></div></figure></p>
+&#8220;` diff
+&mdash; README.md   2015-11-02 22:07:43.728854981 +0100
++++ README2.md  2015-11-02 22:13:58.244839112 +0100
+@@ -1,6 +1,9 @@
+ Ceci est un exemple.</p>
+
+<p>-Ceci est une ligne ajoutée</p>
+
+<p>+
++
++
++j&#8217;ai ajouté cette ligne
+&#8220;`</p>
 
 <p>Cette vision doit vous être assez familière si vous faite du git, svn ou mercurial</p>
 
@@ -331,29 +320,19 @@ patching file README.md
 </code></pre>
 
 <p>Comme toute modification je peux avoir des conflits. Si je modifie mon <code>README.md</code>
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='diff'><span class='line'>Ceci est un exemple.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Ceci est une autre ligne
-</span><span class='line'>Ceci est une ligne ajoutée
-</span><span class='line'>Mais celle ci aussi&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;patching file README.md
-</span><span class='line'>Hunk #1 FAILED at 1.
-</span><span class='line'>1 out of 1 hunk FAILED &amp;ndash; saving rejects to file README.md.rej
-</span></code></pre></td></tr></table></div></figure></p>
+&#8220;`
+Ceci est un exemple.</p>
+
+<p>Ceci est une autre ligne
+Ceci est une ligne ajoutée
+Mais celle ci aussi</p>
+
+<pre><code></code></pre>
+
+<p>patching file README.md
+Hunk #1 FAILED at 1.
+1 out of 1 hunk FAILED &ndash; saving rejects to file README.md.rej
+&#8220;`</p>
 
 <p>Vous retrouvez les fameux <code>.orig</code> et <code>.rej</code> qui pourrissent un peu la vie de ceux qui font du mercurial ou git (<code>hg purge</code> et <code>git clean</code> est probablement ce que vous cherchez).</p>
 
@@ -448,15 +427,15 @@ make install
 
 <p>Elle permet de voir l&#8217;historique du dépôt.</p>
 
-<p><img class="center" src="/images/tig-defaut.png" width="600" height="398" title="&lsquo;la vue par défault&rsquo; &lsquo;la vue par défaut&rsquo;" ></p>
+<p>{% img center /images/tig-defaut.png 600 398 &lsquo;la vue par défault&rsquo; &lsquo;la vue par défaut&rsquo; %}</p>
 
 <p>Appuyer sur <code>&lt;Enter&gt;</code> pour voir la différence. (Dans la version 2, si le terminal fait plus de 160 caractères l&#8217;écran se splitte en 2 verticalement)</p>
 
-<p><img class="center" src="/images/tig-diff.png" width="600" height="399" title="&lsquo;quand on appuie sur la touche entrée, on affiche la différence&rsquo; &lsquo;l'écran de différence&rsquo;" ></p>
+<p>{% img center /images/tig-diff.png 600 399 &lsquo;quand on appuie sur la touche entrée, on affiche la différence&rsquo; &lsquo;l&#8217;écran de différence&rsquo; %}</p>
 
 <p>Screenshot de la version 2 avec les deux colonnes.</p>
 
-<p><img class="center" src="/images/tig_view_v2.png" width="600" height="366" title="&lsquo;dans la version 2, si le terminal&rsquo; &lsquo;Screenshot de la version 2 avec les deux colonnes.&rsquo;" ></p>
+<p>{% img center /images/tig_view_v2.png 600 366 &lsquo;dans la version 2, si le terminal&rsquo; &lsquo;Screenshot de la version 2 avec les deux colonnes.&rsquo; %}</p>
 
 <p>Il va falloir apprendre les touches Vi car on se sert beaucoup de <code>j</code> et <code>k</code> (un rappel <code>j</code> descend vers le bas et <code>k</code> va vers le haut)</p>
 
@@ -514,7 +493,7 @@ Untracked files:
 
 <p>Enfin on peut aussi prendre chunk par chunck (l&#8217;équivalent de <code>git add -p</code>)</p>
 
-<p><img class="center" src="/images/tig-revert.png" width="600" height="398" title="&lsquo;la vue par défaut&rsquo; &lsquo;la vue par défaut&rsquo;" ></p>
+<p>{% img center /images/tig-revert.png 600 398 &lsquo;la vue par défaut&rsquo; &lsquo;la vue par défaut&rsquo; %}</p>
 
 <p>Il suffit d&#8217;appuyer sur <code>Enter</code> puis de se déplacer dans le commit avec <code>j</code> et <code>k</code> et appuyer sur <code>u</code> pour ajouter ce chunk. Les chunks pour faire simple sont les textes séparés par des <code>@@ ... @@</code>. On se déplace de chunk en chunk grâce à la touche <code>@</code>.</p>
 
@@ -584,7 +563,7 @@ bind main B !git checkout -b "%(prompt Enter new branch name: )"
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Des Commandes Au Top]]></title>
+    <title type="html"><![CDATA[Des commandes au top]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/09/27/des-commandes-au-top/"/>
     <updated>2015-09-27T16:04:40+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/09/27/des-commandes-au-top</id>
@@ -593,7 +572,7 @@ bind main B !git checkout -b "%(prompt Enter new branch name: )"
 <h2>atop</h2>
 
 <p>Plus austère. Beaucoup d&#8217;information sur toutes les ressources. C&#8217;est plus un outils d&#8217;audit. Le logicel donne toutes informations possibles. processeurs, disques, carte réseau. En pratique il peut même être lancer au démarrage. En pratique on parle de <code>sar</code> (<strong>S</strong>ystem <strong>A</strong>ctivity <strong>R</strong>eport). Il permet de surveiller la tailles des processus avec la colonne <code>VGROW</code> (<em>Virtual Memory Grow</em>) et <code>RGROW</code>(Resident memory Grow)
-<img class="center" src="/images/atop.png" width="600" height="381" title="&lsquo;atop&rsquo; &lsquo;atop&rsquo;" ></p>
+{% img center /images/atop.png 600 381 &lsquo;atop&rsquo; &lsquo;atop&rsquo; %}</p>
 
 <p>voir <a href="https://en.wikipedia.org/wiki/Sar_%28Unix%29">sar</a></p>
 
@@ -601,7 +580,7 @@ bind main B !git checkout -b "%(prompt Enter new branch name: )"
 
 <p>Un clone en Nodejs. voir le screenshot c&#8217;est vraiment très joli</p>
 
-<p><img class="center" src="/images/vtop.png" width="600" height="383" title="&lsquo;vtop&rsquo; &lsquo;vtop&rsquo;" ></p>
+<p>{% img center /images/vtop.png 600 383 &lsquo;vtop&rsquo; &lsquo;vtop&rsquo; %}</p>
 
 <p>installation via npm
 <code>sh
@@ -647,13 +626,13 @@ sudo npm install -g vtop
 <p>Sur une colonne vous pouvez sélectionniez le type d&#8217;affiche (texte simple, histogramme, etc..) via la touche <code>&lt;F4&gt;</code></p>
 
 <p>Voir le screenshot (<code>Text</code>, <code>Graph</code>,<code>Led</code>, <code>Bar</code>)
-<img class="center" src="/images/typeaffichage.png" width="600" height="133" title="&lsquo;les quatre types d'affichage&rsquo; &lsquo;les quatre types d'affichage&rsquo;" ></p>
+{% img center /images/typeaffichage.png 600 133 &lsquo;les quatre types d&#8217;affichage&rsquo; &lsquo;les quatre types d&#8217;affichage&rsquo; %}</p>
 
 <h3>Les codes couleurs</h3>
 
 <p>La touche <code>h</code> permet d&#8217;obtenir de l&#8217;aide, les raccourcis claviers et la significations des couleurs.</p>
 
-<p><img class="center" src="/images/codecouleur.png" width="600" height="104" title="&lsquo;les différentes couleurs et leurs significations&rsquo; &lsquo;les différentes couleurs et leurs significations&rsquo;" ></p>
+<p>{% img center /images/codecouleur.png 600 104 &lsquo;les différentes couleurs et leurs significations&rsquo; &lsquo;les différentes couleurs et leurs significations&rsquo; %}</p>
 
 <h2>En conclusion</h2>
 

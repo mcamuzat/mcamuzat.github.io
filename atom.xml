@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Mon blog perso.]]></title>
+  <title><![CDATA[Journal d'un panda.]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-08T22:40:30+01:00</updated>
+  <updated>2015-11-11T17:51:34+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Faire Des Jointures Sur Des Fichiers Csv]]></title>
+    <title type="html"><![CDATA[Faire des jointures sur des fichiers csv]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/11/08/faire-des-jointures-sur-des-fichiers-csv/"/>
     <updated>2015-11-08T20:27:16+01:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/11/08/faire-des-jointures-sur-des-fichiers-csv</id>
@@ -175,7 +175,7 @@
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Git Grep]]></title>
+    <title type="html"><![CDATA[Git grep]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/11/05/git-grep/"/>
     <updated>2015-11-05T22:22:13+01:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/11/05/git-grep</id>
@@ -304,7 +304,7 @@ il suffit d&#8217;appuyer sur <code>g</code> de faire la recherche.</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Diff Et Patch, Pas Besoin De Git]]></title>
+    <title type="html"><![CDATA[Diff et patch, pas besoin de git]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/11/02/diff-patch-git/"/>
     <updated>2015-11-02T22:24:03+01:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/11/02/diff-patch-git</id>
@@ -1044,7 +1044,7 @@ le résultat</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Retour Vers Le Futur Avec Vim]]></title>
+    <title type="html"><![CDATA[Retour vers le futur avec Vim]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/10/25/retour-vers-le-futur-avec-vim/"/>
     <updated>2015-10-25T18:52:49+01:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/10/25/retour-vers-le-futur-avec-vim</id>
@@ -1222,7 +1222,7 @@ le résultat</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Les Fractales en Php Mandelbrot]]></title>
+    <title type="html"><![CDATA[Les fractales en php Mandelbrot]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/10/18/les-fractales-en-php-mandelbrot/"/>
     <updated>2015-10-18T20:02:28+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/10/18/les-fractales-en-php-mandelbrot</id>
@@ -1625,7 +1625,7 @@ le résultat</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Listes Chainées : Implémentation]]></title>
+    <title type="html"><![CDATA[Listes chainées : implémentation]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/10/10/liste-chainees-implementation/"/>
     <updated>2015-10-10T21:12:47+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/10/10/liste-chainees-implementation</id>
@@ -2348,7 +2348,7 @@ le résultat</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[SPL Surcharge Magique]]></title>
+    <title type="html"><![CDATA[SPL surcharge magique]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/10/03/spl-surcharge-magique/"/>
     <updated>2015-10-03T17:17:33+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/10/03/spl-surcharge-magique</id>
@@ -2577,7 +2577,7 @@ le résultat</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Des Commandes Au Top]]></title>
+    <title type="html"><![CDATA[Des commandes au top]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/09/27/des-commandes-au-top/"/>
     <updated>2015-09-27T16:04:40+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/09/27/des-commandes-au-top</id>
@@ -2659,7 +2659,7 @@ le résultat</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Guzzle Asynchrone Avec Les Promises]]></title>
+    <title type="html"><![CDATA[Guzzle Asynchrone avec les promises]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/09/21/guzzle-asynchrone-avec-les-promises/"/>
     <updated>2015-09-21T21:39:06+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/09/21/guzzle-asynchrone-avec-les-promises</id>
@@ -3728,7 +3728,7 @@ le résultat</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[PHP Yield Les Générateurs]]></title>
+    <title type="html"><![CDATA[PHP yield les générateurs]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/09/06/php-yield-les-generateurs/"/>
     <updated>2015-09-06T19:06:48+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/09/06/php-yield-les-generateurs</id>
@@ -4257,7 +4257,7 @@ le résultat</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Les Promises Et Php via ReactPhp]]></title>
+    <title type="html"><![CDATA[Les promises et Php via ReactPhp]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/09/05/les-promises-et-php-via-react/"/>
     <updated>2015-09-05T19:10:10+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/09/05/les-promises-et-php-via-react</id>
@@ -4576,7 +4576,7 @@ La syntaxe de <code>then</code> est</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Lancer Des Commandes Dans Vim]]></title>
+    <title type="html"><![CDATA[Lancer des commandes dans Vim]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/08/31/lancer-des-commandes-dans-vim/"/>
     <updated>2015-08-31T23:49:17+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/08/31/lancer-des-commandes-dans-vim</id>
@@ -4746,7 +4746,7 @@ vous devriez voir apparaître</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Les Stacks Des Structures Méconnues]]></title>
+    <title type="html"><![CDATA[Les stacks des structures méconnues]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/08/29/stacks-structures-meconnues/"/>
     <updated>2015-08-29T16:34:41+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/08/29/stacks-structures-meconnues</id>
@@ -5363,7 +5363,7 @@ je vais représenter les deux piles et l&#8217;entrée actuelle</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Array_walk, Array_map, Array_walk_recursive]]></title>
+    <title type="html"><![CDATA[Array_walk, array_map, array_walk_recursive]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/08/26/array-walk/"/>
     <updated>2015-08-26T22:30:55+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/08/26/array-walk</id>
@@ -5576,7 +5576,7 @@ les deux fonctions ont un peu près le même résultat.</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Halt Compiler : Twig Et Php Dans Le Même Fichier]]></title>
+    <title type="html"><![CDATA[Halt compiler : twig et php dans le même fichier]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/08/23/halt-compiler-twig-et-php-dans-le-meme-fichier/"/>
     <updated>2015-08-23T17:20:41+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/08/23/halt-compiler-twig-et-php-dans-le-meme-fichier</id>
@@ -5746,7 +5746,7 @@ L&#8217;octet de la position du début des données peut être déterminé par l
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[QuickCheck Une Autre Façon De Tester]]></title>
+    <title type="html"><![CDATA[QuickCheck une autre façon de tester]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/08/22/quickcheck-une-autre-facon-de-tester/"/>
     <updated>2015-08-22T19:01:42+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/08/22/quickcheck-une-autre-facon-de-tester</id>

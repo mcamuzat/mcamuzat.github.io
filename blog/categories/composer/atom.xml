@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Composer | Mon blog perso.]]></title>
+  <title><![CDATA[Category: composer | Journal d'un panda.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/composer/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-08T22:40:30+01:00</updated>
+  <updated>2015-11-11T17:52:18+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -20,7 +20,7 @@
     <id>http://mcamuzat.github.io/blog/2015/09/09/probleme-np-complet</id>
     <content type="html"><![CDATA[<p>Aujourd&#8217;hui je vais parler des problèmes Np-complets avec le <a href="http://xkcd.com/">xkcd</a> suivant. L&#8217;original est <a href="http://xkcd.com/287/">ici</a></p>
 
-<p><img class="center" src="/images/np_complete.png" width="600" height="388" title="&lsquo;xkcd&rsquo; &lsquo;xkcd&rsquo;" ></p>
+<p>{% img center /images/np_complete.png 600 388 &lsquo;xkcd&rsquo; &lsquo;xkcd&rsquo; %}</p>
 
 <p>On appelle ce genre de problème les NP-complets</p>
 
@@ -35,16 +35,16 @@
 </ul>
 
 
-<p><img class="center" src="/images/backpack.png" width="600" height="450" title="&lsquo;bin packing&rsquo; &lsquo;slide1&rsquo;" ></p>
+<p>{% img center /images/backpack.png 600 450 &lsquo;bin packing&rsquo; &lsquo;slide1&rsquo; %}</p>
 
 <ul>
 <li><p>A quel moment mettre le paquet <code>2 * 4 = 8</code>. suivant la forme la solution varie
-<img class="center" src="/images/backpack2.png" width="600" height="450" title="&lsquo;bin packing&rsquo; &lsquo;slide2&rsquo;" ></p></li>
+{% img center /images/backpack2.png 600 450 &lsquo;bin packing&rsquo; &lsquo;slide2&rsquo; %}</p></li>
 <li><p>Enfin impossible de savoir s&#8217;il y a une solution ici. Il y a priori la place, pourtant il n&#8217;y a pas de solution</p></li>
 </ul>
 
 
-<p><img class="center" src="/images/backpack3.png" width="600" height="450" title="&lsquo;bin packing&rsquo; &lsquo;slide3&rsquo;" ></p>
+<p>{% img center /images/backpack3.png 600 450 &lsquo;bin packing&rsquo; &lsquo;slide3&rsquo; %}</p>
 
 <p>la source des images <a href="http://cstheory.stackexchange.com/posts/5206/revisions">ici</a>.</p>
 
@@ -194,7 +194,7 @@ array(2) {
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Halt Compiler : Twig Et Php Dans Le Même Fichier]]></title>
+    <title type="html"><![CDATA[Halt compiler : twig et php dans le même fichier]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/08/23/halt-compiler-twig-et-php-dans-le-meme-fichier/"/>
     <updated>2015-08-23T17:20:41+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/08/23/halt-compiler-twig-et-php-dans-le-meme-fichier</id>
@@ -314,7 +314,7 @@ __HALT_COMPILER(); ?&gt;
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Créer Son Dépôt Sous Packagist]]></title>
+    <title type="html"><![CDATA[Créer son dépôt sous Packagist]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/07/24/creer-son-depot-sous-packagist/"/>
     <updated>2015-07-24T17:50:58+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/07/24/creer-son-depot-sous-packagist</id>
@@ -583,7 +583,7 @@ git push -u origin master
 
 <p>Il suffit de cliquer sur <strong>Submit</strong></p>
 
-<p><img class="center" src="/images/packagist_ajout.png" width="600" height="258" title="&lsquo;Ajouter un dépôt sur Packagist&rsquo; &lsquo;Ajouter un dépôt sur packagist&rsquo;" ></p>
+<p>{% img center /images/packagist_ajout.png 600 258 &lsquo;Ajouter un dépôt sur Packagist&rsquo; &lsquo;Ajouter un dépôt sur packagist&rsquo; %}</p>
 
 <p>Et de mettre l&#8217;url de Github. Et c&#8217;est tout !</p>
 

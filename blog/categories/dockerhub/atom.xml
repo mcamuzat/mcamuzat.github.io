@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Dockerhub | Mon blog perso.]]></title>
+  <title><![CDATA[Category: dockerhub | Journal d'un panda.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/dockerhub/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-08T22:40:30+01:00</updated>
+  <updated>2015-11-11T17:52:18+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Docker Et Dockerfile]]></title>
+    <title type="html"><![CDATA[Docker et Dockerfile]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/04/26/docker-et-dockerfile/"/>
     <updated>2015-04-26T19:44:44+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/04/26/docker-et-dockerfile</id>

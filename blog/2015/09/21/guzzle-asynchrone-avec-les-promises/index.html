@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Guzzle Asynchrone Avec Les Promises - Mon blog perso.</title>
+  <title>Guzzle Asynchrone avec les promises - Journal d&#8217;un panda.</title>
   <meta name="author" content="mcamuzat">
 
   
@@ -23,14 +23,20 @@ partie 3 les co-routines Je vais parler de Guzzle qui est un &hellip;">
   <link rel="canonical" href="http://mcamuzat.github.io/blog/2015/09/21/guzzle-asynchrone-avec-les-promises/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="Mon blog perso." type="application/atom+xml">
+   <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
   <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/ender.js"></script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Journal d'un panda." type="application/atom+xml">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900' rel='stylesheet' type='text/css'>
+
+
+
 
   
   <script type="text/javascript">
@@ -46,35 +52,14 @@ partie 3 les co-routines Je vais parler de Guzzle qui est un &hellip;">
   </script>
 
 
+  <style>html{background: url(/images/background.png) no-repeat center center fixed;-webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;}</style>
 </head>
 
 <body   >
   <header role="banner"><hgroup>
-  <h1><a href="/">Mon blog perso.</a></h1>
-  
-    <h2>Un simple blog PHP/Linux/Programmation/Docker</h2>
-  
 </hgroup>
 
 </header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="https://www.google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="sitesearch" value="mcamuzat.github.io">
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
-  <li><a href="/blog/archives">Archives</a></li>
-</ul>
-
-</nav>
   <div id="main">
     <div id="content">
       <div>
@@ -82,7 +67,7 @@ partie 3 les co-routines Je vais parler de Guzzle qui est un &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Guzzle Asynchrone Avec Les Promises</h1>
+      <h1 class="entry-title">Guzzle Asynchrone avec les promises</h1>
     
     
       <p class="meta">
@@ -91,7 +76,14 @@ partie 3 les co-routines Je vais parler de Guzzle qui est un &hellip;">
 
 
 
-<time class='entry-date' datetime='2015-09-21T21:39:06+02:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>9:39 pm</span></time>
+
+
+
+
+  
+
+
+<time datetime="2015-09-21T21:39:06+02:00" pubdate data-updated="true"></time>
         
       </p>
     
@@ -519,7 +511,14 @@ partie 3 les co-routines Je vais parler de Guzzle qui est un &hellip;">
 
 
 
-<time class='entry-date' datetime='2015-09-21T21:39:06+02:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>9:39 pm</span></time>
+
+
+
+
+  
+
+
+<time datetime="2015-09-21T21:39:06+02:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
@@ -555,20 +554,52 @@ partie 3 les co-routines Je vais parler de Guzzle qui est un &hellip;">
 
 <aside class="sidebar">
   
-    <section>
+    <section id="titles">
+  <a href="" title="Journal d'un panda."><img id="logo" src="/images/panda.png" /></a>
+  <h1 id="site_title"><a href="" title="Journal d'un panda.">Journal d&#8217;un panda.</a></h1>
+  <h3 id="site_subtitle">Un simple blog PHP/Linux/Programmation/Docker</h3>
+</section>
+
+<section id="menu">
+  <ul>
+    <li><i class="fa fa-home fa-lg"></i><a href=""> Home </a></li>
+    <li><i class="fa fa-calendar fa-lg"></i><a href="/blog/archives/"> Archives </a></li>
+    <li><i class="fa fa-user fa-lg"></i><a href="/about/"> About </a></li>
+    <li><i class="fa fa-rss fa-lg"></i><a href="/atom.xml"> Feed </a></li>
+  </ul>
+</section>
+
+<section id="social">
+  
+
+  
+
+  
+
+  
+    <a href="https://github.com/mcamuzat" title="mcamuzat"><i class="fa fa-github fa-2x"></i></a>
+  
+
+  
+
+  
+</section>
+
+
+<section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2015/11/08/faire-des-jointures-sur-des-fichiers-csv/">Faire Des Jointures Sur Des Fichiers Csv</a>
+        <a href="/blog/2015/11/08/faire-des-jointures-sur-des-fichiers-csv/">Faire des jointures sur des fichiers csv</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2015/11/05/git-grep/">Git Grep</a>
+        <a href="/blog/2015/11/05/git-grep/">Git grep</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2015/11/02/diff-patch-git/">Diff Et Patch, Pas Besoin De Git</a>
+        <a href="/blog/2015/11/02/diff-patch-git/">Diff et patch, pas besoin de git</a>
       </li>
     
       <li class="post">
@@ -576,7 +607,7 @@ partie 3 les co-routines Je vais parler de Guzzle qui est un &hellip;">
       </li>
     
       <li class="post">
-        <a href="/blog/2015/10/25/retour-vers-le-futur-avec-vim/">Retour Vers Le Futur Avec Vim</a>
+        <a href="/blog/2015/10/25/retour-vers-le-futur-avec-vim/">Retour vers le futur avec Vim</a>
       </li>
     
   </ul>

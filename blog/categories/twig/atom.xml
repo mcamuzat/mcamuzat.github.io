@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Twig | Mon blog perso.]]></title>
+  <title><![CDATA[Category: twig | Journal d'un panda.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/twig/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-08T22:40:30+01:00</updated>
+  <updated>2015-11-11T17:52:18+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Halt Compiler : Twig Et Php Dans Le Même Fichier]]></title>
+    <title type="html"><![CDATA[Halt compiler : twig et php dans le même fichier]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/08/23/halt-compiler-twig-et-php-dans-le-meme-fichier/"/>
     <updated>2015-08-23T17:20:41+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/08/23/halt-compiler-twig-et-php-dans-le-meme-fichier</id>

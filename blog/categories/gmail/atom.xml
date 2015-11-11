@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Gmail | Mon blog perso.]]></title>
+  <title><![CDATA[Category: gmail | Journal d'un panda.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/gmail/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-08T22:40:30+01:00</updated>
+  <updated>2015-11-11T17:52:18+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Gmail Vim Mêmes Raccourcis]]></title>
+    <title type="html"><![CDATA[Gmail Vim mêmes Raccourcis]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/08/08/gmail-vim-memes-raccourcis/"/>
     <updated>2015-08-08T18:52:17+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/08/08/gmail-vim-memes-raccourcis</id>
@@ -71,15 +71,15 @@
 </ul>
 
 
-<p><img class="center" src="/images/quote.png" width="431" height="174" title="&lsquo;Le guillement est une pictogramme de marques-pages&rsquo; &lsquo;le guillemet est le pictogramme du marque-page&rsquo;" ></p>
+<p>{% img center /images/quote.png 431 174 &lsquo;Le guillement est une pictogramme de marques-pages&rsquo; &lsquo;le guillemet est le pictogramme du marque-page&rsquo; %}</p>
 
 <p>La lettre <code>=</code> est le pictogramme de deux lignes indentées. Quand j&#8217;appuie sur <code>=</code> j&#8217;indente le texte.</p>
 
-<p><img class="center" src="/images/indentation.png" width="600" height="276" title="&lsquo;Indentation&rsquo; &lsquo;Pour indenter on utilise la touche = &rsquo;" ></p>
+<p>{% img center /images/indentation.png 600 276 &lsquo;Indentation&rsquo; &lsquo;Pour indenter on utilise la touche = &rsquo; %}</p>
 
 <p>La lettre <code>z</code> correspond au repli de texte</p>
 
-<p><img class="center" src="/images/repli.png" width="600" height="230" title="&lsquo;z = repli de texte ;&rsquo; &lsquo;Pour plier déplier le texte on utilise la touche z&rsquo;" ></p>
+<p>{% img center /images/repli.png 600 230 &lsquo;z = repli de texte ;&rsquo; &lsquo;Pour plier déplier le texte on utilise la touche z&rsquo; %}</p>
 
 <ul>
 <li><code>z</code> + <code>c</code> pour replier (c = close)</li>
@@ -88,11 +88,11 @@
 </ul>
 
 
-<p><img class="center" src="/images/plier.png" width="595" height="214" title="&lsquo;z = repli de texte&rsquo; &lsquo;Pour plier déplier le texte on utilise la touche z&rsquo;" ></p>
+<p>{% img center /images/plier.png 595 214 &lsquo;z = repli de texte&rsquo; &lsquo;Pour plier déplier le texte on utilise la touche z&rsquo; %}</p>
 
 <p>Sous gmail, c&#8217;est encore la même idée.  la touche <code>x</code> correspond à une checkbox. appuyer sur x pour sélectionner la conversation. le <code>#</code> correspond à supprimer, le <code>!</code> à SPAM!!!.</p>
 
-<p><img class="center" src="/images/checkanddelete.png" width="543" height="193" title="&lsquo;le x est le pictogramme d'un checkbox&rsquo; &lsquo;Mon terminal`" ></p>
+<p>{% img center /images/checkanddelete.png 543 193 &lsquo;le x est le pictogramme d&#8217;un checkbox&rsquo; &lsquo;Mon terminal` %}</p>
 
 <h2>Le cas de <code>*</code></h2>
 

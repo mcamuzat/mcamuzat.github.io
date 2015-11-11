@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Vim | Mon blog perso.]]></title>
+  <title><![CDATA[Category: vim | Journal d'un panda.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/vim/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-08T22:40:30+01:00</updated>
+  <updated>2015-11-11T17:52:18+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Retour Vers Le Futur Avec Vim]]></title>
+    <title type="html"><![CDATA[Retour vers le futur avec Vim]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/10/25/retour-vers-le-futur-avec-vim/"/>
     <updated>2015-10-25T18:52:49+01:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/10/25/retour-vers-le-futur-avec-vim</id>
@@ -173,15 +173,15 @@ make install
 
 <p>Elle permet de voir l&#8217;historique du dépôt.</p>
 
-<p><img class="center" src="/images/tig-defaut.png" width="600" height="398" title="&lsquo;la vue par défault&rsquo; &lsquo;la vue par défaut&rsquo;" ></p>
+<p>{% img center /images/tig-defaut.png 600 398 &lsquo;la vue par défault&rsquo; &lsquo;la vue par défaut&rsquo; %}</p>
 
 <p>Appuyer sur <code>&lt;Enter&gt;</code> pour voir la différence. (Dans la version 2, si le terminal fait plus de 160 caractères l&#8217;écran se splitte en 2 verticalement)</p>
 
-<p><img class="center" src="/images/tig-diff.png" width="600" height="399" title="&lsquo;quand on appuie sur la touche entrée, on affiche la différence&rsquo; &lsquo;l'écran de différence&rsquo;" ></p>
+<p>{% img center /images/tig-diff.png 600 399 &lsquo;quand on appuie sur la touche entrée, on affiche la différence&rsquo; &lsquo;l&#8217;écran de différence&rsquo; %}</p>
 
 <p>Screenshot de la version 2 avec les deux colonnes.</p>
 
-<p><img class="center" src="/images/tig_view_v2.png" width="600" height="366" title="&lsquo;dans la version 2, si le terminal&rsquo; &lsquo;Screenshot de la version 2 avec les deux colonnes.&rsquo;" ></p>
+<p>{% img center /images/tig_view_v2.png 600 366 &lsquo;dans la version 2, si le terminal&rsquo; &lsquo;Screenshot de la version 2 avec les deux colonnes.&rsquo; %}</p>
 
 <p>Il va falloir apprendre les touches Vi car on se sert beaucoup de <code>j</code> et <code>k</code> (un rappel <code>j</code> descend vers le bas et <code>k</code> va vers le haut)</p>
 
@@ -239,7 +239,7 @@ Untracked files:
 
 <p>Enfin on peut aussi prendre chunk par chunck (l&#8217;équivalent de <code>git add -p</code>)</p>
 
-<p><img class="center" src="/images/tig-revert.png" width="600" height="398" title="&lsquo;la vue par défaut&rsquo; &lsquo;la vue par défaut&rsquo;" ></p>
+<p>{% img center /images/tig-revert.png 600 398 &lsquo;la vue par défaut&rsquo; &lsquo;la vue par défaut&rsquo; %}</p>
 
 <p>Il suffit d&#8217;appuyer sur <code>Enter</code> puis de se déplacer dans le commit avec <code>j</code> et <code>k</code> et appuyer sur <code>u</code> pour ajouter ce chunk. Les chunks pour faire simple sont les textes séparés par des <code>@@ ... @@</code>. On se déplace de chunk en chunk grâce à la touche <code>@</code>.</p>
 
@@ -309,7 +309,7 @@ bind main B !git checkout -b "%(prompt Enter new branch name: )"
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Lancer Des Commandes Dans Vim]]></title>
+    <title type="html"><![CDATA[Lancer des commandes dans Vim]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/08/31/lancer-des-commandes-dans-vim/"/>
     <updated>2015-08-31T23:49:17+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/08/31/lancer-des-commandes-dans-vim</id>
@@ -437,7 +437,7 @@ bonjour
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Gmail Vim Mêmes Raccourcis]]></title>
+    <title type="html"><![CDATA[Gmail Vim mêmes Raccourcis]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/08/08/gmail-vim-memes-raccourcis/"/>
     <updated>2015-08-08T18:52:17+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/08/08/gmail-vim-memes-raccourcis</id>
@@ -494,15 +494,15 @@ bonjour
 </ul>
 
 
-<p><img class="center" src="/images/quote.png" width="431" height="174" title="&lsquo;Le guillement est une pictogramme de marques-pages&rsquo; &lsquo;le guillemet est le pictogramme du marque-page&rsquo;" ></p>
+<p>{% img center /images/quote.png 431 174 &lsquo;Le guillement est une pictogramme de marques-pages&rsquo; &lsquo;le guillemet est le pictogramme du marque-page&rsquo; %}</p>
 
 <p>La lettre <code>=</code> est le pictogramme de deux lignes indentées. Quand j&#8217;appuie sur <code>=</code> j&#8217;indente le texte.</p>
 
-<p><img class="center" src="/images/indentation.png" width="600" height="276" title="&lsquo;Indentation&rsquo; &lsquo;Pour indenter on utilise la touche = &rsquo;" ></p>
+<p>{% img center /images/indentation.png 600 276 &lsquo;Indentation&rsquo; &lsquo;Pour indenter on utilise la touche = &rsquo; %}</p>
 
 <p>La lettre <code>z</code> correspond au repli de texte</p>
 
-<p><img class="center" src="/images/repli.png" width="600" height="230" title="&lsquo;z = repli de texte ;&rsquo; &lsquo;Pour plier déplier le texte on utilise la touche z&rsquo;" ></p>
+<p>{% img center /images/repli.png 600 230 &lsquo;z = repli de texte ;&rsquo; &lsquo;Pour plier déplier le texte on utilise la touche z&rsquo; %}</p>
 
 <ul>
 <li><code>z</code> + <code>c</code> pour replier (c = close)</li>
@@ -511,11 +511,11 @@ bonjour
 </ul>
 
 
-<p><img class="center" src="/images/plier.png" width="595" height="214" title="&lsquo;z = repli de texte&rsquo; &lsquo;Pour plier déplier le texte on utilise la touche z&rsquo;" ></p>
+<p>{% img center /images/plier.png 595 214 &lsquo;z = repli de texte&rsquo; &lsquo;Pour plier déplier le texte on utilise la touche z&rsquo; %}</p>
 
 <p>Sous gmail, c&#8217;est encore la même idée.  la touche <code>x</code> correspond à une checkbox. appuyer sur x pour sélectionner la conversation. le <code>#</code> correspond à supprimer, le <code>!</code> à SPAM!!!.</p>
 
-<p><img class="center" src="/images/checkanddelete.png" width="543" height="193" title="&lsquo;le x est le pictogramme d'un checkbox&rsquo; &lsquo;Mon terminal`" ></p>
+<p>{% img center /images/checkanddelete.png 543 193 &lsquo;le x est le pictogramme d&#8217;un checkbox&rsquo; &lsquo;Mon terminal` %}</p>
 
 <h2>Le cas de <code>*</code></h2>
 
@@ -569,7 +569,7 @@ bonjour
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[PHP Code Sniffer Mise en Place]]></title>
+    <title type="html"><![CDATA[PHP Code Sniffer mise en place]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/08/01/php-code-sniffer-mise-en-place/"/>
     <updated>2015-08-01T18:33:12+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/08/01/php-code-sniffer-mise-en-place</id>
@@ -707,7 +707,7 @@ Il suffit de créer un fichier <code>pre-commit.sh</code> dans le répertoire <c
 
 <p>Le résultat est très intuitif on a une flèche <code>&gt;</code> à chaque ligne qui pose problème. Il suffit de passer le curseur pour connaitre l&#8217;erreur. Enfin un screenshot sera plus clair.</p>
 
-<p><img class="center" src="/images/syntastic.png" width="600" height="212" title="&lsquo;Screenshot de syntastic&rsquo; &lsquo;syntastic&rsquo;" ></p>
+<p>{% img center /images/syntastic.png 600 212 &lsquo;Screenshot de syntastic&rsquo; &lsquo;syntastic&rsquo; %}</p>
 
 <h2>Conclusion</h2>
 

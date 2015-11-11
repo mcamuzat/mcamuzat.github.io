@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Symfony | Mon blog perso.]]></title>
+  <title><![CDATA[Category: symfony | Journal d'un panda.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/symfony/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-08T22:40:30+01:00</updated>
+  <updated>2015-11-11T17:52:18+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Array_walk, Array_map, Array_walk_recursive]]></title>
+    <title type="html"><![CDATA[Array_walk, array_map, array_walk_recursive]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/08/26/array-walk/"/>
     <updated>2015-08-26T22:30:55+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/08/26/array-walk</id>
@@ -145,17 +145,13 @@ var_dump($array);
 <blockquote><p>Toute clé qui est associée à un tableau n&#8217;est pas passée à la fonction de rappel.</p></blockquote>
 
 <p>Un vrai exemple
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'>    <span class="nb">array_walk_recursive</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="o">&amp;</span><span class="nx">amp</span><span class="p">;</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span> <span class="nx">instanceof</span> <span class="nx">\Traversable</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nv">$value</span> <span class="o">=</span> <span class="nb">iterator_to_array</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>`</p>
+&#8220;` php
+        array_walk_recursive($data, function (&amp;$value) {
+            if ($value instanceof \Traversable) {
+                $value = iterator_to_array($value);
+            }
+        });
+&#8220;&#8220;</p>
 
 <p>Un exemple que l&#8217;on retrouve dans <a href="">PHPUnit</a> et <a href="">Symfony2</a></p>
 
@@ -168,7 +164,7 @@ var_dump($array);
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[PHP Code Sniffer Mise en Place]]></title>
+    <title type="html"><![CDATA[PHP Code Sniffer mise en place]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/08/01/php-code-sniffer-mise-en-place/"/>
     <updated>2015-08-01T18:33:12+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/08/01/php-code-sniffer-mise-en-place</id>
@@ -306,7 +302,7 @@ Il suffit de créer un fichier <code>pre-commit.sh</code> dans le répertoire <c
 
 <p>Le résultat est très intuitif on a une flèche <code>&gt;</code> à chaque ligne qui pose problème. Il suffit de passer le curseur pour connaitre l&#8217;erreur. Enfin un screenshot sera plus clair.</p>
 
-<p><img class="center" src="/images/syntastic.png" width="600" height="212" title="&lsquo;Screenshot de syntastic&rsquo; &lsquo;syntastic&rsquo;" ></p>
+<p>{% img center /images/syntastic.png 600 212 &lsquo;Screenshot de syntastic&rsquo; &lsquo;syntastic&rsquo; %}</p>
 
 <h2>Conclusion</h2>
 
@@ -315,7 +311,7 @@ Il suffit de créer un fichier <code>pre-commit.sh</code> dans le répertoire <c
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Des Tests Behat Plus Rapides Sous Symfony]]></title>
+    <title type="html"><![CDATA[Des tests Behat plus rapides sous symfony]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/07/06/des-tests-plus-rapides-sous-symfony/"/>
     <updated>2015-07-06T19:46:43+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/07/06/des-tests-plus-rapides-sous-symfony</id>

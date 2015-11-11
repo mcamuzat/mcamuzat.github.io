@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Behat | Mon blog perso.]]></title>
+  <title><![CDATA[Category: behat | Journal d'un panda.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/behat/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-08T22:40:30+01:00</updated>
+  <updated>2015-11-11T17:52:18+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Des Tests Behat Plus Rapides Sous Symfony]]></title>
+    <title type="html"><![CDATA[Des tests Behat plus rapides sous symfony]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/07/06/des-tests-plus-rapides-sous-symfony/"/>
     <updated>2015-07-06T19:46:43+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/07/06/des-tests-plus-rapides-sous-symfony</id>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Travis | Mon blog perso.]]></title>
+  <title><![CDATA[Category: travis | Journal d'un panda.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/travis/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-08T22:40:30+01:00</updated>
+  <updated>2015-11-11T17:52:18+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Mise en Place De Travis]]></title>
+    <title type="html"><![CDATA[Mise en place de Travis]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/07/25/mise-en-place-de-travis/"/>
     <updated>2015-07-25T16:37:49+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/07/25/mise-en-place-de-travis</id>
@@ -40,15 +40,15 @@ php:
 
 <p>Quand je synchronise mes dépôts. Il suffit de cliquer sur le slider pour activé l&#8217;intégration continue.</p>
 
-<p><img class="center" src="/images/travis_choice.png" width="600" height="234" title="&lsquo;Activer l'intégration continue&rsquo; &lsquo;Activée l'intégration continue&rsquo;" ></p>
+<p>{% img center /images/travis_choice.png 600 234 &lsquo;Activer l&#8217;intégration continue&rsquo; &lsquo;Activée l&#8217;intégration continue&rsquo; %}</p>
 
 <p>On peux lire les logs, d&#8217;ailleurs on se rend compte que travis utilise Docker</p>
 
-<p><img class="center" src="/images/travis_log.png" width="600" height="405" title="&lsquo;Log de travis&rsquo; &lsquo;Log de travis&rsquo;" ></p>
+<p>{% img center /images/travis_log.png 600 405 &lsquo;Log de travis&rsquo; &lsquo;Log de travis&rsquo; %}</p>
 
 <p>et voici le résultat</p>
 
-<p><img class="center" src="/images/travis_depot.png" width="600" height="320" title="&lsquo;Dashboard du projet&rsquo; &lsquo;Dashboard du projet&rsquo;" ></p>
+<p>{% img center /images/travis_depot.png 600 320 &lsquo;Dashboard du projet&rsquo; &lsquo;Dashboard du projet&rsquo; %}</p>
 
 <p>A chaque commit je lance un build. J&#8217;ai vraiment été très surpris par la simplicité de la mise en œuvre.</p>
 

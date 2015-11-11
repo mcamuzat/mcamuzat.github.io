@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Editeur | Mon blog perso.]]></title>
+  <title><![CDATA[Category: editeur | Journal d'un panda.]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/editeur/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-08T22:40:30+01:00</updated>
+  <updated>2015-11-11T17:52:18+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Comprendre La Ligne De Commande De Vi]]></title>
+    <title type="html"><![CDATA[Comprendre la ligne de commande de vi]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/03/30/comprendre-la-ligne-de-commande-de-vi/"/>
     <updated>2015-03-30T22:36:21+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/03/30/comprendre-la-ligne-de-commande-de-vi</id>
@@ -103,20 +103,15 @@ va remplacer le mot 1 par le mot 2
 le <code>g</code> active le flag <code>global</code> et remplace si le mot apparait deux fois.</p>
 
 <p>par exemple
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$mot1 = $mot1 + 1;&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;// s/mot1/mot2
-</span><span class='line'>$mot2 = $mot1 + 1 ; // on ne change que le premier mot&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;// s/mot1/mot2/g
-</span><span class='line'>$mot2 = $mot2 + 1 // tout les mots</span></code></pre></td></tr></table></div></figure></p>
+&#8220;`
+$mot1 = $mot1 + 1;</p>
+
+<p>// s/mot1/mot2
+$mot2 = $mot1 + 1 ; // on ne change que le premier mot</p>
+
+<p>// s/mot1/mot2/g
+$mot2 = $mot2 + 1 // tout les mots
+&#8220;`</p>
 
 <h2>Encore un peu plus loin</h2>
 
@@ -128,16 +123,13 @@ le <code>g</code> active le flag <code>global</code> et remplace si le mot appar
 
 <p>On peut chaîner les differentes actions
 par exemple
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>:g/pattern/s/mot/mot2/g # toutes les lignes qui contiennent le pattern, remplace mot1 par mot2.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;:g/pattern/d # efface toute les lignes qui contiennent le pattern suivant&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;:g/pattern/p # &lsquo;print toutes lignes qui contienne le pattern suivant</span></code></pre></td></tr></table></div></figure></p>
+&#8220;`
+:g/pattern/s/mot/mot2/g # toutes les lignes qui contiennent le pattern, remplace mot1 par mot2.</p>
+
+<p>:g/pattern/d # efface toute les lignes qui contiennent le pattern suivant</p>
+
+<p>:g/pattern/p # &lsquo;print toutes lignes qui contienne le pattern suivant
+&#8220;`</p>
 
 <p>la derniere ligne est la plus connue. pattern est le plus souvent une <em>regex</em> donc la traduction <code>g/regex/p</code> ->donne la commande <code>grep</code> sous linux.</p>
 
