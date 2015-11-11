@@ -29,6 +29,7 @@ Elle permet de voir l'historique du dépôt.
 
 {% img center /images/tig-defaut.png 600 398 'la vue par défault' 'la vue par défaut' %}
 
+<!--more-->
 
 Appuyer sur `<Enter>` pour voir la différence. (Dans la version 2, si le terminal fait plus de 160 caractères l'écran se splitte en 2 verticalement)
 

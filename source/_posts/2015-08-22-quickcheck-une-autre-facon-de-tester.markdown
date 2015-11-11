@@ -10,6 +10,8 @@ categories: ["php", "PHPunit", "Haskell", "QA"]
 
 Nous allons voir ensemble, une nouvelle façon de faire des tests. Nous allons installer utiliser un projet [php-quickcheck](https://github.com/steos/php-quickcheck). L'idée ici n'est pas d'écrire des tests, mais demander au logiciel de les générer. 
 
+<!--more-->
+
 ## Installation.
 
 Nous allons créer le `composer.json` suivant.

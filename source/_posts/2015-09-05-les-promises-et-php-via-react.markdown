@@ -52,7 +52,9 @@ Si je remplace `$deferred->resolve()` par `$deferred->reject()`. Le travail n'as
 
 ``` php
 Tout va mal
-``` 
+```
+ <!--more-->
+
 La syntaxe de `then` est 
 
 ``` php

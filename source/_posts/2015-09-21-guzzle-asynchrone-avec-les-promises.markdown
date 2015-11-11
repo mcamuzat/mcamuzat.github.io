@@ -43,6 +43,7 @@ $promise->resolve(null); // 'Tout va bien.';
 $promise->reject(null); // 'On a un problème.';
 ```
 
+<!--more-->
 *Guzzle* est un client Web essayons un cas concret.
 
 ``` php

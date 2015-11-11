@@ -29,6 +29,8 @@ SIRET4,Adresse4,Noms4Annuaire,ID_4
 
 Je souhaite faire un merge de ces deux csv. Comment faire ?
 
+<!--more-->
+
 En solution 1 j'ai pensé.
 
  * Créer une table temporaire 

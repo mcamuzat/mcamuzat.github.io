@@ -49,6 +49,7 @@ D'abord un générateur se comporte comme un iterator. C'est grâce à cela que 
 
 Je vais refaire pas à pas avec des commentaires.
 
+<!--more-->
 ### premier passage
 
 ``` php

@@ -17,6 +17,7 @@ Un node a deux propriétés.
  * Sa valeurs 
  * Le liens vers le noeud suivant
 
+<!--more-->
 En php 
 
 ``` php

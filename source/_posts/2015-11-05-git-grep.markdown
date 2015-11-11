@@ -18,6 +18,7 @@ git grep hello
 On peut utiliser une regex
 le résultat s'affiche dans un pager (sous linux c'est souvent `less`).
 
+<!--more-->
 **Rappel des touches sur Less**
 
 | Touche      | Description |

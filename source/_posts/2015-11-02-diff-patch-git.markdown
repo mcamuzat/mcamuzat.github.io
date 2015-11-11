@@ -80,6 +80,7 @@ On obtient le fichier suivant
 +j'ai ajouté cette ligne
 ```
 
+<!--more-->
 Cette vision doit vous être assez familière si vous faite du git, svn ou mercurial
 
 c'est la sortie d'un `git diff` si on avait modifié ce fichier.

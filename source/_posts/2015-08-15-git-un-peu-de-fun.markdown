@@ -36,6 +36,8 @@ Cela ne clignote pas beaucoup sur `gnometerminal` essayons avec  Xterm
 
 C'est un peu mieux.
 
+<!--more-->
+
 ## Mais peux-ton commiter si on a rien à commiter
 
 Avec la commande `--allow-empty` c'est parfaitement possible. 

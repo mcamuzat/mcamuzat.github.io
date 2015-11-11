@@ -33,6 +33,7 @@ Bien sur on peut faire un *retour vers futur* avec la commande suivante.
 
 Encore plus fort se déplacer dans l'historique de VIM
 
+<!--more-->
 ## Se déplacer dans les différents passés
 
 Celui-ci ce comporte comme un arbre.

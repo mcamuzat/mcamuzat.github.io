@@ -13,6 +13,7 @@ Quel instruction je n'ai jamais jamais réussi à utiliser dans php ? Dans le se
 Ma réponse est un `array_recursive_walk()` et dans la même idée les `RecursiveIteratorIterator`
 
 Et puis on m'a demander la différence entre un `array_walk` et un `array_map`.
+<!--more-->
 
 ## `array_map`
 

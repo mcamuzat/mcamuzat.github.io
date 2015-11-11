@@ -6,3 +6,7 @@ comments: true
 sharing: true
 footer: true
 ---
+
+## Qui je suis 
+
+Je suis un développeur PHP. Je fais actuellement beaucoup de Symfony2.

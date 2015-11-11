@@ -32,6 +32,7 @@ Pour obtenir
  * Echo 
  * Foxtrot
 ```
+<!--more-->
 
 On peux aussi lancer plein de commandes amusantes
 

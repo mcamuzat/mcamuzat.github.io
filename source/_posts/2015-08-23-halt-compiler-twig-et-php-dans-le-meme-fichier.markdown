@@ -22,6 +22,8 @@ D'après php.net
 > Stoppe l'exécution du compilateur. Ceci peut être très utile pour embarquer des données dans des scripts PHP, comme des fichiers d'installation.
 > L'octet de la position du début des données peut être déterminé par la constante `__COMPILER_HALT_OFFSET__` qui n'est définie que s'il y a une fonction `__halt_compiler()` présente dans le fichier. 
 
+<!--more-->
+
 ## Une première expérimentation
 
 Soit le fichier php suivant :

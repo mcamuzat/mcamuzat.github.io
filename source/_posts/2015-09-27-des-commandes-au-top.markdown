@@ -28,6 +28,7 @@ sudo npm install -g vtop
 
 dépot [Github](https://github.com/MrRio/vtop)
 
+<!--more-->
 ## Htop
 
 ### Quelques options

@@ -17,6 +17,7 @@ Pour faire simple (Ce que j'en ai compris)
 
 Les NP-problèmes sont des problèmes donc il est très facile de vérifier une solutions. Dans notre cas ici il suffit de commander 7 * 2.15 pour obtenir 15.05. Le problème a une solution. Mais il est quasiment impossible de trouver une méthode efficace pour déterminer la solution, voir même de savoir s'il y a une solutions.
 
+<!--more-->
 Il suffit de regarder les images suivantes (pris d'un post de [stack exchange](http://cstheory.stackexchange.com/questions/5188/explain-p-np-problem-to-10-year-old))
 
 * si on met les paquets les plus gros d'abord, les plus larges, avec un [planner](http://www.optaplanner.org/).

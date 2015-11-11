@@ -15,6 +15,9 @@ Nous allons implémenter l'interface `ArrayAccess`. Donc notre liste chainée va
 
 Je vais rajouter deux méthodes. Attention les `Array` commencent traditionnellement à 0 d'où le `$this->count -1`
 
+
+
+<!--more-->
  * Supprimer le chainon N
 ``` php
     public function removeAtPosition($position)

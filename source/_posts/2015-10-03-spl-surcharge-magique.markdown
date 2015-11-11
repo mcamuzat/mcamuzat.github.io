@@ -26,6 +26,7 @@ $counter = new BadCounter();
 var_dump(count($counter));// int(42)
 ```
 
+<!--more-->
 On peux surcharger la méthode `count`. C'est d'ailleurs le cas dans le cas du [Paginator](http://doctrine-orm.readthedocs.org/en/latest/tutorials/pagination.html) de doctrine.
 
 ``` php

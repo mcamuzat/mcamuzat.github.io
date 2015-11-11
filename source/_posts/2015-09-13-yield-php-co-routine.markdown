@@ -39,6 +39,7 @@ var_dump($gen->next()); // j'ai recus NULL.
 
 ```
 
+<!--more-->
 ## Les Co-routines
 Une co-routine est une fonction qui peut se suspendre en reprendre quand on le souhaite.
 

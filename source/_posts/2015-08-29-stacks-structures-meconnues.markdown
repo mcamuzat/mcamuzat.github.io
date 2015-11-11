@@ -29,6 +29,7 @@ $value = $pile->pop() // [34]
 $pile->push('a') // [34, 'a']
 $value = $pile->top() // $value = 'a' pile [34, 'a']
 ```
+<!--more-->
 
 On peux utiliser les array comme des piles avec `array_pop` et `array_push`. Mais depuis PHP 5.0 il existe une Classe tout faite `SplStack`
 
