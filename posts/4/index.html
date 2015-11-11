@@ -5,11 +5,21 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Journal d&#8217;un panda.</title>
+  <title>Journal d&#8217;un panda qui code</title>
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Introduction Nous allons voir comment multiplier par 5 voir 10 les tests et l'environnement de test et de dev. L'astuce ici est de mettre le &hellip;">
+  <meta name="description" content="Aujourd'hui commençons par un petit programme 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11 #!/bin/sh quine () { echo -e &quot;#!/bin/sh\n$1&quot; echo &quot;quine &#39;$1 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -25,7 +35,7 @@
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="/javascripts/ender.js"></script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <link href="/atom.xml" rel="alternate" title="Journal d'un panda." type="application/atom+xml">
+  <link href="/atom.xml" rel="alternate" title="Journal d'un panda qui code" type="application/atom+xml">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 
 <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
@@ -62,6 +72,125 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/07/11/les-quines/">Les quines</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-11T19:39:53+02:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Aujourd&#8217;hui commençons par un petit programme</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>  <span class="c">#!/bin/sh</span>
+</span><span class='line'>  quine <span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="nb">echo</span> -e <span class="s2">&quot;#!/bin/sh\n$1&quot;</span>
+</span><span class='line'>  <span class="nb">echo</span> <span class="s2">&quot;quine &#39;$1&#39;&quot;</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  quine <span class="s1">&#39;quine () {</span>
+</span><span class='line'><span class="s1">  echo -e &quot;#!/bin/sh\\n$1&quot;</span>
+</span><span class='line'><span class="s1">  echo &quot;quine \047$1\047&quot;</span>
+</span><span class='line'><span class="s1">  }</span>
+</span><span class='line'><span class="s1">  &#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pouvez vous devinez que fais ce programme ?</p>
+
+<p>Une quine est un code donc la sortie est exactement son code source.</p>
+
+<p>Cela ressemble à une exercice de programmation.</p>
+
+<p>Mais toute en quelque sorte peuvent se résumer à l&#8217;idée suivante.</p>
+
+<blockquote><p>Écrivez, puis écrivez entre guillemets et suivi d&#8217;un point, « Écrivez, puis écrivez entre guillemets et suivi d&#8217;un point, ».</p></blockquote>
+
+<p>Le code python suivant est une interprétation littérale.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='py'><span class='line'><span class="n">a</span><span class="o">=</span><span class="s">&#39;a=</span><span class="si">%r</span><span class="s">;print(a</span><span class="si">%%</span><span class="s">a)&#39;</span><span class="p">;</span><span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="o">%</span><span class="n">a</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>En php</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nv">$a</span><span class="o">=</span><span class="s1">&#39;&lt;?$a=%c%s%c;printf($a,39,$a,39);&#39;</span><span class="p">;</span><span class="nb">printf</span><span class="p">(</span><span class="nv">$a</span><span class="p">,</span><span class="mi">39</span><span class="p">,</span><span class="nv">$a</span><span class="p">,</span><span class="mi">39</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Seulement possible en php</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">echo</span> <span class="nb">file_get_contents</span><span class="p">(</span><span class="k">__FILE__</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>A quoi cela sert ?</h2>
+
+<p>On parle de code qui se réplique. Il existe une quine dans tout les langages de programmations complets(c&#8217;est à dire turing-complet). Une des applications les plus curieuses est l&#8217;injection de code malicieux dans les compilateurs. C&#8217;est un des papiers les plus célèbres de Ken Thompson (Inventeur de B, Unix, UTF8, Go bref un monstre..). C&#8217;est un publication académique très facilement lisible et qui ne fait que trois pages. Il décrit une méthode d&#8217;injection dans le compilateur lui-même pour créer un compilateur infecté. Le plus bizarre dans cette histoire est que cette attaque est théorique. Mais personne n&#8217;y croyait. Il existe pourtant réellement un virus qui utilise cette faille.</p>
+
+<ul>
+<li><a href="https://www.ece.cmu.edu/~ganger/712.fall02/papers/p761-thompson.pdf">Reflections on Trusting Trust</a></li>
+<li><a href="https://lists.owasp.org/pipermail/owasp-cincinnati/2009-August/000187.html">la faille de sécurité</a></li>
+</ul>
+
+
+<h2>Des liens et bibliographie.</h2>
+
+<p>Il y a un chapitre complet dans le <a href="https://fr.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach_:_Les_Brins_d%27une_Guirlande_%C3%89ternelle">Gödel Escher Bach</a>
+quelques phrases issues de ce livre passionnant</p>
+
+<blockquote><p>&ldquo;est un fragment de phrase&rdquo; est un fragment de phrase</p>
+
+<p>&ldquo;se compose de cinq mots&rdquo; se compose de cinq mots</p>
+
+<p>&ldquo;Donne une fausseté si précédée d&#8217;elle-même entre guillemets&rdquo; Donne une fausseté si précédée d&#8217;elle-même entre guillemets.</p></blockquote>
+
+<p>Cette dernière est de <a href="https://en.wikipedia.org/wiki/Willard_Van_Orman_Quine">W. V. Quine</a> qui est la première personne à écrire dessus et qui donne le noms de quine.</p>
+
+<p>la plupart des exemples viens de l&#8217;article <a href="https://fr.wikipedia.org/wiki/Quine_%28informatique%29">quine</a> sur Wikipedia. Voir aussi <a href="http://c2.com/cgi/wiki?QuineProgram">quine</a> sur c2.com</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1586,128 +1715,6 @@ L&#8217;avantage de cette méthode est que tout le monde utilise la même iso vi
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/05/04/je-joue-donc-je-programme/">Je joue donc je programme</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-05-04T22:32:00+02:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Il existe des jeux vidéos pour apprendre à programmer. Voici quelques exemples.</p>
-
-<h2>VimAdventure</h2>
-
-<p><img class="center" src="/images/vimadventures.jpg" width="600" height="339" title="Vim adventure" alt="Vim adventure">
-<a href="http://vim-adventures.com/">Vim adventure</a> permet d&#8217;apprendre les touches de Vim de manière ludique. Personnellement j&#8217;ai beaucoup joué à <a href="http://crawl.develz.org/wordpress/">Dungeon Crawl</a> qui utilise les touches <code>h</code>, <code>j</code>, <code>k</code>, <code>l</code></p>
-
-<h2>Ruby</h2>
-
-<p>Ruby warrior existe en deux versions:
-<img class="center" src="/images/ruby-warrior.png" width="600" height="288" title="Ruby warrior" alt="Ruby warrior"></p>
-
-<p>En ligne de commande <a href="https://github.com/ryanb/ruby-warrior">ruby-warrior</a></p>
-
-<p>Le but est ici d&#8217;écrire L&#8217;AI du héros. Cela commence relativement simplement. Au début pas besoin de if, else, object mais les niveaux se corsent vraiment (je dirai que jusqu&#8217;au 6 c&#8217;est relativement tranquille)</p>
-
-<p>Depuis il existe une version web. Beaucoup plus accessible et jolie
-<a href="https://www.bloc.io/ruby-warrior#/">ruby-warrior</a></p>
-
-<h2>Javascript</h2>
-
-<h3>Untrusted</h3>
-
-<p><img class="center" src="/images/untrusted.jpg" width="600" height="339" title="Untrusted" alt="Untrusted">
-pour passer les niveaux, il faut atteindre le terminal et commencer à hacker le js. C&#8217;est vraiment malin.
-<a href="http://alexnisnevich.github.io/untrusted/">untrusted</a></p>
-
-<h3>Elevator Saga</h3>
-
-<p><img class="center" src="/images/elevator-saga.png" width="600" height="288" title="Elevator Saga" alt="Elevator Saga"></p>
-
-<p>Quoi de plus passionnant que simulation d&#8217;ascenseur.On passe assez facilement le niveau 1. Cela se complique vraiment avec le niveau deux et les objectifs.
-<a href="http://play.elevatorsaga.com/">elevator-saga</a></p>
-
-<h3>CodeCombat</h3>
-
-<p><a href="http://codecombat.com/">CodeCombat</a>
-Diriger un petit combattant, Un peu la même idée que ruby-warror, mais l&#8217;interface est très belle. Il y a du multi-joueurs</p>
-
-<h2>Multi-plateforme</h2>
-
-<p><img class="center" src="/images/codingame.jpg" width="600" height="375" title="Coding game" alt="Coding game"></p>
-
-<p><a href="http://www.codingame.com">Codingame</a>. L&#8217;interface est magnifique, vous pouvez choisir le langage (il y a une vingtaine de langage PHP, Js, Haskell, Bash, C). les exercices sont assez variés. C&#8217;est plus des katas de programmation.</p>
-
-<h2>Le SQL</h2>
-
-<p><img class="center" src="/images/schemaverse.png" width="450" height="131" title="Schemaverse" alt="Schemaverse"></p>
-
-<p><a href="https://schemaverse.com/">Schemaverse</a>
-Un jeux video en prosgresSQL pur. Il y a même une histoire. C&#8217;est assez compliqué.</p>
-
-<h2>Les Regex</h2>
-
-<ul>
-<li><a href="http://regexone.com/">regex one</a> Une bonne introduction.</li>
-<li><a href="https://regex.alf.nu/">regex.alf.nu</a>. Cela commence doucement, mais les dernières sont très très compliquées.</li>
-<li><a href="http://www.postcrashgames.com/finitris/">finitris</a>.Un vieux Jeux que j&#8217;avais noté, c&#8217;est dommage que la prise en main soit affreuse et que le zoom soit péter (control+molette est votre ami)</li>
-</ul>
-
-
-<h3>Des jeux Flash</h3>
-
-<p>Bon je sais que ce n&#8217;est pas super récent.</p>
-
-<p>Tout les jeux Zacktronics</p>
-
-<ul>
-<li><a href="http://www.zachtronics.com/spacechem/">SpaceChem</a> (payant et j&#8217;ai pas essayé).</li>
-<li><a href="http://www.zachtronics.com/kohctpyktop-engineer-of-the-people/">Kohctpyktop</a> quasiment injouable. mais c&#8217;est de cette facon que sont fait les portes logiques et les microprocesseurs.</li>
-<li><a href="http://www.zachtronics.com/the-codex-of-alchemical-engineering/">Codex of Alchemical Engineering</a> assembler des molécules.</li>
-<li><a href="http://www.zachtronics.com/ruckingenur-ii/">Ruckingenur</a> voila comment on fait du Reverse Engineering des circuits électroniques (sous windows).</li>
-</ul>
-
-
-<p>Et aussi</p>
-
-<ul>
-<li><a href="http://pleasingfungus.com/Manufactoria/">manufactoria</a> facbrique de robots et BDD (il suffit de faire passer le scénario).</li>
-</ul>
-
-
-<h2>En conclusion</h2>
-
-<p>j&#8217;ai vraiment beaucoup aimé et joué à <a href="http://alexnisnevich.github.io/untrusted/">untrusted</a> et <a href="https://www.bloc.io/ruby-warrior#/">ruby-warrior</a></p>
-
-<p>J&#8217;ai probablement oublié d&#8217;autres jeux.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/5">&larr; Older</a>
@@ -1721,8 +1728,8 @@ Un jeux video en prosgresSQL pur. Il y a même une histoire. C&#8217;est assez c
 <aside class="sidebar">
   
     <section id="titles">
-  <a href="" title="Journal d'un panda."><img id="logo" src="/images/panda.png" /></a>
-  <h1 id="site_title"><a href="" title="Journal d'un panda.">Journal d&#8217;un panda.</a></h1>
+  <a href="" title="Journal d'un panda qui code"><img id="logo" src="/images/panda.png" /></a>
+  <h1 id="site_title"><a href="" title="Journal d'un panda qui code">Journal d&#8217;un panda qui code</a></h1>
   <h3 id="site_subtitle">Un simple blog PHP/Linux/Programmation/Docker</h3>
 </section>
 
@@ -1757,6 +1764,10 @@ Un jeux video en prosgresSQL pur. Il y a même une histoire. C&#8217;est assez c
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Les Monades en PHP c&#8217;est possible..</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/11/08/faire-des-jointures-sur-des-fichiers-csv/">Faire des jointures sur des fichiers csv</a>
       </li>
     
@@ -1770,10 +1781,6 @@ Un jeux video en prosgresSQL pur. Il y a même une histoire. C&#8217;est assez c
     
       <li class="post">
         <a href="/blog/2015/11/01/listes-chainees-iterator/">Listes Chainées Iterator</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/10/25/retour-vers-le-futur-avec-vim/">Retour vers le futur avec Vim</a>
       </li>
     
   </ul>

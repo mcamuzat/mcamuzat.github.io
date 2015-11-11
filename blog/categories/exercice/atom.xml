@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: exercice | Journal d'un panda.]]></title>
+  <title><![CDATA[Category: exercice | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/exercice/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-11T17:52:18+01:00</updated>
+  <updated>2015-11-11T23:10:49+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>

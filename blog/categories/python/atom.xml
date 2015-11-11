@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: python | Journal d'un panda.]]></title>
+  <title><![CDATA[Category: python | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/python/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-11T17:52:18+01:00</updated>
+  <updated>2015-11-11T23:10:49+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -56,6 +56,9 @@ plus de d'animaux
 <p>D&#8217;abord un générateur se comporte comme un iterator. C&#8217;est grâce à cela que je peux faire un <code>foreach</code>.</p>
 
 <p>Je vais refaire pas à pas avec des commentaires.</p>
+
+<!--more-->
+
 
 <h3>premier passage</h3>
 
@@ -357,6 +360,9 @@ for x in countdown(10):
  * Echo
  * Foxtrot
 </code></p>
+
+<!--more-->
+
 
 <p>On peux aussi lancer plein de commandes amusantes</p>
 

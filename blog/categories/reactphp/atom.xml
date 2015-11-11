@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: reactphp | Journal d'un panda.]]></title>
+  <title><![CDATA[Category: reactphp | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/reactphp/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-11T17:52:18+01:00</updated>
+  <updated>2015-11-11T23:10:49+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -55,6 +55,9 @@ $promise-&gt;resolve(null); // 'Tout va bien.';
 // Ou 
 $promise-&gt;reject(null); // 'On a un problème.';
 </code></pre>
+
+<!--more-->
+
 
 <p><em>Guzzle</em> est un client Web essayons un cas concret.</p>
 
@@ -272,21 +275,33 @@ foreach ($images as $image) {
 <p>Nous avons vu la fonction xrange qui permet de générer un million de valeurs pour un coup très faible en mémoire.</p>
 
 <p>Mais il y a mieux ! On peux envoyer des valeurs dans le générateur
-&#8220;` php
-&lt;?php
-function generateAnimal() {
-    $input = (yield &lsquo;Panda&rsquo;);
-    var_dump(&ldquo;j&#8217;ai reçu $input&rdquo;);
-    $input = (yield &lsquo;Lama&rsquo;);
-    var_dump(&ldquo;j&#8217;ai reçu $input&rdquo;);
-}</p>
-
-<p>$gen = generateAnimal();
-var_dump($gen->current());// string(5) &ldquo;Panda&rdquo;
-var_dump($gen->send(&lsquo;Canard&rsquo;));//string(16) &ldquo;j&#8217;ai recu Canard&rdquo;
-                               //string(4) &ldquo;Lama&rdquo;
-var_dump($gen->send(&lsquo;Poney&rsquo;)); // j&#8217;ai recus Poney.
-&#8220;`</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span><span class="o">?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">function</span> <span class="nf">generateAnimal</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$input</span> <span class="o">=</span> <span class="p">(</span><span class="k">yield</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">Panda</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;);</span>
+</span><span class='line'>    <span class="nb">var_dump</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">j</span><span class="s1">&#39;ai reçu $input&amp;rdquo;);</span>
+</span><span class='line'><span class="s1">    $input = (yield &amp;lsquo;Lama&amp;rsquo;);</span>
+</span><span class='line'><span class="s1">    var_dump(&amp;ldquo;j&#39;</span><span class="nx">ai</span> <span class="nx">reçu</span> <span class="nv">$input</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;);</span>
+</span><span class='line'><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nv">$gen</span> <span class="o">=</span> <span class="nx">generateAnimal</span><span class="p">();</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$gen</span><span class="o">-&gt;</span><span class="na">current</span><span class="p">());</span><span class="c1">// string(5) &amp;ldquo;Panda&amp;rdquo;</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$gen</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">Canard</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;));</span><span class="c1">//string(16) &amp;ldquo;j&#39;ai recu Canard&amp;rdquo;</span>
+</span><span class='line'>                               <span class="c1">//string(4) &amp;ldquo;Lama&amp;rdquo;</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$gen</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">Poney</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;));</span> <span class="c1">// j&#39;ai recus Poney.</span>
+</span></code></pre></td></tr></table></div></figure></p>
 
 <p>Si j&#8217;avais fais deux fois <code>-&gt;next()</code>  au lieux de <code>-&gt;send()</code></p>
 
@@ -296,6 +311,9 @@ var_dump($gen-&gt;next());//string(16) "j'ai recu NULL"
                                //string(4) "Lama"
 var_dump($gen-&gt;next()); // j'ai recus NULL.
 </code></pre>
+
+<!--more-->
+
 
 <h2>Les Co-routines</h2>
 
@@ -537,6 +555,8 @@ $deferred-&gt;resolve();
 <pre><code class="php">Tout va mal
 </code></pre>
 
+<p> <!--more--></p>
+
 <p>La syntaxe de <code>then</code> est</p>
 
 <pre><code class="php">then(callable $onFulfilled = null, callable $onRejected = null, callable $onProgress = null)
@@ -594,38 +614,62 @@ action 3 ok
 </code></pre>
 
 <p>Ajoutons un exception à la deuxième étape.
-&#8220;` php
-$promise  = $deferred->promise()->then(
-    function () { echo &ldquo;action 1 ok\n&rdquo;; }
-)->then(
-    function () { throw new Exception();}
-)->then(
-   function () { echo &ldquo;action 3 ok\n&rdquo;;},
-   function () { echo &ldquo;une des actions n&#8217;est pas ok..\n&rdquo;;}
-);</p>
-
-<pre><code>
-Le résultat
-</code></pre>
-
-<p>action 1 ok
-une des actions n&#8217;est pas ok..
-&#8220;`</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$promise</span>  <span class="o">=</span> <span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">promise</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
+</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">action</span> <span class="mi">1</span> <span class="nx">ok\n</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;;</span> <span class="p">}</span>
+</span><span class='line'><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
+</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">throw</span> <span class="k">new</span> <span class="nx">Exception</span><span class="p">();}</span>
+</span><span class='line'><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
+</span><span class='line'>   <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">action</span> <span class="mi">3</span> <span class="nx">ok\n</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;;},</span>
+</span><span class='line'>   <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">une</span> <span class="nx">des</span> <span class="nx">actions</span> <span class="nx">n</span><span class="s1">&#39;est pas ok..\n&amp;rdquo;;}</span>
+</span><span class='line'><span class="s1">);&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">&lt;pre&gt;&lt;code&gt;</span>
+</span><span class='line'><span class="s1">Le résultat</span>
+</span><span class='line'><span class="s1">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">&lt;p&gt;action 1 ok</span>
+</span><span class='line'><span class="s1">une des actions n&#39;</span><span class="nx">est</span> <span class="nx">pas</span> <span class="nx">ok</span><span class="o">..</span>
+</span></code></pre></td></tr></table></div></figure></p>
 
 <p>Ajoutons une exception dans le premier, et ajoutons un cas pour gérer l&#8217;erreur
-&#8220;` php
-$promise  = $deferred->promise()->then(
-    function () { throw new \Exception(); }
-)->then(
-    function () { echo &ldquo;action 2 ok\n&rdquo;;},
-    function () { echo &ldquo;l&#8217;action 1 pas ok mais on continue..\n&rdquo;;}
-)->then(
-   function () { echo &ldquo;action 3 ok\n&rdquo;;},
-   function () { echo &ldquo;une des actions n&#8217;est pas ok..\n&rdquo;;}
-);</p>
-
-<p>$deferred->resolve();
-&#8220;`</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$promise</span>  <span class="o">=</span> <span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">promise</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
+</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">throw</span> <span class="k">new</span> <span class="nx">\Exception</span><span class="p">();</span> <span class="p">}</span>
+</span><span class='line'><span class="p">)</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
+</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">action</span> <span class="mi">2</span> <span class="nx">ok\n</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;;},</span>
+</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">l</span><span class="s1">&#39;action 1 pas ok mais on continue..\n&amp;rdquo;;}</span>
+</span><span class='line'><span class="s1">)-&gt;then(</span>
+</span><span class='line'><span class="s1">   function () { echo &amp;ldquo;action 3 ok\n&amp;rdquo;;},</span>
+</span><span class='line'><span class="s1">   function () { echo &amp;ldquo;une des actions n&#39;</span><span class="nx">est</span> <span class="nx">pas</span> <span class="nx">ok</span><span class="o">..</span><span class="nx">\n</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;;}</span>
+</span><span class='line'><span class="p">);</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">resolve</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure></p>
 
 <p>Le résultat
 <code>

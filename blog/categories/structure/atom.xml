@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: structure | Journal d'un panda.]]></title>
+  <title><![CDATA[Category: structure | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/structure/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-11T17:52:18+01:00</updated>
+  <updated>2015-11-11T23:10:49+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -43,6 +43,9 @@ $value = $pile-&gt;pop() // [34]
 $pile-&gt;push('a') // [34, 'a']
 $value = $pile-&gt;top() // $value = 'a' pile [34, 'a']
 </code></pre>
+
+<!--more-->
+
 
 <p>On peux utiliser les array comme des piles avec <code>array_pop</code> et <code>array_push</code>. Mais depuis PHP 5.0 il existe une Classe tout faite <code>SplStack</code></p>
 

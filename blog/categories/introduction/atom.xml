@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: introduction | Journal d'un panda.]]></title>
+  <title><![CDATA[Category: introduction | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/introduction/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-11T17:52:18+01:00</updated>
+  <updated>2015-11-11T23:10:49+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -112,15 +112,20 @@ mkdir -p $GOPATH/src/github.com/&lt;votreusername&gt;/hello
 go install
 </code></p></li>
 <li><p>Nous pouvons vérifier que dans le répertoire <code>$HOME/go</code> il y a un dossier <code>bin/</code>
-&#8220;`
-$GOPATH/bin/hello
-hello world</p>
-
-<h1>de manière plus simple puisque nous avons ajouter dans le path $GOPATH/bin</h1>
-
-<p>hello
-hello world
-&#8220;`
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$GOPATH/bin/hello
+</span><span class='line'>hello world&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;de manière plus simple puisque nous avons ajouter dans le path $GOPATH/bin&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;hello
+</span><span class='line'>hello world</span></code></pre></td></tr></table></div></figure>
 voici la structure finale</p></li>
 </ul>
 

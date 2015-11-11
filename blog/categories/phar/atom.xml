@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: phar | Journal d'un panda.]]></title>
+  <title><![CDATA[Category: phar | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/phar/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-11T17:52:18+01:00</updated>
+  <updated>2015-11-11T23:10:49+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -32,6 +32,9 @@
 
 <blockquote><p>Stoppe l&#8217;exécution du compilateur. Ceci peut être très utile pour embarquer des données dans des scripts PHP, comme des fichiers d&#8217;installation.
 L&#8217;octet de la position du début des données peut être déterminé par la constante <code>__COMPILER_HALT_OFFSET__</code> qui n&#8217;est définie que s&#8217;il y a une fonction <code>__halt_compiler()</code> présente dans le fichier.</p></blockquote>
+
+<!--more-->
+
 
 <h2>Une première expérimentation</h2>
 
