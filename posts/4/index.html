@@ -9,17 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Aujourd'hui commençons par un petit programme 1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11 #!/bin/sh quine () { echo -e &quot;#!/bin/sh\n$1&quot; echo &quot;quine &#39;$1 &hellip;">
+  <meta name="description" content="Aujourd'hui, je ressors un vieux code que j'avais écris pour le CNAM. Le sujet était faire que l'image à l'écran bouge quand on parle dans un &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,6 +62,173 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/07/17/processing-et-souvenir/">Processing et Souvenir</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-17T22:52:27+02:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="center" src="/images/voiture.png" width="499" height="300" title="Vrooum!!" alt="Screenshot du programme avec le micro"></p>
+
+<p>Aujourd&#8217;hui, je ressors un vieux code que j&#8217;avais écris pour le CNAM. Le sujet était faire que l&#8217;image à l&#8217;écran bouge quand on parle dans un microphone. Mais pas d&#8217;animation à la Winamp (j&#8217;ai des vieilles références :-) ou le player de Windows. J&#8217;avais donc programmé une voiture sur un circuit, pour le réalisme j&#8217;avais connecté un Wii-chuck via un Arduino pour faire le volant. Imaginez une personne avec un Wiichuk et un micro en train de faire &ldquo;Vrrrooum&rdquo; et vous aurez un idée de ma soutenance (qui s&#8217;est bien passée d&#8217;ailleurs).</p>
+
+<p>Les conditions étaient :</p>
+
+<ul>
+<li>Utiliser un Micro</li>
+<li>La langage imposé est Processing</li>
+</ul>
+
+
+<h2>Processing Késako</h2>
+
+<p>Processing est une variante de Java en plus simple. C&#8217;est un langage destiné à faire des oeuvres d&#8217;arts numériques. Il est souvent enseigné en école d&#8217;art. Il vient avec son propre éditeur. à noter que les <a href="https://fr.wikipedia.org/wiki/Arduino">Arduinos</a> se programment aussi en processing.</p>
+
+<p><img class="center" src="/images/processing.png" width="499" height="533" title="Processing" alt="Screenshot de processing avec son interface"></p>
+
+<p>Il suffit d&#8217;implémenter deux méthodes :</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>void setup() // sera appelé à l'initialisation
+</span><span class='line'>void draw() // sera appellé 30 à 50 fois par seconde</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Un exemple très simple</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">size</span><span class="o">(</span><span class="mi">640</span><span class="o">,</span> <span class="mi">360</span><span class="o">);</span> <span class="c1">//j&#39;initialise la taille 640*</span>
+</span><span class='line'>  <span class="n">stroke</span><span class="o">(</span><span class="mi">255</span><span class="o">);</span> <span class="c1">// le trait est blanc</span>
+</span><span class='line'>  <span class="n">fill</span><span class="o">(</span><span class="mi">255</span><span class="o">);</span> <span class="c1">// remplissage de blanc</span>
+</span><span class='line'>  <span class="n">background</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span> <span class="c1">// couleur de fond blanche</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">void</span> <span class="nf">draw</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="c1">// si la souris est appuyer</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">mousePressed</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>     <span class="c1">// ellipse x, y ,hauteur, largeur</span>
+</span><span class='line'>    <span class="n">ellipse</span><span class="o">(</span><span class="n">mouseX</span><span class="o">,</span> <span class="n">mouseY</span><span class="o">,</span> <span class="mi">5</span><span class="o">,</span> <span class="mi">5</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Appuyez sur la touche play</p>
+
+<p><img class="center" src="/images/processing_exemple.png" width="535" height="375" title="Processing" alt="le résultat"></p>
+
+<p>Je viens de faire un petit painbrush. C&#8217;est assez facile d&#8217;obtenir un truc plutôt joli avec assez peu de lignes de code. Il y a des librairies toutes prêtes pour la video, webcam.</p>
+
+<p>Il y a de nombreux livres donc le <a href="http://www.amazon.com/Visualizing-Data-Explaining-Processing-Environment/dp/0596514557">Visualizing Data</a>. Pour 2007, le livre est impressionnant. On parle de traitement de donnée et acquisitions des données bien avant la mode du Big data.</p>
+
+<h1>Installez Processing</h1>
+
+<p>Nous allons d&#8217;abord installer Java si vous n&#8217;avez pas. J&#8217;installe le paquet officiel</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">purge</span> <span class="n">openjdk</span><span class="o">*</span>    <span class="c1">// Supprime opendjdk</span>
+</span><span class='line'><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">software</span><span class="o">-</span><span class="n">properties</span><span class="o">-</span><span class="n">common</span>   <span class="c1">//ajout de librairie</span>
+</span><span class='line'><span class="n">sudo</span> <span class="n">add</span><span class="o">-</span><span class="n">apt</span><span class="o">-</span><span class="n">repository</span> <span class="nl">ppa:</span><span class="n">webupd8team</span><span class="o">/</span><span class="n">java</span> <span class="c1">// ajout du depot</span>
+</span><span class='line'><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span>                 <span class="c1">// et on met à jour les videos</span>
+</span><span class='line'><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">oracle</span><span class="o">-</span><span class="n">java7</span><span class="o">-</span><span class="n">installer</span> <span class="c1">// On installe</span>
+</span><span class='line'><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">oracle</span><span class="o">-</span><span class="n">java7</span><span class="o">-</span><span class="n">set</span><span class="o">-</span><span class="k">default</span> <span class="c1">// et on mets par défaut</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Puis nous allons installer Processing
+On télécharge le binaire à l&#8217;<a href="https://processing.org/download/?processing">adresse officielle</a></p>
+
+<p>Puis on décompresse</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">tar</span> <span class="n">xf</span> <span class="n">processing</span><span class="o">-*.</span><span class="na">tgz</span>
+</span><span class='line'><span class="n">sudo</span> <span class="n">mkdir</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">processing</span>
+</span><span class='line'><span class="n">sudo</span> <span class="n">mv</span> <span class="n">processing</span><span class="o">-*</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">processing</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il n&#8217;y a plus qu&#8217;à lancer processing</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">sh</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">processing</span><span class="o">/</span><span class="n">processing</span><span class="o">-</span><span class="mf">2.2</span><span class="o">.</span><span class="mi">1</span><span class="o">/</span><span class="n">processing</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Vous devriez voir apparaitre l&#8217;interface</p>
+
+<p>Faire marcher mon code:</p>
+
+<ul>
+<li>Il faut utiliser la librairie Ess pour analyser le signal (marrant c&#8217;était déja vieux à l&#8217;époque)</li>
+<li>Aller sur le site <a href="http://www.tree-axis.com/Ess">suivant</a>.</li>
+<li>Décompressez et copier le répertoire ESS dans /usr/share/processing/processing-2.2.1/modes/java/libraries/</li>
+</ul>
+
+
+<h2>Le code</h2>
+
+<p>Il est disponible <a href="https://github.com/mcamuzat/processing-car">ici</a> sous Github. J&#8217;ai commenté la partie avec le Numchuck+Arduino (car peux de gens ont le matériel). A l&#8217;époque impossible de faire marcher la connection USB/Wiichuck sous Linux, j&#8217;ai passé la soutenance sous un vieux PC sous windows XP. Tout est mis dans le même fichier car j&#8217;avais pas trouver comment découper un projet. C&#8217;est d&#8217;ailleurs ce que je reproche un peu à Processing, c&#8217;est un langage simple pour débuter, mais faire un MVC ou un programme très complexe. Il faut quasiment tout refaire à la main.</p>
+
+<h2>Quelques liens</h2>
+
+<ul>
+<li>le <a href="https://processing.org/">site officiel</a></li>
+<li>Des <a href="http://www.openprocessing.org/">galeries interactives</a></li>
+<li><a href="http://processingjs.org/">ProcessingJs</a> (fait par le programmeur de JQuery Jon Resig)</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1559,162 +1716,6 @@ Je vais essayer de continuer un peu sur le serveur web (récupération des posts
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/05/09/docker-machine/">Docker-machine</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-05-09T18:29:45+02:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Introduction</h2>
-
-<p>Nous allons voir <a href="https://docs.docker.com/machine/">docker-machine</a>. Docker-machine permet de simplifier l&#8217;installation/gestion/déploiement de Docker.</p>
-
-<h2>Installation</h2>
-
-<p>Tout d&#8217;abord il faut connaitre votre architecture <code>x86_64</code>ou <code>i386</code>.</p>
-
-<p>La commande classique est <code>uname -a</code>.</p>
-
-<p>Puis télécharger l&#8217;exécutable via <code>curl</code></p>
-
-<p>Sous linux.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>curl -L https://github.com/docker/machine/releases/download/v0.2.0/docker-machine_linux-amd64 &gt; docker-machine
-</span><span class='line'>sudo mv docker-machine /usr/local/bin/docker-machine
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Puis le marquer comme exécutable.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo chmod +x /usr/local/bin/docker-machine
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Testons notre application.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker-machine -v
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Enfin vous avez besoin d&#8217;avoir <a href="https://www.virtualbox.org/wiki/Downloads">Virtual-Box</a></p>
-
-<h2>Mise en route.</h2>
-
-<p>Voici la commande pour tout lancer</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker-machine create --driver virtualbox dev
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Cette ligne demande à docker-machine de créer une environnement que l&#8217;on appelle <strong>dev</strong> qui sera sur Virtual-box.
-docker-machine va télécharger une iso (boot2docker) contenant docker. Et lancer Virtualbox.</p>
-
-<p>Jusqu&#8217;à maintenant on avait installé docker sur notre ordi local.
-Ici on installe docker sur une VM.
-Toutes les commandes seront passer de manière transparente à la machine virtuelle.
-L&#8217;avantage de cette méthode est que tout le monde utilise la même iso virtuelle (boot2docker). Il n&#8217;y a moins le risque du &ldquo;chez moi ça marche&rdquo; qui est une remarque au combien rageante.</p>
-
-<p>Je veux travailler sur mon environnement de dev</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">eval</span> <span class="s2">&quot;$(docker-machine env dev)&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Toutes mes commandes sont directement envoyées sur la vm à distance</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker run busybox <span class="nb">echo </span>hello
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Je peux rajouter un environnement (ici <strong>prod</strong>)</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker-machine create --driver amazon prod --les options qui vont bien..
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Il suffit de changer l&#8217;environnement pour automatiquement déployer sur Amazon.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">eval</span> <span class="s2">&quot;$(docker-machine env prod)&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Plein de drivers sont fournis:</p>
-
-<ul>
-<li><a href="https://docs.docker.com/machine/#amazon-web-services">Amazon Web Services</a></li>
-<li><a href="https://docs.docker.com/machine/#digital-ocean">Digital Ocean</a></li>
-<li><a href="https://docs.docker.com/machine/#google-compute-engine">Google Compute Engine</a></li>
-<li><a href="https://docs.docker.com/machine/#ibm-softlayer">IBM Softlayer</a></li>
-<li><a href="https://docs.docker.com/machine/#microsoft-azure">Microsoft Azure</a></li>
-<li><a href="https://docs.docker.com/machine/#microsoft-hyper-v">Microsoft Hyper-V</a></li>
-<li><a href="https://docs.docker.com/machine/#openstack">Openstack</a></li>
-<li><a href="https://docs.docker.com/machine/#rackspace">Rackspace</a></li>
-<li><a href="https://docs.docker.com/machine/#oracle-virtualbox">Oracle VirtualBox</a></li>
-<li><a href="https://docs.docker.com/machine/#vmware-fusion">VMware Fusion</a></li>
-<li><a href="https://docs.docker.com/machine/#vmware-vcloud-air">VMware vCloud Air</a></li>
-<li><a href="https://docs.docker.com/machine/#vmware-vsphere">VMware vSphere</a></li>
-</ul>
-
-
-<h2>L&#8217;avantage de docker-machine</h2>
-
-<ul>
-<li>Simplifie l&#8217;installation. il n&#8217;y a que docker-machine à installer. Arès docker-machine s&#8217;occupe de tout installer. (il installe docker sur un vm/instance)</li>
-<li>Simplifie le déploiement, il suffit de changer l&#8217;environnement</li>
-<li>Enfin il s&#8217;interface avec docker-swarm (qui permet de gérer plusieurs nodes de Dockers).</li>
-</ul>
-
-
-<h2>En conclusion</h2>
-
-<p>Le slogan &ldquo;a way to get from zero to Docker&rdquo; est plutôt juste.</p>
-
-<ul>
-<li>Cela simplifie beaucoup l&#8217;installation sous windows (pas testé :-)).</li>
-<li>Et harmonise les environnements de dev (tout le monde utilise la même iso)</li>
-<li>Facilite le déploiement. Il n&#8217;y a pas a se soucier si c&#8217;est du Amazon/OpenStack/Azure..</li>
-</ul>
-
-
-<p>Dans un prochain post nous allons essayer de voir docker-swarm.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/5">&larr; Older</a>
@@ -1764,6 +1765,10 @@ L&#8217;avantage de cette méthode est que tout le monde utilise la même iso vi
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Les Monades (suite): Le Functor Maybe..</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Les Monades en PHP c&#8217;est possible..</a>
       </li>
     
@@ -1777,10 +1782,6 @@ L&#8217;avantage de cette méthode est que tout le monde utilise la même iso vi
     
       <li class="post">
         <a href="/blog/2015/11/02/diff-patch-git/">Diff et patch, pas besoin de git</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/11/01/listes-chainees-iterator/">Listes Chainées Iterator</a>
       </li>
     
   </ul>

@@ -90,9 +90,9 @@
 
 <div class="entry-content"><h2>Introduction</h2>
 
-<p>Nous allons voir ensemble les monades. Nous allons voir la monade <strong>Identity</strong>. elle n&#8217;est pas très utile mais nécessaire si vous voulez comprendre la monade <strong>Maybe</strong> qui j&#8217;espère va changer votre facon de voir votre code mais ce sera dans le post suivant.</p>
+<p>Nous allons voir ensemble les monades. Nous allons voir la monade <strong>Identity</strong>. elle n&#8217;est pas très utile mais nécessaire si vous voulez comprendre la monade/functor  <strong>Maybe</strong> qui j&#8217;espère va changer votre façon de voir votre code mais ce sera dans le post suivant.</p>
 
-<p>Les monades sont des structures de la programmation fonctionnelle. Très utilisé dans le language <a href="https://www.haskell.org/">Haskell</a>. En pratique Haskell serait quasi inutilisable sans cette structure.</p>
+<p>Les monades sont des structures de la programmation fonctionnelle. Très utilisées dans le langage <a href="https://www.haskell.org/">Haskell</a>. En pratique Haskell serait moins attractifs sans cette structure. <em>(Je ne suis absolument pas développeur Haskell.)</em></p>
 
 <!--more-->
 
@@ -240,8 +240,8 @@ deux possibilités</p>
 <p><img class="center" src="/images/containeravecsasexemple.png" width="600" height="450" title="Je place la fonction +1 dans le sas" alt="Je place la fonction +1 dans le sas"></p>
 
 <ul>
-<li>je crée un container qui contient la valeur &ldquo;5&rdquo;.</li>
-<li>je mets la fonction addmap dans le <code>map</code>. je fais le calcul. que je m&#8217;empresse de remettre dans un container tout neuf.</li>
+<li>Je crée un container qui contient la valeur &ldquo;5&rdquo;.</li>
+<li>Je mets la fonction <code>addOne</code> dans le <code>map</code>. Je fais le calcul. Que je m&#8217;empresse de remettre dans un container tout neuf.</li>
 <li>j&#8217;ai un Container avec &ldquo;6&rdquo;.</li>
 </ul>
 
@@ -290,7 +290,7 @@ deux possibilités</p>
 <p>Quelques remarques</p>
 
 <ul>
-<li>Comme le résultat n&#8217;est pas sure, Je remet le résultat dans un nouveau container. Je ne réutilise plus l&#8217;ancien container (puisque contaminé). Comme on ne peux changer le contenu, il est <strong>immutable</strong></li>
+<li>Comme le résultat n&#8217;est pas sur, Je remet le résultat dans un nouveau container. Je ne réutilise plus l&#8217;ancien container (puisque contaminé). Comme on ne peux changer le contenu, il est <strong>immutable</strong></li>
 </ul>
 
 
@@ -393,7 +393,7 @@ deux possibilités</p>
 
 <p>Nous allons utiliser la capacité de chainage de notre container pour faire un pseudo-décorateur.</p>
 
-<p>soit les fonctions suivantes</p>
+<p>Soit les fonctions suivantes</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -438,13 +438,84 @@ deux possibilités</p>
 
 <p>En image</p>
 
+<h2>Une autre idée</h2>
+
+<p>Nous pouvons aussi imagine une fonction qui renvoie un Container.</p>
+
+<p>Par exemple reprenons notre fonction <code>addOne</code></p>
+
+<p><img class="center" src="/images/functionretournecontainer.png" width="600" height="450" title="Ma fonction renvoie un container" alt="ma fonction renvoie un container"></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">addOne</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">Container</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="nv">$value</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Donc ma fonction me renvoie forcement un container.</p>
+
+<p>Si j&#8217;utilise l&#8217;instruction <code>map</code>, je risque de mettre un container dans le container.</p>
+
+<p><img class="center" src="/images/containerdanscontainer.png" width="600" height="450" title="container dans un container" alt="container dans un container"></p>
+
+<p>D&#8217;où l&#8217;ajout de la méthode <code>bind</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">bind</span><span class="p">(</span><span class="nv">$transformation</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">call_user_func</span><span class="p">(</span><span class="nv">$transformation</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">value</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On remarque que mon résultat reste chaînable.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$output</span> <span class="o">=</span> <span class="nx">Container</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>    <span class="o">-&gt;</span><span class="na">bind</span><span class="p">(</span><span class="s2">&quot;addOne&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="o">-&gt;</span><span class="na">bind</span><span class="p">(</span><span class="s2">&quot;addOne&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="o">-&gt;</span><span class="na">bind</span><span class="p">(</span><span class="s2">&quot;addOne&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="o">-&gt;</span><span class="na">bind</span><span class="p">(</span><span class="s2">&quot;addOne&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$output</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//class Container#3 (1) {</span>
+</span><span class='line'><span class="c1">//  protected $value =&gt;</span>
+</span><span class='line'><span class="c1">//  int(9)</span>
+</span><span class='line'><span class="c1">//}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
 <h2>Conclusion</h2>
 
-<p>Si vous avez compris le container, vous pouvez le renommer en IdentityMonad. Car c&#8217;est exactement la même chose. Nous venons de croiser notre première monade.</p>
+<p>Mon container bien que pour le moment est assez peu utilise mais.</p>
 
-<p>Dans le prochain post nous allons implémenter une nouvelle monade la Monade Maybe.</p>
+<ul>
+<li><p>Il implémente une fonction <code>map</code> qui est chainage. Nous venons d&#8217;implémenter un <strong>functor</strong> ou <strong>foncteur</strong> en français. Cela a un rapport avec les mathématiques. Et il m&#8217;est difficile au moment ou j&#8217;écris ces lignes de vous l&#8217;expliquer. Le Functor s&#8217;occupe d&#8217;appeler la fonction pour nous et de retourner un résultat correct. Il s&#8217;occupe de tout. C&#8217;est une sorte d&#8217;abstraction. On lui confie le calcul et il se débrouille. (Nous le retrouverons dans le post suivant)</p></li>
+<li><p>Nous implémentons la méthode <code>of</code> et <code>bind</code> qui est elle aussi chainage (à condition de lui donner des fonctions qui renvoie de Container). Nous venons d&#8217;implémenter une <em>monade</em> même principe que le functor.</p></li>
+</ul>
 
-<p>Elle nous permettra de refactoriser le code suivant</p>
+
+<p>Si vous avez compris le container, vous pouvez le renommer en IdentityMonad.</p>
+
+<p>Dans le prochain post nous allons implémenter un  la Monade/Functor Maybe.</p>
+
+<p>Elle nous permettra de réfactoriser le code suivant</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -506,7 +577,7 @@ deux possibilités</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Je me suis lancé dans une tache bien compliqué mais passionnante.</p>
+<p>Je me suis lancé dans une tache bien compliqué mais passionnante. Je m&#8217;excuse d&#8217;avance pour certaines approximations. J&#8217;avais confondu <code>map</code> et <code>bind</code> dans la première version</p>
 
 <p>Je vous remercies de m&#8217;avoir lu..</p>
 </div>
@@ -557,6 +628,8 @@ deux possibilités</p>
         <a class="basic-alignment left" href="/blog/2015/11/08/faire-des-jointures-sur-des-fichiers-csv/" title="Previous Post: Faire des jointures sur des fichiers csv">&laquo; Faire des jointures sur des fichiers csv</a>
       
       
+        <a class="basic-alignment right" href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/" title="Next Post: Les Monades (suite): Le Functor Maybe..">Les Monades (suite): Le Functor Maybe.. &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -602,6 +675,10 @@ deux possibilités</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Les Monades (suite): Le Functor Maybe..</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Les Monades en PHP c&#8217;est possible..</a>
       </li>
     
@@ -615,10 +692,6 @@ deux possibilités</p>
     
       <li class="post">
         <a href="/blog/2015/11/02/diff-patch-git/">Diff et patch, pas besoin de git</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/11/01/listes-chainees-iterator/">Listes Chainées Iterator</a>
       </li>
     
   </ul>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: haskell | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/haskell/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-11T23:10:49+01:00</updated>
+  <updated>2015-11-16T22:56:54+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -14,15 +14,207 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Les Monades (suite): Le Functor Maybe..]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/"/>
+    <updated>2015-11-15T16:43:42+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot</id>
+    <content type="html"><![CDATA[<p><img class="center" src="/images/lesdeuxcontainerMaybe.png" width="512" height="313" title="&lsquo;Il y a deux container&rsquo; &lsquo;Il y a deux containers&rsquo;" ></p>
+
+<p>Nous avons vue dans le précédent <a href="blog/2015/11/11/les-monades-en-php-cest-possible-dot/">post</a> un pseudo-container qui nous permet d&#8217;emballer nos valeurs. Nous allons muscler un peu notre container mais partons d&#8217;un exemple.</p>
+
+<p>Je souhaite récupérer le mail du client &ldquo;bob&rdquo; ou afficher &ldquo;pas de mail&rdquo;</p>
+
+<pre><code class="php">function getMail($name) {
+$mail = getUserByName($name)-&gt;getAddress()-&gt;getMail();
+if (null === $mail) {
+   return "pas de mail"; 
+}
+return $mail;
+}
+</code></pre>
+
+<p>Facile non ?</p>
+
+<p>Si <code>getAdress()</code> renvoie null, Outch &hellip;</p>
+
+<pre><code>PHP Fatal error: Call to a member function getMail() on a non-object..
+</code></pre>
+
+<p>L&#8217;utilisateur n&#8217;existe pas forcement et puis l&#8217;adresse est peut-être vide.. Une implémentation naïve</p>
+
+<pre><code class="php">function getMail($name) {
+    $user = getUserByName($name);
+    if ($user) {
+        $address = $user-&gt;getAddress();
+        if ($address) {
+            //etc ...
+            return $adresse-&gt;getMail();
+        }
+   }
+   return "pas de mail";
+
+}
+</code></pre>
+
+<p>Ce code vous le connaissez, vous l&#8217;avez probablement déjà écris, il y a moyen d&#8217;optimiser de faire plus propre.</p>
+
+<h2>Deux containers pour le prix d&#8217;un.</h2>
+
+<p>Le Maybe à la rescousse..</p>
+
+<p>Voici le Maybe en dessin.</p>
+
+<p><img class="center" src="/images/lesdeuxcontainerMaybe.png" width="512" height="313" title="&lsquo;Il y a deux container&rsquo; &lsquo;Il y a deux containers&rsquo;" ></p>
+
+<p>J&#8217;ai un container <code>Some</code> et un Container <code>Nothing</code>.</p>
+
+<p>Le container <code>Nothing</code> est un container qui n&#8217;a aucune valeurs. La méthode <code>map</code> renvoie toujours un container <code>Nothing</code>.</p>
+
+<pre><code class="php">class Nothing extends Container{
+    public function map($function)
+    {
+       return static::of(null);
+    }
+    public static function of($value)
+    {
+        return new static($value);
+    }
+
+    public function bind($transformation)
+    {
+        return static::of(null);
+    }
+
+    public function getOrElse($default)
+    {
+        return $default;
+    }
+}
+</code></pre>
+
+<p>Le container <code>Some</code> le résultats de <code>map</code> est un nouveau container <code>Some</code> s&#8217;il y a un résultat non-null sinon c&#8217;est un container <code>Nothing</code>.</p>
+
+<pre><code class="php ">class Some extends Container{
+    public function map($function)
+    {
+        $result = $this-&gt;bind($function);
+        if ($result === null) {
+            return Nothing::of(null);
+        }
+        return static::of($result);
+    }
+    public static function of($value)
+    {
+        return new static($value);
+    }
+
+    public function bind($transformation)
+    {
+        return call_user_func($transformation, $this-&gt;value);
+    }
+
+    public function getOrElse($default)
+    {
+        return $this-&gt;value;
+    }
+}
+</code></pre>
+
+<p>Enfin j&#8217;ai besoin d&#8217;un helper</p>
+
+<pre><code>function maybeFromValue($value) {
+ if ($value === null) 
+   return Nothing::of(null);
+ return Some::of($value);
+}
+</code></pre>
+
+<p>Notons que j&#8217;ai une méthode qui me permet de sortir avec une valeurs par défaut</p>
+
+<p>Quelques exemples:</p>
+
+<pre><code class="php">echo maybeFromValue(null)-&gt;map("ucfirst")-&gt;getOrElse("non!!");
+// non!!
+echo maybeFromValue("oui!!")-&gt;map("ucfirst")-&gt;getOrElse("non!!");
+// Oui!!
+echo Some::of("oui")-&gt;map("ucfirst")
+   -&gt;map(function($value) {return null;})
+   -&gt;getOrElse("Non!!");
+// Non !!
+</code></pre>
+
+<p>Nous pouvons simplifier notre problème</p>
+
+<p>En le refactorisant ainsi</p>
+
+<pre><code class="php">// example
+// method("name") return function($obj) {return $obj-&gt;getName()};
+
+function method($name)
+{
+    return function ($obj) use ($name) {
+        return $obj-&gt;$name();
+    };
+}
+
+$mail = maybeFromValue(getUserByName($name))
+    -&gt;map(method("getAddress")) // $value-&gt;getAdress()
+    -&gt;map(method("getMail"))
+    -&gt;getOrElse("pas de mail");
+</code></pre>
+
+<p>Quelques dessins
+Le cas ou tout marche</p>
+
+<p><img class="center" src="/images/maybechainageok.png" width="516" height="260" title="&lsquo;chainage tout va bien&rsquo; &lsquo;chainage tout va bien&rsquo;" ></p>
+
+<p>Le cas ou <code>getUser()</code> renvoie null</p>
+
+<p><img class="center" src="/images/chainagepasok.png" width="516" height="216" title="&lsquo;getAdress renvoie null, on prend la valeur par défault&rsquo; &lsquo;getAdress renvoie null, on prend la valeur par défaults&rsquo;" ></p>
+
+<p>Sympa la refactorisation. On peux supprimer ainsi une partie de la logique (la plupart des if, les nulls ont tous disparus).</p>
+
+<h2>Une librairie toute faite</h2>
+
+<p>Je vais parler de <a href="https://github.com/schmittjoh/php-option">php-option</a>. Si vous faite du <a href="https://symfony.com/">symfony2</a> vous l&#8217;avez déja dans votre <code>/vendor</code> et vous ne le saviez pas.</p>
+
+<p>La syntaxe est un peu près le même</p>
+
+<p>Mais il y a plein de fonctionnalités</p>
+
+<pre><code class="php">$entity = $this-&gt;findSomeEntity()-&gt;getOrElse(new Entity());
+$entity = $this-&gt;findSomeEntity()-&gt;getOrCall('createAnNewAddress');
+$entity = $this-&gt;findSomeEntity()-&gt;getOrThrow(new \Exception('ha!!!!!'));
+</code></pre>
+
+<p>Il y a aussi des possibilité de chainer les réponses si pas de résultats
+<code>php
+$entity = $this-&gt;findSomeEntity()-&gt;orElse($this-&gt;findSomeOtherEntity())
+            -&gt;orElse($this-&gt;createEntity());
+</code></p>
+
+<p>Nous n&#8217;utilisons que l&#8217;instruction <code>map</code> pour le moment. Donc nous n&#8217;utilisons pas le container en tant que monade mais plutôt en tant que functor. Nous verrons cela dans le troisième post.</p>
+
+<h2>Conclusion</h2>
+
+<p>Je suis désolé si certain termes sont inexacts comme le container. Je ne suis pas un expert, mais j&#8217;admets bien volontiers mon erreur.</p>
+
+<p>Si vous avez un code ou vous vérifiez tout le temps si les valeurs sont nulles. Il y a probablement moyen que cette structure vous aide.</p>
+
+<p>Dans le prochain Post nous utiliserons le Maybe avec l&#8217;instruction <code>bind</code>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Les Monades en PHP c'est possible..]]></title>
     <link href="http://mcamuzat.github.io/blog/2015/11/11/les-monades-en-php-cest-possible-dot/"/>
     <updated>2015-11-11T19:28:39+01:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/11/11/les-monades-en-php-cest-possible-dot</id>
     <content type="html"><![CDATA[<h2>Introduction</h2>
 
-<p>Nous allons voir ensemble les monades. Nous allons voir la monade <strong>Identity</strong>. elle n&#8217;est pas très utile mais nécessaire si vous voulez comprendre la monade <strong>Maybe</strong> qui j&#8217;espère va changer votre facon de voir votre code mais ce sera dans le post suivant.</p>
+<p>Nous allons voir ensemble les monades. Nous allons voir la monade <strong>Identity</strong>. elle n&#8217;est pas très utile mais nécessaire si vous voulez comprendre la monade/functor  <strong>Maybe</strong> qui j&#8217;espère va changer votre façon de voir votre code mais ce sera dans le post suivant.</p>
 
-<p>Les monades sont des structures de la programmation fonctionnelle. Très utilisé dans le language <a href="https://www.haskell.org/">Haskell</a>. En pratique Haskell serait quasi inutilisable sans cette structure.</p>
+<p>Les monades sont des structures de la programmation fonctionnelle. Très utilisées dans le langage <a href="https://www.haskell.org/">Haskell</a>. En pratique Haskell serait moins attractifs sans cette structure. <em>(Je ne suis absolument pas développeur Haskell.)</em></p>
 
 <!--more-->
 
@@ -123,7 +315,7 @@ class Container#1 (1) {
 
 <p>Soit la fonction suivante qui ajoute 1 à la valeur en entrée.</p>
 
-<pre><code>function addOne($value) {
+<pre><code class="php">function addOne($value) {
     return $value + 1;
 }
 </code></pre>
@@ -133,8 +325,8 @@ class Container#1 (1) {
 <p><img class="center" src="/images/containeravecsasexemple.png" width="600" height="450" title="&lsquo;Je place la fonction +1 dans le sas&rsquo; &lsquo;Je place la fonction +1 dans le sas&rsquo;" ></p>
 
 <ul>
-<li>je crée un container qui contient la valeur &ldquo;5&rdquo;.</li>
-<li>je mets la fonction addmap dans le <code>map</code>. je fais le calcul. que je m&#8217;empresse de remettre dans un container tout neuf.</li>
+<li>Je crée un container qui contient la valeur &ldquo;5&rdquo;.</li>
+<li>Je mets la fonction <code>addOne</code> dans le <code>map</code>. Je fais le calcul. Que je m&#8217;empresse de remettre dans un container tout neuf.</li>
 <li>j&#8217;ai un Container avec &ldquo;6&rdquo;.</li>
 </ul>
 
@@ -237,7 +429,7 @@ var_dump($output);
 </span><span class='line'>
 </span><span class='line'><span class="nx">Quelques</span> <span class="nx">remarques</span>
 </span><span class='line'>
-</span><span class='line'> <span class="o">*</span> <span class="nx">Comme</span> <span class="nx">le</span> <span class="nx">résultat</span> <span class="nx">n</span><span class="s1">&#39;est pas sure, Je remet le résultat dans un nouveau container. Je ne réutilise plus l&#39;</span><span class="nx">ancien</span> <span class="nx">container</span> <span class="p">(</span><span class="nx">puisque</span> <span class="nx">contaminé</span><span class="p">)</span><span class="o">.</span> <span class="nx">Comme</span> <span class="nx">on</span> <span class="nx">ne</span> <span class="nx">peux</span> <span class="nx">changer</span> <span class="nx">le</span> <span class="nx">contenu</span><span class="p">,</span> <span class="nx">il</span> <span class="nx">est</span> <span class="o">**</span><span class="nx">immutable</span><span class="o">**</span>
+</span><span class='line'> <span class="o">*</span> <span class="nx">Comme</span> <span class="nx">le</span> <span class="nx">résultat</span> <span class="nx">n</span><span class="s1">&#39;est pas sur, Je remet le résultat dans un nouveau container. Je ne réutilise plus l&#39;</span><span class="nx">ancien</span> <span class="nx">container</span> <span class="p">(</span><span class="nx">puisque</span> <span class="nx">contaminé</span><span class="p">)</span><span class="o">.</span> <span class="nx">Comme</span> <span class="nx">on</span> <span class="nx">ne</span> <span class="nx">peux</span> <span class="nx">changer</span> <span class="nx">le</span> <span class="nx">contenu</span><span class="p">,</span> <span class="nx">il</span> <span class="nx">est</span> <span class="o">**</span><span class="nx">immutable</span><span class="o">**</span>
 </span><span class='line'>
 </span><span class='line'><span class="p">{</span><span class="o">%</span> <span class="nx">img</span> <span class="nx">center</span> <span class="o">/</span><span class="nx">images</span><span class="o">/</span><span class="nx">containertoutneuf</span><span class="o">.</span><span class="nx">png</span> <span class="mi">600</span> <span class="mi">450</span> <span class="s1">&#39;des valeurs sympas et pas sympas&#39;</span> <span class="s1">&#39;des valeurs sympas et pas sympas&#39;</span> <span class="o">%</span><span class="p">}</span>
 </span><span class='line'>
@@ -304,7 +496,7 @@ var_dump($output);
 
 <p>Nous allons utiliser la capacité de chainage de notre container pour faire un pseudo-décorateur.</p>
 
-<p>soit les fonctions suivantes
+<p>Soit les fonctions suivantes
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
@@ -344,13 +536,63 @@ Voici le fonctionnement</p>
 
 <p>En image</p>
 
+<h2>Une autre idée</h2>
+
+<p>Nous pouvons aussi imagine une fonction qui renvoie un Container.</p>
+
+<p>Par exemple reprenons notre fonction <code>addOne</code></p>
+
+<p><img class="center" src="/images/functionretournecontainer.png" width="600" height="450" title="&lsquo;Ma fonction renvoie un container&rsquo; &lsquo;ma fonction renvoie un container&rsquo;" ></p>
+
+<pre><code class="php">function addOne($value) {
+    return Container::of($value + 1);
+}
+</code></pre>
+
+<p>Donc ma fonction me renvoie forcement un container.</p>
+
+<p>Si j&#8217;utilise l&#8217;instruction <code>map</code>, je risque de mettre un container dans le container.</p>
+
+<p><img class="center" src="/images/containerdanscontainer.png" width="600" height="450" title="&lsquo;container dans un container&rsquo; &lsquo;container dans un container&rsquo;" ></p>
+
+<p>D&#8217;où l&#8217;ajout de la méthode <code>bind</code></p>
+
+<pre><code class="php">    public function bind($transformation)
+    {
+        return call_user_func($transformation, $this-&gt;value);
+    }
+</code></pre>
+
+<p>On remarque que mon résultat reste chaînable.</p>
+
+<pre><code class="php">$output = Container::of(5)
+    -&gt;bind("addOne")
+    -&gt;bind("addOne")
+    -&gt;bind("addOne")
+    -&gt;bind("addOne")
+var_dump($output);
+
+//class Container#3 (1) {
+//  protected $value =&gt;
+//  int(9)
+//}
+</code></pre>
+
 <h2>Conclusion</h2>
 
-<p>Si vous avez compris le container, vous pouvez le renommer en IdentityMonad. Car c&#8217;est exactement la même chose. Nous venons de croiser notre première monade.</p>
+<p>Mon container bien que pour le moment est assez peu utilise mais.</p>
 
-<p>Dans le prochain post nous allons implémenter une nouvelle monade la Monade Maybe.</p>
+<ul>
+<li><p>Il implémente une fonction <code>map</code> qui est chainage. Nous venons d&#8217;implémenter un <strong>functor</strong> ou <strong>foncteur</strong> en français. Cela a un rapport avec les mathématiques. Et il m&#8217;est difficile au moment ou j&#8217;écris ces lignes de vous l&#8217;expliquer. Le Functor s&#8217;occupe d&#8217;appeler la fonction pour nous et de retourner un résultat correct. Il s&#8217;occupe de tout. C&#8217;est une sorte d&#8217;abstraction. On lui confie le calcul et il se débrouille. (Nous le retrouverons dans le post suivant)</p></li>
+<li><p>Nous implémentons la méthode <code>of</code> et <code>bind</code> qui est elle aussi chainage (à condition de lui donner des fonctions qui renvoie de Container). Nous venons d&#8217;implémenter une <em>monade</em> même principe que le functor.</p></li>
+</ul>
 
-<p>Elle nous permettra de refactoriser le code suivant</p>
+
+<p>Si vous avez compris le container, vous pouvez le renommer en IdentityMonad.</p>
+
+<p>Dans le prochain post nous allons implémenter un  la Monade/Functor Maybe.</p>
+
+<p>Elle nous permettra de réfactoriser le code suivant</p>
 
 <pre><code class="php">function getAbonnementByUserConnected() {
     $user = getUserConnected();
@@ -384,7 +626,7 @@ $promotion = Maybe::of("getUserConnected")
     -&gt;orElse(new Promotion());
 </code></p>
 
-<p>Je me suis lancé dans une tache bien compliqué mais passionnante.</p>
+<p>Je me suis lancé dans une tache bien compliqué mais passionnante. Je m&#8217;excuse d&#8217;avance pour certaines approximations. J&#8217;avais confondu <code>map</code> et <code>bind</code> dans la première version</p>
 
 <p>Je vous remercies de m&#8217;avoir lu..</p>
 ]]></content>

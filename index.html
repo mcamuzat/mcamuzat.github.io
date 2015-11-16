@@ -9,7 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Introduction Nous allons voir ensemble les monades. Nous allons voir la monade Identity. elle n'est pas très utile mais nécessaire si vous voulez &hellip;">
+  <meta name="description" content="Nous avons vue dans le précédent post un pseudo-container qui nous permet d'emballer nos valeurs. Nous allons muscler un peu notre container mais &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +68,331 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Les Monades (suite): Le Functor Maybe..</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-11-15T16:43:42+01:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="center" src="/images/lesdeuxcontainerMaybe.png" width="512" height="313" title="Il y a deux container" alt="Il y a deux containers"></p>
+
+<p>Nous avons vue dans le précédent <a href="blog/2015/11/11/les-monades-en-php-cest-possible-dot/">post</a> un pseudo-container qui nous permet d&#8217;emballer nos valeurs. Nous allons muscler un peu notre container mais partons d&#8217;un exemple.</p>
+
+<p>Je souhaite récupérer le mail du client &ldquo;bob&rdquo; ou afficher &ldquo;pas de mail&rdquo;</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">getMail</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'><span class="nv">$mail</span> <span class="o">=</span> <span class="nx">getUserByName</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">getAddress</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getMail</span><span class="p">();</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="k">null</span> <span class="o">===</span> <span class="nv">$mail</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>   <span class="k">return</span> <span class="s2">&quot;pas de mail&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">return</span> <span class="nv">$mail</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Facile non ?</p>
+
+<p>Si <code>getAdress()</code> renvoie null, Outch &hellip;</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">PHP</span> <span class="nx">Fatal</span> <span class="nx">error</span><span class="o">:</span> <span class="nx">Call</span> <span class="nx">to</span> <span class="nx">a</span> <span class="nx">member</span> <span class="k">function</span> <span class="nf">getMail</span><span class="p">()</span> <span class="nx">on</span> <span class="nx">a</span> <span class="nx">non</span><span class="o">-</span><span class="nx">object</span><span class="o">..</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>L&#8217;utilisateur n&#8217;existe pas forcement et puis l&#8217;adresse est peut-être vide.. Une implémentation naïve</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">getMail</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nv">$user</span> <span class="o">=</span> <span class="nx">getUserByName</span><span class="p">(</span><span class="nv">$name</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$user</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$address</span> <span class="o">=</span> <span class="nv">$user</span><span class="o">-&gt;</span><span class="na">getAddress</span><span class="p">();</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$address</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="c1">//etc ...</span>
+</span><span class='line'>            <span class="k">return</span> <span class="nv">$adresse</span><span class="o">-&gt;</span><span class="na">getMail</span><span class="p">();</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>   <span class="p">}</span>
+</span><span class='line'>   <span class="k">return</span> <span class="s2">&quot;pas de mail&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ce code vous le connaissez, vous l&#8217;avez probablement déjà écris, il y a moyen d&#8217;optimiser de faire plus propre.</p>
+
+<h2>Deux containers pour le prix d&#8217;un.</h2>
+
+<p>Le Maybe à la rescousse..</p>
+
+<p>Voici le Maybe en dessin.</p>
+
+<p><img class="center" src="/images/lesdeuxcontainerMaybe.png" width="512" height="313" title="Il y a deux container" alt="Il y a deux containers"></p>
+
+<p>J&#8217;ai un container <code>Some</code> et un Container <code>Nothing</code>.</p>
+
+<p>Le container <code>Nothing</code> est un container qui n&#8217;a aucune valeurs. La méthode <code>map</code> renvoie toujours un container <code>Nothing</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Nothing</span> <span class="k">extends</span> <span class="nx">Container</span><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">map</span><span class="p">(</span><span class="nv">$function</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>       <span class="k">return</span> <span class="k">static</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="k">null</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">of</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="k">new</span> <span class="k">static</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">bind</span><span class="p">(</span><span class="nv">$transformation</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="k">static</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="k">null</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getOrElse</span><span class="p">(</span><span class="nv">$default</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$default</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Le container <code>Some</code> le résultats de <code>map</code> est un nouveau container <code>Some</code> s&#8217;il y a un résultat non-null sinon c&#8217;est un container <code>Nothing</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Some</span> <span class="k">extends</span> <span class="nx">Container</span><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">map</span><span class="p">(</span><span class="nv">$function</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">bind</span><span class="p">(</span><span class="nv">$function</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$result</span> <span class="o">===</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="nx">Nothing</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="k">null</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="k">return</span> <span class="k">static</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="nv">$result</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">of</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="k">new</span> <span class="k">static</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">bind</span><span class="p">(</span><span class="nv">$transformation</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nb">call_user_func</span><span class="p">(</span><span class="nv">$transformation</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">value</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getOrElse</span><span class="p">(</span><span class="nv">$default</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">value</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Enfin j&#8217;ai besoin d&#8217;un helper</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">maybeFromValue</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'> <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>   <span class="k">return</span> <span class="nx">Nothing</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="k">null</span><span class="p">);</span>
+</span><span class='line'> <span class="k">return</span> <span class="nx">Some</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Notons que j&#8217;ai une méthode qui me permet de sortir avec une valeurs par défaut</p>
+
+<p>Quelques exemples:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">echo</span> <span class="nx">maybeFromValue</span><span class="p">(</span><span class="k">null</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="s2">&quot;ucfirst&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">getOrElse</span><span class="p">(</span><span class="s2">&quot;non!!&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// non!!</span>
+</span><span class='line'><span class="k">echo</span> <span class="nx">maybeFromValue</span><span class="p">(</span><span class="s2">&quot;oui!!&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="s2">&quot;ucfirst&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">getOrElse</span><span class="p">(</span><span class="s2">&quot;non!!&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// Oui!!</span>
+</span><span class='line'><span class="k">echo</span> <span class="nx">Some</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="s2">&quot;oui&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="s2">&quot;ucfirst&quot;</span><span class="p">)</span>
+</span><span class='line'>   <span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="k">null</span><span class="p">;})</span>
+</span><span class='line'>   <span class="o">-&gt;</span><span class="na">getOrElse</span><span class="p">(</span><span class="s2">&quot;Non!!&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// Non !!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Nous pouvons simplifier notre problème</p>
+
+<p>En le refactorisant ainsi</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="c1">// example</span>
+</span><span class='line'><span class="c1">// method(&quot;name&quot;) return function($obj) {return $obj-&gt;getName()};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">function</span> <span class="nf">method</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$obj</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$obj</span><span class="o">-&gt;</span><span class="nv">$name</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">};</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$mail</span> <span class="o">=</span> <span class="nx">maybeFromValue</span><span class="p">(</span><span class="nx">getUserByName</span><span class="p">(</span><span class="nv">$name</span><span class="p">))</span>
+</span><span class='line'>    <span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="nx">method</span><span class="p">(</span><span class="s2">&quot;getAddress&quot;</span><span class="p">))</span> <span class="c1">// $value-&gt;getAdress()</span>
+</span><span class='line'>    <span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="nx">method</span><span class="p">(</span><span class="s2">&quot;getMail&quot;</span><span class="p">))</span>
+</span><span class='line'>    <span class="o">-&gt;</span><span class="na">getOrElse</span><span class="p">(</span><span class="s2">&quot;pas de mail&quot;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Quelques dessins
+Le cas ou tout marche</p>
+
+<p><img class="center" src="/images/maybechainageok.png" width="516" height="260" title="chainage tout va bien" alt="chainage tout va bien"></p>
+
+<p>Le cas ou <code>getUser()</code> renvoie null</p>
+
+<p><img class="center" src="/images/chainagepasok.png" width="516" height="216" title="getAdress renvoie null, on prend la valeur par défault" alt="getAdress renvoie null, on prend la valeur par défaults"></p>
+
+<p>Sympa la refactorisation. On peux supprimer ainsi une partie de la logique (la plupart des if, les nulls ont tous disparus).</p>
+
+<h2>Une librairie toute faite</h2>
+
+<p>Je vais parler de <a href="https://github.com/schmittjoh/php-option">php-option</a>. Si vous faite du <a href="https://symfony.com/">symfony2</a> vous l&#8217;avez déja dans votre <code>/vendor</code> et vous ne le saviez pas.</p>
+
+<p>La syntaxe est un peu près le même</p>
+
+<p>Mais il y a plein de fonctionnalités</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$entity</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">findSomeEntity</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getOrElse</span><span class="p">(</span><span class="k">new</span> <span class="nx">Entity</span><span class="p">());</span>
+</span><span class='line'><span class="nv">$entity</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">findSomeEntity</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getOrCall</span><span class="p">(</span><span class="s1">&#39;createAnNewAddress&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$entity</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">findSomeEntity</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getOrThrow</span><span class="p">(</span><span class="k">new</span> <span class="nx">\Exception</span><span class="p">(</span><span class="s1">&#39;ha!!!!!&#39;</span><span class="p">));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il y a aussi des possibilité de chainer les réponses si pas de résultats</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$entity</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">findSomeEntity</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">orElse</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">findSomeOtherEntity</span><span class="p">())</span>
+</span><span class='line'>            <span class="o">-&gt;</span><span class="na">orElse</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">createEntity</span><span class="p">());</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Nous n&#8217;utilisons que l&#8217;instruction <code>map</code> pour le moment. Donc nous n&#8217;utilisons pas le container en tant que monade mais plutôt en tant que functor. Nous verrons cela dans le troisième post.</p>
+
+<h2>Conclusion</h2>
+
+<p>Je suis désolé si certain termes sont inexacts comme le container. Je ne suis pas un expert, mais j&#8217;admets bien volontiers mon erreur.</p>
+
+<p>Si vous avez un code ou vous vérifiez tout le temps si les valeurs sont nulles. Il y a probablement moyen que cette structure vous aide.</p>
+
+<p>Dans le prochain Post nous utiliserons le Maybe avec l&#8217;instruction <code>bind</code>.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Les Monades en PHP c&#8217;est possible..</a></h1>
     
     
@@ -93,9 +418,9 @@
 
   <div class="entry-content"><h2>Introduction</h2>
 
-<p>Nous allons voir ensemble les monades. Nous allons voir la monade <strong>Identity</strong>. elle n&#8217;est pas très utile mais nécessaire si vous voulez comprendre la monade <strong>Maybe</strong> qui j&#8217;espère va changer votre facon de voir votre code mais ce sera dans le post suivant.</p>
+<p>Nous allons voir ensemble les monades. Nous allons voir la monade <strong>Identity</strong>. elle n&#8217;est pas très utile mais nécessaire si vous voulez comprendre la monade/functor  <strong>Maybe</strong> qui j&#8217;espère va changer votre façon de voir votre code mais ce sera dans le post suivant.</p>
 
-<p>Les monades sont des structures de la programmation fonctionnelle. Très utilisé dans le language <a href="https://www.haskell.org/">Haskell</a>. En pratique Haskell serait quasi inutilisable sans cette structure.</p>
+<p>Les monades sont des structures de la programmation fonctionnelle. Très utilisées dans le langage <a href="https://www.haskell.org/">Haskell</a>. En pratique Haskell serait moins attractifs sans cette structure. <em>(Je ne suis absolument pas développeur Haskell.)</em></p>
 
 </div>
   
@@ -744,76 +1069,6 @@ le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/10/03/spl-surcharge-magique/">SPL surcharge magique</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-10-03T17:17:33+02:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Nous allons repartir sur la <a href="http://php.net/manual/fr/book.spl.php">SPL</a>.</p>
-
-<p>Je vais parler des différentes méthodes amusantes à surcharger.</p>
-
-<h2>Count</h2>
-
-<p>Soit la classe suivante</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">BadCounter</span> <span class="k">implements</span> <span class="nx">countable</span><span class="p">{</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">count</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="mi">42</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$counter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BadCounter</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="nv">$counter</span><span class="p">));</span><span class="c1">// int(42)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/10/03/spl-surcharge-magique/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -861,6 +1116,10 @@ le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Les Monades (suite): Le Functor Maybe..</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Les Monades en PHP c&#8217;est possible..</a>
       </li>
     
@@ -874,10 +1133,6 @@ le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code
     
       <li class="post">
         <a href="/blog/2015/11/02/diff-patch-git/">Diff et patch, pas besoin de git</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/11/01/listes-chainees-iterator/">Listes Chainées Iterator</a>
       </li>
     
   </ul>
