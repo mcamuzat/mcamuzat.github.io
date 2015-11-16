@@ -7,9 +7,10 @@ categories: ["PHP", "Programmation Fonctionnelle", "Haskell", "Categorie"]
 ---
 
 ## Introduction
-Nous allons voir ensemble les monades. Nous allons voir la monade **Identity**. elle n'est pas très utile mais nécessaire si vous voulez comprendre la monade **Maybe** qui j'espère va changer votre facon de voir votre code mais ce sera dans le post suivant.
 
-Les monades sont des structures de la programmation fonctionnelle. Très utilisé dans le language [Haskell](https://www.haskell.org/). En pratique Haskell serait quasi inutilisable sans cette structure. 
+Nous allons voir ensemble les monades. Nous allons voir la monade **Identity**. elle n'est pas très utile mais nécessaire si vous voulez comprendre la monade/functor  **Maybe** qui j'espère va changer votre façon de voir votre code mais ce sera dans le post suivant.
+
+Les monades sont des structures de la programmation fonctionnelle. Très utilisées dans le langage [Haskell](https://www.haskell.org/). En pratique Haskell serait moins attractifs sans cette structure. *(Je ne suis absolument pas développeur Haskell.)*
 
 <!--more-->
 
@@ -20,7 +21,7 @@ Je ne sais pas trop les définir puisque il existe un nombre incalculable de dé
  * Des catégories
 
 
-Il existe une infinité de tutoriels dessus (Le site officiel de Haskell à un compteur [plutôt amusant](https://wiki.haskell.org/Monad_tutorials_timeline) pour quantifier l'avalanche de tuto), écris par les plus grands Douglas Crowford [Youtube](https://www.youtube.com/watch?v=b0EF0VTs9Dc) (La référence du Javascript). Donc probablement que mon explication ne sera pas forcément la meilleure. 
+Il existe une infinité de tutoriels dessus (Le site officiel de Haskell à un compteur [plutôt amusant](https://wiki.haskell.org/Monad_tutorials_timeline) pour quantifier l'avalanche de tuto), écris par les plus grands Douglas Crowford [Youtube](https://www.youtube.com/watch?v=b0EF0VTs9Dc) (La référence du Javascript). Donc probablement que mon explication ne sera pas forcément la meilleure.  
 
 Pour comprendre les monades je vais vous parler de container (Rien à voir avec [docker](https://www.docker.com/), ni container de [Symfony](https://symfony.com/)).
 
@@ -108,7 +109,7 @@ Je vais ajouter un sas de décontamination à ma structure via l'instruction `ma
 
 Soit la fonction suivante qui ajoute 1 à la valeur en entrée.
 
-```
+``` php
 function addOne($value) {
     return $value + 1;
 }
@@ -118,8 +119,8 @@ Regardons le dessin suivant:
 
 {% img center /images/containeravecsasexemple.png 600 450 'Je place la fonction +1 dans le sas' 'Je place la fonction +1 dans le sas' %}
 
- * je crée un container qui contient la valeur "5".
- * je mets la fonction addmap dans le `map`. je fais le calcul. que je m'empresse de remettre dans un container tout neuf. 
+ * Je crée un container qui contient la valeur "5".
+ * Je mets la fonction `addOne` dans le `map`. Je fais le calcul. Que je m'empresse de remettre dans un container tout neuf. 
  * j'ai un Container avec "6".
 
 {% img center /images/containertoutneuf.png 600 450 'J'ajoute un sas' 'J'ajoute un sas' %}
@@ -132,7 +133,6 @@ Voici l'implémentation de `map` dans ma classe container.
         // call_user_func => $function($this->value)
         return static::of(call_user_func($function,$this->value));
     }
-
 ```
 
 Et le code d'exemple.
@@ -155,7 +155,7 @@ class Container#2 (1) {
 
 Quelques remarques
 
- * Comme le résultat n'est pas sure, Je remet le résultat dans un nouveau container. Je ne réutilise plus l'ancien container (puisque contaminé). Comme on ne peux changer le contenu, il est **immutable**
+ * Comme le résultat n'est pas sur, Je remet le résultat dans un nouveau container. Je ne réutilise plus l'ancien container (puisque contaminé). Comme on ne peux changer le contenu, il est **immutable**
 
 {% img center /images/containertoutneuf.png 600 450 'des valeurs sympas et pas sympas' 'des valeurs sympas et pas sympas' %}
 
@@ -227,7 +227,7 @@ var_dump(
 
 Nous allons utiliser la capacité de chainage de notre container pour faire un pseudo-décorateur.
 
-soit les fonctions suivantes
+Soit les fonctions suivantes
 ``` php 
 function h1($text) 
 
@@ -257,14 +257,70 @@ En image
 
 
 
+## Une autre idée
+
+Nous pouvons aussi imagine une fonction qui renvoie un Container.
+
+Par exemple reprenons notre fonction `addOne` 
+
+{% img center /images/functionretournecontainer.png 600 450 'Ma fonction renvoie un container' 'ma fonction renvoie un container' %}
+
+``` php
+function addOne($value) {
+    return Container::of($value + 1);
+}
+```
+
+
+Donc ma fonction me renvoie forcement un container.
+
+Si j'utilise l'instruction `map`, je risque de mettre un container dans le container.
+
+{% img center /images/containerdanscontainer.png 600 450 'container dans un container' 'container dans un container' %}
+
+D'où l'ajout de la méthode `bind`
+
+``` php
+    public function bind($transformation)
+    {
+        return call_user_func($transformation, $this->value);
+    }
+
+```
+
+On remarque que mon résultat reste chaînable.
+
+``` php
+$output = Container::of(5)
+    ->bind("addOne")
+    ->bind("addOne")
+    ->bind("addOne")
+    ->bind("addOne")
+var_dump($output);
+
+//class Container#3 (1) {
+//  protected $value =>
+//  int(9)
+//}
+
+```
+
+
 ## Conclusion
 
-Si vous avez compris le container, vous pouvez le renommer en IdentityMonad. Car c'est exactement la même chose. Nous venons de croiser notre première monade. 
+Mon container bien que pour le moment est assez peu utilise mais.
 
-Dans le prochain post nous allons implémenter une nouvelle monade la Monade Maybe.
+ * Il implémente une fonction `map` qui est chainage. Nous venons d'implémenter un **functor** ou **foncteur** en français. Cela a un rapport avec les mathématiques. Et il m'est difficile au moment ou j'écris ces lignes de vous l'expliquer. Le Functor s'occupe d'appeler la fonction pour nous et de retourner un résultat correct. Il s'occupe de tout. C'est une sorte d'abstraction. On lui confie le calcul et il se débrouille. (Nous le retrouverons dans le post suivant)
 
 
-Elle nous permettra de refactoriser le code suivant
+ * Nous implémentons la méthode `of` et `bind` qui est elle aussi chainage (à condition de lui donner des fonctions qui renvoie de Container). Nous venons d'implémenter une *monade* même principe que le functor.
+
+Si vous avez compris le container, vous pouvez le renommer en IdentityMonad.
+
+Dans le prochain post nous allons implémenter un  la Monade/Functor Maybe.
+
+
+Elle nous permettra de réfactoriser le code suivant
 
 ``` php
 function getAbonnementByUserConnected() {
@@ -299,7 +355,7 @@ $promotion = Maybe::of("getUserConnected")
     ->orElse(new Promotion());
 ```
 
-Je me suis lancé dans une tache bien compliqué mais passionnante. 
+Je me suis lancé dans une tache bien compliqué mais passionnante. Je m'excuse d'avance pour certaines approximations. J'avais confondu `map` et `bind` dans la première version
 
 Je vous remercies de m'avoir lu..
 
