@@ -14,6 +14,8 @@ En pratique il n'y en a que 2.
  * [CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer)
  * [PHP Coding Standards Fixer](http://cs.sensiolabs.org/)
 
+<!--more-->
+
 ## CodeSniffer
 
 Il y a différentes normes de codage :  les plus connus sont la [psr-1](http://www.php-fig.org/psr/psr-1/) et la [psr-2](http://www.php-fig.org/psr/psr-2/). La psr-2 hérite de la psr-1. Mais certain Framework ont leur propres méthodes d'indentations. On peux personnaliser d'ailleurs les différentes règles. Les gouts et les couleurs de chacun sur le code est subjectif. L'intérêt de suivre les recommandations est que cela dépassionne le débat. Cela passe CodeSniffer ou cela ne passe pas. Pour participer au projet Open-source, il faut suivre la norme. 

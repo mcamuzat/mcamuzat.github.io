@@ -24,6 +24,8 @@ Voila ce que vous devriez voir.
 
 {% img center /images/workshop.png 585 397 'screenshot de workshop' 'On a un menu interactif' %}
 
+<!--more-->
+
 Lançons nous dans le premier exercice.
 
 ```

@@ -24,6 +24,7 @@ return $mail;
 
 Facile non ?
 
+<!--more-->
 Si `getAdress()` renvoie null, Outch ...
 
 ```

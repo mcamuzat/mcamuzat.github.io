@@ -18,6 +18,8 @@ C'est un peu triste. Et encore j'ai activé la couleur !.
 
 il existe des variantes avec `--testdox`
 
+<!--more-->
+
 ``` sh
 $ bin/phpunit --testdox
 PHPUnit 4.8-ge1cc585 by Sebastian Bergmann and contributors.

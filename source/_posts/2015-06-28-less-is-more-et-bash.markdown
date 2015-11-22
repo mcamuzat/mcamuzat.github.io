@@ -26,6 +26,8 @@ h,j,k,l les directions
 ```
 les touche suivantes marche aussi avec `man`
 
+<!--more-->
+
 Je vous conseille ce post sur les [mouvement vi](blog/2015/03/08/comprendre-les-raccourcis-claviers-de-vi-slash-vim/)
 
 ## Éditer une ligne de commande trop complexe

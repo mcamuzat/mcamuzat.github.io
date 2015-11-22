@@ -14,6 +14,8 @@ Il existe des jeux vidéos pour apprendre à programmer. Voici quelques exemples
 
 
 
+<!--more-->
+
 ## Ruby
 Ruby warrior existe en deux versions:
 {% img center /images/ruby-warrior.png 600 288 'Ruby warrior' 'Ruby warrior' %}

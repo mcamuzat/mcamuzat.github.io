@@ -15,6 +15,8 @@ Je vais montrer aujourd'hui comment interfacer Vim et xdebug pour debugger du ph
 * Présentation de deux plugins **Vdebug** et **DBGPavim**
 * Comment installer les deux plugin avec 
 
+<!--more-->
+
 ## Installer xdebug
 
 Je connais deux méthodes

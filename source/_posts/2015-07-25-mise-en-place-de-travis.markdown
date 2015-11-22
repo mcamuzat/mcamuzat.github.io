@@ -10,6 +10,8 @@ categories: ["Travis", "php", "Docker", "github"]
 
 Après la création de la [librairie](/blog/2015/07/19/histogramme-et-ligne-de-commande/), la création et la publication du [package](blog/2015/07/24/creer-son-depot-sous-packagist/), je propose d'ajouter l'intégration continue avec Travis. Travis est gratuit pour les projets open-source. (L'url n'est d'ailleurs pas la même c'est travis-ci.org pour les projets publics, et travis-ci.com pour les projets privés)
 
+<!--more-->
+
 ## L'intégration continue.
 
 Il faut bien entendu s'inscrire sur Travis. On s'authentifie grâce à son identifiant github.

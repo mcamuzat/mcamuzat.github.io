@@ -8,6 +8,8 @@ categories: ["javascript", "livre"]
 
 Je suis tombé un peu par hasard sur ce livre "If Hemingway Wrote JavaScript". Cela part de l'idée que tout les auteurs ont un certain style. Et que s'il devait programmer en javascript le résultat serait diffèrent. L'auteur est un expert du javascript.
 
+<!--more-->
+
 On trouve dans les auteurs
 
  * Ernest Hemingway

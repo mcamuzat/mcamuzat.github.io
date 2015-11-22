@@ -12,6 +12,9 @@ J'ai regardé Docker. Docker est en Go ainsi que pas mal de projets en fait. J'a
 
 Dans ce chapitre nous n'allons pas trop discuter du langage mais surtout mettre en place tout les outils.
 
+
+<!--more-->
+
 ## Installation(linux)
 
 * Nous allons télécharger les fichiers [ici](https://golang.org/dl/)

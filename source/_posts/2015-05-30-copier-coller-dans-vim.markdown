@@ -32,6 +32,8 @@ Quelques exemples:
 
 Pour coller on utilise la touche `p` pour **p**aste ou `P` (colle avant le curseur)
 
+<!--more-->
+
 ## Les presse-papiers sous vi ou les registres
 
 La notion de presse-papier est appelle registre dans Vi.

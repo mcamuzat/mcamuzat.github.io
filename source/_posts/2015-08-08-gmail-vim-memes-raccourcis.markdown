@@ -16,6 +16,7 @@ Mais sur Vi On utilise les flèches de direction `h`, `j`, `k`, `l` pour `gauche
 
 Pour chercher sous Vi on utilise la touche `/` , essayez sous Gmail et vous aller directement dans la barre de recherche.
 
+<!--more-->
 ## Une lettre = une idée..
 
 Comme dans vi ou `w` signifie **w**ord, `d` signifie **d**elete, `u` **u**ndo on retrouve la même idée.

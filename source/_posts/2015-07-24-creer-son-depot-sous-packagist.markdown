@@ -19,6 +19,8 @@ J'ai décidé de la publier sous [Packagist](https://packagist.org/). Je n'avais
  * Je crée le dépôt sur Github
  * J'enregistre le dépôt sur Packagist
 
+<!--more-->
+
 ## Industrialisation
 
 Nous sommes partis du code suivant.

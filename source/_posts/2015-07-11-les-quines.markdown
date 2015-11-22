@@ -24,6 +24,8 @@ Aujourd'hui commençons par un petit programme
 
 Pouvez vous devinez que fais ce programme ?
 
+<!--more-->
+
 Une quine est un code donc la sortie est exactement son code source. 
 
 Cela ressemble à une exercice de programmation.

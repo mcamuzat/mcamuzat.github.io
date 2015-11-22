@@ -16,6 +16,8 @@ Les conditions étaient :
  * Utiliser un Micro
  * La langage imposé est Processing
 
+<!--more-->
+
 ## Processing Késako
 
 Processing est une variante de Java en plus simple. C'est un langage destiné à faire des oeuvres d'arts numériques. Il est souvent enseigné en école d'art. Il vient avec son propre éditeur. à noter que les [Arduinos](https://fr.wikipedia.org/wiki/Arduino) se programment aussi en processing.

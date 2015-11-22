@@ -10,6 +10,8 @@ categories: ["php", "apache", "Behat","symfony"]
 
 Nous allons voir comment multiplier par 5 voir 10 les tests et l'environnement de test et de dev. L'astuce ici est de mettre le répertoire `cache` et `log` dans la Ram de l'ordinateur. Ainsi plus d'écriture sur le disque dur. C'est très pratique aussi pour les tests Behat. Attention à ne pas utiliser cette astuce sur une instance en production.
 
+<!--more-->
+
 ## Mise en Oeuvre
 
 ### Méthode 1 : modification du code

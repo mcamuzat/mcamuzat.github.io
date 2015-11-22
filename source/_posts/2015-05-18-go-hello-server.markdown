@@ -13,6 +13,8 @@ Je continue mon apprentissage en go. Nous allons essayer de faire un hello world
 
 L'exemple le plus simple de la [documentation officielle](https://gowalker.org/net/http#HandleFunc).
 
+<!--more-->
+
 ## Mise en place
 
 Je me place dans mon répertoire `go`

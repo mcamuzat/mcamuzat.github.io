@@ -10,6 +10,8 @@ categories: ["docker", "amazon", "linux", "virtual-box", "openstack", "digital-o
 
 Nous allons voir [docker-machine](https://docs.docker.com/machine/). Docker-machine permet de simplifier l'installation/gestion/déploiement de Docker. 
 
+
+<!--more-->
 ## Installation
 
 Tout d'abord il faut connaitre votre architecture `x86_64`ou `i386`. 

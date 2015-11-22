@@ -18,6 +18,9 @@ Un exemple de Koan
 
 Il existe des Koan pour la programmation. Ce sont des mini problèmes pour s'initier à une technologie.
 
+<!--more-->
+
+
 ## RubyKoan
 Le plus connu et le premier est [RubyKoan](http://rubykoans.com/).
 

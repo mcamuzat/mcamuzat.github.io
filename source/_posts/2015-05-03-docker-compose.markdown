@@ -11,6 +11,8 @@ categories: ["docker", "docker-compose"]
 
 Dans le post précèdent sur docker, j'avais expliqué comment automatiser la création des containers grâce au `Dockerfile` aujourd'hui je vais expliquer `docker-compose`
 
+<!--more-->
+
 ## Intro.
 
 Dans un projet, il n'y a rarement qu'une seule instance. Voir il peut y avoir plusieurs fronts et une seule base de donnée. docker-compose est la justement pour organiser cela.
