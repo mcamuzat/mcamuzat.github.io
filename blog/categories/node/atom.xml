@@ -4,7 +4,7 @@
   <title><![CDATA[Category: node | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/node/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-16T22:56:54+01:00</updated>
+  <updated>2015-11-22T17:48:38+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -33,6 +33,9 @@ learnyounode
 <p>Voila ce que vous devriez voir.</p>
 
 <p><img class="center" src="/images/workshop.png" width="585" height="397" title="&lsquo;screenshot de workshop&rsquo; &lsquo;On a un menu interactif&rsquo;" ></p>
+
+<!--more-->
+
 
 <p>Lançons nous dans le premier exercice.</p>
 

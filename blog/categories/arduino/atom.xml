@@ -4,7 +4,7 @@
   <title><![CDATA[Category: arduino | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/arduino/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-16T22:56:54+01:00</updated>
+  <updated>2015-11-22T17:48:38+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -28,6 +28,9 @@
 <li>Utiliser un Micro</li>
 <li>La langage imposé est Processing</li>
 </ul>
+
+
+<!--more-->
 
 
 <h2>Processing Késako</h2>

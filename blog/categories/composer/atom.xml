@@ -4,7 +4,7 @@
   <title><![CDATA[Category: composer | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/composer/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-16T22:56:54+01:00</updated>
+  <updated>2015-11-22T17:48:38+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -337,6 +337,9 @@ __HALT_COMPILER(); ?&gt;
 <li>Je crée le dépôt sur Github</li>
 <li>J&#8217;enregistre le dépôt sur Packagist</li>
 </ul>
+
+
+<!--more-->
 
 
 <h2>Industrialisation</h2>

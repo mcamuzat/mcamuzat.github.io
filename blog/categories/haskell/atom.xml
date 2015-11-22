@@ -4,7 +4,7 @@
   <title><![CDATA[Category: haskell | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/haskell/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-16T22:56:54+01:00</updated>
+  <updated>2015-11-22T17:48:38+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,120 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Les Monades 3 Le Maybe (suite)]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/11/22/les-monades-3-le-maybe-suite/"/>
+    <updated>2015-11-22T16:59:31+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/11/22/les-monades-3-le-maybe-suite</id>
+    <content type="html"><![CDATA[<ul>
+<li>partie 1 : <a href="blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
+<li>partie 2 : <a href="blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
+</ul>
+
+
+<p>Dans la partie de 3 : Nous allons utiliser le functor Maybe avec l&#8217;instruction <code>bind</code>.</p>
+
+<p>Soit le tableau suivant.</p>
+
+<pre><code class="php">$data = [
+    ['id_article' =&gt; 1, 'titre' =&gt; 'titre1', 'meta' =&gt; ['images' =&gt; ['//first.jpg', '//second.jpg']]],
+    ['id_article' =&gt; 2, 'titre' =&gt; 'titre2', 'meta' =&gt; ['images' =&gt; ['//third.jpg']]],
+    ['id_article' =&gt; 3, 'titre' =&gt; 'titre3'],
+];
+</code></pre>
+
+<p>nous voulons afficher une liste avec une titre et et une image.</p>
+
+<p>Nous allons utilisez la fonction suivante</p>
+
+<pre><code class="php ">function get($key)
+{
+    return function ($array) use ($key) {
+        return isset($array[$key]) ? $array[$key] : null;
+    };
+}
+</code></pre>
+
+<p>Exemple d&#8217;utilisation.</p>
+
+<pre><code class="php">$getTitre = get("titre");
+foreach ($data as $line) {
+  var_dump $getTitre($line");
+}
+</code></pre>
+
+<p>Le résultat</p>
+
+<pre><code class="sh ">string (6) "titre1"
+string (6) "titre2"
+string (6) "titre3"
+</code></pre>
+
+<p>Pour extraire les images utilisons notre Maybe
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$data</span> <span class="k">as</span> <span class="nv">$line</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">maybeFromValue</span><span class="p">(</span><span class="nv">$line</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="nx">get</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">meta</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;))</span>
+</span><span class='line'>       <span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="nx">get</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">images</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;))</span>
+</span><span class='line'>       <span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="nx">get</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+</span><span class='line'>       <span class="o">-&gt;</span><span class="na">getOrElse</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">noimage</span><span class="o">.</span><span class="nx">png</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;);</span>
+</span><span class='line'><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">Le</span> <span class="nx">résultat</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="c1">//first.jpg&amp;rdquo;</span>
+</span><span class='line'><span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="c1">//third.jpg&amp;rdquo;</span>
+</span><span class='line'><span class="nx">string</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">no</span><span class="o">-</span><span class="nx">image</span><span class="o">.</span><span class="nx">png</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Avec le <code>bind</code></h2>
+
+<p>Ré-ecrivons pour utiliser le bind. (Nous utilisons l&#8217;idée que la fonction que j&#8217;injecte dans le container renvoie elle-mème un <code>Some</code> ou <code>Nothing</code>)</p>
+
+<p><img class="center" src="/images/functionretourneSome.png" width="600" height="450" title="&lsquo;la fonction renvoie un maybe&rsquo; &lsquo;la fonction renvoie un maybe&rsquo;" ></p>
+
+<pre><code class="php">function get($key)
+{
+    return function ($array) use ($key) {
+        return isset($array[$key]) ? Some::of($array[$key]) : Nothing::of(null);
+    };
+}
+</code></pre>
+
+<p>La fonction devient.</p>
+
+<pre><code class="php">foreach ($data as $line) {
+   var_dump(maybeFromValue($line)-&gt;bind(get("meta"))
+       -&gt;bind(get("images"))
+       -&gt;bind(get(0))
+       -&gt;getOrElse("noimage.png"));
+}
+</code></pre>
+
+<h2>En conclusion</h2>
+
+<ul>
+<li>Si j&#8217;utilise la fonction <code>map</code> (parfois on parle aussi de <code>fmap</code>) j&#8217;utilise le Maybe en tant que Functor.</li>
+<li>Si j&#8217;utilise la fonction <code>bind</code> j&#8217;utilise le Maybe en tant que Monad.</li>
+</ul>
+
+
+<p>Nous allons continuer notre voyage avec les listes dans le prochain post.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Les Monades (suite): Le Functor Maybe..]]></title>
@@ -34,6 +148,9 @@ return $mail;
 </code></pre>
 
 <p>Facile non ?</p>
+
+<!--more-->
+
 
 <p>Si <code>getAdress()</code> renvoie null, Outch &hellip;</p>
 

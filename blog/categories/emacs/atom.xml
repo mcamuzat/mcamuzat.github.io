@@ -4,7 +4,7 @@
   <title><![CDATA[Category: emacs | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/emacs/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-16T22:56:54+01:00</updated>
+  <updated>2015-11-22T17:48:38+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -37,6 +37,9 @@ h,j,k,l les directions
 </code></pre>
 
 <p>les touche suivantes marche aussi avec <code>man</code></p>
+
+<!--more-->
+
 
 <p>Je vous conseille ce post sur les <a href="blog/2015/03/08/comprendre-les-raccourcis-claviers-de-vi-slash-vim/">mouvement vi</a></p>
 

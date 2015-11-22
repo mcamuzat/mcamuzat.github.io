@@ -4,7 +4,7 @@
   <title><![CDATA[Category: bash | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/bash/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-16T22:56:54+01:00</updated>
+  <updated>2015-11-22T17:48:38+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -463,6 +463,9 @@ ssh whoami.filippo.io
 <pre><code>spark([1,2,3,4,4,5,6,1,2]); // ▂▃▅▆▆▇█▂▃
 spark([1,2,3,4,5,1,2,3,4,5]); //▂▄▅▇█▂▄▅▇█
 </code></pre>
+
+<!--more-->
+
 
 <p>Voici l&#8217;implémentation</p>
 

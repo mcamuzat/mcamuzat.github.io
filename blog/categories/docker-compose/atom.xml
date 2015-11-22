@@ -4,7 +4,7 @@
   <title><![CDATA[Category: docker-compose | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/docker-compose/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-16T22:56:54+01:00</updated>
+  <updated>2015-11-22T17:48:38+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -21,6 +21,9 @@
     <content type="html"><![CDATA[<h2>Docker-compose</h2>
 
 <p>Dans le post précèdent sur docker, j&#8217;avais expliqué comment automatiser la création des containers grâce au <code>Dockerfile</code> aujourd&#8217;hui je vais expliquer <code>docker-compose</code></p>
+
+<!--more-->
+
 
 <h2>Intro.</h2>
 

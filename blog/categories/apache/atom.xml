@@ -4,7 +4,7 @@
   <title><![CDATA[Category: apache | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/apache/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-16T22:56:54+01:00</updated>
+  <updated>2015-11-22T17:48:38+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -21,6 +21,9 @@
     <content type="html"><![CDATA[<h2>Introduction</h2>
 
 <p>Nous allons voir comment multiplier par 5 voir 10 les tests et l&#8217;environnement de test et de dev. L&#8217;astuce ici est de mettre le répertoire <code>cache</code> et <code>log</code> dans la Ram de l&#8217;ordinateur. Ainsi plus d&#8217;écriture sur le disque dur. C&#8217;est très pratique aussi pour les tests Behat. Attention à ne pas utiliser cette astuce sur une instance en production.</p>
+
+<!--more-->
+
 
 <h2>Mise en Oeuvre</h2>
 

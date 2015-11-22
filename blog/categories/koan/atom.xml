@@ -4,7 +4,7 @@
   <title><![CDATA[Category: koan | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/koan/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-16T22:56:54+01:00</updated>
+  <updated>2015-11-22T17:48:38+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -27,6 +27,9 @@
 <blockquote><blockquote><p>Quel est le son d’une seule main qui applaudit ?</p></blockquote></blockquote>
 
 <p>Il existe des Koan pour la programmation. Ce sont des mini problèmes pour s&#8217;initier à une technologie.</p>
+
+<!--more-->
+
 
 <h2>RubyKoan</h2>
 

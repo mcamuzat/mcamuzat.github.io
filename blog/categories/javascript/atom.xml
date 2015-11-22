@@ -4,7 +4,7 @@
   <title><![CDATA[Category: javascript | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/javascript/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-16T22:56:54+01:00</updated>
+  <updated>2015-11-22T17:48:38+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -502,6 +502,9 @@ learnyounode
 
 <p><img class="center" src="/images/workshop.png" width="585" height="397" title="&lsquo;screenshot de workshop&rsquo; &lsquo;On a un menu interactif&rsquo;" ></p>
 
+<!--more-->
+
+
 <p>Lançons nous dans le premier exercice.</p>
 
 <pre><code>
@@ -701,6 +704,9 @@ console.log(i.reduce(function(a,b){return a + Number(b)},0));
 <span class='line-number'>89</span>
 <span class='line-number'>90</span>
 <span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
 </pre></td><td class='code'><pre><code class='js'><span class='line'>   <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="mi">0</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span> <span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
@@ -777,6 +783,9 @@ console.log(i.reduce(function(a,b){return a + Number(b)},0));
 </span><span class='line'><span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;</span><span class="nx">Utiliser</span> <span class="nx">un</span> <span class="nx">Micro</span><span class="o">&lt;</span><span class="err">/li&gt;</span>
 </span><span class='line'><span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;</span><span class="nx">La</span> <span class="nx">langage</span> <span class="nx">impos</span><span class="err">é</span> <span class="nx">est</span> <span class="nx">Processing</span><span class="o">&lt;</span><span class="err">/li&gt;</span>
 </span><span class='line'><span class="o">&lt;</span><span class="err">/ul&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c">&lt;!--</span><span class="nx">more</span><span class="o">--&gt;</span>
 </span><span class='line'>
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="nx">h2</span><span class="o">&gt;</span><span class="nx">Processing</span> <span class="nx">K</span><span class="err">é</span><span class="nx">sako</span><span class="o">&lt;</span><span class="err">/h2&gt;</span>
@@ -875,6 +884,9 @@ Vous devriez voir apparaitre l&#8217;interface</p>
     <updated>2015-06-21T19:06:54+02:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/06/21/if-hemingway-wrote-javascript</id>
     <content type="html"><![CDATA[<p>Je suis tombé un peu par hasard sur ce livre &ldquo;If Hemingway Wrote JavaScript&rdquo;. Cela part de l&#8217;idée que tout les auteurs ont un certain style. Et que s&#8217;il devait programmer en javascript le résultat serait diffèrent. L&#8217;auteur est un expert du javascript.</p>
+
+<!--more-->
+
 
 <p>On trouve dans les auteurs</p>
 
