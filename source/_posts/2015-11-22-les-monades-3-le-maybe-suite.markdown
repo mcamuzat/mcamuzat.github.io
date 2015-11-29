@@ -13,6 +13,8 @@ Dans la partie de 3 : Nous allons utiliser le functor Maybe avec l'instruction `
 
 Soit le tableau suivant.
 
+<!--more-->
+
 ``` php
 $data = [
     ['id_article' => 1, 'titre' => 'titre1', 'meta' => ['images' => ['//first.jpg', '//second.jpg']]],
