@@ -9,8 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="partie 1 : Monade/Functor
-partie 2 : Le functor Maybe Dans la partie de 3 : Nous allons utiliser le functor Maybe avec l'instruction bind. Soit le &hellip;">
+  <meta name="description" content="Nous continuons notre exploration des Monades/Functors, nous allons parler de Collection, de lapins, de marteaux et de non-déterminisme. Voici notre &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -69,6 +68,59 @@ partie 2 : Le functor Maybe Dans la partie de 3 : Nous allons utiliser le functo
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2015/11/29/les-monades-les-listes/">Les Monades : Les listes</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-11-29T21:44:52+01:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Nous continuons notre exploration des Monades/Functors, nous allons parler de Collection, de lapins, de marteaux et de non-déterminisme.</p>
+
+<p>Voici notre nouveau <em>container</em> Le container <strong>List</strong>. Il prend en entrée un tableau (Array) ou en Php un <code>Traversable</code>.
+<img class="center" src="/images/collection.png" width="600" height="450" title="Le container Collection" alt="Le container collection"></p>
+
+<ul>
+<li>partie 1 : <a href="blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
+<li>partie 2 : <a href="blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
+<li>partie 3 : <a href="blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
+</ul>
+
+
+<p>Nous allons voir ensemble les listes, Collections. Nous allons voir le <code>map</code>, le <code>bind</code> nous allons voir que le comportement n&#8217;est pas exactement le même..</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/11/29/les-monades-les-listes/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Les Monades 3 Le Maybe (suite)</a></h1>
     
     
@@ -102,139 +154,12 @@ partie 2 : Le functor Maybe Dans la partie de 3 : Nous allons utiliser le functo
 
 <p>Soit le tableau suivant.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$data</span> <span class="o">=</span> <span class="p">[</span>
-</span><span class='line'>    <span class="p">[</span><span class="s1">&#39;id_article&#39;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;titre&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;titre1&#39;</span><span class="p">,</span> <span class="s1">&#39;meta&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">&#39;images&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">&#39;//first.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;//second.jpg&#39;</span><span class="p">]]],</span>
-</span><span class='line'>    <span class="p">[</span><span class="s1">&#39;id_article&#39;</span> <span class="o">=&gt;</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;titre&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;titre2&#39;</span><span class="p">,</span> <span class="s1">&#39;meta&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">&#39;images&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">&#39;//third.jpg&#39;</span><span class="p">]]],</span>
-</span><span class='line'>    <span class="p">[</span><span class="s1">&#39;id_article&#39;</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;titre&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;titre3&#39;</span><span class="p">],</span>
-</span><span class='line'><span class="p">];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>nous voulons afficher une liste avec une titre et et une image.</p>
-
-<p>Nous allons utilisez la fonction suivante</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">get</span><span class="p">(</span><span class="nv">$key</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$array</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$key</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nb">isset</span><span class="p">(</span><span class="nv">$array</span><span class="p">[</span><span class="nv">$key</span><span class="p">])</span> <span class="o">?</span> <span class="nv">$array</span><span class="p">[</span><span class="nv">$key</span><span class="p">]</span> <span class="o">:</span> <span class="k">null</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">};</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Exemple d&#8217;utilisation.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$getTitre</span> <span class="o">=</span> <span class="nx">get</span><span class="p">(</span><span class="s2">&quot;titre&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$data</span> <span class="k">as</span> <span class="nv">$line</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nb">var_dump</span> <span class="nv">$getTitre</span><span class="p">(</span><span class="nv">$line</span><span class="s2">&quot;);</span>
-</span><span class='line'><span class="s2">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Le résultat</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>string <span class="o">(</span>6<span class="o">)</span> <span class="s2">&quot;titre1&quot;</span>
-</span><span class='line'>string <span class="o">(</span>6<span class="o">)</span> <span class="s2">&quot;titre2&quot;</span>
-</span><span class='line'>string <span class="o">(</span>6<span class="o">)</span> <span class="s2">&quot;titre3&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Pour extraire les images utilisons notre Maybe</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$data</span> <span class="k">as</span> <span class="nv">$line</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">maybeFromValue</span><span class="p">(</span><span class="nv">$line</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;meta&quot;</span><span class="p">))</span>
-</span><span class='line'>       <span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;images&quot;</span><span class="p">))</span>
-</span><span class='line'>       <span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="nx">get</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-</span><span class='line'>       <span class="o">-&gt;</span><span class="na">getOrElse</span><span class="p">(</span><span class="s2">&quot;noimage.png&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Le résultat</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;//first.jpg&quot;</span>
-</span><span class='line'><span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;//third.jpg&quot;</span>
-</span><span class='line'><span class="nx">string</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="s2">&quot;no-image.png&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Avec le <code>bind</code></h2>
-
-<p>Ré-ecrivons pour utiliser le bind. (Nous utilisons l&#8217;idée que la fonction que j&#8217;injecte dans le container renvoie elle-mème un <code>Some</code> ou <code>Nothing</code>)</p>
-
-<p><img class="center" src="/images/functionretourneSome.png" width="600" height="450" title="la fonction renvoie un maybe" alt="la fonction renvoie un maybe"></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">get</span><span class="p">(</span><span class="nv">$key</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$array</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$key</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nb">isset</span><span class="p">(</span><span class="nv">$array</span><span class="p">[</span><span class="nv">$key</span><span class="p">])</span> <span class="o">?</span> <span class="nx">Some</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="nv">$array</span><span class="p">[</span><span class="nv">$key</span><span class="p">])</span> <span class="o">:</span> <span class="nx">Nothing</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="k">null</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">};</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>La fonction devient.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$data</span> <span class="k">as</span> <span class="nv">$line</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>   <span class="nb">var_dump</span><span class="p">(</span><span class="nx">maybeFromValue</span><span class="p">(</span><span class="nv">$line</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">bind</span><span class="p">(</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;meta&quot;</span><span class="p">))</span>
-</span><span class='line'>       <span class="o">-&gt;</span><span class="na">bind</span><span class="p">(</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;images&quot;</span><span class="p">))</span>
-</span><span class='line'>       <span class="o">-&gt;</span><span class="na">bind</span><span class="p">(</span><span class="nx">get</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-</span><span class='line'>       <span class="o">-&gt;</span><span class="na">getOrElse</span><span class="p">(</span><span class="s2">&quot;noimage.png&quot;</span><span class="p">));</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>En conclusion</h2>
-
-<ul>
-<li>Si j&#8217;utilise la fonction <code>map</code> (parfois on parle aussi de <code>fmap</code>) j&#8217;utilise le Maybe en tant que Functor.</li>
-<li>Si j&#8217;utilise la fonction <code>bind</code> j&#8217;utilise le Maybe en tant que Monad.</li>
-</ul>
-
-
-<p>Nous allons continuer notre voyage avec les listes dans le prochain post.</p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Lire &rarr;</a>
+    </footer>
   
 
 
@@ -863,59 +788,6 @@ le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/10/10/liste-chainees-implementation/">Listes chainées : implémentation</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-10-10T21:12:47+02:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Dans la <a href="/blog/2015/10/03/spl-surcharge-magique/">partie 1</a> nous avons appris à surcharger le <code>count</code> ainsi que les différentes méthodes de <code>ArrayAccess</code>. Pour faire un exemple un peu plus concret, je vais impémenter les listes chainées. Les listes doublement chainée sont <strong>déja</strong> implémentées dans la SPL via <a href="http://php.net/manual/fr/class.spldoublylinkedlist.php">SplDoublyLinkedList</a>.</p>
-
-<p>Le liste chainée (linked list en anglais) est une structure de donnée. Nous allons essayer d&#8217;implémenter une liste chainée en PHP. Cela nous permettra de comprendre l&#8217;idée. Nous allons implémenter l&#8217;interface <code>Countable</code>. (J&#8217;implémente <code>ArrayAccess</code> et <code>Iterator</code> dans le post suivant).</p>
-
-<p>Une liste chainée est constituée de <code>Node</code> ou noeud/chainon.</p>
-
-<p>Un node a deux propriétés.</p>
-
-<ul>
-<li>Sa valeurs</li>
-<li>Le liens vers le noeud suivant</li>
-</ul>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/10/10/liste-chainees-implementation/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -963,6 +835,10 @@ le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/11/29/les-monades-les-listes/">Les Monades : Les listes</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Les Monades 3 Le Maybe (suite)</a>
       </li>
     
@@ -976,10 +852,6 @@ le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code
     
       <li class="post">
         <a href="/blog/2015/11/08/faire-des-jointures-sur-des-fichiers-csv/">Faire des jointures sur des fichiers csv</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/11/05/git-grep/">Git grep</a>
       </li>
     
   </ul>
