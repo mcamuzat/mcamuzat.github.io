@@ -9,7 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Nous continuons notre exploration des Monades/Functors, nous allons parler de Collection, de lapins, de marteaux et de non-déterminisme. Voici notre &hellip;">
+  <meta name="description" content="Interlude. J'ai besoin pour le prochain chapitre d'introduire la notion d'application partielle. Cela consiste à évaluer une partie de la fonction &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -62,6 +62,69 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/12/06/les-monades-evaluation-partielle/">Les Monades : Evaluation partielle</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-12-06T18:49:49+01:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Interlude.</h2>
+
+<p>J&#8217;ai besoin pour le prochain chapitre d&#8217;introduire la notion d&#8217;application partielle. Cela consiste à évaluer une partie de la fonction même si je n&#8217;ai pas tous les arguments.</p>
+
+<p>Soit la fonction suivante.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">plus</span><span class="p">(</span><span class="nv">$a</span><span class="p">,</span> <span class="nv">$b</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>   <span class="k">return</span> <span class="nv">$a</span> <span class="o">+</span> <span class="nv">$b</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Que donne l&#8217;exécution ?</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$result</span> <span class="o">=</span> <span class="nx">plus</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/12/06/les-monades-evaluation-partielle/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -671,123 +734,6 @@ le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/10/18/les-fractales-en-php-mandelbrot/">Les fractales en php Mandelbrot</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-10-18T20:02:28+02:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>______________________________________
-</span><span class='line'>______________________________________
-</span><span class='line'>___________________________*__________
-</span><span class='line'>_________________________****_________
-</span><span class='line'>_________________________****_________
-</span><span class='line'>_________________________****_________
-</span><span class='line'>______________________________________
-</span><span class='line'>___________________*__**********______
-</span><span class='line'>___________________**************_**__
-</span><span class='line'>___________________*****************__
-</span><span class='line'>__________________*****************___
-</span><span class='line'>_________________*******************__
-</span><span class='line'>________________*********************_
-</span><span class='line'>________________*********************_
-</span><span class='line'>______*__*_____**********************_
-</span><span class='line'>______*******__**********************_
-</span><span class='line'>_____*********_**********************_
-</span><span class='line'>_____*********_**********************_
-</span><span class='line'>___*_*********_*********************__
-</span><span class='line'>***********************************___
-</span><span class='line'>___*_*********_*********************__
-</span><span class='line'>_____*********_**********************_
-</span><span class='line'>_____*********_**********************_
-</span><span class='line'>______*******__**********************_
-</span><span class='line'>______*__*_____**********************_
-</span><span class='line'>________________*********************_
-</span><span class='line'>________________*********************_
-</span><span class='line'>_________________*******************__
-</span><span class='line'>__________________*****************___
-</span><span class='line'>___________________*****************__
-</span><span class='line'>___________________**************_**__
-</span><span class='line'>___________________*__**********______
-</span><span class='line'>______________________________________
-</span><span class='line'>_________________________****_________
-</span><span class='line'>_________________________****_________
-</span><span class='line'>_________________________****_________
-</span><span class='line'>___________________________*__________
-</span><span class='line'>_____________________________________</span></code></pre></td></tr></table></div></figure>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/10/18/les-fractales-en-php-mandelbrot/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -835,6 +781,10 @@ le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/12/06/les-monades-evaluation-partielle/">Les Monades : Evaluation partielle</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/11/29/les-monades-les-listes/">Les Monades : Les listes</a>
       </li>
     
@@ -848,10 +798,6 @@ le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code
     
       <li class="post">
         <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Les Monades en PHP c&#8217;est possible..</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/11/08/faire-des-jointures-sur-des-fichiers-csv/">Faire des jointures sur des fichiers csv</a>
       </li>
     
   </ul>

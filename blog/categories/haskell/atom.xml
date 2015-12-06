@@ -4,7 +4,7 @@
   <title><![CDATA[Category: haskell | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/haskell/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-11-29T23:21:50+01:00</updated>
+  <updated>2015-12-06T19:52:12+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,147 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Les Monades : Evaluation partielle]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/12/06/les-monades-evaluation-partielle/"/>
+    <updated>2015-12-06T18:49:49+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/12/06/les-monades-evaluation-partielle</id>
+    <content type="html"><![CDATA[<h2>Interlude.</h2>
+
+<p>J&#8217;ai besoin pour le prochain chapitre d&#8217;introduire la notion d&#8217;application partielle. Cela consiste à évaluer une partie de la fonction même si je n&#8217;ai pas tous les arguments.</p>
+
+<p>Soit la fonction suivante.</p>
+
+<pre><code class="php">function plus($a, $b) {
+   return $a + $b;
+}
+</code></pre>
+
+<p>Que donne l&#8217;exécution ?
+<code>php
+$result = plus(10);
+</code></p>
+
+<!--more-->
+
+
+<p>Une erreur bien entendu, puisque il manque un argument..</p>
+
+<p>Voici une fonction tirée de la librairie <a href="https://github.com/widmogrod/php-functional">php-functionnal</a></p>
+
+<pre><code class="php">function push(array $array, array $values)
+{
+    foreach ($values as $value) {
+        $array[] = $value;
+    }
+    return $array;
+}
+
+function curryN($numberOfArguments, callable $function, array $args = [])
+{
+    return function () use ($numberOfArguments, $function, $args) {
+        $argsLeft = $numberOfArguments - func_num_args();
+        return $argsLeft &lt;= 0
+            ? call_user_func_array($function, push($args, func_get_args()))
+            : curryN($argsLeft, $function, push($args, func_get_args()));
+    };
+}
+</code></pre>
+
+<p>Et maintenant reprenons ma première fonction
+<code>php
+$add = curryN(2, function($a, $b) {return $a + $b;});
+</code></p>
+
+<p>Maintenant réessayons notre commande</p>
+
+<pre><code class="php">$add10 = $add(10);
+</code></pre>
+
+<p>pas d&#8217;erreur mais il y a mieux !</p>
+
+<pre><code class="php">$result = $add10(10) // 20.
+</code></pre>
+
+<p>Varions encore un peu avec aucun arguments
+<code>php
+$addition = $add();
+result = $addition(10,10);//20
+</code></p>
+
+<p>S&#8217;il manque un argument, la fonction ne renvoie pas de résultat mais une nouvelle fonction.</p>
+
+<p>On appelle cela l&#8217;évaluation partielle.</p>
+
+<p>C&#8217;est plutôt pratique..</p>
+
+<h2>Quelques applications pratiques</h2>
+
+<h3>On réutilise mieux les calculs.</h3>
+
+<p>Par exemple
+<code>
+$result1 = $valeurTresComplique + $valeursTresSimple1;
+$result2 = $valeurTresComplique + $valeursTresSimple2;
+</code></p>
+
+<p>Devient
+<code>
+$partiel = $add($valeurTresComplique);
+$result1 = $partiel($valeursTresSimple1);
+$result2 = $partiel($valeursTresSimple2);
+</code></p>
+
+<h3>C&#8217;est plus simple à tester.</h3>
+
+<p>Si toute les fonctions ne prennent qu&#8217;un argument, Il y a moins de cas à tester. De plus cela permet une meilleure isolation du code. C&#8217;est une bonne pratique d&#8217;avoir des fonction le plus unitaire possible. Une fonction à 5-6 arguments est rarement un bon signe dans le code.</p>
+
+<h3>Cela permet de chainer les fonctions.</h3>
+
+<p>Nous allons nous servir de cette astuce pour nos monades/functors. Car depuis le début on ne peux mettre qu&#8217;une seule valeur dans mon <em>container</em> donc comment faire pour faire des fonctions à plusieurs arguments ?</p>
+
+<h2>Les evaluations partielles</h2>
+
+<p>Il faut quand même noter que les langage PHP n&#8217;est pas génial pour le coup.</p>
+
+<p>L&#8217;expression suivante en javascript est parfaitement légale.
+<code>js
+result = add(10)(5);
+</code>
+je suis obligé d&#8217;utiliser une viable intermédiaire en PHP.
+<code>php
+$add10= add(4);
+$result = $add10(5);
+</code>
+Bref la syntaxe n&#8217;est pas très pratique.</p>
+
+<h2>Conclusion</h2>
+
+<p>En Haskell et <a href="https://fr.wikipedia.org/wiki/OCaml">OCaml</a> l&#8217;évaluation partielle est la norme.
+<code>haskell
+max 10 10
+</code>
+En fait le langage fait.
+<code>haskell
+(max 10) 10
+</code></p>
+
+<p>Transformer une fonction à plusieurs arguments en une série de fonction à un argument s&#8217;appelle la <em>Curryfication</em>. Cela vient du prénom de la première personne a avoir écris sur le sujet <a href="https://fr.wikipedia.org/wiki/Haskell_Curry">Haskell Curry</a>. Le nom de famille doit voir dire quelque chose aussi..</p>
+
+<p>Cela semble un peu compliqué et pas forcement intéressant sur les exemples que j&#8217;ai choisi. Mais dans le prochain post nous allons utiliser cette notion.</p>
+
+<p>Merci de m&#8217;avoir lu.</p>
+
+<ul>
+<li>partie 1 : <a href="blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
+<li>partie 2 : <a href="blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
+<li>partie 3 : <a href="blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
+<li>partie 4 : <a href="blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Les Monades : Les listes]]></title>
@@ -1240,290 +1381,6 @@ $promotion = Maybe::of("getUserConnected")
 <p>Je me suis lancé dans une tache bien compliqué mais passionnante. Je m&#8217;excuse d&#8217;avance pour certaines approximations. J&#8217;avais confondu <code>map</code> et <code>bind</code> dans la première version</p>
 
 <p>Je vous remercies de m&#8217;avoir lu..</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[QuickCheck une autre façon de tester]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/08/22/quickcheck-une-autre-facon-de-tester/"/>
-    <updated>2015-08-22T19:01:42+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/08/22/quickcheck-une-autre-facon-de-tester</id>
-    <content type="html"><![CDATA[<h2>Introduction</h2>
-
-<p>Nous allons voir ensemble, une nouvelle façon de faire des tests. Nous allons installer utiliser un projet <a href="https://github.com/steos/php-quickcheck">php-quickcheck</a>. L&#8217;idée ici n&#8217;est pas d&#8217;écrire des tests, mais demander au logiciel de les générer.</p>
-
-<!--more-->
-
-
-<h2>Installation.</h2>
-
-<p>Nous allons créer le <code>composer.json</code> suivant.</p>
-
-<pre><code class="json">{
-  "require": {
-    "steos/php-quickcheck": "dev-master"
-  }
-}
-</code></pre>
-
-<p>Puis créer un fichier <code>test.php</code>.</p>
-
-<pre><code class="php">
-require_once __DIR__ . '/vendor/autoload.php'; // Autoload files using Composer autoload
-
-use QCheck\Generator as Gen;
-use QCheck\Quick;
-</code></pre>
-
-<p>Un petit <code>composer install</code>. Et tout est en place.</p>
-
-<h2>Exemple N°1</h2>
-
-<h3>Affirmation</h3>
-
-<p>Je vais essayer de prouver que <code>array_merge($list1, $list2) == $list1 + $list2</code> (<strong>ce qui est faux</strong>)</p>
-
-<p>Je l&#8217;écris dans la fonction suivante</p>
-
-<pre><code class="php">function isEqual(array $list1, array $list2) {
-    return (array_merge($list1, $list2) == $list1 + $list2);
-}
-</code></pre>
-
-<h3>Mise en place et contre-exemple.</h3>
-
-<p>Voici le code</p>
-
-<pre><code class="php">$test = Gen::forAll(
-    [Gen::ints()-&gt;intoArrays(), Gen::ints()-&gt;intoArrays()], isEqual
- );
-</code></pre>
-
-<p><code>Gen::ints()-&gt;intoArrays()</code> génère des array avec une taille aléatoire <code>[0, 1], [-15,0,5], ..</code> que  je vais passer à la fonction <code>isEqual</code></p>
-
-<pre><code>print_r(Quick::check(102, $test, ['echo' =&gt; true]));
-</code></pre>
-
-<p>Je vais lancer 102 fois mon test.</p>
-
-<p>Voici ce que me dit le programme dès que je lance.</p>
-
-<pre><code>..F
-Array
-(
-    [result] =&gt; 
-    [seed] =&gt; 1440263990644
-    [failing_size] =&gt; 2
-    [num_tests] =&gt; 3
-    [fail] =&gt; Array
-        (
-            [0] =&gt; Array
-                (
-                    [0] =&gt; 1
-                )
-
-            [1] =&gt; Array
-                (
-                    [0] =&gt; -2
-                    [1] =&gt; 1
-                )
-
-        )
-
-    [shrunk] =&gt; Array
-        (
-            [nodes_visited] =&gt; 9
-            [depth] =&gt; 3
-            [result] =&gt; 
-            [smallest] =&gt; Array
-                (
-                    [0] =&gt; Array
-                        (
-                            [0] =&gt; 0
-                        )
-
-                    [1] =&gt; Array
-                        (
-                            [0] =&gt; 0
-                        )
-
-                )
-
-        )
-
-)
-</code></pre>
-
-<p>Le résultat est intéressant, Le logiciel a essayé 3 fois, au troisième essai l&#8217;exemple <code>([1], [-2,1])</code> donne un cas qui ne marche pas.</p>
-
-<p>Vérifions avec <code>php -a</code></p>
-
-<pre><code class="">php &gt; var_dump(array_merge([1], [-2,1]));
-array(3) {
-  [0] =&gt;
-  int(1)
-  [1] =&gt;
-  int(-2)
-  [2] =&gt;
-  int(1)
-}
-php &gt; var_dump([1] + [-2,1]);
-array(2) {
-  [0] =&gt;
-  int(1)
-  [1] =&gt;
-  int(1)
-}
-</code></pre>
-
-<p>Effectivement.. Mais il y a mieux. Le logiciel a fais un <em>shrunk</em>, c&#8217;est à dire qu&#8217;il a calculé le plus petit exemple possible qui est <code>([0], [0])</code>.</p>
-
-<p>Donc la librairie me donne tort et en plus me donne le contre-exemple.</p>
-
-<h2>Exemple N°2</h2>
-
-<h3>Affirmation</h3>
-
-<p>J&#8217;affirme que <code>(sort (array) == sort(sort(array))</code> que en gros cela ne sert à rien de trier deux fois un array.</p>
-
-<h3>Mise en place</h3>
-
-<pre><code>$test2 = Gen::forAll(
-    [Gen::ints()-&gt;intoArrays()],
-    function ($list) {
-        $lista = $list;
-        $listb = $list;
-        sort($lista);
-        sort($listb);
-        sort($listb);
-        return ($lista == $listb);
-    }
-  );
-
-print_r(Quick::check(101, $test2, ['echo' =&gt; true]));
-</code></pre>
-
-<p>Je lance le logiciel</p>
-
-<pre><code>.....................................................................................................Array
-(
-    [result] =&gt; 1
-    [num_tests] =&gt; 101
-    [seed] =&gt; 1440265001108
-)
-</code></pre>
-
-<p>Le logiciel semble d&#8217;accord. Il a fait 101 tests, mais il n&#8217;a pas trouvé de contre-exemple.</p>
-
-<h2>Exemple N°3</h2>
-
-<p>Nous allons encoder en <code>run legth encoding</code> qui est l&#8217;actuel encodage des fichiers bitmaps.</p>
-
-<p>Quelque exemples:
-<code>
-Input: WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWBWWWWWWWWWWWWWW
-Output: 12W1B12W3B24W1B14W
-</code></p>
-
-<p>Il y a <code>12W</code> puis <code>1B</code> etc .. je compresse ma chaîne de caractères.</p>
-
-<p>Dans l&#8217;autre sens
-<code>
-Input: 12W1B12W3B24W1B14W
-Output: WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWBWWWWWWWWWWWWWW
-</code></p>
-
-<p>Voici une implémentation en php</p>
-
-<pre><code class="php">function encode($str) {
-    return preg_replace_callback(
-        '/(.)\1+/',
-        function($m) {
-            return sprintf('%s%s', strlen($m[0]), $m[1]);
-        },
-        $str
-    );
-};
-function decode($str) {
-    return preg_replace_callback(
-        '/(\d+)(\D)/',
-        function($m) {
-            return str_repeat($m[2], $m[1]);
-        },
-         $str
-     );
-}
-</code></pre>
-
-<p>Mon implémentation est correcte, mais il y a un petit souci. Pouvez vous deviner le souci de mon programme.</p>
-
-<p>A priori <code>$input == decode(encode($input))</code></p>
-
-<h3>Mise en place.</h3>
-
-<pre><code class="php">$test3 = Gen::forAll(
-    [Gen::alphaNumStrings()],
-    function ($string) {
-      return ($string == decode(encode($string)));
-    }
-);
-print_r(Quick::check(101, $test2, ['echo' =&gt; true]));
-</code></pre>
-
-<p>Le logiciel ne tarde pas à trouver le souci</p>
-
-<pre><code>.....F
-Array
-(
-    [result] =&gt; 
-    [seed] =&gt; 1440265916923
-    [failing_size] =&gt; 5
-    [num_tests] =&gt; 6
-    [fail] =&gt; Array
-        (
-            [0] =&gt; G67k}
-        )
-
-    [shrunk] =&gt; Array
-        (
-            [nodes_visited] =&gt; 34
-            [depth] =&gt; 7
-            [result] =&gt; 
-            [smallest] =&gt; Array
-                (
-                    [0] =&gt; 0 
-                )
-
-        )
-
-)
-</code></pre>
-
-<p>La chaîne de caractère <code>"G67k"</code> ne marche pas, et en fait la chaîne <code>"0"</code> tout cours ne marche pas.</p>
-
-<h2>Conclusion des 3 exemples.</h2>
-
-<ul>
-<li>Je n&#8217;ai pas écris de test. C&#8217;est le logiciel qui génère les tests.</li>
-<li>Les tests sont aléatoires. Par exemple si j&#8217;avais limité à 5 tests l&#8217;exemple 3 pourrait passer.</li>
-<li>Si le code ne passe pas le logiciel est capable de <em>réduire</em> jusqu&#8217;à trouver un contre-exemple ici la chaine <code>"0"</code> ou l&#8217;entrée <code>([0],[0])</code></li>
-<li>Un autre cas, dans le dernier exemple, j&#8217;ai pris un générateur de texte qui prend des chiffres et des lettres, si j&#8217;avais pris un générateur de lettre seulement comme <code>gen::alphaString</code>. Le test passerait sans problème.</li>
-</ul>
-
-
-<p>Ce type de logiciel s&#8217;appelle le <a href="https://en.wikipedia.org/wiki/QuickCheck">QuickCheck</a> du nom du premier logiciel en <a href="https://en.wikipedia.org/wiki/Haskell_%28programming_language%29">Haskell</a>. Ce sont des tests aléatoires.</p>
-
-<p>Il existe deux portage en php.</p>
-
-<ul>
-<li><a href="https://github.com/giorgiosironi/eris">eris</a></li>
-<li><a href="https://github.com/steos/php-quickcheck">php-quickcheck</a></li>
-</ul>
-
-
-<p>Il y a le même problème que les tests unitaires: Quand les tests unitaires ne passent pas,  il y a un problème. Mais des tests unitaires qui passent ne prouve pas forcement que le logiciel est correct. Néanmoins cette méthode qui génère des milliers de tests donne des résultats assez intéressants. La capacité a trouvé automatiquement un contre-exemple (s&#8217;il y a un contre-exemple) est vraiment un plus.</p>
-
-<p>Cela n&#8217;a pas été évident d&#8217;écrire ce post. J&#8217;ai eu un peu de mal à trouver un exemple pertinent. Je me suis inspiré des exemples de <a href="https://github.com/DRMacIver/hypothesis">hypothesis</a>. L&#8217;implémentation du RLE viens de <a href="http://rosettacode.org/wiki/Run-length_encoding">rosetta</a> mais l&#8217;exemple en php est obsolète (la regex <code>/../e</code> php5.5 n&#8217;en veux pas). J&#8217;ai retraduis le code.</p>
 ]]></content>
   </entry>
   

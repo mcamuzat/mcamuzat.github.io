@@ -9,7 +9,13 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Introduction Je vais parler de SplStack une structure de donnée qui fait partie de La SPL (pour Standart PHP Librairie). Nous allons voir trois &hellip;">
+  <meta name="description" content="Soit le fichier texte suivant: 1
+2
+3
+4
+5
+6 * Alpha * Foxtrot * Charlie * Delta * Echo * Bravo Dans VIM il suffit de taper. 1
+:%sort ou :%!sort Pour &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -62,6 +68,83 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/31/lancer-des-commandes-dans-vim/">Lancer des commandes dans Vim</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-08-31T23:49:17+02:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Soit le fichier texte suivant:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> * Alpha
+</span><span class='line'> * Foxtrot
+</span><span class='line'> * Charlie
+</span><span class='line'> * Delta
+</span><span class='line'> * Echo 
+</span><span class='line'> * Bravo</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Dans VIM il suffit de taper.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:%sort ou :%!sort</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pour obtenir</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> * Alpha
+</span><span class='line'> * Bravo
+</span><span class='line'> * Charlie
+</span><span class='line'> * Delta
+</span><span class='line'> * Echo 
+</span><span class='line'> * Foxtrot</span></code></pre></td></tr></table></div></figure>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/08/31/lancer-des-commandes-dans-vim/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -555,49 +638,6 @@ quand je lance mes tests je vois cela.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/07/25/mise-en-place-de-travis/">Mise en place de Travis</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-07-25T16:37:49+02:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Introduction</h2>
-
-<p>Après la création de la <a href="/blog/2015/07/19/histogramme-et-ligne-de-commande/">librairie</a>, la création et la publication du <a href="blog/2015/07/24/creer-son-depot-sous-packagist/">package</a>, je propose d&#8217;ajouter l&#8217;intégration continue avec Travis. Travis est gratuit pour les projets open-source. (L&#8217;url n&#8217;est d&#8217;ailleurs pas la même c&#8217;est travis-ci.org pour les projets publics, et travis-ci.com pour les projets privés)</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/07/25/mise-en-place-de-travis/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/4">&larr; Older</a>
@@ -647,6 +687,10 @@ quand je lance mes tests je vois cela.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/12/06/les-monades-evaluation-partielle/">Les Monades : Evaluation partielle</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/11/29/les-monades-les-listes/">Les Monades : Les listes</a>
       </li>
     
@@ -660,10 +704,6 @@ quand je lance mes tests je vois cela.</p>
     
       <li class="post">
         <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Les Monades en PHP c&#8217;est possible..</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/11/08/faire-des-jointures-sur-des-fichiers-csv/">Faire des jointures sur des fichiers csv</a>
       </li>
     
   </ul>
