@@ -4,7 +4,7 @@
   <title><![CDATA[Category: php | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/php/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-12-06T19:52:12+01:00</updated>
+  <updated>2015-12-13T19:13:45+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -70,16 +70,16 @@ $add = curryN(2, function($a, $b) {return $a + $b;});
 <pre><code class="php">$add10 = $add(10);
 </code></pre>
 
-<p>pas d&#8217;erreur mais il y a mieux !</p>
+<p>Je n&#8217;ai pas d&#8217;erreur mais il y a mieux !</p>
 
 <pre><code class="php">$result = $add10(10) // 20.
 </code></pre>
 
-<p>Varions encore un peu avec aucun arguments
-<code>php
-$addition = $add();
+<p>Varions encore un peu avec aucun argument</p>
+
+<pre><code class="php">$addition = $add();
 result = $addition(10,10);//20
-</code></p>
+</code></pre>
 
 <p>S&#8217;il manque un argument, la fonction ne renvoie pas de résultat mais une nouvelle fonction.</p>
 
@@ -106,21 +106,22 @@ $result2 = $partiel($valeursTresSimple2);
 
 <h3>C&#8217;est plus simple à tester.</h3>
 
-<p>Si toute les fonctions ne prennent qu&#8217;un argument, Il y a moins de cas à tester. De plus cela permet une meilleure isolation du code. C&#8217;est une bonne pratique d&#8217;avoir des fonction le plus unitaire possible. Une fonction à 5-6 arguments est rarement un bon signe dans le code.</p>
+<p>Si toute les fonctions ne prennent qu&#8217;un argument, Il y a moins de cas à tester.
+De plus cela permet une meilleure isolation du code. Une fonction à 5-6 arguments est rarement un bon signe dans le code.</p>
 
 <h3>Cela permet de chainer les fonctions.</h3>
 
-<p>Nous allons nous servir de cette astuce pour nos monades/functors. Car depuis le début on ne peux mettre qu&#8217;une seule valeur dans mon <em>container</em> donc comment faire pour faire des fonctions à plusieurs arguments ?</p>
+<p>Nous allons nous servir de cette astuce pour nos monades/functors. Depuis le début on ne peux mettre qu&#8217;une seule valeur dans mon <em>container</em> donc comment faire pour faire des fonctions à plusieurs arguments ?</p>
 
-<h2>Les evaluations partielles</h2>
+<h2>Les évaluations partielles</h2>
 
-<p>Il faut quand même noter que les langage PHP n&#8217;est pas génial pour le coup.</p>
+<p>Il faut quand même noter que le langage PHP n&#8217;est pas génial pour le coup.</p>
 
 <p>L&#8217;expression suivante en javascript est parfaitement légale.
 <code>js
 result = add(10)(5);
 </code>
-je suis obligé d&#8217;utiliser une viable intermédiaire en PHP.
+je suis obligé d&#8217;utiliser une variable intermédiaire en PHP.
 <code>php
 $add10= add(4);
 $result = $add10(5);
@@ -145,10 +146,10 @@ En fait le langage fait.
 <p>Merci de m&#8217;avoir lu.</p>
 
 <ul>
-<li>partie 1 : <a href="blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
-<li>partie 2 : <a href="blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
-<li>partie 3 : <a href="blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
-<li>partie 4 : <a href="blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
+<li>partie 1 : <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
+<li>partie 2 : <a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
+<li>partie 3 : <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
+<li>partie 4 : <a href="/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
 </ul>
 
 ]]></content>

@@ -9,45 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-______________________________________ &hellip;">
+  <meta name="description" content="Parlons de retour vers le futur. En effet le héros dans le film 2 arrive le 21 octobre 2015. Bon on n'a pas les voitures volantes. Et c'est toujours &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -100,6 +62,78 @@ ______________________________________ &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/10/25/retour-vers-le-futur-avec-vim/">Retour vers le futur avec Vim</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-10-25T18:52:49+01:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Parlons de retour vers le futur.</h2>
+
+<p>En effet le héros dans le film 2 arrive le 21 octobre 2015. Bon on n&#8217;a pas les voitures volantes. Et c&#8217;est toujours le même éditeur de texte (vi date de 1976 !).</p>
+
+<h2>Annuler dans VIM</h2>
+
+<p>Pour annuler de VIM c&#8217;est plutôt simple <code>u</code> pour <strong>u</strong>ndo. Pour refaire c&#8217;est moins simple <code>&lt;CTRL + r&gt;</code>. Mais en pratique c&#8217;est plus puissant que cela.</p>
+
+<p>En fait on peut voyager dans le temps avec VIM.</p>
+
+<h2>Retour dans le passé</h2>
+
+<p>Grâce à la commande  <code>:earlier</code></p>
+
+<ul>
+<li><code>:earlier 5m</code> reviens en arrière de 5 minutes</li>
+<li><code>:earlier 10</code> annule 10 modifications</li>
+<li><code>:earlier 5h</code> annule 5 heures.</li>
+<li><code>:earlier 1f</code> ramène le fichier avant le dernier enregistrement</li>
+<li><code>:earlier 2f</code> ramène le fichier à l&#8217;avant-dernier enregistrement</li>
+</ul>
+
+
+<p>Bien sur on peut faire un <em>retour vers futur</em> avec la commande suivante.</p>
+
+<ul>
+<li><code>:later 5m</code> retourne 5 minute plus tard.</li>
+<li><code>:later 10</code> refait les 10 derniers modifications</li>
+</ul>
+
+
+<p>Encore plus fort se déplacer dans l&#8217;historique de VIM</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/10/25/retour-vers-le-futur-avec-vim/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -811,114 +845,6 @@ ______________________________________ &hellip;">
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/09/05/les-promises-et-php-via-react/">Les promises et Php via ReactPhp</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-09-05T19:10:10+02:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Les promises sont une alternative plus puissante au Callback. Relativement peu connues au début. Elle sont maintenant en standard dans beaucoup de langage javascript ES6, python 3.2, java. Où via des librairies comme <a href="https://github.com/reactphp/promise">react/promise</a> pour php</p>
-
-<p>Une promise représente une valeur donc le résultat n&#8217;est pas encore connu.
-Quand le résultat est connu,  la promise a 3 états possibles</p>
-
-<ul>
-<li><strong>Pending</strong> ou <strong>Unfulfillled</strong>  en Attente..</li>
-<li><strong>Resolved</strong> ou <strong>fulfillled</strong>  Succès</li>
-<li><strong>Rejected</strong> ou <strong>Failed</strong>  Erreur.</li>
-</ul>
-
-
-<p>Un <em>Deffered</em> représente un travail qui n&#8217;est pas encore fini. Donc un <em>Deferred</em> possède une promise (une valeur pas encore connues).</p>
-
-<p>Quand la valeur est connue, la promesse utilise un <em>handler</em> (en général <code>-&gt;then()</code>) qui lui-même renvoie une promise. L&#8217;intérêt est que les promises sont chainables.</p>
-
-<p>Mais essayons quelques exemples qui seront un peu plus parlant.</p>
-
-<p>Pour ce faire nous allons d&#8217;abord installer <a href="https://github.com/reactphp/promise">react/promises</a></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'><span class="k">require</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/vendor/autoload.php&#39;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// On crée un travail</span>
-</span><span class='line'><span class="nv">$deferred</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">React\Promise\Deferred</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// On veux la promise</span>
-</span><span class='line'><span class="nv">$promise</span>  <span class="o">=</span> <span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">promise</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&quot;tout va bien </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span> <span class="p">},</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&quot;tout va mal </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span> <span class="p">},</span>
-</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&quot;j&#39;attends</span><span class="se">\n</span><span class="s2"> &quot;</span><span class="p">;</span> <span class="p">}</span>
-</span><span class='line'><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// Le travail est un succes, on résoud la promise</span>
-</span><span class='line'><span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">resolve</span><span class="p">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Voici ce que j&#8217;obtiens si je lance le programme.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">tout</span> <span class="nx">va</span> <span class="nx">bien</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Si je remplace <code>$deferred-&gt;resolve()</code> par <code>$deferred-&gt;reject()</code>. Le travail n&#8217;as pas marché. J&#8217;obtiens</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">Tout</span> <span class="nx">va</span> <span class="nx">mal</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/09/05/les-promises-et-php-via-react/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -933,13 +859,13 @@ Quand le résultat est connu,  la promise a 3 états possibles</p>
   
     <section id="titles">
   <a href="" title="Journal d'un panda qui code"><img id="logo" src="/images/panda.png" /></a>
-  <h1 id="site_title"><a href="" title="Journal d'un panda qui code">Journal d&#8217;un panda qui code</a></h1>
+  <h1 id="site_title"><a href="/" title="Journal d'un panda qui code">Journal d&#8217;un panda qui code</a></h1>
   <h3 id="site_subtitle">Un simple blog PHP/Linux/Programmation/Docker</h3>
 </section>
 
 <section id="menu">
   <ul>
-    <li><i class="fa fa-home fa-lg"></i><a href=""> Home </a></li>
+    <li><i class="fa fa-home fa-lg"></i><a href="/"> Home </a></li>
     <li><i class="fa fa-calendar fa-lg"></i><a href="/blog/archives/"> Archives </a></li>
     <li><i class="fa fa-user fa-lg"></i><a href="/about/"> About </a></li>
     <li><i class="fa fa-rss fa-lg"></i><a href="/atom.xml"> Feed </a></li>
@@ -968,6 +894,10 @@ Quand le résultat est connu,  la promise a 3 états possibles</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/12/13/je-joue-donc-je-programme-2/">Je joue donc je programme 2</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/12/06/les-monades-evaluation-partielle/">Les Monades : Evaluation partielle</a>
       </li>
     
@@ -981,10 +911,6 @@ Quand le résultat est connu,  la promise a 3 états possibles</p>
     
       <li class="post">
         <a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Les Monades (suite): Le Functor Maybe..</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Les Monades en PHP c&#8217;est possible..</a>
       </li>
     
   </ul>

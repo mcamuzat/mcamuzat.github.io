@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: html | Journal d'un panda qui code]]></title>
+  <link href="http://mcamuzat.github.io/blog/categories/html/atom.xml" rel="self"/>
+  <link href="http://mcamuzat.github.io/"/>
+  <updated>2015-12-13T19:13:45+01:00</updated>
+  <id>http://mcamuzat.github.io/</id>
+  <author>
+    <name><![CDATA[mcamuzat]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Je joue donc je programme 2]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/12/13/je-joue-donc-je-programme-2/"/>
+    <updated>2015-12-13T18:05:20+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/12/13/je-joue-donc-je-programme-2</id>
+    <content type="html"><![CDATA[<p>J&#8217;avais <a href="blog/2015/05/04/je-joue-donc-je-programme/">déjà parlé</a> de jeux pour apprendre à programmer.
+<img class="center" src="/images/thimble.png" width="600" height="345" title="&lsquo;thimble&rsquo; &lsquo;Thimble&rsquo;" ></p>
+
+<!--more-->
+
+
+<h2>Le CSS</h2>
+
+<h3>Apprendre les selecteurs</h3>
+
+<p>C&#8217;est assez basique mais la présentation est très propre
+<a href="flukeout.github.io">Cssdiner</a>
+<img class="center" src="/images/cssdiner.png" width="600" height="606" title="&lsquo;Css diner&rsquo; &lsquo;Css diner&rsquo;" ></p>
+
+<h3>Apprendre la balise <code>flex</code></h3>
+
+<p>C&#8217;est relativement récent cela ne marche pas sur tout les navigateurs (pas de problème sous firefox)
+<a href="http://flexboxfroggy.com/">flexbox froggy</a></p>
+
+<p><img class="center" src="/images/flexfrog.png" width="600" height="399" title="&lsquo;flexbox froggy&rsquo; &lsquo;flexbox froggy&rsquo;" ></p>
+
+<h3>Créer ses propres pages</h3>
+
+<p>Pas un jeu mais un tutoriel de la part de mozilla
+<a href="https://thimble.mozilla.org/en-US">thimble</a></p>
+
+<p><img class="center" src="/images/thimble.png" width="600" height="345" title="&lsquo;thimble&rsquo; &lsquo;Thimble&rsquo;" ></p>
+
+<h2>Javascript</h2>
+
+<p><a href="https://jsfiddle.net/qmmc8mpr/embedded/result/">l&#8217;adresse</a></p>
+
+<p>Le but est à la fois simple et plutôt compliqué faire atteindre x à l&#8217;infini. Sauf que vous devez payer pour ajouter des caractères.</p>
+
+<ul>
+<li>1er caractère : 1000 points</li>
+<li>2nd caractères : 10000 points</li>
+<li>3ème caractères : 100000 points.</li>
+</ul>
+
+
+<p>On ne peux utiliser les caractères  <code>[e, E, *, /, 5, 6, 7, 8, 9, another x]</code>. Ce serait trop simple <code>x+=x</code>.</p>
+
+<p>Quand on connait l&#8217;astuce cela se résout en 30 secondes.</p>
+
+<p><img class="center" src="/images/javascriptinfini.png" width="600" height="450" title="&lsquo;Un petit casse-tête&rsquo; &lsquo;Un petit casse-tête&rsquo;" ></p>
+
+<h2>En conclusion</h2>
+
+<p>Voila de quoi occupé vos soirées.</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: javascript | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/javascript/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-12-06T19:52:12+01:00</updated>
+  <updated>2015-12-13T19:13:45+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,64 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Je joue donc je programme 2]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/12/13/je-joue-donc-je-programme-2/"/>
+    <updated>2015-12-13T18:05:20+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/12/13/je-joue-donc-je-programme-2</id>
+    <content type="html"><![CDATA[<p>J&#8217;avais <a href="blog/2015/05/04/je-joue-donc-je-programme/">déjà parlé</a> de jeux pour apprendre à programmer.
+<img class="center" src="/images/thimble.png" width="600" height="345" title="&lsquo;thimble&rsquo; &lsquo;Thimble&rsquo;" ></p>
+
+<!--more-->
+
+
+<h2>Le CSS</h2>
+
+<h3>Apprendre les selecteurs</h3>
+
+<p>C&#8217;est assez basique mais la présentation est très propre
+<a href="flukeout.github.io">Cssdiner</a>
+<img class="center" src="/images/cssdiner.png" width="600" height="606" title="&lsquo;Css diner&rsquo; &lsquo;Css diner&rsquo;" ></p>
+
+<h3>Apprendre la balise <code>flex</code></h3>
+
+<p>C&#8217;est relativement récent cela ne marche pas sur tout les navigateurs (pas de problème sous firefox)
+<a href="http://flexboxfroggy.com/">flexbox froggy</a></p>
+
+<p><img class="center" src="/images/flexfrog.png" width="600" height="399" title="&lsquo;flexbox froggy&rsquo; &lsquo;flexbox froggy&rsquo;" ></p>
+
+<h3>Créer ses propres pages</h3>
+
+<p>Pas un jeu mais un tutoriel de la part de mozilla
+<a href="https://thimble.mozilla.org/en-US">thimble</a></p>
+
+<p><img class="center" src="/images/thimble.png" width="600" height="345" title="&lsquo;thimble&rsquo; &lsquo;Thimble&rsquo;" ></p>
+
+<h2>Javascript</h2>
+
+<p><a href="https://jsfiddle.net/qmmc8mpr/embedded/result/">l&#8217;adresse</a></p>
+
+<p>Le but est à la fois simple et plutôt compliqué faire atteindre x à l&#8217;infini. Sauf que vous devez payer pour ajouter des caractères.</p>
+
+<ul>
+<li>1er caractère : 1000 points</li>
+<li>2nd caractères : 10000 points</li>
+<li>3ème caractères : 100000 points.</li>
+</ul>
+
+
+<p>On ne peux utiliser les caractères  <code>[e, E, *, /, 5, 6, 7, 8, 9, another x]</code>. Ce serait trop simple <code>x+=x</code>.</p>
+
+<p>Quand on connait l&#8217;astuce cela se résout en 30 secondes.</p>
+
+<p><img class="center" src="/images/javascriptinfini.png" width="600" height="450" title="&lsquo;Un petit casse-tête&rsquo; &lsquo;Un petit casse-tête&rsquo;" ></p>
+
+<h2>En conclusion</h2>
+
+<p>Voila de quoi occupé vos soirées.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Yield PHP Co-routine]]></title>
@@ -875,59 +933,6 @@ Vous devriez voir apparaitre l&#8217;interface</p>
 <li><a href="http://processingjs.org/">ProcessingJs</a> (fait par le programmeur de JQuery Jon Resig)</li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[If Hemingway wrote javascript]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/06/21/if-hemingway-wrote-javascript/"/>
-    <updated>2015-06-21T19:06:54+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/06/21/if-hemingway-wrote-javascript</id>
-    <content type="html"><![CDATA[<p>Je suis tombé un peu par hasard sur ce livre &ldquo;If Hemingway Wrote JavaScript&rdquo;. Cela part de l&#8217;idée que tout les auteurs ont un certain style. Et que s&#8217;il devait programmer en javascript le résultat serait diffèrent. L&#8217;auteur est un expert du javascript.</p>
-
-<!--more-->
-
-
-<p>On trouve dans les auteurs</p>
-
-<ul>
-<li>Ernest Hemingway</li>
-<li>William Shakespeare</li>
-<li>André Breton</li>
-<li>Roberto Bolaño</li>
-<li>Dan Brown</li>
-<li>Jack Kerouac</li>
-<li>Jane Austen</li>
-<li>Samuel Johnson</li>
-<li>Sir Arthur Conan Doyle</li>
-<li>James Joyce</li>
-<li>J.D. Salinger</li>
-<li>Tupac Shakur</li>
-<li>Virginia Woolf</li>
-<li>Geoffrey Chaucer</li>
-<li>Vladimir Nabokov</li>
-<li>Jorge Luis Borges</li>
-<li>Lewis Carroll</li>
-<li>Douglas Adams</li>
-<li>Charles Dickens</li>
-<li>David Foster Wallace</li>
-<li>Sylvia Plath</li>
-<li>Italo Calvino</li>
-<li>J.K. Rowling</li>
-<li>Arundhati Roy</li>
-<li>Franz Kafka</li>
-</ul>
-
-
-<p>Bien sur un livre en anglais implique plutôt de la littérature anglaise. Certain choix sont curieux Dan Brown (Da vinci code) entre Kerouac et Joyce, Voir Tupac (si si le rappeur). Je venais de lire le livre le plus connus de Borges.</p>
-
-<p>On trouve 7-8 implémentation du Fibonnaci et autre factorielle. Vous allez apprendre plein de trucs sur le javascript, bien que je doute que cela serve. L&#8217;auteur montre des utilisations de <code>with</code> ou l&#8217;atroce mais absolument correct <code>Function('return this/4').call(2*2)</code>. Il y a toutes les subtilités du javascript qui sont évoquées : Héritage, scope, hoisting, variable, etc..</p>
-
-<p>La présentation est classe. Je l&#8217;avais pas reconnu mais les dessins sont de Miran Lipovača. C&#8217;est l&#8217;auteur du magnifique <a href="http://learnyouahaskell.com">Learn You a Haskell for Great Good!</a> si vous ne connaissez pas foncer.</p>
-
-<h2>En conclusion</h2>
-
-<p>Un bouquin qui aime les écrivains et qui aime le javascript. Il vous faudra aimer un peu les deux pour apprécier le contenu. Je m&#8217;en sors pas trop mal, je connaissais la plupart des écrivains. Pour moi c&#8217;est une curiosité et j&#8217;adore ce genre de livre. J&#8217;aime beaucoup la présentation.</p>
 ]]></content>
   </entry>
   

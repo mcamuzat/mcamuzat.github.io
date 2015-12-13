@@ -170,14 +170,14 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>pas d&#8217;erreur mais il y a mieux !</p>
+<p>Je n&#8217;ai pas d&#8217;erreur mais il y a mieux !</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$result</span> <span class="o">=</span> <span class="nv">$add10</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="c1">// 20.</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Varions encore un peu avec aucun arguments</p>
+<p>Varions encore un peu avec aucun argument</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -218,15 +218,16 @@
 
 <h3>C&#8217;est plus simple à tester.</h3>
 
-<p>Si toute les fonctions ne prennent qu&#8217;un argument, Il y a moins de cas à tester. De plus cela permet une meilleure isolation du code. C&#8217;est une bonne pratique d&#8217;avoir des fonction le plus unitaire possible. Une fonction à 5-6 arguments est rarement un bon signe dans le code.</p>
+<p>Si toute les fonctions ne prennent qu&#8217;un argument, Il y a moins de cas à tester.
+De plus cela permet une meilleure isolation du code. Une fonction à 5-6 arguments est rarement un bon signe dans le code.</p>
 
 <h3>Cela permet de chainer les fonctions.</h3>
 
-<p>Nous allons nous servir de cette astuce pour nos monades/functors. Car depuis le début on ne peux mettre qu&#8217;une seule valeur dans mon <em>container</em> donc comment faire pour faire des fonctions à plusieurs arguments ?</p>
+<p>Nous allons nous servir de cette astuce pour nos monades/functors. Depuis le début on ne peux mettre qu&#8217;une seule valeur dans mon <em>container</em> donc comment faire pour faire des fonctions à plusieurs arguments ?</p>
 
-<h2>Les evaluations partielles</h2>
+<h2>Les évaluations partielles</h2>
 
-<p>Il faut quand même noter que les langage PHP n&#8217;est pas génial pour le coup.</p>
+<p>Il faut quand même noter que le langage PHP n&#8217;est pas génial pour le coup.</p>
 
 <p>L&#8217;expression suivante en javascript est parfaitement légale.</p>
 
@@ -235,7 +236,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>je suis obligé d&#8217;utiliser une viable intermédiaire en PHP.</p>
+<p>je suis obligé d&#8217;utiliser une variable intermédiaire en PHP.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -269,10 +270,10 @@
 <p>Merci de m&#8217;avoir lu.</p>
 
 <ul>
-<li>partie 1 : <a href="blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
-<li>partie 2 : <a href="blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
-<li>partie 3 : <a href="blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
-<li>partie 4 : <a href="blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
+<li>partie 1 : <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
+<li>partie 2 : <a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
+<li>partie 3 : <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
+<li>partie 4 : <a href="/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
 </ul>
 
 </div>
@@ -323,6 +324,8 @@
         <a class="basic-alignment left" href="/blog/2015/11/29/les-monades-les-listes/" title="Previous Post: Les Monades : Les listes">&laquo; Les Monades : Les listes</a>
       
       
+        <a class="basic-alignment right" href="/blog/2015/12/13/je-joue-donc-je-programme-2/" title="Next Post: Je joue donc je programme 2">Je joue donc je programme 2 &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -333,13 +336,13 @@
   
     <section id="titles">
   <a href="" title="Journal d'un panda qui code"><img id="logo" src="/images/panda.png" /></a>
-  <h1 id="site_title"><a href="" title="Journal d'un panda qui code">Journal d&#8217;un panda qui code</a></h1>
+  <h1 id="site_title"><a href="/" title="Journal d'un panda qui code">Journal d&#8217;un panda qui code</a></h1>
   <h3 id="site_subtitle">Un simple blog PHP/Linux/Programmation/Docker</h3>
 </section>
 
 <section id="menu">
   <ul>
-    <li><i class="fa fa-home fa-lg"></i><a href=""> Home </a></li>
+    <li><i class="fa fa-home fa-lg"></i><a href="/"> Home </a></li>
     <li><i class="fa fa-calendar fa-lg"></i><a href="/blog/archives/"> Archives </a></li>
     <li><i class="fa fa-user fa-lg"></i><a href="/about/"> About </a></li>
     <li><i class="fa fa-rss fa-lg"></i><a href="/atom.xml"> Feed </a></li>
@@ -368,6 +371,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/12/13/je-joue-donc-je-programme-2/">Je joue donc je programme 2</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/12/06/les-monades-evaluation-partielle/">Les Monades : Evaluation partielle</a>
       </li>
     
@@ -381,10 +388,6 @@
     
       <li class="post">
         <a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Les Monades (suite): Le Functor Maybe..</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Les Monades en PHP c&#8217;est possible..</a>
       </li>
     
   </ul>
