@@ -205,3 +205,11 @@ Je suis désolé si certain termes sont inexacts comme le container. Je ne suis 
 Si vous avez un code ou vous vérifiez tout le temps si les valeurs sont nulles. Il y a probablement moyen que cette structure vous aide.
 
 Dans le prochain Post nous utiliserons le Maybe avec l'instruction `bind`.
+
+ * Partie 1 : [Monade/Functor](/blog/2015/11/11/les-monades-en-php-cest-possible-dot/)
+ * Partie 2 : [Le functor Maybe](/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/)
+ * Partie 3 : [Le functor Maybe avec le Bind](/blog/2015/11/22/les-monades-3-le-maybe-suite/)
+ * Partie 4 : [Les listes](/blog/2015/11/29/les-monades-les-listes/)
+ * Interlude : [Les évaluations partielles](/blog/2015/12/06/les-monades-evaluation-partielle/)
+ * Partie 5 : [Les applicatives](2015/12/20/les-monades-5-les-applicatives/)
+

@@ -310,10 +310,10 @@ var_dump($output);
 
 Mon container bien que pour le moment est assez peu utilise mais.
 
- * Il implémente une fonction `map` qui est chainage. Nous venons d'implémenter un **functor** ou **foncteur** en français. Cela a un rapport avec les mathématiques. Et il m'est difficile au moment ou j'écris ces lignes de vous l'expliquer. Le Functor s'occupe d'appeler la fonction pour nous et de retourner un résultat correct. Il s'occupe de tout. C'est une sorte d'abstraction. On lui confie le calcul et il se débrouille. (Nous le retrouverons dans le post suivant)
+ * Il implémente une fonction `map` qui est chainable. Nous venons d'implémenter un **functor** ou **foncteur** en français. Cela a un rapport avec les mathématiques. Et il m'est difficile au moment ou j'écris ces lignes de vous l'expliquer. Le Functor s'occupe d'appeler la fonction pour nous et de retourner un résultat correct. Il s'occupe de tout. C'est une sorte d'abstraction. On lui confie le calcul et il se débrouille. (Nous le retrouverons dans le post suivant)
 
 
- * Nous implémentons la méthode `of` et `bind` qui est elle aussi chainage (à condition de lui donner des fonctions qui renvoie de Container). Nous venons d'implémenter une *monade* même principe que le functor.
+ * Nous implémentons la méthode `of` et `bind` qui est elle aussi chainable (à condition de lui donner des fonctions qui renvoient des Containers). Nous venons d'implémenter une *monade* même principe que le functor.
 
 Si vous avez compris le container, vous pouvez le renommer en IdentityMonad.
 
@@ -359,4 +359,10 @@ Je me suis lancé dans une tache bien compliqué mais passionnante. Je m'excuse 
 
 Je vous remercies de m'avoir lu..
 
+ * Partie 1 : [Monade/Functor](/blog/2015/11/11/les-monades-en-php-cest-possible-dot/)
+ * Partie 2 : [Le functor Maybe](/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/)
+ * Partie 3 : [Le functor Maybe avec le Bind](/blog/2015/11/22/les-monades-3-le-maybe-suite/)
+ * Partie 4 : [Les listes](/blog/2015/11/29/les-monades-les-listes/)
+ * Interlude : [Les évaluations partielles](/blog/2015/12/06/les-monades-evaluation-partielle/)
+ * Partie 5 : [Les applicatives](2015/12/20/les-monades-5-les-applicatives/)
 

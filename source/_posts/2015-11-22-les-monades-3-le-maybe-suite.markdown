@@ -6,8 +6,6 @@ comments: true
 categories: ["php", "haskell", "programmation fonctionnelle"] 
 ---
 
- * partie 1 : [Monade/Functor](blog/2015/11/11/les-monades-en-php-cest-possible-dot/)
- * partie 2 : [Le functor Maybe](blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/)
 
 Dans la partie de 3 : Nous allons utiliser le functor Maybe avec l'instruction `bind`.
 
@@ -104,3 +102,11 @@ foreach ($data as $line) {
  * Si j'utilise la fonction `bind` j'utilise le Maybe en tant que Monad.
 
 Nous allons continuer notre voyage avec les listes dans le prochain post.
+
+ * Partie 1 : [Monade/Functor](/blog/2015/11/11/les-monades-en-php-cest-possible-dot/)
+ * Partie 2 : [Le functor Maybe](/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/)
+ * Partie 3 : [Le functor Maybe avec le Bind](/blog/2015/11/22/les-monades-3-le-maybe-suite/)
+ * Partie 4 : [Les listes](/blog/2015/11/29/les-monades-les-listes/)
+ * Interlude : [Les évaluations partielles](/blog/2015/12/06/les-monades-evaluation-partielle/)
+ * Partie 5 : [Les applicatives](2015/12/20/les-monades-5-les-applicatives/)
+

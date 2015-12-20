@@ -11,9 +11,6 @@ Nous continuons notre exploration des Monades/Functors, nous allons parler de Co
 Voici notre nouveau *container* Le container **List**. Il prend en entrée un tableau (Array) ou en Php un `Traversable`. 
 {% img center /images/collection.png 600 450 'Le container Collection' 'Le container collection' %}
 
- * partie 1 : [Monade/Functor](blog/2015/11/11/les-monades-en-php-cest-possible-dot/)
- * partie 2 : [Le functor Maybe](blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/)
- * partie 3 : [Le functor Maybe avec le Bind](blog/2015/11/22/les-monades-3-le-maybe-suite/)
 
 Nous allons voir ensemble les listes, Collections. Nous allons voir le `map`, le `bind` nous allons voir que le comportement n'est pas exactement le même..
 
@@ -404,3 +401,12 @@ Il reste encore beaucoup de chose à parler. Nous avons parlé des functors(`map
  * Ma référence pour l'implémentation est [php-functional](https://github.com/widmogrod/php-functional).
  * La bible pour le haskell est [Learn You a Haskell for Great Good!](learnyouahaskell.com) Le livre est gratuit avec des jolis dessins. Enfin le fond et la forme sont vraiment bon.
  * Il existe en français !! [Apprendre Haskell vous fera le plus grand bien !](http://lyah.haskell.fr/)
+
+
+ * Partie 1 : [Monade/Functor](/blog/2015/11/11/les-monades-en-php-cest-possible-dot/)
+ * Partie 2 : [Le functor Maybe](/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/)
+ * Partie 3 : [Le functor Maybe avec le Bind](/blog/2015/11/22/les-monades-3-le-maybe-suite/)
+ * Partie 4 : [Les listes](/blog/2015/11/29/les-monades-les-listes/)
+ * Interlude : [Les évaluations partielles](/blog/2015/12/06/les-monades-evaluation-partielle/)
+ * Partie 5 : [Les applicatives](2015/12/20/les-monades-5-les-applicatives/)
+
