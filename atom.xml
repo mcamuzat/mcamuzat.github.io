@@ -4,7 +4,7 @@
   <title><![CDATA[Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-12-13T19:13:45+01:00</updated>
+  <updated>2015-12-20T19:47:37+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,276 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Les monades 5: les applicatives]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/12/20/les-monades-5-les-applicatives/"/>
+    <updated>2015-12-20T15:49:14+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/12/20/les-monades-5-les-applicatives</id>
+    <content type="html"><![CDATA[<p>Nous allons voir les foncteurs applicatifs.</p>
+
+<p>Reprenons le container Maybe</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/applicative.png" width="428" height="212" title="Avec évaluation partielle" alt="avec évaluation partielle"></p>
+
+<p>Ce que j&#8217;aimerai c&#8217;est pouvoir faire ce genre d&#8217;opération</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">Maybe</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="nx">Maybe</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="nx">Maybe</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+</span><span class='line'><span class="nx">Container</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">*</span> <span class="nx">Container</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">=</span> <span class="nx">Container</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span>
+</span><span class='line'><span class="nb">str_repeat</span><span class="p">(</span><span class="nx">Maybe</span><span class="p">(</span><span class="s2">&quot;.oOo&quot;</span><span class="p">),</span> <span class="nx">Maybe</span><span class="p">(</span><span class="s2">&quot;3&quot;</span><span class="p">))</span> <span class="o">=</span> <span class="nx">Maybe</span><span class="p">(</span><span class="s2">&quot;.oOo.oOo.oOo&quot;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>La bonne nouvelle c&#8217;est que c&#8217;est possible.</p>
+
+<!--more-->
+
+
+<p>J&#8217;ai besoin de 2 étapes:</p>
+
+<ul>
+<li>Nous allons mettre en place la librairie <a href="https://github.com/widmogrod/php-functional">php-functionnal</a>. Il devient difficile d&#8217;utiliser sa propre librairie.</li>
+<li>Nous avons besoin d&#8217;une nouvelle opération <code>ap</code> pour applicative.</li>
+</ul>
+
+
+<h2>installation de php-functionnal</h2>
+
+<p>Grâce à composer c&#8217;est très simple.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">composer</span> <span class="k">require</span> <span class="nx">widmogrod</span><span class="o">/</span><span class="nx">php</span><span class="o">-</span><span class="nx">functional</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Voici le fichier php dans la racine du projet</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">require_once</span> <span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">&#39;/vendor/autoload.php&#39;</span><span class="p">;</span> <span class="c1">// Autoload files using Composer autoload</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nx">Monad\Maybe</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Functional</span> <span class="k">as</span> <span class="nx">f</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$a</span> <span class="o">=</span> <span class="nx">Maybe\Just</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$b</span> <span class="o">=</span> <span class="nv">$a</span><span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$a</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="nv">$a</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;});</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$b</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si vous obtenez ceci</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Monad\Maybe\Just</span><span class="c1">#4 (1) {</span>
+</span><span class='line'>  <span class="k">protected</span> <span class="nv">$value</span> <span class="o">=&gt;</span>
+</span><span class='line'>  <span class="nx">int</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Tout va bien!!</p>
+
+<p>Je n&#8217;ai pas utilisé les mêmes noms que la librairie voici les traductions</p>
+
+<ul>
+<li>Container -> Identity</li>
+<li>Collection -> Collection</li>
+<li>Some -> Just</li>
+<li>Nothing -> Nothing</li>
+<li><code>Maybe\just(10)</code> est un helper <code>Maybe\Just::of(10)</code></li>
+<li><code>Maybe\nothing()</code> -> <code>Maybe\Nothing::of(10)</code></li>
+</ul>
+
+
+<p>Nous allons faire quelque chose de curieux puisque nous ne mettons pas une valeur dans notre Maybe mais une fonction !</p>
+
+<p>Regardons un exemple simple</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$addOne</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maybe\just</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$a</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nv">$a</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;});</span>
+</span><span class='line'><span class="nv">$value</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maybe\just</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$result</span> <span class="o">=</span> <span class="nv">$addOne</span><span class="o">-&gt;</span><span class="na">ap</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$result</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Dans le premier Maybe on a mis une fonction. <code>ap</code> prend en entrée un Maybe.</p>
+
+<p>Nous obtenons</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Monad\Maybe\Just</span><span class="c1">#5 (1) {</span>
+</span><span class='line'>  <span class="k">protected</span> <span class="nv">$value</span> <span class="o">=&gt;</span>
+</span><span class='line'>  <span class="nx">int</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Essayons avec <code>Nothing</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$addOne</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maybe\just</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$a</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nv">$a</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;});</span>
+</span><span class='line'><span class="nv">$value</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maybe\nothing</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$result</span> <span class="o">=</span> <span class="nv">$addOne</span><span class="o">-&gt;</span><span class="na">ap</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Le résultat</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Monad\Maybe\Nothing</span><span class="c1">#4 (0) {</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cela ne semble pas très utiles</p>
+
+<p>Nous allons utiliser notre fonction <code>curryN</code> du <a href="">post précédent</a>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">add</span><span class="p">(</span><span class="nv">$a</span><span class="p">,</span> <span class="nv">$b</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nv">$a</span> <span class="o">+</span> <span class="nv">$b</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$add</span> <span class="o">=</span> <span class="nx">Maybe\just</span><span class="p">(</span><span class="nx">f\curryN</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;add&quot;</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$result</span> <span class="o">=</span> <span class="nv">$add</span><span class="o">-&gt;</span><span class="na">ap</span><span class="p">(</span><span class="nx">MayBe\just</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span><span class="o">-&gt;</span><span class="na">ap</span><span class="p">(</span><span class="nx">Maybe\just</span><span class="p">(</span><span class="mi">5</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// just(10)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>la fonction add est une addition et prend deux arguments. <code>(? + ?)</code></li>
+<li>Je la transforme en évaluation partielle avec CurryN() et je la place dans un <code>just(? + ?)</code></li>
+<li>Au premier <code>ap</code> je soumet le premier argument, il manque encore un argument , la fonction devient <code>just( 5 + ?)</code>.</li>
+<li>Au second <code>ap</code> l&#8217;argument manquant est fournis. La fonction est complète <code>just( 5 + 5)</code> -> <code>just(10)</code>.</li>
+</ul>
+
+
+<p>La recette est simple, Je mets la fonction à plusieurs arguments dans mon Maybe avec le curryN. et j&#8217;applique chacun des arguments.</p>
+
+<p>En fait si on fait une image</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/applicative.png" width="428" height="212" title="Avec évaluation partielle" alt="avec évaluation partielle"></p>
+
+<p>Mais nous pouvons faire cela avec toutes les fonctions</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$superStrRepeat</span> <span class="o">=</span> <span class="nx">Maybe\just</span><span class="p">(</span><span class="nx">f\curryN</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;str_repeat&quot;</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//alors </span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span>
+</span><span class='line'>   <span class="nv">$superStrRepeat</span><span class="o">-&gt;</span><span class="na">ap</span><span class="p">(</span><span class="nx">Maybe\just</span><span class="p">(</span><span class="s2">&quot;.o0o&quot;</span><span class="p">))</span><span class="o">-&gt;</span><span class="na">ap</span><span class="p">(</span><span class="nx">Maybe\just</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</span><span class='line'><span class="p">);</span>
+</span><span class='line'><span class="c1">//Maybe\just(&quot;.oOo.oOo.oOo&quot;);</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span>
+</span><span class='line'>   <span class="nv">$superStrRepeat</span><span class="o">-&gt;</span><span class="na">ap</span><span class="p">(</span><span class="nx">Maybe\nothing</span><span class="p">())</span><span class="o">-&gt;</span><span class="na">ap</span><span class="p">(</span><span class="nx">Maybe\just</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</span><span class='line'><span class="p">);</span>
+</span><span class='line'><span class="c1">//Maybe\Nothing();</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span>
+</span><span class='line'>   <span class="nv">$superStrRepeat</span><span class="o">-&gt;</span><span class="na">ap</span><span class="p">(</span><span class="nx">Maybe\nothing</span><span class="p">())</span><span class="o">-&gt;</span><span class="na">ap</span><span class="p">(</span><span class="nx">Maybe\nothing</span><span class="p">()))</span>
+</span><span class='line'><span class="p">);</span>
+</span><span class='line'><span class="c1">// Maybe\Nothing</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>C&#8217;est pratique car nous pouvons maintenant appliquer des fonctions à plusieurs arguments. et des fonctions qui ne travaillent pas avec des object Maybe, Nothing.</p>
+
+<p>Quand on &ldquo;augmente&rdquo; les fonctions pour travailler avec d&#8217;autre types,  on appelle cela le <code>Lift</code></p>
+
+<p>D&#8217;ailleurs cela s&#8217;exprime en 1 ligne avec la librairie</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nx">f\liftA2</span><span class="p">(</span><span class="s2">&quot;add&quot;</span><span class="p">,</span> <span class="nx">MayBe\just</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="nx">Maybe\just</span><span class="p">(</span><span class="mi">5</span><span class="p">)));</span>
+</span><span class='line'><span class="c1">// Maybe\Just(10)</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nx">f\liftA2</span><span class="p">(</span><span class="s2">&quot;str_repeat&quot;</span><span class="p">,</span><span class="nx">MayBe\just</span><span class="p">(</span><span class="s2">&quot;.o0o&quot;</span><span class="p">),</span> <span class="nx">Maybe\just</span><span class="p">(</span><span class="mi">5</span><span class="p">)));</span>
+</span><span class='line'><span class="c1">// Maybe\just(&quot;.o0o.o0o.o0o.o0o.o0o&quot;)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img class="center" src="http://mcamuzat.github.io/images/str_repeataveccontainer.png" width="517" height="425" title="On utilise la fonction LiftA2" ></p>
+
+<h2>Pour résumer.</h2>
+
+<ul>
+<li>Les <em>functors</em> implémentent la fonction <code>map</code> qui prend en entrée une fonction.</li>
+<li>Les <em>applicatives</em> implémentent la fonction <code>ap</code> prend en entrée un applicative. Cela permet d&#8217;appliquer des fonctions à plusieurs arguments.</li>
+<li>Les <em>monades</em> implémentent la fonction <code>bind</code> qui prend entrée une fonction <em>monadique</em> c&#8217;est à dire qui renvoie une Nomade.</li>
+</ul>
+
+
+<p>Tous les monades que j&#8217;ai présenté implémentent les 3 fonctions (Maybe, Collection, Identity(Container)).</p>
+
+<h2>En conclusion.</h2>
+
+<p>Dans le prochain Post nous allons voir le cas particulier de <code>ap</code> pour les collections.</p>
+
+<ul>
+<li>Partie 1 : <a href="http://mcamuzat.github.io/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
+<li>Partie 2 : <a href="http://mcamuzat.github.io/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
+<li>Partie 3 : <a href="http://mcamuzat.github.io/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
+<li>Partie 4 : <a href="http://mcamuzat.github.io/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
+<li>Interlude : <a href="http://mcamuzat.github.io/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a></li>
+<li>Partie 5 : <a href="2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Je joue donc je programme 2]]></title>
@@ -228,7 +498,7 @@ De plus cela permet une meilleure isolation du code. Une fonction à 5-6 argumen
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$add10</span><span class="o">=</span> <span class="nx">add</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$add10</span><span class="o">=</span> <span class="nx">add</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
 </span><span class='line'><span class="nv">$result</span> <span class="o">=</span> <span class="nv">$add10</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -258,10 +528,12 @@ De plus cela permet une meilleure isolation du code. Une fonction à 5-6 argumen
 <p>Merci de m&#8217;avoir lu.</p>
 
 <ul>
-<li>partie 1 : <a href="http://mcamuzat.github.io/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
-<li>partie 2 : <a href="http://mcamuzat.github.io/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
-<li>partie 3 : <a href="http://mcamuzat.github.io/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
-<li>partie 4 : <a href="http://mcamuzat.github.io/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
+<li>Partie 1 : <a href="http://mcamuzat.github.io/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
+<li>Partie 2 : <a href="http://mcamuzat.github.io/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
+<li>Partie 3 : <a href="http://mcamuzat.github.io/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
+<li>Partie 4 : <a href="http://mcamuzat.github.io/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
+<li>Interlude : <a href="http://mcamuzat.github.io/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a></li>
+<li>Partie 5 : <a href="2015/12/20/les-monades-5-les-applicatives/">Les applicative</a></li>
 </ul>
 
 ]]></content>
@@ -276,13 +548,6 @@ De plus cela permet une meilleure isolation du code. Une fonction à 5-6 argumen
 
 <p>Voici notre nouveau <em>container</em> Le container <strong>List</strong>. Il prend en entrée un tableau (Array) ou en Php un <code>Traversable</code>.
 <img class="center" src="http://mcamuzat.github.io/images/collection.png" width="600" height="450" title="Le container Collection" alt="Le container collection"></p>
-
-<ul>
-<li>partie 1 : <a href="blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
-<li>partie 2 : <a href="blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
-<li>partie 3 : <a href="blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
-</ul>
-
 
 <p>Nous allons voir ensemble les listes, Collections. Nous allons voir le <code>map</code>, le <code>bind</code> nous allons voir que le comportement n&#8217;est pas exactement le même..</p>
 
@@ -883,7 +1148,13 @@ La valeur 3 n&#8217;a qu&#8217;une valeur qui est <code>3</code> facile, la vale
 <ul>
 <li>Ma référence pour l&#8217;implémentation est <a href="https://github.com/widmogrod/php-functional">php-functional</a>.</li>
 <li>La bible pour le haskell est <a href="learnyouahaskell.com">Learn You a Haskell for Great Good!</a> Le livre est gratuit avec des jolis dessins. Enfin le fond et la forme sont vraiment bon.</li>
-<li>Il existe en français !! <a href="http://lyah.haskell.fr/">Apprendre Haskell vous fera le plus grand bien !</a></li>
+<li><p>Il existe en français !! <a href="http://lyah.haskell.fr/">Apprendre Haskell vous fera le plus grand bien !</a></p></li>
+<li><p>Partie 1 : <a href="http://mcamuzat.github.io/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></p></li>
+<li>Partie 2 : <a href="http://mcamuzat.github.io/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
+<li>Partie 3 : <a href="http://mcamuzat.github.io/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
+<li>Partie 4 : <a href="http://mcamuzat.github.io/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
+<li>Interlude : <a href="http://mcamuzat.github.io/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a></li>
+<li>Partie 5 : <a href="2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
 </ul>
 
 ]]></content>
@@ -894,13 +1165,7 @@ La valeur 3 n&#8217;a qu&#8217;une valeur qui est <code>3</code> facile, la vale
     <link href="http://mcamuzat.github.io/blog/2015/11/22/les-monades-3-le-maybe-suite/"/>
     <updated>2015-11-22T16:59:31+01:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/11/22/les-monades-3-le-maybe-suite</id>
-    <content type="html"><![CDATA[<ul>
-<li>partie 1 : <a href="blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
-<li>partie 2 : <a href="blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
-</ul>
-
-
-<p>Dans la partie de 3 : Nous allons utiliser le functor Maybe avec l&#8217;instruction <code>bind</code>.</p>
+    <content type="html"><![CDATA[<p>Dans la partie de 3 : Nous allons utiliser le functor Maybe avec l&#8217;instruction <code>bind</code>.</p>
 
 <p>Soit le tableau suivant.</p>
 
@@ -1040,6 +1305,16 @@ La valeur 3 n&#8217;a qu&#8217;une valeur qui est <code>3</code> facile, la vale
 
 
 <p>Nous allons continuer notre voyage avec les listes dans le prochain post.</p>
+
+<ul>
+<li>Partie 1 : <a href="http://mcamuzat.github.io/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
+<li>Partie 2 : <a href="http://mcamuzat.github.io/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
+<li>Partie 3 : <a href="http://mcamuzat.github.io/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
+<li>Partie 4 : <a href="http://mcamuzat.github.io/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
+<li>Interlude : <a href="http://mcamuzat.github.io/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a></li>
+<li>Partie 5 : <a href="2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
+</ul>
+
 ]]></content>
   </entry>
   
@@ -1341,6 +1616,16 @@ Le cas ou tout marche</p>
 <p>Si vous avez un code ou vous vérifiez tout le temps si les valeurs sont nulles. Il y a probablement moyen que cette structure vous aide.</p>
 
 <p>Dans le prochain Post nous utiliserons le Maybe avec l&#8217;instruction <code>bind</code>.</p>
+
+<ul>
+<li>Partie 1 : <a href="http://mcamuzat.github.io/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
+<li>Partie 2 : <a href="http://mcamuzat.github.io/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
+<li>Partie 3 : <a href="http://mcamuzat.github.io/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
+<li>Partie 4 : <a href="http://mcamuzat.github.io/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
+<li>Interlude : <a href="http://mcamuzat.github.io/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a></li>
+<li>Partie 5 : <a href="2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
+</ul>
+
 ]]></content>
   </entry>
   
@@ -1767,8 +2052,8 @@ deux possibilités</p>
 <p>Mon container bien que pour le moment est assez peu utilise mais.</p>
 
 <ul>
-<li><p>Il implémente une fonction <code>map</code> qui est chainage. Nous venons d&#8217;implémenter un <strong>functor</strong> ou <strong>foncteur</strong> en français. Cela a un rapport avec les mathématiques. Et il m&#8217;est difficile au moment ou j&#8217;écris ces lignes de vous l&#8217;expliquer. Le Functor s&#8217;occupe d&#8217;appeler la fonction pour nous et de retourner un résultat correct. Il s&#8217;occupe de tout. C&#8217;est une sorte d&#8217;abstraction. On lui confie le calcul et il se débrouille. (Nous le retrouverons dans le post suivant)</p></li>
-<li><p>Nous implémentons la méthode <code>of</code> et <code>bind</code> qui est elle aussi chainage (à condition de lui donner des fonctions qui renvoie de Container). Nous venons d&#8217;implémenter une <em>monade</em> même principe que le functor.</p></li>
+<li><p>Il implémente une fonction <code>map</code> qui est chainable. Nous venons d&#8217;implémenter un <strong>functor</strong> ou <strong>foncteur</strong> en français. Cela a un rapport avec les mathématiques. Et il m&#8217;est difficile au moment ou j&#8217;écris ces lignes de vous l&#8217;expliquer. Le Functor s&#8217;occupe d&#8217;appeler la fonction pour nous et de retourner un résultat correct. Il s&#8217;occupe de tout. C&#8217;est une sorte d&#8217;abstraction. On lui confie le calcul et il se débrouille. (Nous le retrouverons dans le post suivant)</p></li>
+<li><p>Nous implémentons la méthode <code>of</code> et <code>bind</code> qui est elle aussi chainable (à condition de lui donner des fonctions qui renvoient des Containers). Nous venons d&#8217;implémenter une <em>monade</em> même principe que le functor.</p></li>
 </ul>
 
 
@@ -1841,6 +2126,16 @@ deux possibilités</p>
 <p>Je me suis lancé dans une tache bien compliqué mais passionnante. Je m&#8217;excuse d&#8217;avance pour certaines approximations. J&#8217;avais confondu <code>map</code> et <code>bind</code> dans la première version</p>
 
 <p>Je vous remercies de m&#8217;avoir lu..</p>
+
+<ul>
+<li>Partie 1 : <a href="http://mcamuzat.github.io/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
+<li>Partie 2 : <a href="http://mcamuzat.github.io/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
+<li>Partie 3 : <a href="http://mcamuzat.github.io/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
+<li>Partie 4 : <a href="http://mcamuzat.github.io/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
+<li>Interlude : <a href="http://mcamuzat.github.io/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a></li>
+<li>Partie 5 : <a href="2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
+</ul>
+
 ]]></content>
   </entry>
   
@@ -5599,538 +5894,6 @@ le résultat</p>
 <li>Enfin une <a href="https://fr.wikipedia.org/wiki/Liste_de_probl%C3%A8mes_NP-complets">liste complète</a> de wikipedia</li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[PHP yield les générateurs]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/09/06/php-yield-les-generateurs/"/>
-    <updated>2015-09-06T19:06:48+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/09/06/php-yield-les-generateurs</id>
-    <content type="html"><![CDATA[<p>Nous allons voir une nouveauté de PHP 5.5 l&#8217;instruction <strong>yield</strong></p>
-
-<p>Cela permet de mettre en place ce qu&#8217;on appelle les générateurs.</p>
-
-<h2>Un premier exemple</h2>
-
-<p>Regardons un exemple ensemble</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'><span class="k">function</span> <span class="nf">generateAnimal</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;Je suis dans le générateur</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Panda&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;Je suis retourné dans le générateur</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Lama&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;je suis de retour</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Alpaga&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;plus de d&#39;animaux</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$generator</span> <span class="o">=</span> <span class="nx">generateAnimal</span><span class="p">();</span>
-</span><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$generator</span> <span class="k">as</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;j&#39;ai reçu </span><span class="si">$value</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Voici le résultat</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">j</span><span class="s1">&#39;ai reçu Panda </span>
-</span><span class='line'><span class="s1">Je suis retourné dans le générateur</span>
-</span><span class='line'><span class="s1">j&#39;</span><span class="nx">ai</span> <span class="nx">reçu</span> <span class="nx">Lama</span>
-</span><span class='line'><span class="nx">je</span> <span class="nx">suis</span> <span class="nx">de</span> <span class="nx">retour</span>
-</span><span class='line'><span class="nx">j</span><span class="s1">&#39;ai reçu Alpaga </span>
-</span><span class='line'><span class="s1">plus de d&#39;</span><span class="nx">animaux</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>D&#8217;abord un générateur se comporte comme un iterator. C&#8217;est grâce à cela que je peux faire un <code>foreach</code>.</p>
-
-<p>Je vais refaire pas à pas avec des commentaires.</p>
-
-<!--more-->
-
-
-<h3>premier passage</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'><span class="k">function</span> <span class="nf">generateAnimal</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;Je suis dans le générateur</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Panda&quot;</span><span class="p">;</span> <span class="c1">// Je retourne ici </span>
-</span><span class='line'>        <span class="k">echo</span> <span class="s2">&quot;Je suis retourné dans le générateur</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Lama&quot;</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">echo</span> <span class="s2">&quot;je suis de retour</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Alpaga&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;plus de d&#39;animaux</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$generator</span> <span class="o">=</span> <span class="nx">generateAnimal</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">echo</span> <span class="nv">$generator</span><span class="o">-&gt;</span><span class="na">current</span><span class="p">();</span>
-</span><span class='line'><span class="c1">// &quot;je suis dans le générateur</span>
-</span><span class='line'><span class="c1">// $value = &quot;Panda&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Itération suivante</h3>
-
-<p>En fait le générateur reste en suspens, <code>yield</code> est un pseudo <code>return</code> (enfin c&#8217;est comme cela que je l&#8217;ai compris)</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'><span class="k">function</span> <span class="nf">generateAnimal</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;Je suis dans le générateur</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Panda&quot;</span><span class="p">;</span> <span class="c1">// Je suis reste ici .. je continue </span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;Je suis retourné dans le générateur</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Lama&quot;</span><span class="p">;</span> <span class="c1">// je m&#39;arrete à nouveau </span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;je suis de retour</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Alpaga&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;plus d&#39;animaux</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$generator</span><span class="o">-&gt;</span><span class="na">next</span><span class="p">()</span> <span class="c1">// On récupère la valeur suivante</span>
-</span><span class='line'><span class="k">echo</span> <span class="nv">$generator</span><span class="o">-&gt;</span><span class="na">current</span><span class="p">();</span>
-</span><span class='line'><span class="c1">// &quot;je suis retourné dans le générateur</span>
-</span><span class='line'><span class="c1">// &quot;Lama&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Troisième itération</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'><span class="k">function</span> <span class="nf">generateAnimal</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;Je suis dans le générateur</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Panda&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;Je suis retourné dans le générateur</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Lama&quot;</span><span class="p">;</span> <span class="c1">// je me suis arrété ici </span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;je suis de retour</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Alpaga&quot;</span><span class="p">;</span> <span class="c1">// je retourne .. </span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;plus d&#39;animaux</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$generator</span><span class="o">-&gt;</span><span class="na">next</span><span class="p">()</span> <span class="c1">// On récupère la valeur suivante</span>
-</span><span class='line'><span class="k">echo</span> <span class="nv">$generator</span><span class="o">-&gt;</span><span class="na">current</span><span class="p">();</span>
-</span><span class='line'><span class="c1">// Je suis de retour</span>
-</span><span class='line'><span class="c1">// &quot;Alpaga&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Dernière Itération</h3>
-
-<p>Nous y sommes presque..</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'><span class="k">function</span> <span class="nf">generateAnimal</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;Je suis dans le générateur</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Panda&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;Je suis retourné dans le générateur</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Lama&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;je suis de retour</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Alpaga&quot;</span><span class="p">;</span> <span class="c1">// je me suis arréte ici</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;plus d&#39;animaux</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span> <span class="c1">//pas de yield je renvoie null..</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$generator</span><span class="o">-&gt;</span><span class="na">next</span><span class="p">()</span> <span class="c1">// On récupère la valeur suivante</span>
-</span><span class='line'><span class="k">echo</span> <span class="nv">$generator</span><span class="o">-&gt;</span><span class="na">current</span><span class="p">();</span>
-</span><span class='line'><span class="c1">// Plus d&#39;animaux </span>
-</span><span class='line'><span class="c1">// il n&#39;y a rien car echo null;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Une fois qu&#8217;un générateur a fini, on ne peux le réutiliser</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$generator</span> <span class="k">as</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;j&#39;ai reçu </span><span class="si">$value</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$generator</span> <span class="k">as</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;j&#39;ai reçu </span><span class="si">$value</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>J&#8217;obtiens</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">PHP</span> <span class="nx">Fatal</span> <span class="nx">error</span><span class="o">:</span>  <span class="nx">Uncaught</span> <span class="nx">exception</span> <span class="s1">&#39;Exception&#39;</span> <span class="nx">with</span> <span class="nx">message</span> <span class="s1">&#39;Cannot traverse an already closed generator&#39;</span> <span class="nx">in</span> <span class="o">/</span><span class="nx">home</span><span class="o">/</span><span class="nx">marc</span><span class="o">/</span><span class="k">yield</span><span class="o">.</span><span class="nx">php</span><span class="o">:</span><span class="mi">16</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Quel est l&#8217;intérêt ?</h2>
-
-<p>Admettons que je veux faire un <code>foreach</code> sur un tableau d&#8217;un millions de lignes.</p>
-
-<p>Pour faire un Array de 1 Million de valeurs ce n&#8217;est pas très compliqué. Une instruction suffit.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nb">range</span><span class="p">(</span><span class="mi">1000000</span><span class="p">)</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="o">...</span><span class="p">,</span><span class="mi">1000000</span><span class="p">];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Mais cela prend un peu de mémoire. Utilisons notre générateur de manière sympathique</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">xrange</span><span class="p">(</span><span class="nv">$min</span><span class="p">,</span> <span class="nv">$max</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="nv">$min</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="nv">$max</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="k">yield</span> <span class="nv">$i</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nx">xrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1000000</span><span class="p">)</span> <span class="k">as</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>   <span class="k">echo</span> <span class="nv">$value</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>l&#8217;énorme avantage est que je n&#8217;ai pas besoin de générer un array de 1 Millions de lignes, je génère valeur par valeur. Si la fonction est appelle deux fois je ne génère que deux valeurs. L&#8217;occupation en mémoire est faible. Les valeurs sont instanciées <em>paresseusements</em>.</p>
-
-<h3>Un exemple encore plus concret.</h3>
-
-<p>Pour lire un fichier:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">getLinesFromFile</span><span class="p">(</span><span class="nv">$fileName</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nv">$fileHandle</span> <span class="o">=</span> <span class="nb">fopen</span><span class="p">(</span><span class="nv">$fileName</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">);</span>
-</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="k">false</span> <span class="o">!==</span> <span class="nv">$line</span> <span class="o">=</span> <span class="nb">fgets</span><span class="p">(</span><span class="nv">$fileHandle</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">yield</span> <span class="nv">$line</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="nb">fclose</span><span class="p">(</span><span class="nv">$fileHandle</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="nv">$lines</span> <span class="o">=</span> <span class="nx">getLinesFromFile</span><span class="p">(</span><span class="nv">$fileName</span><span class="p">);</span>
-</span><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$lines</span> <span class="k">as</span> <span class="nv">$line</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="c1">// do something with $line</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Ce code a plusieurs avantages.</p>
-
-<ul>
-<li>On va chercher la ligne à la demande.</li>
-<li>Il y a une couche d&#8217;abstraction entre la lecture et le programme principale.</li>
-</ul>
-
-
-<h3>Un petit quizz</h3>
-
-<p>Pouvez vous deviner la fonction suivante ?</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">mystere</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nv">$last</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>    <span class="nv">$current</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">yield</span> <span class="mi">1</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">list</span><span class="p">(</span><span class="nv">$current</span><span class="p">,</span> <span class="nv">$last</span><span class="p">)</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="nv">$current</span> <span class="o">+</span> <span class="nv">$last</span><span class="p">,</span> <span class="nv">$current</span><span class="p">);</span>
-</span><span class='line'>        <span class="k">yield</span> <span class="nv">$current</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nx">mystere</span><span class="p">()</span> <span class="k">as</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nv">$count</span><span class="o">++</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="nv">$value</span> <span class="o">.</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$count</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">break</span><span class="p">;</span>
-</span><span class='line'>        <span class="c1">// pas cool la boucle infinie</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Une mise au point</h2>
-
-<p>Les générateurs se comportent comme des itérateurs, mais pour implémenter un <a href="http://php.net/manual/fr/class.iterator.php">iterator</a> il faut implémenter l&#8217;interface suivante.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'> <span class="nx">Iterator</span> <span class="k">extends</span> <span class="nx">Traversable</span> <span class="p">{</span>
-</span><span class='line'><span class="cm">/* Méthodes */</span>
-</span><span class='line'><span class="k">abstract</span> <span class="k">public</span> <span class="nx">mixed</span> <span class="nb">current</span> <span class="p">(</span> <span class="nx">void</span> <span class="p">)</span>
-</span><span class='line'><span class="k">abstract</span> <span class="k">public</span> <span class="nx">scalar</span> <span class="nb">key</span> <span class="p">(</span> <span class="nx">void</span> <span class="p">)</span>
-</span><span class='line'><span class="k">abstract</span> <span class="k">public</span> <span class="nx">void</span> <span class="nb">next</span> <span class="p">(</span> <span class="nx">void</span> <span class="p">)</span>
-</span><span class='line'><span class="k">abstract</span> <span class="k">public</span> <span class="nx">void</span> <span class="nb">rewind</span> <span class="p">(</span> <span class="nx">void</span> <span class="p">)</span>
-</span><span class='line'><span class="k">abstract</span> <span class="k">public</span> <span class="nx">boolean</span> <span class="nx">valid</span> <span class="p">(</span> <span class="nx">void</span> <span class="p">)</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Par exemple pour l&#8217;exemple du fichier (je recopie la doc de php)</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">LineIterator</span> <span class="k">implements</span> <span class="nx">Iterator</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">protected</span> <span class="nv">$fileHandle</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">protected</span> <span class="nv">$line</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">protected</span> <span class="nv">$i</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$fileName</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">fileHandle</span> <span class="o">=</span> <span class="nb">fopen</span><span class="p">(</span><span class="nv">$fileName</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">throw</span> <span class="k">new</span> <span class="nx">RuntimeException</span><span class="p">(</span><span class="s1">&#39;Impossible d\&#39;ouvrir le fichier : &quot;&#39;</span> <span class="o">.</span> <span class="nv">$fileName</span> <span class="o">.</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">rewind</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nb">fseek</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">fileHandle</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">line</span> <span class="o">=</span> <span class="nb">fgets</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">fileHandle</span><span class="p">);</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">valid</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="k">false</span> <span class="o">!==</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">line</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">current</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">line</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">key</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">i</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">next</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="k">false</span> <span class="o">!==</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">line</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">line</span> <span class="o">=</span> <span class="nb">fgets</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">fileHandle</span><span class="p">);</span>
-</span><span class='line'>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">i</span><span class="o">++</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__destruct</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nb">fclose</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">fileHandle</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>L&#8217;implémentation en générateur.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">getLinesFromFile</span><span class="p">(</span><span class="nv">$fileName</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$fileHandle</span> <span class="o">=</span> <span class="nb">fopen</span><span class="p">(</span><span class="nv">$fileName</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nx">RuntimeException</span><span class="p">(</span><span class="s1">&#39;Impossible d\&#39;ouvrir le fichier : &quot;&#39;</span> <span class="o">.</span> <span class="nv">$fileName</span> <span class="o">.</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="k">false</span> <span class="o">!==</span> <span class="nv">$line</span> <span class="o">=</span> <span class="nb">fgets</span><span class="p">(</span><span class="nv">$fileHandle</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">yield</span> <span class="nv">$line</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nb">fclose</span><span class="p">(</span><span class="nv">$fileHandle</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>C&#8217;est quand même plus simple.</p>
-
-<h2>En conclusion.</h2>
-
-<p>Cela existe aussi dans les autres langages</p>
-
-<p>On trouve l&#8217;instruction <code>yield</code> surtout dans python</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">countdown</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-</span><span class='line'>    <span class="k">while</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-</span><span class='line'>        <span class="k">yield</span> <span class="n">n</span>
-</span><span class='line'>        <span class="n">n</span> <span class="o">-=</span> <span class="mi">1</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">countdown</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
-</span><span class='line'>    <span class="k">print</span> <span class="s">&#39;depart dans </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">x</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>La référence est ce <a href="http://www.dabeaz.com/generators/">site</a> , Il existe une <a href="http://www.youtube.com/watch?v=5-qadlG7tWo">video</a> (<strong>3 heures !!!</strong>)</p>
-
-<p>Cela existe aussi dans <a href="http://www.tutorialspoint.com/ruby/ruby_blocks.htm">ruby</a>, <a href="https://msdn.microsoft.com/fr-fr/library/9k7k7cf0.aspx">C#</a>, et dans le javascript ES6</p>
-
-<p>C&#8217;est un peu plus qu&#8217;une nouvelle syntaxe. Cela permet de faire du code asynchrone. Car cela permet une structure de codage que l&#8217;on appelle: Les <a href="https://fr.wikipedia.org/wiki/Coroutine">Couroutines</a>. Mais plus d&#8217;info dans un prochain post .</p>
 ]]></content>
   </entry>
   

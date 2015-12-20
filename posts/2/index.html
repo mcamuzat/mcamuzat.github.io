@@ -9,7 +9,8 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Parlons de retour vers le futur. En effet le héros dans le film 2 arrive le 21 octobre 2015. Bon on n'a pas les voitures volantes. Et c'est toujours &hellip;">
+  <meta name="description" content="Troisième partie sur la SPL et les listes chainées. partie 1 SPL et surcharge
+partie 2 Implémentation Nous allons implémenter l'interface ArrayAccess &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -62,6 +63,57 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/11/01/listes-chainees-iterator/">Listes Chainées Iterator</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-11-01T19:46:40+01:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Troisième partie sur la SPL et les listes chainées.</p>
+
+<ul>
+<li>partie 1 <a href="blog/2015/10/03/spl-surcharge-magique">SPL et surcharge</a></li>
+<li>partie 2 <a href="blog/2015/10/10/liste-chainees-implementation">Implémentation</a></li>
+</ul>
+
+
+<p>Nous allons implémenter l&#8217;interface <code>ArrayAccess</code>. Donc notre liste chainée va se comporter comme un array.</p>
+
+<p>Je vais rajouter deux méthodes. Attention les <code>Array</code> commencent traditionnellement à 0 d&#8217;où le <code>$this-&gt;count -1</code></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/11/01/listes-chainees-iterator/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -744,107 +796,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/09/06/php-yield-les-generateurs/">PHP yield les générateurs</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-09-06T19:06:48+02:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Nous allons voir une nouveauté de PHP 5.5 l&#8217;instruction <strong>yield</strong></p>
-
-<p>Cela permet de mettre en place ce qu&#8217;on appelle les générateurs.</p>
-
-<h2>Un premier exemple</h2>
-
-<p>Regardons un exemple ensemble</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'><span class="k">function</span> <span class="nf">generateAnimal</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;Je suis dans le générateur</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Panda&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;Je suis retourné dans le générateur</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Lama&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;je suis de retour</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Alpaga&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;plus de d&#39;animaux</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$generator</span> <span class="o">=</span> <span class="nx">generateAnimal</span><span class="p">();</span>
-</span><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$generator</span> <span class="k">as</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;j&#39;ai reçu </span><span class="si">$value</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Voici le résultat</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">j</span><span class="s1">&#39;ai reçu Panda </span>
-</span><span class='line'><span class="s1">Je suis retourné dans le générateur</span>
-</span><span class='line'><span class="s1">j&#39;</span><span class="nx">ai</span> <span class="nx">reçu</span> <span class="nx">Lama</span>
-</span><span class='line'><span class="nx">je</span> <span class="nx">suis</span> <span class="nx">de</span> <span class="nx">retour</span>
-</span><span class='line'><span class="nx">j</span><span class="s1">&#39;ai reçu Alpaga </span>
-</span><span class='line'><span class="s1">plus de d&#39;</span><span class="nx">animaux</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>D&#8217;abord un générateur se comporte comme un iterator. C&#8217;est grâce à cela que je peux faire un <code>foreach</code>.</p>
-
-<p>Je vais refaire pas à pas avec des commentaires.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/09/06/php-yield-les-generateurs/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -894,6 +845,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/12/20/les-monades-5-les-applicatives/">Les monades 5: les applicatives</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/12/13/je-joue-donc-je-programme-2/">Je joue donc je programme 2</a>
       </li>
     
@@ -907,10 +862,6 @@
     
       <li class="post">
         <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Les Monades 3 Le Maybe (suite)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Les Monades (suite): Le Functor Maybe..</a>
       </li>
     
   </ul>

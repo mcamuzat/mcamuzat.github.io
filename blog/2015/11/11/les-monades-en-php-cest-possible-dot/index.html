@@ -506,8 +506,8 @@ deux possibilités</p>
 <p>Mon container bien que pour le moment est assez peu utilise mais.</p>
 
 <ul>
-<li><p>Il implémente une fonction <code>map</code> qui est chainage. Nous venons d&#8217;implémenter un <strong>functor</strong> ou <strong>foncteur</strong> en français. Cela a un rapport avec les mathématiques. Et il m&#8217;est difficile au moment ou j&#8217;écris ces lignes de vous l&#8217;expliquer. Le Functor s&#8217;occupe d&#8217;appeler la fonction pour nous et de retourner un résultat correct. Il s&#8217;occupe de tout. C&#8217;est une sorte d&#8217;abstraction. On lui confie le calcul et il se débrouille. (Nous le retrouverons dans le post suivant)</p></li>
-<li><p>Nous implémentons la méthode <code>of</code> et <code>bind</code> qui est elle aussi chainage (à condition de lui donner des fonctions qui renvoie de Container). Nous venons d&#8217;implémenter une <em>monade</em> même principe que le functor.</p></li>
+<li><p>Il implémente une fonction <code>map</code> qui est chainable. Nous venons d&#8217;implémenter un <strong>functor</strong> ou <strong>foncteur</strong> en français. Cela a un rapport avec les mathématiques. Et il m&#8217;est difficile au moment ou j&#8217;écris ces lignes de vous l&#8217;expliquer. Le Functor s&#8217;occupe d&#8217;appeler la fonction pour nous et de retourner un résultat correct. Il s&#8217;occupe de tout. C&#8217;est une sorte d&#8217;abstraction. On lui confie le calcul et il se débrouille. (Nous le retrouverons dans le post suivant)</p></li>
+<li><p>Nous implémentons la méthode <code>of</code> et <code>bind</code> qui est elle aussi chainable (à condition de lui donner des fonctions qui renvoient des Containers). Nous venons d&#8217;implémenter une <em>monade</em> même principe que le functor.</p></li>
 </ul>
 
 
@@ -580,6 +580,16 @@ deux possibilités</p>
 <p>Je me suis lancé dans une tache bien compliqué mais passionnante. Je m&#8217;excuse d&#8217;avance pour certaines approximations. J&#8217;avais confondu <code>map</code> et <code>bind</code> dans la première version</p>
 
 <p>Je vous remercies de m&#8217;avoir lu..</p>
+
+<ul>
+<li>Partie 1 : <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
+<li>Partie 2 : <a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
+<li>Partie 3 : <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
+<li>Partie 4 : <a href="/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
+<li>Interlude : <a href="/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a></li>
+<li>Partie 5 : <a href="2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
+</ul>
+
 </div>
 
 
@@ -675,6 +685,10 @@ deux possibilités</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/12/20/les-monades-5-les-applicatives/">Les monades 5: les applicatives</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/12/13/je-joue-donc-je-programme-2/">Je joue donc je programme 2</a>
       </li>
     
@@ -688,10 +702,6 @@ deux possibilités</p>
     
       <li class="post">
         <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Les Monades 3 Le Maybe (suite)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Les Monades (suite): Le Functor Maybe..</a>
       </li>
     
   </ul>

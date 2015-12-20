@@ -9,7 +9,10 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="J'avais déjà parlé de jeux pour apprendre à programmer. ">
+  <meta name="description" content="Nous allons voir les foncteurs applicatifs. Reprenons le container Maybe Ce que j'aimerai c'est pouvoir faire ce genre d'opération 1
+2
+3
+Maybe(3) + &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -62,6 +65,64 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/12/20/les-monades-5-les-applicatives/">Les monades 5: les applicatives</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-12-20T15:49:14+01:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Nous allons voir les foncteurs applicatifs.</p>
+
+<p>Reprenons le container Maybe</p>
+
+<p><img class="center" src="/images/applicative.png" width="428" height="212" title="Avec évaluation partielle" alt="avec évaluation partielle"></p>
+
+<p>Ce que j&#8217;aimerai c&#8217;est pouvoir faire ce genre d&#8217;opération</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">Maybe</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="nx">Maybe</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="nx">Maybe</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+</span><span class='line'><span class="nx">Container</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">*</span> <span class="nx">Container</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">=</span> <span class="nx">Container</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span>
+</span><span class='line'><span class="nb">str_repeat</span><span class="p">(</span><span class="nx">Maybe</span><span class="p">(</span><span class="s2">&quot;.oOo&quot;</span><span class="p">),</span> <span class="nx">Maybe</span><span class="p">(</span><span class="s2">&quot;3&quot;</span><span class="p">))</span> <span class="o">=</span> <span class="nx">Maybe</span><span class="p">(</span><span class="s2">&quot;.oOo.oOo.oOo&quot;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>La bonne nouvelle c&#8217;est que c&#8217;est possible.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/12/20/les-monades-5-les-applicatives/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -201,13 +262,6 @@
 <p>Voici notre nouveau <em>container</em> Le container <strong>List</strong>. Il prend en entrée un tableau (Array) ou en Php un <code>Traversable</code>.
 <img class="center" src="/images/collection.png" width="600" height="450" title="Le container Collection" alt="Le container collection"></p>
 
-<ul>
-<li>partie 1 : <a href="blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
-<li>partie 2 : <a href="blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
-<li>partie 3 : <a href="blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
-</ul>
-
-
 <p>Nous allons voir ensemble les listes, Collections. Nous allons voir le <code>map</code>, le <code>bind</code> nous allons voir que le comportement n&#8217;est pas exactement le même..</p>
 
 </div>
@@ -249,13 +303,7 @@
   </header>
 
 
-  <div class="entry-content"><ul>
-<li>partie 1 : <a href="blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
-<li>partie 2 : <a href="blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
-</ul>
-
-
-<p>Dans la partie de 3 : Nous allons utiliser le functor Maybe avec l&#8217;instruction <code>bind</code>.</p>
+  <div class="entry-content"><p>Dans la partie de 3 : Nous allons utiliser le functor Maybe avec l&#8217;instruction <code>bind</code>.</p>
 
 <p>Soit le tableau suivant.</p>
 
@@ -653,57 +701,6 @@ le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/11/01/listes-chainees-iterator/">Listes Chainées Iterator</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-11-01T19:46:40+01:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Troisième partie sur la SPL et les listes chainées.</p>
-
-<ul>
-<li>partie 1 <a href="blog/2015/10/03/spl-surcharge-magique">SPL et surcharge</a></li>
-<li>partie 2 <a href="blog/2015/10/10/liste-chainees-implementation">Implémentation</a></li>
-</ul>
-
-
-<p>Nous allons implémenter l&#8217;interface <code>ArrayAccess</code>. Donc notre liste chainée va se comporter comme un array.</p>
-
-<p>Je vais rajouter deux méthodes. Attention les <code>Array</code> commencent traditionnellement à 0 d&#8217;où le <code>$this-&gt;count -1</code></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/11/01/listes-chainees-iterator/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -751,6 +748,10 @@ le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/12/20/les-monades-5-les-applicatives/">Les monades 5: les applicatives</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/12/13/je-joue-donc-je-programme-2/">Je joue donc je programme 2</a>
       </li>
     
@@ -764,10 +765,6 @@ le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code
     
       <li class="post">
         <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Les Monades 3 Le Maybe (suite)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Les Monades (suite): Le Functor Maybe..</a>
       </li>
     
   </ul>

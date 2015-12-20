@@ -4,7 +4,7 @@
   <title><![CDATA[Category: php | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/php/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-12-13T19:13:45+01:00</updated>
+  <updated>2015-12-20T19:47:37+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,224 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Les monades 5: les applicatives]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/12/20/les-monades-5-les-applicatives/"/>
+    <updated>2015-12-20T15:49:14+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/12/20/les-monades-5-les-applicatives</id>
+    <content type="html"><![CDATA[<p>Nous allons voir les foncteurs applicatifs.</p>
+
+<p>Reprenons le container Maybe</p>
+
+<p><img class="center" src="/images/applicative.png" width="428" height="212" title="&lsquo;Avec évaluation partielle&rsquo; &lsquo;avec évaluation partielle&rsquo;" ></p>
+
+<p>Ce que j&#8217;aimerai c&#8217;est pouvoir faire ce genre d&#8217;opération</p>
+
+<pre><code class="php">Maybe(3) + Maybe(3) = Maybe(6)
+Container(4) * Container(5) = Container(40)
+str_repeat(Maybe(".oOo"), Maybe("3")) = Maybe(".oOo.oOo.oOo");
+</code></pre>
+
+<p>La bonne nouvelle c&#8217;est que c&#8217;est possible.</p>
+
+<!--more-->
+
+
+<p>J&#8217;ai besoin de 2 étapes:</p>
+
+<ul>
+<li>Nous allons mettre en place la librairie <a href="https://github.com/widmogrod/php-functional">php-functionnal</a>. Il devient difficile d&#8217;utiliser sa propre librairie.</li>
+<li>Nous avons besoin d&#8217;une nouvelle opération <code>ap</code> pour applicative.</li>
+</ul>
+
+
+<h2>installation de php-functionnal</h2>
+
+<p>Grâce à composer c&#8217;est très simple.</p>
+
+<pre><code class="">composer require widmogrod/php-functional
+</code></pre>
+
+<p>Voici le fichier php dans la racine du projet
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span><span class="o">?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">require_once</span> <span class="o">&lt;</span><span class="nx">strong</span><span class="o">&gt;</span><span class="nx">DIR</span><span class="o">&lt;/</span><span class="nx">strong</span><span class="o">&gt;</span> <span class="o">.</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="o">/</span><span class="nx">vendor</span><span class="o">/</span><span class="nx">autoload</span><span class="o">.</span><span class="nx">php</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span> <span class="c1">// Autoload files using Composer autoload&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="k">use</span> <span class="nx">Monad\Maybe</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="nx">Functional</span> <span class="k">as</span> <span class="nx">f</span><span class="p">;</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nv">$a</span> <span class="o">=</span> <span class="nx">Maybe\Just</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$b</span> <span class="o">=</span> <span class="nv">$a</span><span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$a</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="nv">$a</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;});</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$b</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Si vous obtenez ceci
+<code>php
+class Monad\Maybe\Just#4 (1) {
+  protected $value =&gt;
+  int(2)
+}
+</code></p>
+
+<p>Tout va bien!!</p>
+
+<p>Je n&#8217;ai pas utilisé les mêmes noms que la librairie voici les traductions</p>
+
+<ul>
+<li>Container -> Identity</li>
+<li>Collection -> Collection</li>
+<li>Some -> Just</li>
+<li>Nothing -> Nothing</li>
+<li><code>Maybe\just(10)</code> est un helper <code>Maybe\Just::of(10)</code></li>
+<li><code>Maybe\nothing()</code> -> <code>Maybe\Nothing::of(10)</code></li>
+</ul>
+
+
+<p>Nous allons faire quelque chose de curieux puisque nous ne mettons pas une valeur dans notre Maybe mais une fonction !</p>
+
+<p>Regardons un exemple simple</p>
+
+<pre><code class="php">$addOne = new Maybe\just(function($a) { return $a + 1;});
+$value = new Maybe\just(5);
+$result = $addOne-&gt;ap($value);
+
+var_dump($result);
+</code></pre>
+
+<p>Dans le premier Maybe on a mis une fonction. <code>ap</code> prend en entrée un Maybe.</p>
+
+<p>Nous obtenons
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Monad\Maybe\Just</span><span class="c1">#5 (1) {</span>
+</span><span class='line'>  <span class="k">protected</span> <span class="nv">$value</span> <span class="o">=&gt;</span>
+</span><span class='line'>  <span class="nx">int</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span>
+</span><span class='line'><span class="nx">Essayons</span> <span class="nx">avec</span> <span class="sb">`Nothing`</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nv">$addOne</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maybe\just</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$a</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nv">$a</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;});</span>
+</span><span class='line'><span class="nv">$value</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maybe\nothing</span><span class="p">();</span>
+</span><span class='line'><span class="nv">$result</span> <span class="o">=</span> <span class="nv">$addOne</span><span class="o">-&gt;</span><span class="na">ap</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Le résultat
+<code>php
+class Monad\Maybe\Nothing#4 (0) {
+}
+</code></p>
+
+<p>Cela ne semble pas très utiles</p>
+
+<p>Nous allons utiliser notre fonction <code>curryN</code> du <a href="">post précédent</a>.</p>
+
+<pre><code class="php">function add($a, $b)
+{
+    return $a + $b;
+}
+
+$add = Maybe\just(f\curryN(2, "add"));
+
+$result = $add-&gt;ap(MayBe\just(5))-&gt;ap(Maybe\just(5));
+
+// just(10)
+</code></pre>
+
+<ul>
+<li>la fonction add est une addition et prend deux arguments. <code>(? + ?)</code></li>
+<li>Je la transforme en évaluation partielle avec CurryN() et je la place dans un <code>just(? + ?)</code></li>
+<li>Au premier <code>ap</code> je soumet le premier argument, il manque encore un argument , la fonction devient <code>just( 5 + ?)</code>.</li>
+<li>Au second <code>ap</code> l&#8217;argument manquant est fournis. La fonction est complète <code>just( 5 + 5)</code> -> <code>just(10)</code>.</li>
+</ul>
+
+
+<p>La recette est simple, Je mets la fonction à plusieurs arguments dans mon Maybe avec le curryN. et j&#8217;applique chacun des arguments.</p>
+
+<p>En fait si on fait une image</p>
+
+<p><img class="center" src="/images/applicative.png" width="428" height="212" title="&lsquo;Avec évaluation partielle&rsquo; &lsquo;avec évaluation partielle&rsquo;" ></p>
+
+<p>Mais nous pouvons faire cela avec toutes les fonctions</p>
+
+<pre><code>$superStrRepeat = Maybe\just(f\curryN(2, "str_repeat"));
+
+//alors 
+var_dump(
+   $superStrRepeat-&gt;ap(Maybe\just(".o0o"))-&gt;ap(Maybe\just(3))
+);
+//Maybe\just(".oOo.oOo.oOo");
+var_dump(
+   $superStrRepeat-&gt;ap(Maybe\nothing())-&gt;ap(Maybe\just(3))
+);
+//Maybe\Nothing();
+var_dump(
+   $superStrRepeat-&gt;ap(Maybe\nothing())-&gt;ap(Maybe\nothing()))
+);
+// Maybe\Nothing
+</code></pre>
+
+<p>C&#8217;est pratique car nous pouvons maintenant appliquer des fonctions à plusieurs arguments. et des fonctions qui ne travaillent pas avec des object Maybe, Nothing.</p>
+
+<p>Quand on &ldquo;augmente&rdquo; les fonctions pour travailler avec d&#8217;autre types,  on appelle cela le <code>Lift</code></p>
+
+<p>D&#8217;ailleurs cela s&#8217;exprime en 1 ligne avec la librairie</p>
+
+<pre><code class="php">var_dump(f\liftA2("add", MayBe\just(5), Maybe\just(5)));
+// Maybe\Just(10)
+
+var_dump(f\liftA2("str_repeat",MayBe\just(".o0o"), Maybe\just(5)));
+// Maybe\just(".o0o.o0o.o0o.o0o.o0o")
+</code></pre>
+
+<p><img class="center" src="/images/str_repeataveccontainer.png" width="517" height="425" title="&lsquo;On utilise la fonction LiftA2&rsquo; &lsquo;&rsquo;" ></p>
+
+<h2>Pour résumer.</h2>
+
+<ul>
+<li>Les <em>functors</em> implémentent la fonction <code>map</code> qui prend en entrée une fonction.</li>
+<li>Les <em>applicatives</em> implémentent la fonction <code>ap</code> prend en entrée un applicative. Cela permet d&#8217;appliquer des fonctions à plusieurs arguments.</li>
+<li>Les <em>monades</em> implémentent la fonction <code>bind</code> qui prend entrée une fonction <em>monadique</em> c&#8217;est à dire qui renvoie une Nomade.</li>
+</ul>
+
+
+<p>Tous les monades que j&#8217;ai présenté implémentent les 3 fonctions (Maybe, Collection, Identity(Container)).</p>
+
+<h2>En conclusion.</h2>
+
+<p>Dans le prochain Post nous allons voir le cas particulier de <code>ap</code> pour les collections.</p>
+
+<ul>
+<li>Partie 1 : <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
+<li>Partie 2 : <a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
+<li>Partie 3 : <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
+<li>Partie 4 : <a href="/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
+<li>Interlude : <a href="/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a></li>
+<li>Partie 5 : <a href="2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Les Monades : Evaluation partielle]]></title>
@@ -123,7 +341,7 @@ result = add(10)(5);
 </code>
 je suis obligé d&#8217;utiliser une variable intermédiaire en PHP.
 <code>php
-$add10= add(4);
+$add10= add(10);
 $result = $add10(5);
 </code>
 Bref la syntaxe n&#8217;est pas très pratique.</p>
@@ -146,10 +364,12 @@ En fait le langage fait.
 <p>Merci de m&#8217;avoir lu.</p>
 
 <ul>
-<li>partie 1 : <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
-<li>partie 2 : <a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
-<li>partie 3 : <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
-<li>partie 4 : <a href="/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
+<li>Partie 1 : <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
+<li>Partie 2 : <a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
+<li>Partie 3 : <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
+<li>Partie 4 : <a href="/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
+<li>Interlude : <a href="/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a></li>
+<li>Partie 5 : <a href="2015/12/20/les-monades-5-les-applicatives/">Les applicative</a></li>
 </ul>
 
 ]]></content>
@@ -164,13 +384,6 @@ En fait le langage fait.
 
 <p>Voici notre nouveau <em>container</em> Le container <strong>List</strong>. Il prend en entrée un tableau (Array) ou en Php un <code>Traversable</code>.
 <img class="center" src="/images/collection.png" width="600" height="450" title="&lsquo;Le container Collection&rsquo; &lsquo;Le container collection&rsquo;" ></p>
-
-<ul>
-<li>partie 1 : <a href="blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
-<li>partie 2 : <a href="blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
-<li>partie 3 : <a href="blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
-</ul>
-
 
 <p>Nous allons voir ensemble les listes, Collections. Nous allons voir le <code>map</code>, le <code>bind</code> nous allons voir que le comportement n&#8217;est pas exactement le même..</p>
 
@@ -640,7 +853,13 @@ La valeur 3 n&#8217;a qu&#8217;une valeur qui est <code>3</code> facile, la vale
 <ul>
 <li>Ma référence pour l&#8217;implémentation est <a href="https://github.com/widmogrod/php-functional">php-functional</a>.</li>
 <li>La bible pour le haskell est <a href="learnyouahaskell.com">Learn You a Haskell for Great Good!</a> Le livre est gratuit avec des jolis dessins. Enfin le fond et la forme sont vraiment bon.</li>
-<li>Il existe en français !! <a href="http://lyah.haskell.fr/">Apprendre Haskell vous fera le plus grand bien !</a></li>
+<li><p>Il existe en français !! <a href="http://lyah.haskell.fr/">Apprendre Haskell vous fera le plus grand bien !</a></p></li>
+<li><p>Partie 1 : <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></p></li>
+<li>Partie 2 : <a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
+<li>Partie 3 : <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
+<li>Partie 4 : <a href="/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
+<li>Interlude : <a href="/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a></li>
+<li>Partie 5 : <a href="2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
 </ul>
 
 ]]></content>
@@ -651,13 +870,7 @@ La valeur 3 n&#8217;a qu&#8217;une valeur qui est <code>3</code> facile, la vale
     <link href="http://mcamuzat.github.io/blog/2015/11/22/les-monades-3-le-maybe-suite/"/>
     <updated>2015-11-22T16:59:31+01:00</updated>
     <id>http://mcamuzat.github.io/blog/2015/11/22/les-monades-3-le-maybe-suite</id>
-    <content type="html"><![CDATA[<ul>
-<li>partie 1 : <a href="blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
-<li>partie 2 : <a href="blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
-</ul>
-
-
-<p>Dans la partie de 3 : Nous allons utiliser le functor Maybe avec l&#8217;instruction <code>bind</code>.</p>
+    <content type="html"><![CDATA[<p>Dans la partie de 3 : Nous allons utiliser le functor Maybe avec l&#8217;instruction <code>bind</code>.</p>
 
 <p>Soit le tableau suivant.</p>
 
@@ -760,6 +973,16 @@ string (6) "titre3"
 
 
 <p>Nous allons continuer notre voyage avec les listes dans le prochain post.</p>
+
+<ul>
+<li>Partie 1 : <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
+<li>Partie 2 : <a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
+<li>Partie 3 : <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
+<li>Partie 4 : <a href="/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
+<li>Interlude : <a href="/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a></li>
+<li>Partie 5 : <a href="2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
+</ul>
+
 ]]></content>
   </entry>
   
@@ -955,433 +1178,16 @@ $entity = $this-&gt;findSomeEntity()-&gt;orElse($this-&gt;findSomeOtherEntity())
 <p>Si vous avez un code ou vous vérifiez tout le temps si les valeurs sont nulles. Il y a probablement moyen que cette structure vous aide.</p>
 
 <p>Dans le prochain Post nous utiliserons le Maybe avec l&#8217;instruction <code>bind</code>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Les Monades en PHP c'est possible..]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/11/11/les-monades-en-php-cest-possible-dot/"/>
-    <updated>2015-11-11T19:28:39+01:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/11/11/les-monades-en-php-cest-possible-dot</id>
-    <content type="html"><![CDATA[<h2>Introduction</h2>
-
-<p>Nous allons voir ensemble les monades. Nous allons voir la monade <strong>Identity</strong>. elle n&#8217;est pas très utile mais nécessaire si vous voulez comprendre la monade/functor  <strong>Maybe</strong> qui j&#8217;espère va changer votre façon de voir votre code mais ce sera dans le post suivant.</p>
-
-<p>Les monades sont des structures de la programmation fonctionnelle. Très utilisées dans le langage <a href="https://www.haskell.org/">Haskell</a>. En pratique Haskell serait moins attractifs sans cette structure. <em>(Je ne suis absolument pas développeur Haskell.)</em></p>
-
-<!--more-->
-
-
-<p>Je ne sais pas trop les définir puisque il existe un nombre incalculable de définitions</p>
 
 <ul>
-<li>C&#8217;est un triplet d&#8217;après <a href="https://fr.wikipedia.org/wiki/Monade_%28informatique%29">wikipédia en français</a></li>
-<li>Une Interface, de l&#8217;injection de dépendances, Structure, Une base spatiale, Un <a href="https://byorgey.wordpress.com/2009/01/12/abstraction-intuition-and-the-monad-tutorial-fallacy/">burrito</a></li>
-<li>Des catégories</li>
+<li>Partie 1 : <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
+<li>Partie 2 : <a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
+<li>Partie 3 : <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
+<li>Partie 4 : <a href="/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
+<li>Interlude : <a href="/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a></li>
+<li>Partie 5 : <a href="2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
 </ul>
 
-
-<p>Il existe une infinité de tutoriels dessus (Le site officiel de Haskell à un compteur <a href="https://wiki.haskell.org/Monad_tutorials_timeline">plutôt amusant</a> pour quantifier l&#8217;avalanche de tuto), écris par les plus grands Douglas Crowford <a href="https://www.youtube.com/watch?v=b0EF0VTs9Dc">Youtube</a> (La référence du Javascript). Donc probablement que mon explication ne sera pas forcément la meilleure.</p>
-
-<p>Pour comprendre les monades je vais vous parler de container (Rien à voir avec <a href="https://www.docker.com/">docker</a>, ni container de <a href="https://symfony.com/">Symfony</a>).</p>
-
-<h2>des valeurs sympas et pas sympa.</h2>
-
-<p>J&#8217;ai des valeurs sympas, et des valeurs <strong>pas sympas</strong>.</p>
-
-<p><img class="center" src="/images/sympa-passympa.png" width="600" height="233" title="&lsquo;des valeurs sympas et pas sympas&rsquo; &lsquo;des valeurs sympas et pas sympas&rsquo;" ></p>
-
-<p>Par <strong>pas sympa</strong>, j&#8217;entends toute les valeurs que je ne maitrise pas trop
-par exemple</p>
-
-<ul>
-<li>la variable n&#8217;est pas instanciée le fabuleux <code>Null</code></li>
-<li>le résultat n&#8217;est pas forcément le même. je lance la fonction deux fois, je n&#8217;ai pas le même résultat.</li>
-<li>le résultat dépend d&#8217;autre chose, par exemple la lecture d&#8217;un fichier (le réseau est coupé, le disque dur est plein, etc ..) et peux entrainer des erreurs et des exceptions.</li>
-<li>le résultat n&#8217;a pas forcement la même taille. je pense à un résultat de base de donnée, je peux avoir 0 lignes commes des milliards.</li>
-<li>enfin le résultat utilise des ressources qui sont partagés avec d&#8217;autre programme.</li>
-</ul>
-
-
-<h2>La solution le container</h2>
-
-<p>La solution :</p>
-
-<blockquote><blockquote><p>utiliser un container ou un emballage</p></blockquote></blockquote>
-
-<p><img class="center" src="/images/valeurdanscontainer.png" width="600" height="450" title="&lsquo;Ma valeur dans un container&rsquo; &lsquo;Ma valeur dans un container&rsquo;" ></p>
-
-<p>L&#8217;idée est simple, je mets en <strong>quarantaine</strong> ma valeur.</p>
-
-<p>Ainsi je suis protégé des effets néfastes.</p>
-
-<p><img class="center" src="/images/valeurquicasse.png" width="600" height="450" title="&lsquo;Si problème..&rsquo; &lsquo;Si problème..&rsquo;" ></p>
-
-<p>Voici le début de l&#8217;implémentation</p>
-
-<pre><code class="php">class Container {
-
-   /**
-     * @var mixed
-     */
-    protected $value;
-
-    public function __construct($value)
-    {
-        $this-&gt;value = $value;
-    }
-
-    public static function of($value)
-    {
-        return new static($value);
-    }
-}
-</code></pre>
-
-<p>J&#8217;ai deux méthodes:  un constructeur, et une factory statique.
-deux possibilités</p>
-
-<pre><code class="php">$valueNotSecure = "Je ne suis pas sympa";
-var_dump(new Container($valueNotSecure));
-var_dump(Container::of($valueNotSecure));
-</code></pre>
-
-<pre><code class="php">class Container#1 (1) {
-  protected $value =&gt;
-  string(20) "Je ne suis pas sympa"
-}
-class Container#1 (1) {
-  protected $value =&gt;
-  string(20) "Je ne suis pas sympa"
-}
-</code></pre>
-
-<p>Ma valeur est dans un container, la propriété est <code>protected</code>. Donc impossible à atteindre de l&#8217;extérieur, à priori on ne craint pas grand chose..</p>
-
-<p>Mais voila mon container aussi sécure qu&#8217;il soit ne sert à rien. Puisque rien ne sort, mais rien de rentre..</p>
-
-<h2>Un Sas de décontamination.</h2>
-
-<p>Je vais ajouter un sas de décontamination à ma structure via l&#8217;instruction <code>map</code> qui prend une fonction. Il applique la fonction à la valeur à l&#8217;intérieur. Il a une petite particularité. Il ne donne pas le résultat mais un nouveau container qui contient le résultat.</p>
-
-<p><img class="center" src="/images/containeravecsas.png" width="600" height="450" title="&lsquo;J'ajoute un sas&rsquo; &lsquo;J'ajoute un sas&rsquo;" ></p>
-
-<p>Soit la fonction suivante qui ajoute 1 à la valeur en entrée.</p>
-
-<pre><code class="php">function addOne($value) {
-    return $value + 1;
-}
-</code></pre>
-
-<p>Regardons le dessin suivant:</p>
-
-<p><img class="center" src="/images/containeravecsasexemple.png" width="600" height="450" title="&lsquo;Je place la fonction +1 dans le sas&rsquo; &lsquo;Je place la fonction +1 dans le sas&rsquo;" ></p>
-
-<ul>
-<li>Je crée un container qui contient la valeur &ldquo;5&rdquo;.</li>
-<li>Je mets la fonction <code>addOne</code> dans le <code>map</code>. Je fais le calcul. Que je m&#8217;empresse de remettre dans un container tout neuf.</li>
-<li>j&#8217;ai un Container avec &ldquo;6&rdquo;.</li>
-</ul>
-
-
-<p><img class="center" src="/images/containertoutneuf.png" width="600" height="450" title="&lsquo;J'ajoute un sas&rsquo; &lsquo;J'ajoute un sas&rsquo;" ></p>
-
-<p>Voici l&#8217;implémentation de <code>map</code> dans ma classe container.</p>
-
-<pre><code class="php ">    public function map($function)
-    {
-        // call_user_func =&gt; $function($this-&gt;value)
-        return static::of(call_user_func($function,$this-&gt;value));
-    }
-</code></pre>
-
-<p>Et le code d&#8217;exemple.</p>
-
-<pre><code class="php">$output = Container::of(5)
-    -&gt;map("addOne")
-var_dump($output);
-</code></pre>
-
-<p>Et le résultat
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Container</span><span class="c1">#2 (1) {</span>
-</span><span class='line'>  <span class="k">protected</span> <span class="nv">$value</span> <span class="o">=&gt;</span>
-</span><span class='line'>  <span class="nx">int</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
-</span><span class='line'><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">Quelques</span> <span class="nx">remarques</span>
-</span><span class='line'>
-</span><span class='line'> <span class="o">*</span> <span class="nx">Comme</span> <span class="nx">le</span> <span class="nx">résultat</span> <span class="nx">n</span><span class="s1">&#39;est pas sur, Je remet le résultat dans un nouveau container. Je ne réutilise plus l&#39;</span><span class="nx">ancien</span> <span class="nx">container</span> <span class="p">(</span><span class="nx">puisque</span> <span class="nx">contaminé</span><span class="p">)</span><span class="o">.</span> <span class="nx">Comme</span> <span class="nx">on</span> <span class="nx">ne</span> <span class="nx">peux</span> <span class="nx">changer</span> <span class="nx">le</span> <span class="nx">contenu</span><span class="p">,</span> <span class="nx">il</span> <span class="nx">est</span> <span class="o">**</span><span class="nx">immutable</span><span class="o">**</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">{</span><span class="o">%</span> <span class="nx">img</span> <span class="nx">center</span> <span class="o">/</span><span class="nx">images</span><span class="o">/</span><span class="nx">containertoutneuf</span><span class="o">.</span><span class="nx">png</span> <span class="mi">600</span> <span class="mi">450</span> <span class="s1">&#39;des valeurs sympas et pas sympas&#39;</span> <span class="s1">&#39;des valeurs sympas et pas sympas&#39;</span> <span class="o">%</span><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'> <span class="o">*</span> <span class="nx">Le</span> <span class="nx">container</span> <span class="nx">avec</span> <span class="nx">l</span><span class="s1">&#39;instruction `map` par définition **Chainable**.</span>
-</span><span class='line'>
-</span><span class='line'><span class="s1"><img class="center /images/chainagecontainer.png 600 450 &#39;</span><span class=nx>J</span><span class=s1>&#39;ajoute un sas&#39;</span> <span class=s1>&#39;J&#39;</span><span class=nx>ajoute</span> <span class=nx>un</span> <span" src="class="nx">sas</span><span" title="class=&#34;s1&#34;>&#39;" alt="class=&#34;s1&#34;>&#39;"></span>
-</span><span class='line'><span class="s1">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s1">&lt;p&gt;$output = Container::of(5)</span>
-</span><span class='line'><span class="s1">    -&gt;map(&amp;ldquo;addOne&amp;rdquo;)</span>
-</span><span class='line'><span class="s1">    -&gt;map(&amp;ldquo;addOne&amp;rdquo;)</span>
-</span><span class='line'><span class="s1">    -&gt;map(&amp;ldquo;addOne&amp;rdquo;)</span>
-</span><span class='line'><span class="s1">    -&gt;map(&amp;ldquo;addOne&amp;rdquo;)</span>
-</span><span class='line'><span class="s1">var_dump($output);&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s1">&lt;p&gt;//class Container#3 (1) {</span>
-</span><span class='line'><span class="s1">//  protected $value =&gt;</span>
-</span><span class='line'><span class="s1">//  int(9)</span>
-</span><span class='line'><span class="s1">//}&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s1">&lt;pre&gt;&lt;code&gt;</span>
-</span><span class='line'><span class="s1">Bien sur il est parfaitement possible d&#39;</span><span class="nx">utiliser</span> <span class="nx">des</span> <span class="nx">callbacks</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nv">$output</span> <span class="o">=</span> <span class="nx">Container</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-</span><span class='line'>    <span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">addOne</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;)</span>
-</span><span class='line'>    <span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nv">$value</span> <span class="o">*</span> <span class="mi">4</span><span class="p">;});</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$output</span><span class="p">);</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;//</span><span class="k">class</span> <span class="nc">Container</span><span class="c1">#3 (1) {</span>
-</span><span class='line'><span class="c1">//  protected $value =&gt;</span>
-</span><span class='line'><span class="c1">//  int(24)</span>
-</span><span class='line'><span class="c1">//}&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span>
-</span><span class='line'><span class="nx">Donc</span> <span class="nx">j</span><span class="s1">&#39;ai un Sas d&#39;</span><span class="nx">entrée</span> <span class="nx">qui</span> <span class="nx">me</span> <span class="nx">permet</span> <span class="nx">d</span><span class="s1">&#39;interagir avec ma valeur. Je n&#39;</span><span class="nx">ai</span> <span class="nx">toujours</span> <span class="nx">pas</span> <span class="nx">fais</span> <span class="nx">sortir</span> <span class="nx">la</span> <span class="nx">fonction</span><span class="o">.</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="c1">## Une sortie.</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">C</span><span class="s1">&#39;est pas très spectaculaire, j&#39;</span><span class="nx">ajoute</span> <span class="nx">une</span> <span class="nx">fonction</span> <span class="nb">extract</span><span class="p">()</span> <span class="nx">qui</span> <span class="nx">n</span><span class="s1">&#39;est qu&#39;</span><span class="nx">un</span> <span class="nx">simple</span> <span class="k">return</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;...</span>
-</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">extract</span><span class="p">()</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nv">$this</span><span class="o">-&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="nx">value</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="o">...</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span>
-</span><span class='line'><span class="nx">Exemple</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nb">var_dump</span><span class="p">(</span>
-</span><span class='line'>     <span class="nx">Container</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">je</span> <span class="nx">suis</span> <span class="nx">tranquille</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;)</span>
-</span><span class='line'>         <span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="nb">strtoupper</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">extract</span><span class="p">()</span>
-</span><span class='line'><span class="p">);</span>
-</span><span class='line'> <span class="c1">//string(18) JE SUIS TRANQUILLE</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<h2>Une application : Le décorateur de texte.</h2>
-
-<p>Nous allons utiliser la capacité de chainage de notre container pour faire un pseudo-décorateur.</p>
-
-<p>Soit les fonctions suivantes
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">h1</span><span class="p">(</span><span class="nv">$text</span><span class="p">)</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nv">$output</span> <span class="o">=</span> <span class="nx">Container</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span>  <span class="nx">la</span> <span class="nx">réponse</span> <span class="nx">est</span> <span class="nx">Non</span>   <span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;)</span>
-</span><span class='line'>    <span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nb">trim</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;)</span>
-</span><span class='line'>    <span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nb">htmlentities</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;)</span>
-</span><span class='line'>    <span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">h1</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;)</span>
-</span><span class='line'>    <span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">body</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;)</span>
-</span><span class='line'>    <span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">html</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;)</span>
-</span><span class='line'>    <span class="o">-&gt;</span><span class="na">extract</span><span class="p">();</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="k">echo</span><span class="p">(</span><span class="nv">$output</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-Voici le fonctionnement</p>
-
-<ul>
-<li>je supprime les espaces en trop avec <a href="http://php.net/manual/fr/function.trim.php">trim</a></li>
-<li>Je code en Html <a href="http://php.net/manual/fr/function.htmlentities.php">htmlentities</a></li>
-<li>j&#8217;encadre de &ldquo;h1&rdquo; puis &ldquo;body&rdquo; puis &ldquo;html&rdquo;.</li>
-</ul>
-
-
-<p>Le résultat</p>
-
-<pre><code class="html">&lt;html&gt;&lt;body&gt;&lt;h1&gt;la r&amp;eacute;ponse est Non&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;
-</code></pre>
-
-<p>En image</p>
-
-<h2>Une autre idée</h2>
-
-<p>Nous pouvons aussi imagine une fonction qui renvoie un Container.</p>
-
-<p>Par exemple reprenons notre fonction <code>addOne</code></p>
-
-<p><img class="center" src="/images/functionretournecontainer.png" width="600" height="450" title="&lsquo;Ma fonction renvoie un container&rsquo; &lsquo;ma fonction renvoie un container&rsquo;" ></p>
-
-<pre><code class="php">function addOne($value) {
-    return Container::of($value + 1);
-}
-</code></pre>
-
-<p>Donc ma fonction me renvoie forcement un container.</p>
-
-<p>Si j&#8217;utilise l&#8217;instruction <code>map</code>, je risque de mettre un container dans le container.</p>
-
-<p><img class="center" src="/images/containerdanscontainer.png" width="600" height="450" title="&lsquo;container dans un container&rsquo; &lsquo;container dans un container&rsquo;" ></p>
-
-<p>D&#8217;où l&#8217;ajout de la méthode <code>bind</code></p>
-
-<pre><code class="php">    public function bind($transformation)
-    {
-        return call_user_func($transformation, $this-&gt;value);
-    }
-</code></pre>
-
-<p>On remarque que mon résultat reste chaînable.</p>
-
-<pre><code class="php">$output = Container::of(5)
-    -&gt;bind("addOne")
-    -&gt;bind("addOne")
-    -&gt;bind("addOne")
-    -&gt;bind("addOne")
-var_dump($output);
-
-//class Container#3 (1) {
-//  protected $value =&gt;
-//  int(9)
-//}
-</code></pre>
-
-<h2>Conclusion</h2>
-
-<p>Mon container bien que pour le moment est assez peu utilise mais.</p>
-
-<ul>
-<li><p>Il implémente une fonction <code>map</code> qui est chainage. Nous venons d&#8217;implémenter un <strong>functor</strong> ou <strong>foncteur</strong> en français. Cela a un rapport avec les mathématiques. Et il m&#8217;est difficile au moment ou j&#8217;écris ces lignes de vous l&#8217;expliquer. Le Functor s&#8217;occupe d&#8217;appeler la fonction pour nous et de retourner un résultat correct. Il s&#8217;occupe de tout. C&#8217;est une sorte d&#8217;abstraction. On lui confie le calcul et il se débrouille. (Nous le retrouverons dans le post suivant)</p></li>
-<li><p>Nous implémentons la méthode <code>of</code> et <code>bind</code> qui est elle aussi chainage (à condition de lui donner des fonctions qui renvoie de Container). Nous venons d&#8217;implémenter une <em>monade</em> même principe que le functor.</p></li>
-</ul>
-
-
-<p>Si vous avez compris le container, vous pouvez le renommer en IdentityMonad.</p>
-
-<p>Dans le prochain post nous allons implémenter un  la Monade/Functor Maybe.</p>
-
-<p>Elle nous permettra de réfactoriser le code suivant</p>
-
-<pre><code class="php">function getAbonnementByUserConnected() {
-    $user = getUserConnected();
-    // l'utilisateur est anonyme pas d'abonnement
-    if (null === $user)  {
-        return null;
-    }
-    // l'utilisateur n'a pas d'abonnement
-    $abonnement = getAbonnementByUser($user);
-    if (null === $abonnement) {
-        return null;
-    }
-
-    return $abonnement;
-}
-
-function getPromotion() {
-    $abo = getAbonnementByUserConnected();
-    if (null === getAbonnementByUser()) {
-        return new Promotion();
-    }
-    return $abo-&gt;getPromotion();
-}
-</code></pre>
-
-<p>Pour devenir
-<code>php
-$promotion = Maybe::of("getUserConnected")
-    -&gt;map("getAbonnementByUser")
-    -&gt;map("getPromotion")
-    -&gt;orElse(new Promotion());
-</code></p>
-
-<p>Je me suis lancé dans une tache bien compliqué mais passionnante. Je m&#8217;excuse d&#8217;avance pour certaines approximations. J&#8217;avais confondu <code>map</code> et <code>bind</code> dans la première version</p>
-
-<p>Je vous remercies de m&#8217;avoir lu..</p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: catégorie | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/categorie/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-12-13T19:13:45+01:00</updated>
+  <updated>2015-12-20T19:47:37+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -205,6 +205,16 @@ $entity = $this-&gt;findSomeEntity()-&gt;orElse($this-&gt;findSomeOtherEntity())
 <p>Si vous avez un code ou vous vérifiez tout le temps si les valeurs sont nulles. Il y a probablement moyen que cette structure vous aide.</p>
 
 <p>Dans le prochain Post nous utiliserons le Maybe avec l&#8217;instruction <code>bind</code>.</p>
+
+<ul>
+<li>Partie 1 : <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
+<li>Partie 2 : <a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
+<li>Partie 3 : <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
+<li>Partie 4 : <a href="/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
+<li>Interlude : <a href="/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a></li>
+<li>Partie 5 : <a href="2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
+</ul>
+
 ]]></content>
   </entry>
   
