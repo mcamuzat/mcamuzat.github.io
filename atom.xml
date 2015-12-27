@@ -4,7 +4,7 @@
   <title><![CDATA[Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-12-20T19:47:37+01:00</updated>
+  <updated>2015-12-27T21:30:58+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,229 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Haskell : Stack]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/12/27/haskell-stack/"/>
+    <updated>2015-12-27T18:39:17+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/12/27/haskell-stack</id>
+    <content type="html"><![CDATA[<h2>Introduction</h2>
+
+<p>Je ne développe pas en <a href="https://www.haskell.org/">Haskell</a> mais je regarde beaucoup. La série que j&#8217;écris sur la programmation fonctionnelle me force à regarder le langage de plus près. Le monde haskell s&#8217;est enrichi d&#8217;un nouvel outil <strong>Stack</strong>.</p>
+
+<h2>Stack et Haskell</h2>
+
+<p>Stack est un logiciel qui gère l&#8217;installation/les packages/la création/le build/les tests d&#8217;un projet Haskell.</p>
+
+<p>Il a plusieurs avantages:</p>
+
+<ul>
+<li>Il a été pensé pour automatiser le build.</li>
+<li>Il a une ligne de commande sympathique que nous allons voir par la suite.</li>
+<li>Il utilise un fichier <code>stack.yml</code> c&#8217;est l&#8217;équivalent d&#8217;un <code>composer.json</code> en php ou un <code>package.json</code> en node.</li>
+<li>Tout est installé dans le <code>~/.stack</code> tout les programmes sont <em>isolés</em> et n&#8217;interfèrent pas avec les autres logiciels déjà pré installés.</li>
+</ul>
+
+
+<!--more-->
+
+
+<h2>Mise en place.</h2>
+
+<p>Il suffit d&#8217;ajouter les clés/et le dépôt sous ubuntu :  <a href="http://docs.haskellstack.org/en/stable/README.html#how-to-install">voir la documentation</a>
+Une fois que le logiciel est installé</p>
+
+<h3>Etape 1 : structure d&#8217;un projet.</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ stack new my-project</span></code></pre></td></tr></table></div></figure>
+
+
+<p>crée une arborescence toute faite</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>.
+</span><span class='line'>├── LICENSE
+</span><span class='line'>├── Setup.hs
+</span><span class='line'>├── app
+</span><span class='line'>│   └── Main.hs
+</span><span class='line'>├── my-project.cabal
+</span><span class='line'>├── src
+</span><span class='line'>│   └── Lib.hs
+</span><span class='line'>├── stack.yaml
+</span><span class='line'>└── test
+</span><span class='line'>    └── Spec.hs
+</span><span class='line'>
+</span><span class='line'>    3 directories, 7 files</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A noter qu&#8217;il existe des templates d&#8217;applications (Un peu comme <a href="http://yeoman.io/">Yeoman</a>)</p>
+
+<p>Par exemple pour créer une application Yesod (Pour faire un serveur web) et Mysql</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ stack new mon-projet yesod-mysql</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pour lister les différents templates</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ stack templates
+</span><span class='line'>chrisdone
+</span><span class='line'>...
+</span><span class='line'>...
+</span><span class='line'>yesod-minimal
+</span><span class='line'>yesod-mongo
+</span><span class='line'>yesod-mysql
+</span><span class='line'>yesod-postgres
+</span><span class='line'>yesod-postgres-fay
+</span><span class='line'>yesod-simple
+</span><span class='line'>yesod-sqlite</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Etape 2 : Installation des librairies</h2>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ cd mon-projet
+</span><span class='line'>$ stack setup</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>Si Haskell n&#8217;est pas encore installé dans <code>~/.stack</code>, le logiciel s&#8217;occupe de tout, il installe aussi toutes les dépendances.</p>
+
+<h2>Etape 3 : build et compilation</h2>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ stack build</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Le haskell est un language compilé. Le logiciel compile tout le projet.</p>
+
+<h2>Etape 4 : Lancer le programme</h2>
+
+<p>Pour lancer le programme</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ stack exec mon-projet</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pour lancer les tests. Tout les projets viennents avec des tests</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ stack test
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Etape 5 : Installer le programme</h2>
+
+<p>un peu comme un <code>make install</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ stack install</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Etape 6 : Docker</h2>
+
+<p>Docker c&#8217;est cool et pratique.</p>
+
+<p>dans le <code>stack.yml</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>...
+</span><span class='line'>...
+</span><span class='line'>image:
+</span><span class='line'>  container:
+</span><span class='line'>    # Image de base
+</span><span class='line'>    base: "fpco/ubuntu-with-libgmp:14.04"
+</span><span class='line'>    # Noms de l'iso.
+</span><span class='line'>    name: "mcamuzat/mon-projet"
+</span><span class='line'>    # Nom du programme à lancer 
+</span><span class='line'>    entrypoints:
+</span><span class='line'>      - mon-projet
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si l&#8217;image de base existe déjà</p>
+
+<p>Alors</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ stack image container</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>Cela génère le container.</p>
+
+<p>Il ne reste plus qu&#8217;à lancer le container</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo docker run -t -i mcamuzat/mon-projet mon-projet</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Listes de commandes</h2>
+
+<ul>
+<li><code>stack new nom-du-projet nom-du-template</code> crée un nouveau projet</li>
+<li><code>stack setup</code> mise en place du projet</li>
+<li><code>stack build</code> compile le projet</li>
+<li><code>stack exec nom-du-programme</code> lance le programme</li>
+<li><code>stack repl</code> Lance le mode interactif</li>
+<li><code>stack test</code> Lance les tests</li>
+<li><code>stack install</code> installe le programme.</li>
+<li><code>stack templates</code> liste tout les templates.</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>Je me mets au Haskell. C&#8217;est assez passionnant. Le langage n&#8217;est pas simple (je me casse un peu les dents dessus). Je suis pour l&#8217;instant juste sur les premiers problèmes de <a href="http://www.codewars.com/">codewars</a>. J&#8217;espère faire des post sur haskell par la suite. Il y a déja plein de tutoriels.</p>
+
+<h2>Liens</h2>
+
+<ul>
+<li><a href="http://docs.haskellstack.org/en/stable/README.html">Le site officiel</a></li>
+<li><a href="http://conscientiousprogrammer.com/blog/2015/11/30/haskell-tidbits-24-days-of-hackage-2015-day-1-introduction-and-stack/">Une introduction en anglais</a></li>
+<li><a href="http://www.stephendiehl.com/posts/haskell_2016.html">Un second article an anglais</a></li>
+<li><a href="https://www.fpcomplete.com/blog/2015/11/kubernetes">Créer le container Docker</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Les monades 5: les applicatives]]></title>
@@ -5606,294 +5829,6 @@ le résultat</p>
 <p>Je vais essayer de continuer avec le yield et repartir sur les promises.</p>
 
 <p>Merci de m&#8217;avoir lu.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Problème Np-Complet]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/09/09/probleme-np-complet/"/>
-    <updated>2015-09-09T21:55:10+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/09/09/probleme-np-complet</id>
-    <content type="html"><![CDATA[<p>Aujourd&#8217;hui je vais parler des problèmes Np-complets avec le <a href="http://xkcd.com/">xkcd</a> suivant. L&#8217;original est <a href="http://xkcd.com/287/">ici</a></p>
-
-<p><img class="center" src="http://mcamuzat.github.io/images/np_complete.png" width="600" height="388" title="xkcd" alt="xkcd"></p>
-
-<p>On appelle ce genre de problème les NP-complets</p>
-
-<p>Pour faire simple (Ce que j&#8217;en ai compris)</p>
-
-<p>Les NP-problèmes sont des problèmes donc il est très facile de vérifier une solutions. Dans notre cas ici il suffit de commander 7 * 2.15 pour obtenir 15.05. Le problème a une solution. Mais il est quasiment impossible de trouver une méthode efficace pour déterminer la solution, voir même de savoir s&#8217;il y a une solutions.</p>
-
-<!--more-->
-
-
-<p>Il suffit de regarder les images suivantes (pris d&#8217;un post de <a href="http://cstheory.stackexchange.com/questions/5188/explain-p-np-problem-to-10-year-old">stack exchange</a>)</p>
-
-<ul>
-<li>si on met les paquets les plus gros d&#8217;abord, les plus larges, avec un <a href="http://www.optaplanner.org/">planner</a>.</li>
-</ul>
-
-
-<p><img class="center" src="http://mcamuzat.github.io/images/backpack.png" width="600" height="450" title="bin packing" alt="slide1"></p>
-
-<ul>
-<li><p>A quel moment mettre le paquet <code>2 * 4 = 8</code>. suivant la forme la solution varie
-<img class="center" src="http://mcamuzat.github.io/images/backpack2.png" width="600" height="450" title="bin packing" alt="slide2"></p></li>
-<li><p>Enfin impossible de savoir s&#8217;il y a une solution ici. Il y a priori la place, pourtant il n&#8217;y a pas de solution</p></li>
-</ul>
-
-
-<p><img class="center" src="http://mcamuzat.github.io/images/backpack3.png" width="600" height="450" title="bin packing" alt="slide3"></p>
-
-<p>la source des images <a href="http://cstheory.stackexchange.com/posts/5206/revisions">ici</a>.</p>
-
-<p>Il reste la force brute.</p>
-
-<p>Voici ma version du xkcd en php</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">findSolution</span><span class="p">(</span><span class="nv">$total</span><span class="p">,</span> <span class="nv">$list</span><span class="p">,</span> <span class="nv">$menu</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">foreach</span><span class="p">(</span><span class="nv">$menu</span> <span class="k">as</span> <span class="nv">$plat</span> <span class="o">=&gt;</span> <span class="nv">$prix</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$result</span> <span class="o">=</span> <span class="nb">array_merge</span><span class="p">(</span><span class="nv">$list</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nv">$plat</span><span class="p">));</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$total</span><span class="o">-</span><span class="nv">$prix</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nb">var_dump</span><span class="p">(</span><span class="nv">$result</span><span class="p">);</span>
-</span><span class='line'>            <span class="k">return</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$total</span><span class="o">-</span><span class="nv">$prix</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nv">$result</span> <span class="o">=</span> <span class="nx">findSolution</span><span class="p">(</span><span class="nv">$total</span><span class="o">-</span><span class="nv">$prix</span><span class="p">,</span> <span class="nv">$result</span><span class="p">,</span> <span class="nv">$menu</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="nv">$menu</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
-</span><span class='line'>    <span class="s2">&quot;Mixed Fruit&quot;</span><span class="o">=&gt;</span><span class="mi">215</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;French Fries&quot;</span><span class="o">=&gt;</span><span class="mi">275</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;Side Salad&quot;</span><span class="o">=&gt;</span><span class="mi">335</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;Hot Wing&quot;</span><span class="o">=&gt;</span><span class="mi">355</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;Mozzarela Sticks&quot;</span><span class="o">=&gt;</span><span class="mi">420</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;Sampler Plate&quot;</span><span class="o">=&gt;</span><span class="mi">580</span><span class="p">,</span>
-</span><span class='line'><span class="p">);</span>
-</span><span class='line'><span class="nx">findSolution</span><span class="p">(</span><span class="mi">1505</span><span class="p">,</span> <span class="k">array</span><span class="p">(),</span> <span class="nv">$menu</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Cela affiche toute les solutions possibles.</p>
-
-<p>Bien sur il y a des doublons. Il n&#8217;y a pas de différence entre <code>["Hot wing", "Hot wing", "Mixed Fruit", "Sampler Plate"]</code> et  <code>["Hot wing", "Hot wing", "Sampler Plate", "Mixed Fruit"]</code></p>
-
-<p>Pour supprimer les doublons à l&#8217;affichage. Je vais utiliser des globales.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$allResult</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
-</span><span class='line'><span class="k">function</span> <span class="nf">findSolution</span><span class="p">(</span><span class="nv">$total</span><span class="p">,</span> <span class="nv">$list</span><span class="p">,</span> <span class="nv">$menu</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">global</span> <span class="nv">$count</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">global</span> <span class="nv">$allResult</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">foreach</span><span class="p">(</span><span class="nv">$menu</span> <span class="k">as</span> <span class="nv">$plat</span> <span class="o">=&gt;</span> <span class="nv">$prix</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$count</span><span class="o">++</span><span class="p">;</span>
-</span><span class='line'>        <span class="nv">$result</span> <span class="o">=</span> <span class="nb">array_merge</span><span class="p">(</span><span class="nv">$list</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nv">$plat</span><span class="p">));</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$total</span><span class="o">-</span><span class="nv">$prix</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nv">$sort</span> <span class="o">=</span> <span class="nv">$result</span><span class="p">;</span>
-</span><span class='line'>            <span class="nb">sort</span><span class="p">(</span><span class="nv">$sort</span><span class="p">);</span>
-</span><span class='line'>            <span class="nv">$allResult</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$sort</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">return</span> <span class="nv">$result</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$total</span><span class="o">-</span><span class="nv">$prix</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nv">$result</span> <span class="o">=</span> <span class="nx">findSolution</span><span class="p">(</span><span class="nv">$total</span><span class="o">-</span><span class="nv">$prix</span><span class="p">,</span><span class="nv">$result</span><span class="p">,</span> <span class="nv">$menu</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="nv">$menu</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
-</span><span class='line'>    <span class="s2">&quot;Mixed Fruit&quot;</span><span class="o">=&gt;</span><span class="mi">215</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;French Fries&quot;</span><span class="o">=&gt;</span><span class="mi">275</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;Side Salad&quot;</span><span class="o">=&gt;</span><span class="mi">335</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;Hot Wing&quot;</span><span class="o">=&gt;</span><span class="mi">355</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;Mozzarela Sticks&quot;</span><span class="o">=&gt;</span><span class="mi">420</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;Sampler Plate&quot;</span><span class="o">=&gt;</span><span class="mi">580</span>
-</span><span class='line'><span class="p">);</span>
-</span><span class='line'><span class="nv">$solution</span> <span class="o">=</span> <span class="nx">findSolution</span><span class="p">(</span><span class="mi">1505</span><span class="p">,</span> <span class="k">array</span><span class="p">(),</span> <span class="nv">$menu</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$result</span> <span class="o">=</span> <span class="nb">array_map</span><span class="p">(</span>
-</span><span class='line'>    <span class="s2">&quot;unserialize&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nb">array_unique</span><span class="p">(</span>
-</span><span class='line'>        <span class="nb">array_map</span><span class="p">(</span><span class="s2">&quot;serialize&quot;</span><span class="p">,</span> <span class="nv">$allResult</span>
-</span><span class='line'>    <span class="p">)</span>
-</span><span class='line'><span class="p">)</span>
-</span><span class='line'><span class="p">);</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$result</span><span class="p">);</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$count</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>je trie le tableau de résultats. pour que tout mes doublons s&#8217;affiche pareil.</li>
-<li><code>array_unique</code> ne marche pas si les valeurs sont des <em>tableaux</em> (ce qui est la cas ici)</li>
-<li>Je transforme mes tableaux en chaine de caractères grâce à la serialization avec le <code>array_map</code></li>
-<li>Alors <code>array_unique</code> vire les doublons</li>
-<li>Je deserialize avec à nouveau <code>array_map</code> et l&#8217;opération inverse.</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">array</span><span class="p">([</span><span class="nx">resultat1</span><span class="p">],</span> <span class="p">[</span><span class="nx">resultat1</span><span class="p">],[</span><span class="nx">resultat2</span><span class="p">])</span>
-</span><span class='line'><span class="c1">// array_map(&quot;serialize&quot;, $result);</span>
-</span><span class='line'><span class="k">array</span><span class="p">(</span><span class="s2">&quot;resultat1_serialisé&quot;</span><span class="p">,</span><span class="s2">&quot;resultat1_serialisé&quot;</span><span class="p">,</span><span class="s2">&quot;resultat2_serialisé&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="c1">// array_unique(..)</span>
-</span><span class='line'><span class="k">array</span><span class="p">(</span><span class="s2">&quot;resultat1_serialise&quot;</span><span class="p">,</span> <span class="s2">&quot;resultat2_serialise&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="c1">// array_map(&quot;unserialize&quot;, ..)</span>
-</span><span class='line'><span class="k">array</span><span class="p">([</span><span class="nx">resultat1</span><span class="p">],</span> <span class="p">[</span><span class="nx">resultat2</span><span class="p">])</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">int</span><span class="p">(</span><span class="mi">12040</span><span class="p">)</span>
-</span><span class='line'><span class="k">array</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>  <span class="k">array</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;Mixed Fruit&quot;</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;Mixed Fruit&quot;</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;Mixed Fruit&quot;</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;Mixed Fruit&quot;</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;Mixed Fruit&quot;</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;Mixed Fruit&quot;</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;Mixed Fruit&quot;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>  <span class="k">array</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="s2">&quot;Hot Wing&quot;</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="s2">&quot;Hot Wing&quot;</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="s2">&quot;Mixed Fruit&quot;</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">string</span><span class="p">(</span><span class="mi">13</span><span class="p">)</span> <span class="s2">&quot;Sampler Plate&quot;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>J&#8217;ai fait 12040 boucles pour obtenir toutes les solutions. On peut bien sur optimiser un peu l&#8217;algorithme, si la valeur 5.60 ne marche pas à la première boucle, il y a pas de chance pour quelle marche à la seconde boucle. Donc il faut supprimer des valeurs dans le tableau au fur et à mesure.</p>
-
-<h2> Conclusion</h2>
-
-<p>La force brute n&#8217;est pas vraiment une solution, avec plus de valeurs on explose les possibilités.  Il existe plusieurs <a href="https://fr.wikipedia.org/wiki/Probl%C3%A8me_du_sac_%C3%A0_dos">approches</a> qui tende vers des solutions.</p>
-
-<p>En informatique, il y a des nombreux cas où ce problème intervient</p>
-
-<ul>
-<li>L&#8217;ordre optimal d&#8217;installation des logiciels (Probablement la partie la plus marrante de <a href="https://getcomposer.org/">composer</a>, mais elle est assez peu documentée)</li>
-<li>Beaucoup de cryptages utilisent des problèmes NP-complets (factorisation de deux nombres premiers).</li>
-<li>La dernière phrase du comics parle du <a href="https://fr.wikipedia.org/wiki/Probl%C3%A8me_du_voyageur_de_commerce">voyageur de commerce</a>, un problème célèbre.</li>
-<li>Le sudoku, Les jeux <a href="http://arxiv.org/pdf/1203.1895v1.pdf">nintendos</a> ?!</li>
-<li>Enfin une <a href="https://fr.wikipedia.org/wiki/Liste_de_probl%C3%A8mes_NP-complets">liste complète</a> de wikipedia</li>
-</ul>
-
 ]]></content>
   </entry>
   

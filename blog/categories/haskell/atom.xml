@@ -4,7 +4,7 @@
   <title><![CDATA[Category: haskell | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/haskell/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-12-20T19:47:37+01:00</updated>
+  <updated>2015-12-27T21:30:58+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,202 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Haskell : Stack]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/12/27/haskell-stack/"/>
+    <updated>2015-12-27T18:39:17+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/12/27/haskell-stack</id>
+    <content type="html"><![CDATA[<h2>Introduction</h2>
+
+<p>Je ne développe pas en <a href="https://www.haskell.org/">Haskell</a> mais je regarde beaucoup. La série que j&#8217;écris sur la programmation fonctionnelle me force à regarder le langage de plus près. Le monde haskell s&#8217;est enrichi d&#8217;un nouvel outil <strong>Stack</strong>.</p>
+
+<h2>Stack et Haskell</h2>
+
+<p>Stack est un logiciel qui gère l&#8217;installation/les packages/la création/le build/les tests d&#8217;un projet Haskell.</p>
+
+<p>Il a plusieurs avantages:</p>
+
+<ul>
+<li>Il a été pensé pour automatiser le build.</li>
+<li>Il a une ligne de commande sympathique que nous allons voir par la suite.</li>
+<li>Il utilise un fichier <code>stack.yml</code> c&#8217;est l&#8217;équivalent d&#8217;un <code>composer.json</code> en php ou un <code>package.json</code> en node.</li>
+<li>Tout est installé dans le <code>~/.stack</code> tout les programmes sont <em>isolés</em> et n&#8217;interfèrent pas avec les autres logiciels déjà pré installés.</li>
+</ul>
+
+
+<!--more-->
+
+
+<h2>Mise en place.</h2>
+
+<p>Il suffit d&#8217;ajouter les clés/et le dépôt sous ubuntu :  <a href="http://docs.haskellstack.org/en/stable/README.html#how-to-install">voir la documentation</a>
+Une fois que le logiciel est installé</p>
+
+<h3>Etape 1 : structure d&#8217;un projet.</h3>
+
+<pre><code class="">$ stack new my-project
+</code></pre>
+
+<p>crée une arborescence toute faite</p>
+
+<pre><code>.
+├── LICENSE
+├── Setup.hs
+├── app
+│   └── Main.hs
+├── my-project.cabal
+├── src
+│   └── Lib.hs
+├── stack.yaml
+└── test
+    └── Spec.hs
+
+    3 directories, 7 files
+</code></pre>
+
+<p>A noter qu&#8217;il existe des templates d&#8217;applications (Un peu comme <a href="http://yeoman.io/">Yeoman</a>)</p>
+
+<p>Par exemple pour créer une application Yesod (Pour faire un serveur web) et Mysql</p>
+
+<pre><code>$ stack new mon-projet yesod-mysql
+</code></pre>
+
+<p>Pour lister les différents templates
+<code>
+$ stack templates
+chrisdone
+...
+...
+yesod-minimal
+yesod-mongo
+yesod-mysql
+yesod-postgres
+yesod-postgres-fay
+yesod-simple
+yesod-sqlite
+</code></p>
+
+<h2>Etape 2 : Installation des librairies</h2>
+
+<pre><code>$ cd mon-projet
+$ stack setup
+</code></pre>
+
+<p>Si Haskell n&#8217;est pas encore installé dans <code>~/.stack</code>, le logiciel s&#8217;occupe de tout, il installe aussi toutes les dépendances.</p>
+
+<h2>Etape 3 : build et compilation</h2>
+
+<pre><code>$ stack build
+</code></pre>
+
+<p>Le haskell est un language compilé. Le logiciel compile tout le projet.</p>
+
+<h2>Etape 4 : Lancer le programme</h2>
+
+<p>Pour lancer le programme</p>
+
+<pre><code>$ stack exec mon-projet
+</code></pre>
+
+<p>Pour lancer les tests. Tout les projets viennents avec des tests
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ stack test&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;
+</span><span class='line'>## Etape 5 : Installer le programme
+</span><span class='line'>un peu comme un `make install` 
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;$ stack install</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Etape 6 : Docker</h2>
+
+<p>Docker c&#8217;est cool et pratique.</p>
+
+<p>dans le <code>stack.yml</code>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&hellip;
+</span><span class='line'>&hellip;
+</span><span class='line'>image:
+</span><span class='line'>  container:
+</span><span class='line'>    # Image de base
+</span><span class='line'>    base: &ldquo;fpco/ubuntu-with-libgmp:14.04&rdquo;
+</span><span class='line'>    # Noms de l'iso.
+</span><span class='line'>    name: &ldquo;mcamuzat/mon-projet&rdquo;
+</span><span class='line'>    # Nom du programme à lancer
+</span><span class='line'>    entrypoints:
+</span><span class='line'>      - mon-projet&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;
+</span><span class='line'>Si l'image de base existe déjà
+</span><span class='line'>
+</span><span class='line'>Alors
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;$ stack image container</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Cela génère le container.</p>
+
+<p>Il ne reste plus qu&#8217;à lancer le container
+<code>
+sudo docker run -t -i mcamuzat/mon-projet mon-projet
+</code></p>
+
+<h2>Listes de commandes</h2>
+
+<ul>
+<li><code>stack new nom-du-projet nom-du-template</code> crée un nouveau projet</li>
+<li><code>stack setup</code> mise en place du projet</li>
+<li><code>stack build</code> compile le projet</li>
+<li><code>stack exec nom-du-programme</code> lance le programme</li>
+<li><code>stack repl</code> Lance le mode interactif</li>
+<li><code>stack test</code> Lance les tests</li>
+<li><code>stack install</code> installe le programme.</li>
+<li><code>stack templates</code> liste tout les templates.</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>Je me mets au Haskell. C&#8217;est assez passionnant. Le langage n&#8217;est pas simple (je me casse un peu les dents dessus). Je suis pour l&#8217;instant juste sur les premiers problèmes de <a href="http://www.codewars.com/">codewars</a>. J&#8217;espère faire des post sur haskell par la suite. Il y a déja plein de tutoriels.</p>
+
+<h2>Liens</h2>
+
+<ul>
+<li><a href="http://docs.haskellstack.org/en/stable/README.html">Le site officiel</a></li>
+<li><a href="http://conscientiousprogrammer.com/blog/2015/11/30/haskell-tidbits-24-days-of-hackage-2015-day-1-introduction-and-stack/">Une introduction en anglais</a></li>
+<li><a href="http://www.stephendiehl.com/posts/haskell_2016.html">Un second article an anglais</a></li>
+<li><a href="https://www.fpcomplete.com/blog/2015/11/kubernetes">Créer le container Docker</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Les monades 5: les applicatives]]></title>
@@ -973,211 +1169,6 @@ string (6) "titre3"
 
 
 <p>Nous allons continuer notre voyage avec les listes dans le prochain post.</p>
-
-<ul>
-<li>Partie 1 : <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
-<li>Partie 2 : <a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
-<li>Partie 3 : <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
-<li>Partie 4 : <a href="/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
-<li>Interlude : <a href="/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a></li>
-<li>Partie 5 : <a href="2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Les Monades (suite): Le Functor Maybe..]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/"/>
-    <updated>2015-11-15T16:43:42+01:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot</id>
-    <content type="html"><![CDATA[<p><img class="center" src="/images/lesdeuxcontainerMaybe.png" width="512" height="313" title="&lsquo;Il y a deux container&rsquo; &lsquo;Il y a deux containers&rsquo;" ></p>
-
-<p>Nous avons vue dans le précédent <a href="blog/2015/11/11/les-monades-en-php-cest-possible-dot/">post</a> un pseudo-container qui nous permet d&#8217;emballer nos valeurs. Nous allons muscler un peu notre container mais partons d&#8217;un exemple.</p>
-
-<p>Je souhaite récupérer le mail du client &ldquo;bob&rdquo; ou afficher &ldquo;pas de mail&rdquo;</p>
-
-<pre><code class="php">function getMail($name) {
-$mail = getUserByName($name)-&gt;getAddress()-&gt;getMail();
-if (null === $mail) {
-   return "pas de mail"; 
-}
-return $mail;
-}
-</code></pre>
-
-<p>Facile non ?</p>
-
-<!--more-->
-
-
-<p>Si <code>getAdress()</code> renvoie null, Outch &hellip;</p>
-
-<pre><code>PHP Fatal error: Call to a member function getMail() on a non-object..
-</code></pre>
-
-<p>L&#8217;utilisateur n&#8217;existe pas forcement et puis l&#8217;adresse est peut-être vide.. Une implémentation naïve</p>
-
-<pre><code class="php">function getMail($name) {
-    $user = getUserByName($name);
-    if ($user) {
-        $address = $user-&gt;getAddress();
-        if ($address) {
-            //etc ...
-            return $adresse-&gt;getMail();
-        }
-   }
-   return "pas de mail";
-
-}
-</code></pre>
-
-<p>Ce code vous le connaissez, vous l&#8217;avez probablement déjà écris, il y a moyen d&#8217;optimiser de faire plus propre.</p>
-
-<h2>Deux containers pour le prix d&#8217;un.</h2>
-
-<p>Le Maybe à la rescousse..</p>
-
-<p>Voici le Maybe en dessin.</p>
-
-<p><img class="center" src="/images/lesdeuxcontainerMaybe.png" width="512" height="313" title="&lsquo;Il y a deux container&rsquo; &lsquo;Il y a deux containers&rsquo;" ></p>
-
-<p>J&#8217;ai un container <code>Some</code> et un Container <code>Nothing</code>.</p>
-
-<p>Le container <code>Nothing</code> est un container qui n&#8217;a aucune valeurs. La méthode <code>map</code> renvoie toujours un container <code>Nothing</code>.</p>
-
-<pre><code class="php">class Nothing extends Container{
-    public function map($function)
-    {
-       return static::of(null);
-    }
-    public static function of($value)
-    {
-        return new static($value);
-    }
-
-    public function bind($transformation)
-    {
-        return static::of(null);
-    }
-
-    public function getOrElse($default)
-    {
-        return $default;
-    }
-}
-</code></pre>
-
-<p>Le container <code>Some</code> le résultats de <code>map</code> est un nouveau container <code>Some</code> s&#8217;il y a un résultat non-null sinon c&#8217;est un container <code>Nothing</code>.</p>
-
-<pre><code class="php ">class Some extends Container{
-    public function map($function)
-    {
-        $result = $this-&gt;bind($function);
-        if ($result === null) {
-            return Nothing::of(null);
-        }
-        return static::of($result);
-    }
-    public static function of($value)
-    {
-        return new static($value);
-    }
-
-    public function bind($transformation)
-    {
-        return call_user_func($transformation, $this-&gt;value);
-    }
-
-    public function getOrElse($default)
-    {
-        return $this-&gt;value;
-    }
-}
-</code></pre>
-
-<p>Enfin j&#8217;ai besoin d&#8217;un helper</p>
-
-<pre><code>function maybeFromValue($value) {
- if ($value === null) 
-   return Nothing::of(null);
- return Some::of($value);
-}
-</code></pre>
-
-<p>Notons que j&#8217;ai une méthode qui me permet de sortir avec une valeurs par défaut</p>
-
-<p>Quelques exemples:</p>
-
-<pre><code class="php">echo maybeFromValue(null)-&gt;map("ucfirst")-&gt;getOrElse("non!!");
-// non!!
-echo maybeFromValue("oui!!")-&gt;map("ucfirst")-&gt;getOrElse("non!!");
-// Oui!!
-echo Some::of("oui")-&gt;map("ucfirst")
-   -&gt;map(function($value) {return null;})
-   -&gt;getOrElse("Non!!");
-// Non !!
-</code></pre>
-
-<p>Nous pouvons simplifier notre problème</p>
-
-<p>En le refactorisant ainsi</p>
-
-<pre><code class="php">// example
-// method("name") return function($obj) {return $obj-&gt;getName()};
-
-function method($name)
-{
-    return function ($obj) use ($name) {
-        return $obj-&gt;$name();
-    };
-}
-
-$mail = maybeFromValue(getUserByName($name))
-    -&gt;map(method("getAddress")) // $value-&gt;getAdress()
-    -&gt;map(method("getMail"))
-    -&gt;getOrElse("pas de mail");
-</code></pre>
-
-<p>Quelques dessins
-Le cas ou tout marche</p>
-
-<p><img class="center" src="/images/maybechainageok.png" width="516" height="260" title="&lsquo;chainage tout va bien&rsquo; &lsquo;chainage tout va bien&rsquo;" ></p>
-
-<p>Le cas ou <code>getUser()</code> renvoie null</p>
-
-<p><img class="center" src="/images/chainagepasok.png" width="516" height="216" title="&lsquo;getAdress renvoie null, on prend la valeur par défault&rsquo; &lsquo;getAdress renvoie null, on prend la valeur par défaults&rsquo;" ></p>
-
-<p>Sympa la refactorisation. On peux supprimer ainsi une partie de la logique (la plupart des if, les nulls ont tous disparus).</p>
-
-<h2>Une librairie toute faite</h2>
-
-<p>Je vais parler de <a href="https://github.com/schmittjoh/php-option">php-option</a>. Si vous faite du <a href="https://symfony.com/">symfony2</a> vous l&#8217;avez déja dans votre <code>/vendor</code> et vous ne le saviez pas.</p>
-
-<p>La syntaxe est un peu près le même</p>
-
-<p>Mais il y a plein de fonctionnalités</p>
-
-<pre><code class="php">$entity = $this-&gt;findSomeEntity()-&gt;getOrElse(new Entity());
-$entity = $this-&gt;findSomeEntity()-&gt;getOrCall('createAnNewAddress');
-$entity = $this-&gt;findSomeEntity()-&gt;getOrThrow(new \Exception('ha!!!!!'));
-</code></pre>
-
-<p>Il y a aussi des possibilité de chainer les réponses si pas de résultats
-<code>php
-$entity = $this-&gt;findSomeEntity()-&gt;orElse($this-&gt;findSomeOtherEntity())
-            -&gt;orElse($this-&gt;createEntity());
-</code></p>
-
-<p>Nous n&#8217;utilisons que l&#8217;instruction <code>map</code> pour le moment. Donc nous n&#8217;utilisons pas le container en tant que monade mais plutôt en tant que functor. Nous verrons cela dans le troisième post.</p>
-
-<h2>Conclusion</h2>
-
-<p>Je suis désolé si certain termes sont inexacts comme le container. Je ne suis pas un expert, mais j&#8217;admets bien volontiers mon erreur.</p>
-
-<p>Si vous avez un code ou vous vérifiez tout le temps si les valeurs sont nulles. Il y a probablement moyen que cette structure vous aide.</p>
-
-<p>Dans le prochain Post nous utiliserons le Maybe avec l&#8217;instruction <code>bind</code>.</p>
 
 <ul>
 <li>Partie 1 : <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: docker | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/docker/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-12-20T19:47:37+01:00</updated>
+  <updated>2015-12-27T21:30:58+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,202 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Haskell : Stack]]></title>
+    <link href="http://mcamuzat.github.io/blog/2015/12/27/haskell-stack/"/>
+    <updated>2015-12-27T18:39:17+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2015/12/27/haskell-stack</id>
+    <content type="html"><![CDATA[<h2>Introduction</h2>
+
+<p>Je ne développe pas en <a href="https://www.haskell.org/">Haskell</a> mais je regarde beaucoup. La série que j&#8217;écris sur la programmation fonctionnelle me force à regarder le langage de plus près. Le monde haskell s&#8217;est enrichi d&#8217;un nouvel outil <strong>Stack</strong>.</p>
+
+<h2>Stack et Haskell</h2>
+
+<p>Stack est un logiciel qui gère l&#8217;installation/les packages/la création/le build/les tests d&#8217;un projet Haskell.</p>
+
+<p>Il a plusieurs avantages:</p>
+
+<ul>
+<li>Il a été pensé pour automatiser le build.</li>
+<li>Il a une ligne de commande sympathique que nous allons voir par la suite.</li>
+<li>Il utilise un fichier <code>stack.yml</code> c&#8217;est l&#8217;équivalent d&#8217;un <code>composer.json</code> en php ou un <code>package.json</code> en node.</li>
+<li>Tout est installé dans le <code>~/.stack</code> tout les programmes sont <em>isolés</em> et n&#8217;interfèrent pas avec les autres logiciels déjà pré installés.</li>
+</ul>
+
+
+<!--more-->
+
+
+<h2>Mise en place.</h2>
+
+<p>Il suffit d&#8217;ajouter les clés/et le dépôt sous ubuntu :  <a href="http://docs.haskellstack.org/en/stable/README.html#how-to-install">voir la documentation</a>
+Une fois que le logiciel est installé</p>
+
+<h3>Etape 1 : structure d&#8217;un projet.</h3>
+
+<pre><code class="">$ stack new my-project
+</code></pre>
+
+<p>crée une arborescence toute faite</p>
+
+<pre><code>.
+├── LICENSE
+├── Setup.hs
+├── app
+│   └── Main.hs
+├── my-project.cabal
+├── src
+│   └── Lib.hs
+├── stack.yaml
+└── test
+    └── Spec.hs
+
+    3 directories, 7 files
+</code></pre>
+
+<p>A noter qu&#8217;il existe des templates d&#8217;applications (Un peu comme <a href="http://yeoman.io/">Yeoman</a>)</p>
+
+<p>Par exemple pour créer une application Yesod (Pour faire un serveur web) et Mysql</p>
+
+<pre><code>$ stack new mon-projet yesod-mysql
+</code></pre>
+
+<p>Pour lister les différents templates
+<code>
+$ stack templates
+chrisdone
+...
+...
+yesod-minimal
+yesod-mongo
+yesod-mysql
+yesod-postgres
+yesod-postgres-fay
+yesod-simple
+yesod-sqlite
+</code></p>
+
+<h2>Etape 2 : Installation des librairies</h2>
+
+<pre><code>$ cd mon-projet
+$ stack setup
+</code></pre>
+
+<p>Si Haskell n&#8217;est pas encore installé dans <code>~/.stack</code>, le logiciel s&#8217;occupe de tout, il installe aussi toutes les dépendances.</p>
+
+<h2>Etape 3 : build et compilation</h2>
+
+<pre><code>$ stack build
+</code></pre>
+
+<p>Le haskell est un language compilé. Le logiciel compile tout le projet.</p>
+
+<h2>Etape 4 : Lancer le programme</h2>
+
+<p>Pour lancer le programme</p>
+
+<pre><code>$ stack exec mon-projet
+</code></pre>
+
+<p>Pour lancer les tests. Tout les projets viennents avec des tests
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ stack test&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;
+</span><span class='line'>## Etape 5 : Installer le programme
+</span><span class='line'>un peu comme un `make install` 
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;$ stack install</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>Etape 6 : Docker</h2>
+
+<p>Docker c&#8217;est cool et pratique.</p>
+
+<p>dans le <code>stack.yml</code>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&hellip;
+</span><span class='line'>&hellip;
+</span><span class='line'>image:
+</span><span class='line'>  container:
+</span><span class='line'>    # Image de base
+</span><span class='line'>    base: &ldquo;fpco/ubuntu-with-libgmp:14.04&rdquo;
+</span><span class='line'>    # Noms de l'iso.
+</span><span class='line'>    name: &ldquo;mcamuzat/mon-projet&rdquo;
+</span><span class='line'>    # Nom du programme à lancer
+</span><span class='line'>    entrypoints:
+</span><span class='line'>      - mon-projet&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;
+</span><span class='line'>Si l'image de base existe déjà
+</span><span class='line'>
+</span><span class='line'>Alors
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;$ stack image container</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Cela génère le container.</p>
+
+<p>Il ne reste plus qu&#8217;à lancer le container
+<code>
+sudo docker run -t -i mcamuzat/mon-projet mon-projet
+</code></p>
+
+<h2>Listes de commandes</h2>
+
+<ul>
+<li><code>stack new nom-du-projet nom-du-template</code> crée un nouveau projet</li>
+<li><code>stack setup</code> mise en place du projet</li>
+<li><code>stack build</code> compile le projet</li>
+<li><code>stack exec nom-du-programme</code> lance le programme</li>
+<li><code>stack repl</code> Lance le mode interactif</li>
+<li><code>stack test</code> Lance les tests</li>
+<li><code>stack install</code> installe le programme.</li>
+<li><code>stack templates</code> liste tout les templates.</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>Je me mets au Haskell. C&#8217;est assez passionnant. Le langage n&#8217;est pas simple (je me casse un peu les dents dessus). Je suis pour l&#8217;instant juste sur les premiers problèmes de <a href="http://www.codewars.com/">codewars</a>. J&#8217;espère faire des post sur haskell par la suite. Il y a déja plein de tutoriels.</p>
+
+<h2>Liens</h2>
+
+<ul>
+<li><a href="http://docs.haskellstack.org/en/stable/README.html">Le site officiel</a></li>
+<li><a href="http://conscientiousprogrammer.com/blog/2015/11/30/haskell-tidbits-24-days-of-hackage-2015-day-1-introduction-and-stack/">Une introduction en anglais</a></li>
+<li><a href="http://www.stephendiehl.com/posts/haskell_2016.html">Un second article an anglais</a></li>
+<li><a href="https://www.fpcomplete.com/blog/2015/11/kubernetes">Créer le container Docker</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[PHP Code Sniffer mise en place]]></title>
@@ -482,129 +678,6 @@ eval "$(docker-machine env prod)"
 
 
 <p>Dans un prochain post nous allons essayer de voir docker-swarm.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Docker-compose]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/05/03/docker-compose/"/>
-    <updated>2015-05-03T21:33:31+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/05/03/docker-compose</id>
-    <content type="html"><![CDATA[<h2>Docker-compose</h2>
-
-<p>Dans le post précèdent sur docker, j&#8217;avais expliqué comment automatiser la création des containers grâce au <code>Dockerfile</code> aujourd&#8217;hui je vais expliquer <code>docker-compose</code></p>
-
-<!--more-->
-
-
-<h2>Intro.</h2>
-
-<p>Dans un projet, il n&#8217;y a rarement qu&#8217;une seule instance. Voir il peut y avoir plusieurs fronts et une seule base de donnée. docker-compose est la justement pour organiser cela.</p>
-
-<p>Par exemple le <code>docker-compose.yml</code> suivant:</p>
-
-<pre><code class="yml">web:
-  image: php:5.6-apache
-  links:
-    - db:db
-  volumes:
-    - .:/var/www/html
-
-db:
-  image: postgres
-</code></pre>
-
-<p>On déclare deux type de containers le container type <strong>web</strong> et le container de type <strong>db</strong>. à noter la ligne <code>links</code> qui fait que le container web partage/vois le container db</p>
-
-<p>Il suffit de faire <code>docker-compose up</code> (comme un <code>vagrant up</code>)  pour automatiquement lancer deux containers. un container web avec une image php-5.6, et un container avec PostGresSQL</p>
-
-<h2>Installation</h2>
-
-<p>Il existe deux façons de l&#8217;installer soit passer par <code>pip</code> (pip est l&#8217;équivalent de <code>npm</code> pour le python).</p>
-
-<pre><code class="bash">sudo pip install -U docker-compose
-</code></pre>
-
-<p>Ou de passer par curl</p>
-
-<pre><code class="bash">curl -L https://github.com/docker/compose/releases/download/1.2.0/docker-compose-`uname -s`-`uname -m` &gt; /usr/local/bin/docker-compose
-chmod +x /usr/local/bin/docker-compose
-</code></pre>
-
-<h2>Quelques commandes</h2>
-
-<p>Lancer les containers en mode démon (<code>-d</code>)</p>
-
-<pre><code>docker-compose up -d
-</code></pre>
-
-<p>Cela crée deux containers</p>
-
-<p>Que l&#8217;on peux surveiller grâce à la commande suivante
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>docker-compose ps&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code&gt;Name                   Command               State    Ports   
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;hr /&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;compose_db_1    /docker-entrypoint.sh postgres   Up      5432/tcp
-</span><span class='line'>compose_web_1   apache2-foreground               Up      80/tcp&lt;br/&gt;</span></code></pre></td></tr></table></div></figure></p>
-
-<p>On peux voir les logs
-<code>
-docker-compose logs
-</code></p>
-
-<p>Plus intéressant on peux rajouter des containers..</p>
-
-<pre><code>docker-compose scale web=3
-Creating compose_web_2...
-Creating compose_web_3...
-Starting compose_web_2...
-Starting compose_web_3...
-</code></pre>
-
-<p>Si je re-liste mes containers
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>docker-compose ps&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code&gt;Name                   Command               State    Ports   
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;hr /&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;compose_db_1    /docker-entrypoint.sh postgres   Up      5432/tcp
-</span><span class='line'>compose_web_1   apache2-foreground               Up      80/tcp &lt;br/&gt;
-</span><span class='line'>compose_web_2   apache2-foreground               Up      80/tcp &lt;br/&gt;
-</span><span class='line'>compose_web_3   apache2-foreground               Up      80/tcp</span></code></pre></td></tr></table></div></figure></p>
-
-<p>Je viens de multiplier par 3 le nombre de container en une simple commande et sans stopper le système.</p>
-
-<h2>Conclusion</h2>
-
-<p>Si vous n&#8217;avez qu&#8217;un seul container docker-compose ne sert pas à grand chose. Mais si vous avez plusieurs containers. Cela ne vaux pas la peine de se priver. Docker-compose contient en fait la liste des container ainsi que leurs configurations si on devait les lancers en la ligne de commande.</p>
-
-<p>Dans le prochain post sur docker, je vais tenter <code>docker-machine</code>.</p>
 ]]></content>
   </entry>
   
