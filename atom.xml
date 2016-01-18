@@ -4,7 +4,7 @@
   <title><![CDATA[Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-12-27T21:30:58+01:00</updated>
+  <updated>2016-01-18T22:08:41+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,109 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Je joue donc je programme 3]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/01/18/je-joue-donc-je-programme-3/"/>
+    <updated>2016-01-18T20:25:01+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/01/18/je-joue-donc-je-programme-3</id>
+    <content type="html"><![CDATA[<p>Nous continuons à la recherche de soft donc le but du jeux est d&#8217;apprendre à programmer.</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/climurder.png" width="600" height="488" title="Screenshot du dépot CLmurder" alt="Screenshot de cli murder"></p>
+
+<!--more-->
+
+
+<h2>Les Capture The Flag /Wargame.</h2>
+
+<p>Le but ici est de s&#8217;introduire le premier dans un programme(via connection ssh, iso) et de capturer le drapeau. C&#8217;est un concours et un peu un jeux de piste. On distingue deux types</p>
+
+<ul>
+<li><p>les CTF. c&#8217;est un jeu avec une date de début et une date de fin. Je n&#8217;ai jamais participé à ce genre d&#8217;évènement.</p>
+
+<ul>
+<li>Actualité <a href="https://ctftime.org/">CTFTime</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Capture_the_flag#Computer_security">wikipedia</a></li>
+<li>Débuter : <a href="https://www.endgame.com/blog/how-get-started-ctf">How to Get Started in CTF </a> et <a href="https://trailofbits.github.io/ctf/">CTF Field Guide</a></li>
+<li>Une liste <a href="https://github.com/apsdehal/awesome-ctf">complète</a></li>
+</ul>
+</li>
+<li><p>Quand on peux rentrer à n&#8217;importe quelle moment on parle de Wargame.</p>
+
+<ul>
+<li><a href="http://smashthestack.org/">SmashTheStack</a></li>
+<li><a href="http://overthewire.org/wargames/">OverTheWire</a> Le premier challenge <a href="http://overthewire.org/wargames/bandit/">Bandit</a> est vraiment pour un débutant (<strong>Moi!!</strong>)</li>
+<li><a href="https://exploit-exercises.com/">Exploit Exercises</a> Les Isos sont téléchargeables</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Il y a plein de techniques  j&#8217;avoue que je connais assez peu, j&#8217;ai un peu joué avec la backtrack (maintenant connue sur le nom de <a href="https://www.kali.org/">Khali-Linux</a>)</p>
+
+<h2>Xss-Game</h2>
+
+<p>Pour apprendres les failles XSS , C&#8217;est google qui a fais le site suivant</p>
+
+<ul>
+<li><a href="https://xss-game.appspot.com/">XSS Game</a></li>
+</ul>
+
+
+<h2>Les concours</h2>
+
+<p>Je suis beaucoup sur <a href="http://www.codewars.com">Codewars</a>. La présentation est clean..</p>
+
+<p>Mais il existe une énorme quantité de site dans le même genre.</p>
+
+<ul>
+<li><a href="http://projecteuler.net">Le plus connus le projet Euler</a></li>
+<li><a href="http://www.codechef.com">Code Chef</a></li>
+<li><a href="http://codeforces.com">Codeforces</a></li>
+<li><a href="http://www.codewars.com">Codewars</a></li>
+<li><a href="http://eudyptula-challenge.org">Eudyptula Challenge</a>(Kernel Linux)</li>
+<li><a href="https://code.google.com/codejam/contests.html">Google Code Jam</a></li>
+<li><a href="https://www.hackerrank.com">HackerRank</a></li>
+<li><a href="http://ioccc.org">International Obfuscated C Code Contest</a> le code le plus obscure possible..</li>
+<li><a href="http://ipsc.ksp.sk">Internet Problem Solving Contest</a></li>
+<li><a href="http://www.kaggle.com/competitions">Kaggle</a> (ce sont ici des vrais jeux de données)</li>
+<li><a href="http://www.teamleada.com" title="">Leada</a> cours en lignes..</li>
+<li><a href="http://community.topcoder.com/tc">Top Coder</a> Il y a des récompenses pour certains challenges.</li>
+<li><a href="https://www.codeeval.com">CodeEval</a> Si vous cherchez du travail et mettre en valeur son CV</li>
+</ul>
+
+
+<p>Et aussi</p>
+
+<ul>
+<li><a href="http://www.dmoz.org/Computers/Programming/Contests/">Annuaire</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Category:Programming_contests">Article wikipedia</a></li>
+</ul>
+
+
+<h2>Cryptologie</h2>
+
+<p>Il existe aussi des concours pour apprendre de la cryptologie</p>
+
+<ul>
+<li><a href="https://www.mysterytwisterc3.org/en/">Mystery Twister</a></li>
+<li><a href="http://cryptopals.com/">Matasano Challenge</a></li>
+</ul>
+
+
+<h2>Divers</h2>
+
+<ul>
+<li><a href="https://github.com/veltman/clmystery">The Command Line Murders</a> résoudre un crime avec la ligne de commande..</li>
+<li><a href="https://github.com/git-game/git-game">Git game</a> Un jeu de piste en git.
+
+<h2>Conclusion</h2></li>
+</ul>
+
+
+<p>Je vous laisse j&#8217;ai un crime à résoudre.. Il y a de quoi s&#8217;occuper.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Haskell : Stack]]></title>
@@ -5454,381 +5557,6 @@ le résultat</p>
 <p>Ce n&#8217;est pas vraiment un hasard. Les promises sont des <strong>Monades</strong>. Il n&#8217;est pas simple d&#8217;expliquer les monades. Les monades viennent de la programmation fonctionnelle et c&#8217;est surtout <a href="https://www.haskell.org/">haskell</a> qui a popularisé cette structure. J&#8217;espère que je reviendrai dessus.</p>
 
 <p><em>Guzzle</em> est vraiment très sympathique à utiliser. Le coté asynchrone n&#8217;est pas simple, la fonction <code>co-routine</code> n&#8217;est pas dans la documentation. Il a été très difficile de trouver un code d&#8217;exemple. Je regrette que parfois le seul moyen de déclencher la résolution est d&#8217;appeler de manière synchrone <code>-&gt;wait()</code> ce qui est dommage.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Yield PHP Co-routine]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/09/13/yield-php-co-routine/"/>
-    <updated>2015-09-13T20:31:37+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/09/13/yield-php-co-routine</id>
-    <content type="html"><![CDATA[<p>Nous allons continuer sur le <em>yield</em> <a href="http://mcamuzat.github.io/blog/2015/09/06/php-yield-les-generateurs/">partie1</a></p>
-
-<p>Nous avons vu la fonction xrange qui permet de générer un million de valeurs pour un coup très faible en mémoire.</p>
-
-<p>Mais il y a mieux ! On peux envoyer des valeurs dans le générateur</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'><span class="k">function</span> <span class="nf">generateAnimal</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nv">$input</span> <span class="o">=</span> <span class="p">(</span><span class="k">yield</span> <span class="s1">&#39;Panda&#39;</span><span class="p">);</span>
-</span><span class='line'>    <span class="nb">var_dump</span><span class="p">(</span><span class="s2">&quot;j&#39;ai reçu </span><span class="si">$input</span><span class="s2">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="nv">$input</span> <span class="o">=</span> <span class="p">(</span><span class="k">yield</span> <span class="s1">&#39;Lama&#39;</span><span class="p">);</span>
-</span><span class='line'>    <span class="nb">var_dump</span><span class="p">(</span><span class="s2">&quot;j&#39;ai reçu </span><span class="si">$input</span><span class="s2">&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$gen</span> <span class="o">=</span> <span class="nx">generateAnimal</span><span class="p">();</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$gen</span><span class="o">-&gt;</span><span class="na">current</span><span class="p">());</span><span class="c1">// string(5) &quot;Panda&quot;</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$gen</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">(</span><span class="s1">&#39;Canard&#39;</span><span class="p">));</span><span class="c1">//string(16) &quot;j&#39;ai recu Canard&quot;</span>
-</span><span class='line'>                               <span class="c1">//string(4) &quot;Lama&quot;</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$gen</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">(</span><span class="s1">&#39;Poney&#39;</span><span class="p">));</span> <span class="c1">// j&#39;ai recus Poney.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Si j&#8217;avais fais deux fois <code>-&gt;next()</code>  au lieux de <code>-&gt;send()</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$gen</span> <span class="o">=</span> <span class="nx">generateAnimal</span><span class="p">();</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$gen</span><span class="o">-&gt;</span><span class="na">current</span><span class="p">());</span><span class="c1">// string(5) &quot;Panda&quot;</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$gen</span><span class="o">-&gt;</span><span class="na">next</span><span class="p">());</span><span class="c1">//string(16) &quot;j&#39;ai recu NULL&quot;</span>
-</span><span class='line'>                               <span class="c1">//string(4) &quot;Lama&quot;</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$gen</span><span class="o">-&gt;</span><span class="na">next</span><span class="p">());</span> <span class="c1">// j&#39;ai recus NULL.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<!--more-->
-
-
-<h2>Les Co-routines</h2>
-
-<p>Une co-routine est une fonction qui peut se suspendre en reprendre quand on le souhaite.</p>
-
-<p>Nous allons faire une classe <code>Task</code>  pour mieux comprendre.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Task</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">protected</span> <span class="nv">$generator</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">protected</span> <span class="nv">$firstCall</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">Generator</span> <span class="nv">$generator</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">generator</span> <span class="o">=</span> <span class="nv">$generator</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">run</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">firstCall</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">generator</span><span class="o">-&gt;</span><span class="na">current</span><span class="p">();</span>
-</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">generator</span><span class="o">-&gt;</span><span class="na">next</span><span class="p">();</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">firstCall</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">finished</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="o">!</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">generator</span><span class="o">-&gt;</span><span class="na">valid</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>J&#8217;ai besoin d&#8217;un Runner</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Runner</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">Task</span> <span class="nv">$task</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">task</span> <span class="o">=</span> <span class="nv">$task</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">run</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">task</span><span class="o">-&gt;</span><span class="na">finished</span><span class="p">())</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">task</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">();</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Un petit code d&#8217;exemple</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">task1</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">;</span> <span class="o">++</span><span class="nv">$i</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">echo</span> <span class="s2">&quot;This is task 1 iteration </span><span class="si">$i</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">yield</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$task</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Task</span><span class="p">(</span><span class="nx">task1</span><span class="p">());</span>
-</span><span class='line'><span class="nv">$runner</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Runner</span><span class="p">(</span><span class="nv">$task</span><span class="p">);</span>
-</span><span class='line'><span class="nv">$runner</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Cela donne</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">1.</span>
-</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">2.</span>
-</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">3.</span>
-</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">4.</span>
-</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">5.</span>
-</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">6.</span>
-</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">7.</span>
-</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">8.</span>
-</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">9.</span>
-</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">10.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>J&#8217;ai un objet Task qui appelle une fonction et qui rend la main à chaque itération. Cela semble compliqué pour une seule tache. Mais modifions le code pour avoir plusieurs taches.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Scheduler</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">protected</span> <span class="nv">$queue</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">queue</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SplQueue</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">enqueue</span><span class="p">(</span><span class="nx">Task</span> <span class="nv">$task</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">queue</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span><span class="nv">$task</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">run</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">queue</span><span class="o">-&gt;</span><span class="na">isEmpty</span><span class="p">())</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nv">$task</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">queue</span><span class="o">-&gt;</span><span class="na">dequeue</span><span class="p">();</span>
-</span><span class='line'>            <span class="nv">$task</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$task</span><span class="o">-&gt;</span><span class="na">finished</span><span class="p">())</span> <span class="p">{</span>
-</span><span class='line'>                <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span><span class="nv">$task</span><span class="p">);</span>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Bon toute la magie est faite grâce à la <code>SplQueue</code> qui est une file d&#8217;attente. J&#8217;ajoute dans la file d&#8217;attente toutes les taches.</p>
-
-<p>Je prend une tache de la file d&#8217;attente. Je l&#8217;exécute avec <code>-&gt;run()</code>, si la tache n&#8217;est pas finie, je la remets dans la file d&#8217;attente.</p>
-
-<p>Reprenons un code d&#8217;exemple</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">task1</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">;</span> <span class="o">++</span><span class="nv">$i</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">echo</span> <span class="s2">&quot;This is task 1 iteration </span><span class="si">$i</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">yield</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">function</span> <span class="nf">task2</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">;</span> <span class="o">++</span><span class="nv">$i</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">echo</span> <span class="s2">&quot;This is task 2 iteration </span><span class="si">$i</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">yield</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$task1</span> <span class="o">=</span>  <span class="k">new</span> <span class="nx">Task</span><span class="p">(</span><span class="nx">task1</span><span class="p">());</span>
-</span><span class='line'><span class="nv">$task2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Task</span><span class="p">(</span><span class="nx">task2</span><span class="p">());</span>
-</span><span class='line'><span class="nv">$scheduler</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Scheduler</span><span class="p">();</span>
-</span><span class='line'><span class="nv">$scheduler</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span><span class="nv">$task1</span><span class="p">);</span>
-</span><span class='line'><span class="nv">$scheduler</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span><span class="nv">$task2</span><span class="p">);</span>
-</span><span class='line'><span class="nv">$scheduler</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Le résultat.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">1.</span>
-</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">2</span> <span class="nx">iteration</span> <span class="mf">1.</span>
-</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">2.</span>
-</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">2</span> <span class="nx">iteration</span> <span class="mf">2.</span>
-</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">3.</span>
-</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">2</span> <span class="nx">iteration</span> <span class="mf">3.</span>
-</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">4.</span>
-</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">2</span> <span class="nx">iteration</span> <span class="mf">4.</span>
-</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">5.</span>
-</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">2</span> <span class="nx">iteration</span> <span class="mf">5.</span>
-</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">6.</span>
-</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">7.</span>
-</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">8.</span>
-</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">9.</span>
-</span><span class='line'><span class="k">This</span> <span class="nx">is</span> <span class="nx">task</span> <span class="mi">1</span> <span class="nx">iteration</span> <span class="mf">10.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On voit que j&#8217;exécute en parallèle toutes mes deux taches.</p>
-
-<h2>En conclusion</h2>
-
-<p>Il existe deux librairies qui utilise ce concept</p>
-
-<ul>
-<li><a href="https://github.com/icicleio/icicle">Icicle</a></li>
-<li><a href="https://github.com/recoilphp/recoil">recoil</a></li>
-</ul>
-
-
-<p>Cette façon d&#8217;implémenter est assez curieuse. Car le code ne ressemble pas au code classique asynchrone avec des callbacks et autre événements. Si on regarde bien cela ressemble beaucoup a du code synchrone. Elle est inspirée du <code>C#</code> <code>async/wait</code>. On a l&#8217;impression que cela ressemble a du code synchrone où on ajoute des <code>yield</code> un peu partout. (en simplifiant beaucoup..)</p>
-
-<p>Il y a peu de documentation et d&#8217;exemple sur le sujet.</p>
-
-<ul>
-<li>la référence est ce post de <a href="http://nikic.github.io">Nikic</a>: <a href="https://nikic.github.io/2012/12/22/Cooperative-multitasking-using-coroutines-in-PHP.html">Cooperative multitasking using coroutines (in PHP!)</a></li>
-<li>Une version légèrement simplifié dont je me suis inspiré pour le code <a href="https://medium.com/@assertchris/co-operative-php-multitasking-ce4ef52858a0">Co-operative PHP Multitasking</a></li>
-</ul>
-
-
-<p>Je vais essayer de continuer avec le yield et repartir sur les promises.</p>
-
-<p>Merci de m&#8217;avoir lu.</p>
 ]]></content>
   </entry>
   

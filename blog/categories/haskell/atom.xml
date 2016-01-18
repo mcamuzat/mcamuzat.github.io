@@ -4,7 +4,7 @@
   <title><![CDATA[Category: haskell | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/haskell/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2015-12-27T21:30:58+01:00</updated>
+  <updated>2016-01-18T22:08:41+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,109 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Je joue donc je programme 3]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/01/18/je-joue-donc-je-programme-3/"/>
+    <updated>2016-01-18T20:25:01+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/01/18/je-joue-donc-je-programme-3</id>
+    <content type="html"><![CDATA[<p>Nous continuons à la recherche de soft donc le but du jeux est d&#8217;apprendre à programmer.</p>
+
+<p><img class="center" src="/images/climurder.png" width="600" height="488" title="&lsquo;Screenshot du dépot CLmurder&rsquo; &lsquo;Screenshot de cli murder&rsquo;" ></p>
+
+<!--more-->
+
+
+<h2>Les Capture The Flag /Wargame.</h2>
+
+<p>Le but ici est de s&#8217;introduire le premier dans un programme(via connection ssh, iso) et de capturer le drapeau. C&#8217;est un concours et un peu un jeux de piste. On distingue deux types</p>
+
+<ul>
+<li><p>les CTF. c&#8217;est un jeu avec une date de début et une date de fin. Je n&#8217;ai jamais participé à ce genre d&#8217;évènement.</p>
+
+<ul>
+<li>Actualité <a href="https://ctftime.org/">CTFTime</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Capture_the_flag#Computer_security">wikipedia</a></li>
+<li>Débuter : <a href="https://www.endgame.com/blog/how-get-started-ctf">How to Get Started in CTF </a> et <a href="https://trailofbits.github.io/ctf/">CTF Field Guide</a></li>
+<li>Une liste <a href="https://github.com/apsdehal/awesome-ctf">complète</a></li>
+</ul>
+</li>
+<li><p>Quand on peux rentrer à n&#8217;importe quelle moment on parle de Wargame.</p>
+
+<ul>
+<li><a href="http://smashthestack.org/">SmashTheStack</a></li>
+<li><a href="http://overthewire.org/wargames/">OverTheWire</a> Le premier challenge <a href="http://overthewire.org/wargames/bandit/">Bandit</a> est vraiment pour un débutant (<strong>Moi!!</strong>)</li>
+<li><a href="https://exploit-exercises.com/">Exploit Exercises</a> Les Isos sont téléchargeables</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Il y a plein de techniques  j&#8217;avoue que je connais assez peu, j&#8217;ai un peu joué avec la backtrack (maintenant connue sur le nom de <a href="https://www.kali.org/">Khali-Linux</a>)</p>
+
+<h2>Xss-Game</h2>
+
+<p>Pour apprendres les failles XSS , C&#8217;est google qui a fais le site suivant</p>
+
+<ul>
+<li><a href="https://xss-game.appspot.com/">XSS Game</a></li>
+</ul>
+
+
+<h2>Les concours</h2>
+
+<p>Je suis beaucoup sur <a href="http://www.codewars.com">Codewars</a>. La présentation est clean..</p>
+
+<p>Mais il existe une énorme quantité de site dans le même genre.</p>
+
+<ul>
+<li><a href="http://projecteuler.net">Le plus connus le projet Euler</a></li>
+<li><a href="http://www.codechef.com">Code Chef</a></li>
+<li><a href="http://codeforces.com">Codeforces</a></li>
+<li><a href="http://www.codewars.com">Codewars</a></li>
+<li><a href="http://eudyptula-challenge.org">Eudyptula Challenge</a>(Kernel Linux)</li>
+<li><a href="https://code.google.com/codejam/contests.html">Google Code Jam</a></li>
+<li><a href="https://www.hackerrank.com">HackerRank</a></li>
+<li><a href="http://ioccc.org">International Obfuscated C Code Contest</a> le code le plus obscure possible..</li>
+<li><a href="http://ipsc.ksp.sk">Internet Problem Solving Contest</a></li>
+<li><a href="http://www.kaggle.com/competitions">Kaggle</a> (ce sont ici des vrais jeux de données)</li>
+<li><a href="http://www.teamleada.com" title="">Leada</a> cours en lignes..</li>
+<li><a href="http://community.topcoder.com/tc">Top Coder</a> Il y a des récompenses pour certains challenges.</li>
+<li><a href="https://www.codeeval.com">CodeEval</a> Si vous cherchez du travail et mettre en valeur son CV</li>
+</ul>
+
+
+<p>Et aussi</p>
+
+<ul>
+<li><a href="http://www.dmoz.org/Computers/Programming/Contests/">Annuaire</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Category:Programming_contests">Article wikipedia</a></li>
+</ul>
+
+
+<h2>Cryptologie</h2>
+
+<p>Il existe aussi des concours pour apprendre de la cryptologie</p>
+
+<ul>
+<li><a href="https://www.mysterytwisterc3.org/en/">Mystery Twister</a></li>
+<li><a href="http://cryptopals.com/">Matasano Challenge</a></li>
+</ul>
+
+
+<h2>Divers</h2>
+
+<ul>
+<li><a href="https://github.com/veltman/clmystery">The Command Line Murders</a> résoudre un crime avec la ligne de commande..</li>
+<li><a href="https://github.com/git-game/git-game">Git game</a> Un jeu de piste en git.
+
+<h2>Conclusion</h2></li>
+</ul>
+
+
+<p>Je vous laisse j&#8217;ai un crime à résoudre.. Il y a de quoi s&#8217;occuper.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Haskell : Stack]]></title>
@@ -1051,127 +1154,6 @@ La valeur 3 n&#8217;a qu&#8217;une valeur qui est <code>3</code> facile, la vale
 <li>La bible pour le haskell est <a href="learnyouahaskell.com">Learn You a Haskell for Great Good!</a> Le livre est gratuit avec des jolis dessins. Enfin le fond et la forme sont vraiment bon.</li>
 <li><p>Il existe en français !! <a href="http://lyah.haskell.fr/">Apprendre Haskell vous fera le plus grand bien !</a></p></li>
 <li><p>Partie 1 : <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></p></li>
-<li>Partie 2 : <a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
-<li>Partie 3 : <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
-<li>Partie 4 : <a href="/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
-<li>Interlude : <a href="/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a></li>
-<li>Partie 5 : <a href="2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Les Monades 3 Le Maybe (suite)]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/11/22/les-monades-3-le-maybe-suite/"/>
-    <updated>2015-11-22T16:59:31+01:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/11/22/les-monades-3-le-maybe-suite</id>
-    <content type="html"><![CDATA[<p>Dans la partie de 3 : Nous allons utiliser le functor Maybe avec l&#8217;instruction <code>bind</code>.</p>
-
-<p>Soit le tableau suivant.</p>
-
-<!--more-->
-
-
-<pre><code class="php">$data = [
-    ['id_article' =&gt; 1, 'titre' =&gt; 'titre1', 'meta' =&gt; ['images' =&gt; ['//first.jpg', '//second.jpg']]],
-    ['id_article' =&gt; 2, 'titre' =&gt; 'titre2', 'meta' =&gt; ['images' =&gt; ['//third.jpg']]],
-    ['id_article' =&gt; 3, 'titre' =&gt; 'titre3'],
-];
-</code></pre>
-
-<p>nous voulons afficher une liste avec une titre et et une image.</p>
-
-<p>Nous allons utilisez la fonction suivante</p>
-
-<pre><code class="php ">function get($key)
-{
-    return function ($array) use ($key) {
-        return isset($array[$key]) ? $array[$key] : null;
-    };
-}
-</code></pre>
-
-<p>Exemple d&#8217;utilisation.</p>
-
-<pre><code class="php">$getTitre = get("titre");
-foreach ($data as $line) {
-  var_dump $getTitre($line");
-}
-</code></pre>
-
-<p>Le résultat</p>
-
-<pre><code class="sh ">string (6) "titre1"
-string (6) "titre2"
-string (6) "titre3"
-</code></pre>
-
-<p>Pour extraire les images utilisons notre Maybe
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$data</span> <span class="k">as</span> <span class="nv">$line</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">maybeFromValue</span><span class="p">(</span><span class="nv">$line</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="nx">get</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">meta</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;))</span>
-</span><span class='line'>       <span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="nx">get</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">images</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;))</span>
-</span><span class='line'>       <span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="nx">get</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-</span><span class='line'>       <span class="o">-&gt;</span><span class="na">getOrElse</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">noimage</span><span class="o">.</span><span class="nx">png</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;);</span>
-</span><span class='line'><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">Le</span> <span class="nx">résultat</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="c1">//first.jpg&amp;rdquo;</span>
-</span><span class='line'><span class="nx">string</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="c1">//third.jpg&amp;rdquo;</span>
-</span><span class='line'><span class="nx">string</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">no</span><span class="o">-</span><span class="nx">image</span><span class="o">.</span><span class="nx">png</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<h2>Avec le <code>bind</code></h2>
-
-<p>Ré-ecrivons pour utiliser le bind. (Nous utilisons l&#8217;idée que la fonction que j&#8217;injecte dans le container renvoie elle-mème un <code>Some</code> ou <code>Nothing</code>)</p>
-
-<p><img class="center" src="/images/functionretourneSome.png" width="600" height="450" title="&lsquo;la fonction renvoie un maybe&rsquo; &lsquo;la fonction renvoie un maybe&rsquo;" ></p>
-
-<pre><code class="php">function get($key)
-{
-    return function ($array) use ($key) {
-        return isset($array[$key]) ? Some::of($array[$key]) : Nothing::of(null);
-    };
-}
-</code></pre>
-
-<p>La fonction devient.</p>
-
-<pre><code class="php">foreach ($data as $line) {
-   var_dump(maybeFromValue($line)-&gt;bind(get("meta"))
-       -&gt;bind(get("images"))
-       -&gt;bind(get(0))
-       -&gt;getOrElse("noimage.png"));
-}
-</code></pre>
-
-<h2>En conclusion</h2>
-
-<ul>
-<li>Si j&#8217;utilise la fonction <code>map</code> (parfois on parle aussi de <code>fmap</code>) j&#8217;utilise le Maybe en tant que Functor.</li>
-<li>Si j&#8217;utilise la fonction <code>bind</code> j&#8217;utilise le Maybe en tant que Monad.</li>
-</ul>
-
-
-<p>Nous allons continuer notre voyage avec les listes dans le prochain post.</p>
-
-<ul>
-<li>Partie 1 : <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
 <li>Partie 2 : <a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
 <li>Partie 3 : <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
 <li>Partie 4 : <a href="/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
