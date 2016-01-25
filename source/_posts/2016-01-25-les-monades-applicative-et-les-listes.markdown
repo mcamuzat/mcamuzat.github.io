@@ -7,11 +7,9 @@ categories:  ["PHP", "Programmation Fonctionnelle", "Haskell", "Categorie"]
 
 ---
 
-Dans le précédent [post](/blog/2015/12/20/les-monades-5-les-applicatives/), j'avais parlé des applicatives sur les Maybe.
+Dans le précédent [post](/blog/2015/12/20/les-monades-5-les-applicatives/), j'avais parlé des applicatives sur les Maybes.
 
-Nous avions vu le code suivant qui en pratique nous permets d'utiliser les fonctions de PHP de façon quasi transparente avec nos objets.
-
-Nous allons voir ensemble comment les applicatives se comporte sur les listes.
+Nous allons voir ensemble comment les applicatives se comportent sur les listes.
 
 Rappelons que l'idée des applicatives c'est 
 
