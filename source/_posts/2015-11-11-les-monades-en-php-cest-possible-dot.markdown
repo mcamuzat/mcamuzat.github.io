@@ -355,14 +355,14 @@ $promotion = Maybe::of("getUserConnected")
     ->orElse(new Promotion());
 ```
 
-Je me suis lancé dans une tache bien compliqué mais passionnante. Je m'excuse d'avance pour certaines approximations. J'avais confondu `map` et `bind` dans la première version
+Je me suis lancé dans une tache bien compliquée mais passionnante. Je m'excuse d'avance pour certaines approximations. J'avais confondu `map` et `bind` dans la première version
 
 Je vous remercies de m'avoir lu..
-
  * Partie 1 : [Monade/Functor](/blog/2015/11/11/les-monades-en-php-cest-possible-dot/)
  * Partie 2 : [Le functor Maybe](/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/)
  * Partie 3 : [Le functor Maybe avec le Bind](/blog/2015/11/22/les-monades-3-le-maybe-suite/)
  * Partie 4 : [Les listes](/blog/2015/11/29/les-monades-les-listes/)
  * Interlude : [Les évaluations partielles](/blog/2015/12/06/les-monades-evaluation-partielle/)
- * Partie 5 : [Les applicatives](2015/12/20/les-monades-5-les-applicatives/)
+ * Partie 5 : [Les applicatives](/blog/2015/12/20/les-monades-5-les-applicatives/)
+ * Partie 6 : [Les applicatives et les listes](/blog/2016/01/25/les-monades-applicative-et-les-listes/) 
 

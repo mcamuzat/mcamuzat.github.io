@@ -143,7 +143,6 @@ Merci de m'avoir lu.
  * Partie 3 : [Le functor Maybe avec le Bind](/blog/2015/11/22/les-monades-3-le-maybe-suite/)
  * Partie 4 : [Les listes](/blog/2015/11/29/les-monades-les-listes/)
  * Interlude : [Les évaluations partielles](/blog/2015/12/06/les-monades-evaluation-partielle/)
- * Partie 5 : [Les applicative](2015/12/20/les-monades-5-les-applicatives/)
-
-
+ * Partie 5 : [Les applicatives](/blog/2015/12/20/les-monades-5-les-applicatives/)
+ * Partie 6 : [Les applicatives et les listes](/blog/2016/01/25/les-monades-applicative-et-les-listes/) 
 

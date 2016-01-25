@@ -53,7 +53,7 @@ Mais il existe une énorme quantité de site dans le même genre.
  * [HackerRank](https://www.hackerrank.com)
  * [International Obfuscated C Code Contest](http://ioccc.org) le code le plus obscure possible.. 
  * [Internet Problem Solving Contest](http://ipsc.ksp.sk)
- * [Kaggle](http://www.kaggle.com/competitions) (ce sont ici des vrais jeux de données)
+ * [Kaggle](http://www.kaggle.com/competitions) (les données fournis proviennent de véritables mesures/études)
  * [Leada](http://www.teamleada.com") cours en lignes..
  * [Top Coder](http://community.topcoder.com/tc) Il y a des récompenses pour certains challenges.
  * [CodeEval](https://www.codeeval.com) Si vous cherchez du travail et mettre en valeur son CV
