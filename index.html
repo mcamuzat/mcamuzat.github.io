@@ -9,7 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Nous continuons à la recherche de soft donc le but du jeux est d'apprendre à programmer. ">
+  <meta name="description" content="Dans le précédent post, j'avais parlé des applicatives sur les Maybe. Nous avions vu le code suivant qui en pratique nous permets d'utiliser les &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -62,6 +62,67 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/01/25/les-monades-applicative-et-les-listes/">Les Monades: Applicative et les listes</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-01-25T20:45:47+01:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Dans le précédent <a href="/blog/2015/12/20/les-monades-5-les-applicatives/">post</a>, j&#8217;avais parlé des applicatives sur les Maybe.</p>
+
+<p>Nous avions vu le code suivant qui en pratique nous permets d&#8217;utiliser les fonctions de PHP de façon quasi transparente avec nos objets.</p>
+
+<p>Nous allons voir ensemble comment les applicatives se comporte sur les listes.</p>
+
+<p>Rappelons que l&#8217;idée des applicatives c&#8217;est</p>
+
+<ul>
+<li>ma valeur est dans un container</li>
+<li>et ma fonction que je vais appliquer est aussi dans un container</li>
+</ul>
+
+
+<p>Pour la liste c&#8217;est un peu près la même idée.</p>
+
+<ul>
+<li>mes valeurs sont dans une collection</li>
+<li>mes fonctions sont aussi dans une collection</li>
+</ul>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2016/01/25/les-monades-applicative-et-les-listes/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -524,77 +585,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/11/08/faire-des-jointures-sur-des-fichiers-csv/">Faire des jointures sur des fichiers csv</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-11-08T20:27:16+01:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Introduction</h2>
-
-<p>Un problème que j&#8217;ai eu au travail.</p>
-
-<p>Soit les deux fichiers suivants csv suivant</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>ID_1,Noms1,Personne1
-</span><span class='line'>ID_2,Noms2,Personne1
-</span><span class='line'>ID_2,Noms2,Personne2
-</span><span class='line'>ID_3,Noms3,Personne1
-</span><span class='line'>ID_5,Noms5,Personne5</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>SIRET1,Adresse1,Noms1Annuaire,ID_1
-</span><span class='line'>SIRET2,Adresse2,Noms2Annuaire,ID_2
-</span><span class='line'>SIRET3,Adresse3,Noms3Annuaire,ID_3
-</span><span class='line'>SIRET4,Adresse4,Noms4Annuaire,ID_4</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Je souhaite faire un merge de ces deux csv. Comment faire ?</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/11/08/faire-des-jointures-sur-des-fichiers-csv/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -642,6 +632,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/01/25/les-monades-applicative-et-les-listes/">Les Monades: Applicative et les listes</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/01/18/je-joue-donc-je-programme-3/">Je joue donc je programme 3</a>
       </li>
     
@@ -655,10 +649,6 @@
     
       <li class="post">
         <a href="/blog/2015/12/13/je-joue-donc-je-programme-2/">Je joue donc je programme 2</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/12/06/les-monades-evaluation-partielle/">Les Monades : Evaluation partielle</a>
       </li>
     
   </ul>

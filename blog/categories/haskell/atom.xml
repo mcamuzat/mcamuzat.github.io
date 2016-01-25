@@ -4,7 +4,7 @@
   <title><![CDATA[Category: haskell | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/haskell/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-01-18T22:08:41+01:00</updated>
+  <updated>2016-01-25T21:45:14+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,130 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Les Monades: Applicative et les listes]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/01/25/les-monades-applicative-et-les-listes/"/>
+    <updated>2016-01-25T20:45:47+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/01/25/les-monades-applicative-et-les-listes</id>
+    <content type="html"><![CDATA[<p>Dans le précédent <a href="/blog/2015/12/20/les-monades-5-les-applicatives/">post</a>, j&#8217;avais parlé des applicatives sur les Maybe.</p>
+
+<p>Nous avions vu le code suivant qui en pratique nous permets d&#8217;utiliser les fonctions de PHP de façon quasi transparente avec nos objets.</p>
+
+<p>Nous allons voir ensemble comment les applicatives se comporte sur les listes.</p>
+
+<p>Rappelons que l&#8217;idée des applicatives c&#8217;est</p>
+
+<ul>
+<li>ma valeur est dans un container</li>
+<li>et ma fonction que je vais appliquer est aussi dans un container</li>
+</ul>
+
+
+<p>Pour la liste c&#8217;est un peu près la même idée.</p>
+
+<ul>
+<li>mes valeurs sont dans une collection</li>
+<li>mes fonctions sont aussi dans une collection</li>
+</ul>
+
+
+<!--more-->
+
+
+<p>Initialisons une Collection de valeurs</p>
+
+<pre><code class="php">$collectionValue = Monad\Collection::of([1, 2]);
+</code></pre>
+
+<p>Créons un collection de fonctions
+<code>php
+$collection = Monad\Collection::of([
+    function($a) {
+        return 3 + $a;
+    },
+    function($a) {
+        return 4 + $a;
+    },
+]);
+</code></p>
+
+<p>Regardons de suite le résultat, nous obtenons une collection qui contient <code>[4, 5, 5, 6]</code>. En fait on a calculé toutes les possibilités.. Puisque <code>[1+3, 1+4, 2+3, 2+4]</code></p>
+
+<p>Essayons de programmer un générateur de nom de scout (?!!)</p>
+
+<pre><code class="php">// des animaux
+$collectionAnimaux = Monad\Collection::of([
+  "renard",
+  "blaireau",
+  "aigle",
+  "panda"
+]);
+
+// des adjectifs
+$collectionAdjectif =  Monad\Collection::of([
+  "affectueux",
+  "perçant",
+  "agile",
+  "bavard"
+]);
+
+// des générateurs
+$collectionGenerateur = Monad\Collection::of([
+    Maybe\just(
+        f\curryN(
+            2, function($nom,$adj) {return $nom . " " . $adj;}
+        )
+        ),
+    Maybe\just(
+        f\curryN(
+            2, function($nom,$adj) {return "petit ". $nom . " " . $adj;}
+        )
+    )
+
+   ]
+);
+
+// On mélange
+var_dump($collectionGerateur-&gt;ap($collectionAnimaux)-&gt;ap($collectionAdjectif));
+</code></pre>
+
+<p>Grâce à l&#8217;évaluation partielle je peux créer des fonctions à plusieurs arguments. Les applicatives sur les listes me permette de faire toutes les combinaisons.</p>
+
+<p>J&#8217;obtiens</p>
+
+<pre><code class="php"> .. 32 résultats
+ string(14) "panda perçant"
+    [14] =&gt;
+    string(11) "panda agile"
+    [15] =&gt;
+    string(12) "panda bavard"
+    [16] =&gt;
+    string(23) "petit renard affectueux"
+    [17] =&gt;
+    string(21) "petit renard perçant"
+    [18] =&gt;
+    string(18) "petit renard agile"
+</code></pre>
+
+<p>Bon c&#8217;est sur que <em>petit renard affectueux</em> n&#8217;est pas génial comme nom..</p>
+
+<p>Le Panda bavard.</p>
+
+<p>Liste des articles</p>
+
+<ul>
+<li>Partie 1 : <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
+<li>Partie 2 : <a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
+<li>Partie 3 : <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
+<li>Partie 4 : <a href="/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
+<li>Interlude : <a href="/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a></li>
+<li>Partie 5 : <a href="/blog/2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
+<li>Partie 6 : <a href="/blog/2016/01/25/les-monades-applicative-et-les-listes/">Les applicatives et les listes</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Je joue donc je programme 3]]></title>
@@ -77,7 +201,7 @@
 <li><a href="https://www.hackerrank.com">HackerRank</a></li>
 <li><a href="http://ioccc.org">International Obfuscated C Code Contest</a> le code le plus obscure possible..</li>
 <li><a href="http://ipsc.ksp.sk">Internet Problem Solving Contest</a></li>
-<li><a href="http://www.kaggle.com/competitions">Kaggle</a> (ce sont ici des vrais jeux de données)</li>
+<li><a href="http://www.kaggle.com/competitions">Kaggle</a> (les données fournis proviennent de véritables mesures/études)</li>
 <li><a href="http://www.teamleada.com" title="">Leada</a> cours en lignes..</li>
 <li><a href="http://community.topcoder.com/tc">Top Coder</a> Il y a des récompenses pour certains challenges.</li>
 <li><a href="https://www.codeeval.com">CodeEval</a> Si vous cherchez du travail et mettre en valeur son CV</li>
@@ -524,7 +648,8 @@ var_dump(f\liftA2("str_repeat",MayBe\just(".o0o"), Maybe\just(5)));
 <li>Partie 3 : <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
 <li>Partie 4 : <a href="/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
 <li>Interlude : <a href="/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a></li>
-<li>Partie 5 : <a href="2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
+<li>Partie 5 : <a href="/blog/2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
+<li>Partie 6 : <a href="/blog/2016/01/25/les-monades-applicative-et-les-listes/">Les applicatives et les listes</a></li>
 </ul>
 
 ]]></content>
@@ -668,497 +793,8 @@ En fait le langage fait.
 <li>Partie 3 : <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
 <li>Partie 4 : <a href="/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
 <li>Interlude : <a href="/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a></li>
-<li>Partie 5 : <a href="2015/12/20/les-monades-5-les-applicatives/">Les applicative</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Les Monades : Les listes]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/11/29/les-monades-les-listes/"/>
-    <updated>2015-11-29T21:44:52+01:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/11/29/les-monades-les-listes</id>
-    <content type="html"><![CDATA[<p>Nous continuons notre exploration des Monades/Functors, nous allons parler de Collection, de lapins, de marteaux et de non-déterminisme.</p>
-
-<p>Voici notre nouveau <em>container</em> Le container <strong>List</strong>. Il prend en entrée un tableau (Array) ou en Php un <code>Traversable</code>.
-<img class="center" src="/images/collection.png" width="600" height="450" title="&lsquo;Le container Collection&rsquo; &lsquo;Le container collection&rsquo;" ></p>
-
-<p>Nous allons voir ensemble les listes, Collections. Nous allons voir le <code>map</code>, le <code>bind</code> nous allons voir que le comportement n&#8217;est pas exactement le même..</p>
-
-<!--more-->
-
-
-<p>Ne nous embêtons pas allons directement dans l&#8217;implémentation.</p>
-
-<pre><code class="php">class Collection extends Container{
-    /**
-     * @param array $value
-     */
-    public function __construct($value)
-    {
-
-        $this-&gt;value = $this-&gt;isNativeTraversable($value)
-            ? $value
-            : [$value];
-    }
-
-    private function isNativeTraversable($value)
-    {
-        return is_array($value) || $value instanceof \Traversable;
-    }
-
-    public function map(callable $transformation)
-    {
-        $result = [];
-        foreach ($this-&gt;value as $key =&gt; $value) {
-            $result[$key] = call_user_func($transformation, $value);
-        }
-        return self::of($result);
-    }
-
-    public function extract() {
-        $result = array();
-        foreach ($this-&gt;value as $value) {
-            if ($value instanceof Container) {
-                $result[] = $value-&gt;extract();
-            } else {
-                $result[] = $value;
-            }
-        }
-        return $result;
-    }
-
-}
-</code></pre>
-
-<p>On garde toujours la même définition. <code>map</code> prend toujours une fonction et renvoie un Objet du même type. <code>extract</code> renvoie la valeur, <code>Collection::of</code> renvoie une collection.</p>
-
-<p>Quelques exemples
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nb">var_dump</span><span class="p">(</span>
-</span><span class='line'>   <span class="nx">Collection</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
-</span><span class='line'>     <span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="nx">value</span><span class="p">;})</span>
-</span><span class='line'>     <span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="nv">$value</span><span class="o">-</span><span class="mi">1</span><span class="p">;})</span>
-</span><span class='line'>     <span class="o">-&gt;</span><span class="na">extract</span><span class="p">()</span>
-</span><span class='line'><span class="p">);</span> <span class="c1">// [ 1, 3, 5, 7]&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nb">var_dump</span><span class="p">(</span><span class="nx">Collection</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">one</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;,</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">two</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;,</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">three</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;))</span>
-</span><span class='line'>     <span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nb">strtoupper</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;)</span>
-</span><span class='line'>     <span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nv">$value</span><span class="o">.&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="o">!!!!&amp;</span><span class="nx">rdquo</span><span class="p">;;})</span>
-</span><span class='line'>     <span class="o">-&gt;</span><span class="na">extract</span><span class="p">()</span>
-</span><span class='line'><span class="p">);</span><span class="c1">// [&amp;ldquo;ONE!!!!&amp;rdquo;, &amp;ldquo;TWO!!!!&amp;rdquo;,&amp;ldquo;THREE!!!!&amp;rdquo;]&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span>
-</span><span class='line'><span class="nx">Nous</span> <span class="nx">allons</span> <span class="nx">reprendre</span> <span class="nx">notre</span> <span class="nx">liste</span> <span class="nx">du</span> <span class="nx">post</span> <span class="p">[</span><span class="nx">précédent</span><span class="p">](</span><span class="nx">blog</span><span class="o">/</span><span class="mi">2015</span><span class="o">/</span><span class="mi">11</span><span class="o">/</span><span class="mi">22</span><span class="o">/</span><span class="nx">les</span><span class="o">-</span><span class="nx">monades</span><span class="o">-</span><span class="mi">3</span><span class="o">-</span><span class="nx">le</span><span class="o">-</span><span class="nx">maybe</span><span class="o">-</span><span class="nx">suite</span><span class="o">/</span><span class="p">)</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nv">$data</span> <span class="o">=</span> <span class="p">[</span>
-</span><span class='line'>    <span class="p">[</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">id_article</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">titre</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;</span> <span class="o">=&gt;</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">titre1</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">meta</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">images</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="c1">//first.jpg&amp;rsquo;, &amp;lsquo;//second.jpg&amp;rsquo;]]],</span>
-</span><span class='line'>    <span class="p">[</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">id_article</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;</span> <span class="o">=&gt;</span> <span class="mi">2</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">titre</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;</span> <span class="o">=&gt;</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">titre2</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">meta</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">images</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="c1">//third.jpg&amp;rsquo;]]],</span>
-</span><span class='line'>    <span class="p">[</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">id_article</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">titre</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;</span> <span class="o">=&gt;</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">titre3</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;],</span>
-</span><span class='line'><span class="p">];</span>
-</span></code></pre></td></tr></table></div></figure>
-<img class="center" src="/images/arraydanscontainer.png" width="600" height="450" title="&lsquo;Un array dans le container&rsquo; &lsquo;Un array dans le container&rsquo;" ></p>
-
-<ul>
-<li>Nous allons transformer chaque ligne en <code>maybe</code> grâce à l&#8217;instruction <code>maybeFromValue</code> (<a href="blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">post2</a>)</li>
-</ul>
-
-
-<p><img class="center" src="/images/collectionmaybe.png" width="600" height="450" title="&lsquo;Un array dans le container&rsquo; &lsquo;Un array dans le container&rsquo;" ></p>
-
-<p>Nous aimerions utiliser notre instruction <code>get</code>.</p>
-
-<p>l&#8217;algo :</p>
-
-<ul>
-<li>je récupère le maybe.</li>
-<li>J&#8217;appelle la fonction bind du maybe avec le get</li>
-</ul>
-
-
-<p>Cela donne ..</p>
-
-<pre><code class="php">function get($key)
-{
-    return function ($value) use ($key) {
-        return $value-&gt;bind(function ($array) use ($key) {
-            return isset($array[$key]) ? Some::of($array[$key]) : Nothing::of(null);
-        });
-    };
-}
-</code></pre>
-
-<p>Oui vous ne rêvez pas c&#8217;est une fonction qui renvoie une fonction qui renvoie une fonction.</p>
-
-<p>L&#8217;implémentation est sympathique..</p>
-
-<pre><code class="php">$result = Collection:of($data)
-   -&gt;map(fromValue)
-   -&gt;bind(get("meta"))
-   -&gt;bind(get("images"))
-   -&gt;bind(get(0))
-   -&gt;extract();
-</code></pre>
-
-<p>Nous obtenons en une ligne <em>sans if sans condition</em>.</p>
-
-<pre><code class="php">["//first.jpg", "//third.jpg", null]
-</code></pre>
-
-<h2>Le bind</h2>
-
-<p>Je n&#8217;ai pas donnée le code du bind qui se résume à</p>
-
-<pre><code class="php">    public function bind(callable $transformation)
-    {
-        return self::of($this-&gt;concat($this-&gt;map($transformation)));
-    }
-</code></pre>
-
-<p>Je vais essayer de justifier tout cela.</p>
-
-<p>Partons d&#8217;abord du principe que <code>$this-&gt;concat</code> n&#8217;existe pas..</p>
-
-<p>Donc mon <code>bind</code> devient</p>
-
-<pre><code class="php">    public function bind(callable $transformation)
-    {
-        return self::of($this-&gt;map($transformation));
-    }
-</code></pre>
-
-<p>Un exemple
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">addOne</span><span class="p">(</span><span class="nv">$input</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nx">Collection</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="nv">$input</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nv">$result</span> <span class="o">=</span> <span class="nx">Collection</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span><span class="o">-&gt;</span><span class="na">bind</span><span class="p">(</span><span class="nx">addOne</span><span class="p">);</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$result</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>Le résultat
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Collection</span><span class="c1">#6 (1) {</span>
-</span><span class='line'>  <span class="k">protected</span> <span class="nv">$value</span> <span class="o">=&gt;</span>
-</span><span class='line'>  <span class="k">array</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="k">class</span> <span class="nc">Collection</span><span class="c1">#5 (1) {</span>
-</span><span class='line'>      <span class="k">protected</span> <span class="nv">$value</span> <span class="o">=&gt;</span>
-</span><span class='line'>      <span class="k">array</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>        <span class="k">class</span> <span class="nc">Collection</span><span class="c1">#2 (1) {</span>
-</span><span class='line'>          <span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>        <span class="k">class</span> <span class="nc">Collection</span><span class="c1">#3 (1) {</span>
-</span><span class='line'>          <span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>        <span class="k">class</span> <span class="nc">Collection</span><span class="c1">#4 (1) {</span>
-</span><span class='line'>          <span class="o">&amp;</span><span class="nx">hellip</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span>
-</span><span class='line'><span class="nx">Nous</span> <span class="nx">avons</span> <span class="nx">une</span> <span class="nx">collection</span> <span class="nx">qui</span> <span class="nx">contient</span> <span class="nx">une</span> <span class="nx">collection</span> <span class="p">(</span><span class="nx">double</span> <span class="nx">container</span><span class="o">!!</span><span class="p">)</span> <span class="nx">et</span> <span class="nx">pire</span> <span class="nx">dans</span> <span class="nx">chaque</span> <span class="nx">valeur</span> <span class="nx">est</span> <span class="nx">encore</span> <span class="nx">une</span> <span class="nx">collection</span> <span class="o">!.</span> <span class="nx">On</span> <span class="nx">perd</span> <span class="nx">aussi</span> <span class="nx">le</span> <span class="nx">chainage</span><span class="o">.</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">Bref</span> <span class="nx">nous</span> <span class="nx">avons</span> <span class="nx">tout</span> <span class="nx">perdu</span><span class="o">.</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">### Solution le marteau.</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">{</span><span class="o">%</span> <span class="nx">img</span> <span class="nx">center</span> <span class="o">/</span><span class="nx">images</span><span class="o">/</span><span class="nx">marteau</span><span class="o">.</span><span class="nx">png</span> <span class="mi">515</span> <span class="mi">150</span> <span class="s1">&#39;Le marteau comme solution.&#39;</span> <span class="s1">&#39;Le marteau comme solution&#39;</span> <span class="o">%</span><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">Nous</span> <span class="nx">allons</span> <span class="nx">aplatir</span> <span class="nx">le</span> <span class="nx">résultat</span><span class="o">.</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">C</span><span class="s1">&#39;est a dire que nous allons transformer notre collection `[[a],[b],[c]]` en `[a, b, c]`</span>
-</span><span class='line'>
-</span><span class='line'><span class="s1">Voici l&#39;</span><span class="nx">implémentation</span> <span class="nx">en</span> <span class="nx">code</span><span class="o">..</span> <span class="nx">C</span><span class="s1">&#39;est un peu long n&#39;</span><span class="nx">hésitez</span> <span class="nx">pas</span> <span class="nx">à</span> <span class="nx">sauter</span> <span class="nx">cette</span> <span class="nx">partie</span><span class="o">..</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">Partons</span> <span class="nx">du</span> <span class="nx">principe</span> <span class="nx">que</span> <span class="nx">c</span><span class="err">&#39;</span><span class="nx">est</span> <span class="nx">un</span> <span class="k">array</span><span class="o">..</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">On</span> <span class="nx">aplati</span> <span class="nx">notre</span> <span class="nx">liste</span> <span class="nx">ainsi</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nv">$flatten</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">a</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;,</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">d</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;),</span> <span class="k">array</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">b</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;),</span> <span class="k">array</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">c</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;));</span>
-</span><span class='line'><span class="nv">$result</span><span class="p">;</span>
-</span><span class='line'><span class="k">foreach</span><span class="p">(</span><span class="nv">$flatten</span> <span class="k">as</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">foreach</span><span class="p">(</span><span class="nv">$value</span> <span class="k">as</span> <span class="nv">$subvalue</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$result</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$subvalue</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$result</span><span class="p">);</span> <span class="c1">//array(&amp;ldquo;a&amp;rdquo;, &amp;ldquo;d&amp;rdquo;, &amp;ldquo;b&amp;rdquo;, &amp;ldquo;c&amp;rdquo;);</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>Le problème est que notre collection n&#8217;est pas un <code>Array</code>.. Mais essayons avec une fonction un peu plus tordue</p>
-
-<pre><code class="php">$result = array_reduce(
-    $flatten,
-    function ($acc, $value){
-    array_reduce($value, function($idontcare, $value) use(&amp;$acc) {
-        $acc[] = $value;
-    });
-    return $acc;
-}, []);
-</code></pre>
-
-<p>C&#8217;est un façon un peu plus complexe d&#8217;exprimer la même chose que le code plus haut. Sans utiliser les boucles <code>foreach</code>.</p>
-
-<p>Le reduce pour notre collection est facilement exprimable.</p>
-
-<pre><code class="php">    // dans la classe Collection
-     public function reduce(callable $function, $accumulator)
-    {
-        foreach ($this-&gt;value as $item) {
-            $accumulator = call_user_func($function, $accumulator, $item);
-        }
-        return $accumulator;
-    }
-</code></pre>
-
-<p>Reprenons le code du <code>array_reduce</code> et utilisons notre <code>reduce</code></p>
-
-<pre><code class="php"> // dans la classe Collection
-    private function concat(Collection $collection)
-    {
-        return $collection-&gt;reduce(function ($agg, $value) {
-            $value = ($value instanceof Collection) ? $value : Collection::of($value);
-            return $value-&gt;reduce(function($agg, $v) {
-                $agg[] = $v;
-                return $agg;
-            }, $agg);
-        }, []);
-    }
-</code></pre>
-
-<p>Voici comment on aplatit notre fonction et on sauvegarde le chainage. Mais il y a mieux..</p>
-
-<h2>Si j&#8217;avais un marteau..</h2>
-
-<p>Montrons quelque exemples de bind.</p>
-
-<h3>Exemple 1 : Les lapins.</h3>
-
-<p>Soit le fonction suivante</p>
-
-<pre><code class="php ">function reproduction($input) {
-       return Collection::of(array($input, $input, $input);
-}
-</code></pre>
-
-<p>Un exemple</p>
-
-<pre><code>$lapin = Collection::of(array("lapin"))
-    -&gt;bind("reproduction")
-    -&gt;bind("reproduction")
-    -&gt;extract();
-</code></pre>
-
-<p>Le résultat</p>
-
-<p><img class="center" src="/images/reproductionlapin.png" width="594" height="482" title="&lsquo;Un array dans le container&rsquo; &lsquo;Un array dans le container&rsquo;" ></p>
-
-<ul>
-<li>premier bind</li>
-</ul>
-
-
-<pre><code class="php">["lapin"] -&gt; map -&gt;[["lapin", "lapin","lapin"]] -&gt; concat -&gt; ["lapin", "lapin","lapin"]
-</code></pre>
-
-<ul>
-<li>second bind</li>
-</ul>
-
-
-<pre><code class="php">["lapin", "lapin","lapin"] -&gt; map [["lapin","lapin","lapin"][..][..]] -&gt; ["lapin" .. *9]
-</code></pre>
-
-<p>Nous commençons avec un lapin, nous multiplions par 3 à chaque interaction. Comme la liste est aplatie à chaque fois.</p>
-
-<h3>Exemple 2 : les fractales</h3>
-
-<p>Soit la fonction suivante</p>
-
-<pre><code class="php">
-function fractale($value) {
-    if ($value == "#")
-        return (Collection::of(array('#', '_', '#')));
-    return Collection::of(array("_", "_","_"));
-}
-$result = Collection::of(array("#"))-&gt;bind("fractale")-&gt;bind("fractale")-&gt;bind("fractale")-&gt;extract();
-echo implode($result);
-//#_#___#_#_________#_#___#_#
-</code></pre>
-
-<h3>Exemple 3 : avec les chiffres</h3>
-
-<p>Soit la fonction suivante</p>
-
-<p>La fonction inférieure à 20 renvoie un array vide.</p>
-
-<pre><code class="php">function moiEtMonSuccesseur($input) {
-    return Collection::of($input, $input+1); 
-}
-
-function inferieurA20($value) {
-   if($value &gt; 20) {
-        return Collection::of([]);
-   }
-   return (Collection::of(array($value)));
-}
-
-$result = Collection::of([10,20,30])-&gt;bind("moiEtMonSuccesseur")-&gt;bind("inferieurA20")-&gt;bind("moiEtMonSuccesseur")-&gt;extract();
-</code></pre>
-
-<ul>
-<li>premier <code>bind</code></li>
-</ul>
-
-
-<pre><code class="php">[10,20, 30] -&gt; map -&gt; [[10,11],[20,21],[30,31]]-&gt;concat -&gt; [10, 11, 20, 21, 30, 31]
-</code></pre>
-
-<ul>
-<li>second <code>bind</code></li>
-</ul>
-
-
-<pre><code class="php">[10, 11, 20, 21, 30, 31] -&gt; map -&gt; [[10],[11],[20],[],[],[]]-&gt; concat -&gt; [10,11,20]
-</code></pre>
-
-<ul>
-<li>troisième <code>bind</code></li>
-</ul>
-
-
-<pre><code class="php">[10, 11, 20] -&gt; map [[10,11], [11,12], [20, 21]]-&gt; concat -&gt; [10,11,11,12,20,21]
-</code></pre>
-
-<h3>Exemple 4: Trouver les positions possibles d&#8217;un jeux de société</h3>
-
-<pre><code class="php ">function donneTousLesCoupsPossibles($position) {
-    //renvoie toutes les positions légales
-    return Collection::of(array(position_possible..));
-}
-
-$postion1-&gt;bind(donneTousLesCoupsPossibles)
-   -&gt;bind(donneTousLesCoupsPossibles);
-</code></pre>
-
-<p>cette fonction donne toute les parties possibles dans deux coup.</p>
-
-<h2>Conclusion</h2>
-
-<p>On comprend assez bien l&#8217;intérêt de cette monade pour gérer des listes, mais il y a une autre vision possible. La collection avec le bind est considérée comme une façon de gérer des entrées <em>non déterministes</em>. J&#8217;ai eu un peu de mal à comprendre, mais voici l&#8217;idée.
-La valeur 3 n&#8217;a qu&#8217;une valeur qui est <code>3</code> facile, la valeur <code>[1, 2, 3]</code> est une représentation de la même valeur sauf qu&#8217;elle à trois états possible <code>1, 2, 3</code>. Grâce au <code>bind</code> je prend en compte tous les états possibles.</p>
-
-<p>Pour résumer :</p>
-
-<ul>
-<li>Le Maybe prend le cas ou la valeur est présente.</li>
-<li>La liste permet de gérer le Non-determinisme.</li>
-</ul>
-
-
-<p>Il reste encore beaucoup de chose à parler. Nous avons parlé des functors(<code>map</code> ou <code>fmap</code>), des monades (<code>of</code> et <code>bind</code>) nous allons voir les applicatives..</p>
-
-<h1>des liens.</h1>
-
-<ul>
-<li>Ma référence pour l&#8217;implémentation est <a href="https://github.com/widmogrod/php-functional">php-functional</a>.</li>
-<li>La bible pour le haskell est <a href="learnyouahaskell.com">Learn You a Haskell for Great Good!</a> Le livre est gratuit avec des jolis dessins. Enfin le fond et la forme sont vraiment bon.</li>
-<li><p>Il existe en français !! <a href="http://lyah.haskell.fr/">Apprendre Haskell vous fera le plus grand bien !</a></p></li>
-<li><p>Partie 1 : <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></p></li>
-<li>Partie 2 : <a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
-<li>Partie 3 : <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
-<li>Partie 4 : <a href="/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
-<li>Interlude : <a href="/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a></li>
-<li>Partie 5 : <a href="2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
+<li>Partie 5 : <a href="/blog/2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
+<li>Partie 6 : <a href="/blog/2016/01/25/les-monades-applicative-et-les-listes/">Les applicatives et les listes</a></li>
 </ul>
 
 ]]></content>

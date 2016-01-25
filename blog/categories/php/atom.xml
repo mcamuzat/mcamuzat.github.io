@@ -4,7 +4,7 @@
   <title><![CDATA[Category: php | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/php/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-01-18T22:08:41+01:00</updated>
+  <updated>2016-01-25T21:45:14+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,130 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Les Monades: Applicative et les listes]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/01/25/les-monades-applicative-et-les-listes/"/>
+    <updated>2016-01-25T20:45:47+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/01/25/les-monades-applicative-et-les-listes</id>
+    <content type="html"><![CDATA[<p>Dans le précédent <a href="/blog/2015/12/20/les-monades-5-les-applicatives/">post</a>, j&#8217;avais parlé des applicatives sur les Maybe.</p>
+
+<p>Nous avions vu le code suivant qui en pratique nous permets d&#8217;utiliser les fonctions de PHP de façon quasi transparente avec nos objets.</p>
+
+<p>Nous allons voir ensemble comment les applicatives se comporte sur les listes.</p>
+
+<p>Rappelons que l&#8217;idée des applicatives c&#8217;est</p>
+
+<ul>
+<li>ma valeur est dans un container</li>
+<li>et ma fonction que je vais appliquer est aussi dans un container</li>
+</ul>
+
+
+<p>Pour la liste c&#8217;est un peu près la même idée.</p>
+
+<ul>
+<li>mes valeurs sont dans une collection</li>
+<li>mes fonctions sont aussi dans une collection</li>
+</ul>
+
+
+<!--more-->
+
+
+<p>Initialisons une Collection de valeurs</p>
+
+<pre><code class="php">$collectionValue = Monad\Collection::of([1, 2]);
+</code></pre>
+
+<p>Créons un collection de fonctions
+<code>php
+$collection = Monad\Collection::of([
+    function($a) {
+        return 3 + $a;
+    },
+    function($a) {
+        return 4 + $a;
+    },
+]);
+</code></p>
+
+<p>Regardons de suite le résultat, nous obtenons une collection qui contient <code>[4, 5, 5, 6]</code>. En fait on a calculé toutes les possibilités.. Puisque <code>[1+3, 1+4, 2+3, 2+4]</code></p>
+
+<p>Essayons de programmer un générateur de nom de scout (?!!)</p>
+
+<pre><code class="php">// des animaux
+$collectionAnimaux = Monad\Collection::of([
+  "renard",
+  "blaireau",
+  "aigle",
+  "panda"
+]);
+
+// des adjectifs
+$collectionAdjectif =  Monad\Collection::of([
+  "affectueux",
+  "perçant",
+  "agile",
+  "bavard"
+]);
+
+// des générateurs
+$collectionGenerateur = Monad\Collection::of([
+    Maybe\just(
+        f\curryN(
+            2, function($nom,$adj) {return $nom . " " . $adj;}
+        )
+        ),
+    Maybe\just(
+        f\curryN(
+            2, function($nom,$adj) {return "petit ". $nom . " " . $adj;}
+        )
+    )
+
+   ]
+);
+
+// On mélange
+var_dump($collectionGerateur-&gt;ap($collectionAnimaux)-&gt;ap($collectionAdjectif));
+</code></pre>
+
+<p>Grâce à l&#8217;évaluation partielle je peux créer des fonctions à plusieurs arguments. Les applicatives sur les listes me permette de faire toutes les combinaisons.</p>
+
+<p>J&#8217;obtiens</p>
+
+<pre><code class="php"> .. 32 résultats
+ string(14) "panda perçant"
+    [14] =&gt;
+    string(11) "panda agile"
+    [15] =&gt;
+    string(12) "panda bavard"
+    [16] =&gt;
+    string(23) "petit renard affectueux"
+    [17] =&gt;
+    string(21) "petit renard perçant"
+    [18] =&gt;
+    string(18) "petit renard agile"
+</code></pre>
+
+<p>Bon c&#8217;est sur que <em>petit renard affectueux</em> n&#8217;est pas génial comme nom..</p>
+
+<p>Le Panda bavard.</p>
+
+<p>Liste des articles</p>
+
+<ul>
+<li>Partie 1 : <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
+<li>Partie 2 : <a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
+<li>Partie 3 : <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
+<li>Partie 4 : <a href="/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
+<li>Interlude : <a href="/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a></li>
+<li>Partie 5 : <a href="/blog/2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
+<li>Partie 6 : <a href="/blog/2016/01/25/les-monades-applicative-et-les-listes/">Les applicatives et les listes</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Les monades 5: les applicatives]]></title>
@@ -225,7 +349,8 @@ var_dump(f\liftA2("str_repeat",MayBe\just(".o0o"), Maybe\just(5)));
 <li>Partie 3 : <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
 <li>Partie 4 : <a href="/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
 <li>Interlude : <a href="/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a></li>
-<li>Partie 5 : <a href="2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
+<li>Partie 5 : <a href="/blog/2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
+<li>Partie 6 : <a href="/blog/2016/01/25/les-monades-applicative-et-les-listes/">Les applicatives et les listes</a></li>
 </ul>
 
 ]]></content>
@@ -369,7 +494,8 @@ En fait le langage fait.
 <li>Partie 3 : <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
 <li>Partie 4 : <a href="/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
 <li>Interlude : <a href="/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a></li>
-<li>Partie 5 : <a href="2015/12/20/les-monades-5-les-applicatives/">Les applicative</a></li>
+<li>Partie 5 : <a href="/blog/2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
+<li>Partie 6 : <a href="/blog/2016/01/25/les-monades-applicative-et-les-listes/">Les applicatives et les listes</a></li>
 </ul>
 
 ]]></content>
@@ -980,212 +1106,8 @@ string (6) "titre3"
 <li>Partie 3 : <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
 <li>Partie 4 : <a href="/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
 <li>Interlude : <a href="/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a></li>
-<li>Partie 5 : <a href="2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Les Monades (suite): Le Functor Maybe..]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/"/>
-    <updated>2015-11-15T16:43:42+01:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot</id>
-    <content type="html"><![CDATA[<p><img class="center" src="/images/lesdeuxcontainerMaybe.png" width="512" height="313" title="&lsquo;Il y a deux container&rsquo; &lsquo;Il y a deux containers&rsquo;" ></p>
-
-<p>Nous avons vue dans le précédent <a href="blog/2015/11/11/les-monades-en-php-cest-possible-dot/">post</a> un pseudo-container qui nous permet d&#8217;emballer nos valeurs. Nous allons muscler un peu notre container mais partons d&#8217;un exemple.</p>
-
-<p>Je souhaite récupérer le mail du client &ldquo;bob&rdquo; ou afficher &ldquo;pas de mail&rdquo;</p>
-
-<pre><code class="php">function getMail($name) {
-$mail = getUserByName($name)-&gt;getAddress()-&gt;getMail();
-if (null === $mail) {
-   return "pas de mail"; 
-}
-return $mail;
-}
-</code></pre>
-
-<p>Facile non ?</p>
-
-<!--more-->
-
-
-<p>Si <code>getAdress()</code> renvoie null, Outch &hellip;</p>
-
-<pre><code>PHP Fatal error: Call to a member function getMail() on a non-object..
-</code></pre>
-
-<p>L&#8217;utilisateur n&#8217;existe pas forcement et puis l&#8217;adresse est peut-être vide.. Une implémentation naïve</p>
-
-<pre><code class="php">function getMail($name) {
-    $user = getUserByName($name);
-    if ($user) {
-        $address = $user-&gt;getAddress();
-        if ($address) {
-            //etc ...
-            return $adresse-&gt;getMail();
-        }
-   }
-   return "pas de mail";
-
-}
-</code></pre>
-
-<p>Ce code vous le connaissez, vous l&#8217;avez probablement déjà écris, il y a moyen d&#8217;optimiser de faire plus propre.</p>
-
-<h2>Deux containers pour le prix d&#8217;un.</h2>
-
-<p>Le Maybe à la rescousse..</p>
-
-<p>Voici le Maybe en dessin.</p>
-
-<p><img class="center" src="/images/lesdeuxcontainerMaybe.png" width="512" height="313" title="&lsquo;Il y a deux container&rsquo; &lsquo;Il y a deux containers&rsquo;" ></p>
-
-<p>J&#8217;ai un container <code>Some</code> et un Container <code>Nothing</code>.</p>
-
-<p>Le container <code>Nothing</code> est un container qui n&#8217;a aucune valeurs. La méthode <code>map</code> renvoie toujours un container <code>Nothing</code>.</p>
-
-<pre><code class="php">class Nothing extends Container{
-    public function map($function)
-    {
-       return static::of(null);
-    }
-    public static function of($value)
-    {
-        return new static($value);
-    }
-
-    public function bind($transformation)
-    {
-        return static::of(null);
-    }
-
-    public function getOrElse($default)
-    {
-        return $default;
-    }
-}
-</code></pre>
-
-<p>Le container <code>Some</code> le résultats de <code>map</code> est un nouveau container <code>Some</code> s&#8217;il y a un résultat non-null sinon c&#8217;est un container <code>Nothing</code>.</p>
-
-<pre><code class="php ">class Some extends Container{
-    public function map($function)
-    {
-        $result = $this-&gt;bind($function);
-        if ($result === null) {
-            return Nothing::of(null);
-        }
-        return static::of($result);
-    }
-    public static function of($value)
-    {
-        return new static($value);
-    }
-
-    public function bind($transformation)
-    {
-        return call_user_func($transformation, $this-&gt;value);
-    }
-
-    public function getOrElse($default)
-    {
-        return $this-&gt;value;
-    }
-}
-</code></pre>
-
-<p>Enfin j&#8217;ai besoin d&#8217;un helper</p>
-
-<pre><code>function maybeFromValue($value) {
- if ($value === null) 
-   return Nothing::of(null);
- return Some::of($value);
-}
-</code></pre>
-
-<p>Notons que j&#8217;ai une méthode qui me permet de sortir avec une valeurs par défaut</p>
-
-<p>Quelques exemples:</p>
-
-<pre><code class="php">echo maybeFromValue(null)-&gt;map("ucfirst")-&gt;getOrElse("non!!");
-// non!!
-echo maybeFromValue("oui!!")-&gt;map("ucfirst")-&gt;getOrElse("non!!");
-// Oui!!
-echo Some::of("oui")-&gt;map("ucfirst")
-   -&gt;map(function($value) {return null;})
-   -&gt;getOrElse("Non!!");
-// Non !!
-</code></pre>
-
-<p>Nous pouvons simplifier notre problème</p>
-
-<p>En le refactorisant ainsi</p>
-
-<pre><code class="php">// example
-// method("name") return function($obj) {return $obj-&gt;getName()};
-
-function method($name)
-{
-    return function ($obj) use ($name) {
-        return $obj-&gt;$name();
-    };
-}
-
-$mail = maybeFromValue(getUserByName($name))
-    -&gt;map(method("getAddress")) // $value-&gt;getAdress()
-    -&gt;map(method("getMail"))
-    -&gt;getOrElse("pas de mail");
-</code></pre>
-
-<p>Quelques dessins
-Le cas ou tout marche</p>
-
-<p><img class="center" src="/images/maybechainageok.png" width="516" height="260" title="&lsquo;chainage tout va bien&rsquo; &lsquo;chainage tout va bien&rsquo;" ></p>
-
-<p>Le cas ou <code>getUser()</code> renvoie null</p>
-
-<p><img class="center" src="/images/chainagepasok.png" width="516" height="216" title="&lsquo;getAdress renvoie null, on prend la valeur par défault&rsquo; &lsquo;getAdress renvoie null, on prend la valeur par défaults&rsquo;" ></p>
-
-<p>Sympa la refactorisation. On peux supprimer ainsi une partie de la logique (la plupart des if, les nulls ont tous disparus).</p>
-
-<h2>Une librairie toute faite</h2>
-
-<p>Je vais parler de <a href="https://github.com/schmittjoh/php-option">php-option</a>. Si vous faite du <a href="https://symfony.com/">symfony2</a> vous l&#8217;avez déja dans votre <code>/vendor</code> et vous ne le saviez pas.</p>
-
-<p>La syntaxe est un peu près le même</p>
-
-<p>Mais il y a plein de fonctionnalités</p>
-
-<pre><code class="php">$entity = $this-&gt;findSomeEntity()-&gt;getOrElse(new Entity());
-$entity = $this-&gt;findSomeEntity()-&gt;getOrCall('createAnNewAddress');
-$entity = $this-&gt;findSomeEntity()-&gt;getOrThrow(new \Exception('ha!!!!!'));
-</code></pre>
-
-<p>Il y a aussi des possibilité de chainer les réponses si pas de résultats
-<code>php
-$entity = $this-&gt;findSomeEntity()-&gt;orElse($this-&gt;findSomeOtherEntity())
-            -&gt;orElse($this-&gt;createEntity());
-</code></p>
-
-<p>Nous n&#8217;utilisons que l&#8217;instruction <code>map</code> pour le moment. Donc nous n&#8217;utilisons pas le container en tant que monade mais plutôt en tant que functor. Nous verrons cela dans le troisième post.</p>
-
-<h2>Conclusion</h2>
-
-<p>Je suis désolé si certain termes sont inexacts comme le container. Je ne suis pas un expert, mais j&#8217;admets bien volontiers mon erreur.</p>
-
-<p>Si vous avez un code ou vous vérifiez tout le temps si les valeurs sont nulles. Il y a probablement moyen que cette structure vous aide.</p>
-
-<p>Dans le prochain Post nous utiliserons le Maybe avec l&#8217;instruction <code>bind</code>.</p>
-
-<ul>
-<li>Partie 1 : <a href="/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
-<li>Partie 2 : <a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
-<li>Partie 3 : <a href="/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
-<li>Partie 4 : <a href="/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
-<li>Interlude : <a href="/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a></li>
-<li>Partie 5 : <a href="2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
+<li>Partie 5 : <a href="/blog/2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
+<li>Partie 6 : <a href="/blog/2016/01/25/les-monades-applicative-et-les-listes/">Les applicatives et les listes</a></li>
 </ul>
 
 ]]></content>

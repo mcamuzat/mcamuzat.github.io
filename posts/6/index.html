@@ -9,7 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Introduction Les développeurs aiment les liens. Il y a toujours un article à partager et/ou sauvegarder. Pour les sauvegarder, Personnelement j' &hellip;">
+  <meta name="description" content="Docker-compose Dans le post précèdent sur docker, j'avais expliqué comment automatiser la création des containers grâce au Dockerfile aujourd'hui je &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -62,6 +62,49 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/05/03/docker-compose/">Docker-compose</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-05-03T21:33:31+02:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Docker-compose</h2>
+
+<p>Dans le post précèdent sur docker, j&#8217;avais expliqué comment automatiser la création des containers grâce au <code>Dockerfile</code> aujourd&#8217;hui je vais expliquer <code>docker-compose</code></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/05/03/docker-compose/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -2747,228 +2790,6 @@ par exemple</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/03/22/fizzbuzz-sans-boucle-if/">FizzBuzz sans boucle If</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-03-22T23:19:46+01:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Bon, j&#8217;ai passé deux-trois entretiens ou on m&#8217;a demandé d&#8217;implémenter &ldquo;fizzbuz&rdquo;</p>
-
-<p>Les règles sont simples.</p>
-
-<ul>
-<li>Écrire un programme qui écrit les nombres de 1 à 100.</li>
-<li>Si le chiffre est divisible par 3 afficher seulement &ldquo;fizz&rdquo;</li>
-<li>Si le chiffre est divisible par 5 afficher seulement &ldquo;buzz&rdquo;</li>
-<li>Si divisible par 3 et 5 afficher &ldquo;fizzbuzz&rdquo;</li>
-<li>sinon afficher le chiffre tout seul</li>
-</ul>
-
-
-<p>Il y a plein de solutions possibles</p>
-
-<h2>la plus littérale</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;=</span> <span class="mi">100</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">%</span> <span class="mi">15</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">echo</span> <span class="s1">&#39;fizzbuzz&#39;</span><span class="o">.</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">echo</span> <span class="s1">&#39;buzz&#39;</span><span class="o">.</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">echo</span> <span class="s1">&#39;fizz&#39;</span><span class="o">.</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="nv">$i</span> <span class="o">.</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>la version de wikipedia</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;=</span> <span class="mi">100</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nv">$output</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span> <span class="nv">$i</span><span class="o">%</span><span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$output</span> <span class="o">.=</span> <span class="s1">&#39;fizz&#39;</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span> <span class="nv">$i</span><span class="o">%</span><span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$output</span> <span class="o">.=</span> <span class="s1">&#39;buzz&#39;</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$output</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$output</span> <span class="o">.=</span> <span class="nv">$i</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="nv">$output</span><span class="o">.</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Ma version que j&#8217;avais programmé</h2>
-
-<p>Le <code>continue</code> n&#8217;est pas souvent utilisé. Mais je trouve qu&#8217;il remplit son rôle ici.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;=</span> <span class="mi">100</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">%</span> <span class="mi">15</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">echo</span> <span class="s1">&#39;fizzbuzz&#39;</span><span class="o">.</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">continue</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">echo</span> <span class="s1">&#39;buzz&#39;</span><span class="o">.</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">continue</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">echo</span> <span class="s1">&#39;fizz&#39;</span><span class="o">.</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">continue</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="nv">$i</span> <span class="o">.</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Sans boucle if</h2>
-
-<p>Il existe une version qui n&#8217;utilise aucune boucle if.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$resp</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
-</span><span class='line'>    <span class="s1">&#39;fizzbuzz&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="k">false</span><span class="p">,</span>
-</span><span class='line'>    <span class="k">false</span><span class="p">,</span>
-</span><span class='line'>    <span class="s1">&#39;fizz&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="k">false</span><span class="p">,</span>
-</span><span class='line'>    <span class="s1">&#39;buzz&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s1">&#39;fizz&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="k">false</span><span class="p">,</span>
-</span><span class='line'>    <span class="k">false</span><span class="p">,</span>
-</span><span class='line'>    <span class="s1">&#39;fizz&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="k">false</span><span class="p">,</span>
-</span><span class='line'>    <span class="k">false</span><span class="p">,</span>
-</span><span class='line'>    <span class="s1">&#39;fizz&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="k">false</span><span class="p">,</span>
-</span><span class='line'>    <span class="k">false</span>
-</span><span class='line'><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;=</span> <span class="mi">100</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="p">(</span><span class="nv">$output</span> <span class="o">=</span> <span class="nv">$resp</span><span class="p">[</span><span class="nv">$i</span><span class="o">%</span><span class="mi">15</span><span class="p">])</span> <span class="o">||</span> <span class="p">(</span><span class="nv">$output</span> <span class="o">=</span> <span class="nv">$i</span><span class="p">);</span>
-</span><span class='line'>    <span class="k">echo</span> <span class="nv">$output</span><span class="o">.</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>En php on ne peux pas faire la commande suivante qui correcte en javascript;</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="nx">value</span> <span class="o">||</span> <span class="nx">defautvalue</span> <span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$output</span> <span class="o">=</span> <span class="nx">$resp</span><span class="p">[</span><span class="nx">i</span><span class="o">%</span><span class="mi">15</span><span class="p">]</span> <span class="o">||</span> <span class="nx">$i</span><span class="c1">// =&gt; $output = true</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>C&#8217;est pour cela que l&#8217;on utilise cette ligne un peu bancale.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="p">(</span><span class="nx">$output</span> <span class="o">=</span> <span class="nx">$resp</span><span class="p">[</span><span class="nx">$i</span><span class="o">%</span><span class="mi">15</span><span class="p">])</span> <span class="o">||</span> <span class="p">(</span><span class="nx">$output</span> <span class="o">=</span> <span class="nx">$i</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Il n&#8217;y a pas de boucle if. Si un jour on vous demande d&#8217;implémenter FizzBuzzb en essayer cette version.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/7">&larr; Older</a>
@@ -3018,6 +2839,10 @@ par exemple</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/01/25/les-monades-applicative-et-les-listes/">Les Monades: Applicative et les listes</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/01/18/je-joue-donc-je-programme-3/">Je joue donc je programme 3</a>
       </li>
     
@@ -3031,10 +2856,6 @@ par exemple</p>
     
       <li class="post">
         <a href="/blog/2015/12/13/je-joue-donc-je-programme-2/">Je joue donc je programme 2</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/12/06/les-monades-evaluation-partielle/">Les Monades : Evaluation partielle</a>
       </li>
     
   </ul>
