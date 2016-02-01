@@ -4,7 +4,7 @@
   <title><![CDATA[Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-01-25T21:46:28+01:00</updated>
+  <updated>2016-02-01T22:30:17+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,62 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Cloud9 un workspace en ligne]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/02/01/cloud9-un-workspace-en-ligne/"/>
+    <updated>2016-02-01T21:14:07+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/02/01/cloud9-un-workspace-en-ligne</id>
+    <content type="html"><![CDATA[<p>Je me suis inscris sur <a href="www.freecodecamp.com">FreecodeCamp</a>. C&#8217;est gratuit et annonce une formation du Bootstrap/Nodejs/React/D3/javascript. Bon au moment ou j&#8217;écris ces lignes D3 et React sont en <em>coming soon</em> (c&#8217;est dommage c&#8217;était surtout ca qui m&#8217;intéressait). L&#8217;idée est de former des développeur back et front pour aider des associations. L&#8217;idée me semble bonne.</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/freecodecamp.png" width="600" height="217" title="FreecodeCamp" alt="FreeCodeCamp"></p>
+
+<!--more-->
+
+
+<p>Sur les projets backends pour éviter d&#8217;installer un linux, le site conseille de créer un compte sur <a href="https://c9.io/">Cloud9</a>.</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/introcloud9.png" width="600" height="259" title="accueil" alt="page d\"></p>
+
+<p>Je crée un nouveau workspace.</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/choixcloud9.png" width="600" height="453" title="environnent de dev" alt="choix de l"></p>
+
+<p>Je choisis nodejs.</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/workspacecloud9.png" width="600" height="413" title="le workspace" alt="le workspace"></p>
+
+<p>Sur cette image on voit l&#8217;explorateur de fichiers, l&#8217;éditeur et la ligne de commande. Nous sommes déjà dans un vm. Toutes les commandes Linux sont disponibles. <code>apt-get</code>, <code>npm</code> etc..</p>
+
+<p>Dans l&#8217;onglet <code>windows&gt;share</code></p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/sharecloud9.png" width="456" height="142" title="environnement de dev" alt="Url de l\"></p>
+
+<p>Ici on voit l&#8217;url de l&#8217;environment. Si j&#8217;allume le nodejs. mon application est disponible à</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>https://&lt;mon-env&gt;-&lt;monuser&gt;.c9users.io/</span></code></pre></td></tr></table></div></figure>
+
+
+<p>à la création de l&#8217;environnement il est possible de choisir un dépôt.</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/choixdepot.png" width="600" height="115" title="choix en mettant le dépôt" alt="choix en mettant le dépôt"></p>
+
+<p>on précise par exemple..</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>https://github.com/johnstonbl01/clementinejs-fcc.git</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ainsi l&#8217;environnement est déjà prêt.</p>
+
+<h2>Conclusion</h2>
+
+<p>Cloud9 est gratuit et il n&#8217;y pas vraiment de raison de se priver.</p>
+
+<p>Il n&#8217;y a qu&#8217;un environnement privé pour une licence gratuite. Mais c&#8217;est largement suffisant pour débuter.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Les Monades: Applicative et les listes]]></title>
@@ -5235,91 +5291,6 @@ le résultat</p>
 <p>Maintenant les interfaces <code>ArrayAccess</code> et <code>Countable</code> n&#8217;ont plus de secrets pour vous. Nous verrons dans un prochain Post les listes chainées. L&#8217;avantage de ces méthode est que l&#8217;on obtient une structure qui se comporte comme un <code>array</code> mais avec une occupation mémoire moindre.</p>
 
 <p>Dans un prochain post, je vais parler des listes chainées et des différentes structure de la SPL (j&#8217;ai déja parlé de la <a href="blog/2015/08/29/stacks-structures-meconnues/">SplStack</a>)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Des commandes au top]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/09/27/des-commandes-au-top/"/>
-    <updated>2015-09-27T16:04:40+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/09/27/des-commandes-au-top</id>
-    <content type="html"><![CDATA[<p>J&#8217;utilise souvent le programme htop. mais il y en a d&#8217;autre.</p>
-
-<h2>atop</h2>
-
-<p>Plus austère. Beaucoup d&#8217;information sur toutes les ressources. C&#8217;est plus un outils d&#8217;audit. Le logicel donne toutes informations possibles. processeurs, disques, carte réseau. En pratique il peut même être lancer au démarrage. En pratique on parle de <code>sar</code> (<strong>S</strong>ystem <strong>A</strong>ctivity <strong>R</strong>eport). Il permet de surveiller la tailles des processus avec la colonne <code>VGROW</code> (<em>Virtual Memory Grow</em>) et <code>RGROW</code>(Resident memory Grow)
-<img class="center" src="http://mcamuzat.github.io/images/atop.png" width="600" height="381" title="atop" alt="atop"></p>
-
-<p>voir <a href="https://en.wikipedia.org/wiki/Sar_%28Unix%29">sar</a></p>
-
-<h2>vtop</h2>
-
-<p>Un clone en Nodejs. voir le screenshot c&#8217;est vraiment très joli</p>
-
-<p><img class="center" src="http://mcamuzat.github.io/images/vtop.png" width="600" height="383" title="vtop" alt="vtop"></p>
-
-<p>installation via npm</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo npm install -g vtop
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>dépot <a href="https://github.com/MrRio/vtop">Github</a></p>
-
-<!--more-->
-
-
-<h2>Htop</h2>
-
-<h3>Quelques options</h3>
-
-<h3>filtrer par utilisateur</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>htop -umarc
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ou <code>u</code> dans Htop</p>
-
-<h4>Sélectionner un process</h4>
-
-<p>Utilisez la barre d&#8217;espace pour sélectionner un process. Cela permet de le suivre.</p>
-
-<ul>
-<li><code>F7</code> ou  <code>F8</code> pour augmenter la priorité du process</li>
-<li><code>F9</code> ou <code>k</code> pour killer un process</li>
-<li><code>F5</code> affichage en arbre.</li>
-<li><code>a</code> pour assigner le process à un CPU.</li>
-<li><code>U</code> pour désélectionnér tous les process</li>
-</ul>
-
-
-<h4>Personnalisez l&#8217;affichage</h4>
-
-<p>La touche magique ici est <code>&lt;F2&gt;</code>. Vous pouvez personnaliser les deux colonnes avec les raccourcis claviers suivants. La colonne toutes à droite donne les widgets disponibles</p>
-
-<ul>
-<li><code>&lt;F5&gt;</code> ajouter le widget à la colonne de droite.</li>
-<li><code>&lt;F6&gt;</code> ajouter le widget à la colonne de gauche.</li>
-</ul>
-
-
-<p>Sur une colonne vous pouvez sélectionniez le type d&#8217;affiche (texte simple, histogramme, etc..) via la touche <code>&lt;F4&gt;</code></p>
-
-<p>Voir le screenshot (<code>Text</code>, <code>Graph</code>,<code>Led</code>, <code>Bar</code>)
-<img class="center" src="http://mcamuzat.github.io/images/typeaffichage.png" width="600" height="133" title="affichage" alt="les quatre types d"></p>
-
-<h3>Les codes couleurs</h3>
-
-<p>La touche <code>h</code> permet d&#8217;obtenir de l&#8217;aide, les raccourcis claviers et la significations des couleurs.</p>
-
-<p><img class="center" src="http://mcamuzat.github.io/images/codecouleur.png" width="600" height="104" title="les différentes couleurs et leurs significations" alt="les différentes couleurs et leurs significations"></p>
-
-<h2>En conclusion</h2>
-
-<p>J&#8217;espère que vous appris un nouveau raccourci sur htop.</p>
 ]]></content>
   </entry>
   

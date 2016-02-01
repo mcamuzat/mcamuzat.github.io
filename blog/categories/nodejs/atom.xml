@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: nodejs | Journal d'un panda qui code]]></title>
+  <link href="http://mcamuzat.github.io/blog/categories/nodejs/atom.xml" rel="self"/>
+  <link href="http://mcamuzat.github.io/"/>
+  <updated>2016-02-01T22:30:17+01:00</updated>
+  <id>http://mcamuzat.github.io/</id>
+  <author>
+    <name><![CDATA[mcamuzat]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Cloud9 un workspace en ligne]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/02/01/cloud9-un-workspace-en-ligne/"/>
+    <updated>2016-02-01T21:14:07+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/02/01/cloud9-un-workspace-en-ligne</id>
+    <content type="html"><![CDATA[<p>Je me suis inscris sur <a href="www.freecodecamp.com">FreecodeCamp</a>. C&#8217;est gratuit et annonce une formation du Bootstrap/Nodejs/React/D3/javascript. Bon au moment ou j&#8217;écris ces lignes D3 et React sont en <em>coming soon</em> (c&#8217;est dommage c&#8217;était surtout ca qui m&#8217;intéressait). L&#8217;idée est de former des développeur back et front pour aider des associations. L&#8217;idée me semble bonne.</p>
+
+<p><img class="center" src="/images/freecodecamp.png" width="600" height="217" title="&lsquo;FreecodeCamp&rsquo; &lsquo;FreeCodeCamp&rsquo;" ></p>
+
+<!--more-->
+
+
+<p>Sur les projets backends pour éviter d&#8217;installer un linux, le site conseille de créer un compte sur <a href="https://c9.io/">Cloud9</a>.</p>
+
+<p><img class="center" src="/images/introcloud9.png" width="600" height="259" title="&lsquo;page d\'accueil&rsquo; &lsquo;page d\'accueil&rsquo;" ></p>
+
+<p>Je crée un nouveau workspace.</p>
+
+<p><img class="center" src="/images/choixcloud9.png" width="600" height="453" title="&lsquo;Choix de l\'environnent de dev&rsquo; &lsquo;choix de l'environnent de dev&rsquo;" ></p>
+
+<p>Je choisis nodejs.</p>
+
+<p><img class="center" src="/images/workspacecloud9.png" width="600" height="413" title="&lsquo;le workspace&rsquo; &lsquo;le workspace&rsquo;" ></p>
+
+<p>Sur cette image on voit l&#8217;explorateur de fichiers, l&#8217;éditeur et la ligne de commande. Nous sommes déjà dans un vm. Toutes les commandes Linux sont disponibles. <code>apt-get</code>, <code>npm</code> etc..</p>
+
+<p>Dans l&#8217;onglet <code>windows&gt;share</code></p>
+
+<p><img class="center" src="/images/sharecloud9.png" width="456" height="142" title="&lsquo;Url de l\'environnement de dev&rsquo; &lsquo;Url de l\'environnement&rsquo;" ></p>
+
+<p>Ici on voit l&#8217;url de l&#8217;environment. Si j&#8217;allume le nodejs. mon application est disponible à</p>
+
+<pre><code>https://&lt;mon-env&gt;-&lt;monuser&gt;.c9users.io/
+</code></pre>
+
+<p>à la création de l&#8217;environnement il est possible de choisir un dépôt.</p>
+
+<p><img class="center" src="/images/choixdepot.png" width="600" height="115" title="&lsquo;choix en mettant le dépôt&rsquo; &lsquo;choix en mettant le dépôt&rsquo;" ></p>
+
+<p>on précise par exemple..
+<code>
+https://github.com/johnstonbl01/clementinejs-fcc.git
+</code></p>
+
+<p>Ainsi l&#8217;environnement est déjà prêt.</p>
+
+<h2>Conclusion</h2>
+
+<p>Cloud9 est gratuit et il n&#8217;y pas vraiment de raison de se priver.</p>
+
+<p>Il n&#8217;y a qu&#8217;un environnement privé pour une licence gratuite. Mais c&#8217;est largement suffisant pour débuter.</p>
+]]></content>
+  </entry>
+  
+</feed>
