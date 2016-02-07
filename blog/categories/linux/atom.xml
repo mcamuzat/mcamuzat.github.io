@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-02-01T22:30:17+01:00</updated>
+  <updated>2016-02-07T20:53:32+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -14,11 +14,116 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Insérer avec classe dans VIM]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/02/07/inserer-avec-classe-dans-vim/"/>
+    <updated>2016-02-07T19:20:36+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/02/07/inserer-avec-classe-dans-vim</id>
+    <content type="html"><![CDATA[<p><em>tl;dr : sous vi utilisez <code>a</code> au lieu de <code>i</code></em></p>
+
+<p>Tout le monde utilise VI pour éditer ses fichiers de configs sous linux ou les fichiers sur un serveur distant (il y a aussi <code>nano</code> qui marche super bien). Moi personnellement je code aussi du php/js avec. Pour insérer du texte on utilise la touche <code>i</code> comme insérer puis <code>ESC</code> pour quitter le mode insertion. Je vais parler des autres touches pour insérer du texte.</p>
+
+<p><img class="center" src="/images/viminser.png" width="517" height="220" title="&lsquo;Il y a 6 touches pour insérer&rsquo; &lsquo;Il y a 6 touches pour insérer&rsquo;" ></p>
+
+<!--more-->
+
+
+<h2>Insérer.</h2>
+
+<p>Le problème de la touche <code>i</code> c&#8217;est justement que l&#8217;on insère le texte. Le curseur n&#8217;est pas à la bonne position. On souhaite plutôt ajouter du texte après le curseur. Et c&#8217;est le principe de la touche <code>a</code> (comme <strong>A</strong>ppend ou <strong>A</strong>jouter).</p>
+
+<p>Si c&#8217;est rajouter une ligne vide. La touche <code>o</code> comme <strong>o</strong>pen une nouvelle ligne.</p>
+
+<h3>Un concept important dans VIM</h3>
+
+<p><strong>la lettre majuscule est la version plus <em>musclée</em> que la minuscule</strong></p>
+
+<ul>
+<li><code>i</code> insère au <strong>début du curseur</strong>.</li>
+<li><code>I</code> insère au <strong>début de la ligne</strong></li>
+<li><code>a</code> ajoute du <strong>texte à la fin du curseur.</strong></li>
+<li><code>A</code> ajoute du <strong>texte à la fin de la ligne</strong>.</li>
+</ul>
+
+
+<p><strong>la lettre majuscule est le contraire de la version minuscule</strong></p>
+
+<ul>
+<li><code>o</code> ouvre une ligne <strong>après le curseur</strong></li>
+<li><code>O</code> ouvre une ligne <strong>avant le curseur</strong></li>
+</ul>
+
+
+<p><img class="center" src="/images/viminser.png" width="517" height="220" title="&lsquo;Il y a 6 touches pour insérer&rsquo; &lsquo;Il y a 6 touches pour insérer&rsquo;" ></p>
+
+<p>En résumé</p>
+
+<ul>
+<li>Si vous appuyez sur <code>i</code> et <code>-&gt;</code> : utiliser <code>a</code></li>
+<li>Si vous voulez commenter une ligne <code>I</code> suivi de<code>//</code></li>
+<li>vous avez oublié une virgule à la fin de la ligne. alors <code>A,</code></li>
+<li>vous voulez rajouter une ligne au lieu de <code>i</code> et <code>&lt;enter&gt;</code> , la touche <code>o</code>.</li>
+</ul>
+
+
+<h2>Se répéter</h2>
+
+<p>Essayons de commenter les trois lignes.</p>
+
+<pre><code class="">instruction 1 &lt;-mon curseur est à cette ligne.
+instruction 2
+instruction 3
+</code></pre>
+
+<p>J&#8217;appuie sur <code>I</code> puis <code>//</code> pour commenter</p>
+
+<p>J&#8217;obtiens
+<code>
+//instruction 1
+instruction 2
+instruction 3
+</code></p>
+
+<p>J&#8217;appuie sur <code>j</code> ou <code>bas</code></p>
+
+<pre><code>//instruction 1
+instruction 2 &lt;-mon curseur
+instruction 3
+</code></pre>
+
+<p>Si j&#8217;appuie sur la touche <code>.</code> je répète la dernière instruction. La touche <code>.</code> est probablement la touche la plus utile.</p>
+
+<pre><code>//instruction 1
+//instruction 2 &lt;-mon curseur
+instruction 3
+</code></pre>
+
+<p>Et ainsi de suite..</p>
+
+<p>Mais il y a beaucoup de manière sur VIM pour faire la même chose.</p>
+
+<p>Par exemple sélectionnons le texte avec la touche <code>v</code> ou la souris( <code>set mouse=a</code>). puis appuyons sur <code>:</code></p>
+
+<p>Vous deviez voir
+<code>
+'&lt;,'&gt;`
+</code>
+alors complétons la ligne par <code>'&lt;,'&gt;norm I//</code> et tout le texte sélectionné est commenté!
+La commande précédente se lit sur la zone sélectionnée <code>'&lt;,'&gt;</code>  appuyez(<code>norm</code>)  sur <code>I</code> puis <code>\\</code>.</p>
+
+<h2>Un dernier raccourci-clavier..</h2>
+
+<p>La touche <code>gi</code> vous emmène au dernier endroit ou vous avez inséré du texte et place directement en insertion.</p>
+
+<p>En conclusion, Il n&#8217;y pas que le touche <code>i</code> dans Vi. En fait on se sert assez peu de cette touche.. C&#8217;est pourtant la plus connue..</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Cloud9 un workspace en ligne]]></title>
     <link href="http://mcamuzat.github.io/blog/2016/02/01/cloud9-un-workspace-en-ligne/"/>
     <updated>2016-02-01T21:14:07+01:00</updated>
     <id>http://mcamuzat.github.io/blog/2016/02/01/cloud9-un-workspace-en-ligne</id>
-    <content type="html"><![CDATA[<p>Je me suis inscris sur <a href="www.freecodecamp.com">FreecodeCamp</a>. C&#8217;est gratuit et annonce une formation du Bootstrap/Nodejs/React/D3/javascript. Bon au moment ou j&#8217;écris ces lignes D3 et React sont en <em>coming soon</em> (c&#8217;est dommage c&#8217;était surtout ca qui m&#8217;intéressait). L&#8217;idée est de former des développeur back et front pour aider des associations. L&#8217;idée me semble bonne.</p>
+    <content type="html"><![CDATA[<p>Je me suis inscris sur <a href="http://www.freecodecamp.com">FreecodeCamp</a>. C&#8217;est gratuit et annonce une formation du Bootstrap/Nodejs/React/D3/javascript. Bon au moment ou j&#8217;écris ces lignes D3 et React sont en <em>coming soon</em> (c&#8217;est dommage c&#8217;était surtout ca qui m&#8217;intéressait). L&#8217;idée est de former des développeur back et front pour aider des associations. L&#8217;idée me semble bonne.</p>
 
 <p><img class="center" src="/images/freecodecamp.png" width="600" height="217" title="&lsquo;FreecodeCamp&rsquo; &lsquo;FreeCodeCamp&rsquo;" ></p>
 
@@ -401,189 +506,6 @@ il suffit d&#8217;appuyer sur <code>g</code> de faire la recherche.</p>
 <p>Je me suis forcé à lire un peu la documentation de git grep, et je ne le regrette pas.</p>
 
 <p>Enfin il existe des alternative à <code>grep</code> comme <a href="http://beyondgrep.com/">ack</a> ou plus récemment <a href="https://github.com/ggreer/the_silver_searcher">the silver searcher</a>. Je vais essayer d&#8217;en parler plus tard.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Diff et patch, pas besoin de git]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/11/02/diff-patch-git/"/>
-    <updated>2015-11-02T22:24:03+01:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/11/02/diff-patch-git</id>
-    <content type="html"><![CDATA[<p>Nous allons jouer un peu avec les diff et les patchs.</p>
-
-<h1> Mise en place</h1>
-
-<p>Soit le fichier suivant <code>README.md</code></p>
-
-<pre><code>Ceci est un exemple.
-
-
-Ceci est une ligne ajoutée
-</code></pre>
-
-<p>Modifions le fichier par ceci.
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Ceci est un exemple.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;j'ai ajouté cette ligne</span></code></pre></td></tr></table></div></figure></p>
-
-<p>Enregistrons celui-ci en <code>README2.md</code></p>
-
-<p>Et lançons la commande suivante</p>
-
-<pre><code class="sh">diff README.md README2.md
-</code></pre>
-
-<p>Nous obtenons le résultat suivant</p>
-
-<pre><code class="diff">4d3
-&lt; Ceci est une ligne ajoutée
-6a6,9
-&gt; 
-&gt; 
-&gt; 
-&gt; j'ai ajouté cette ligne
-</code></pre>
-
-<p>Il y a en fait plusieurs formats</p>
-
-<p>Essayez la commande suivante</p>
-
-<pre><code class="sh">diff -u README.md README2.md &gt; readme.diff
-</code></pre>
-
-<p>On obtient le fichier suivant
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='diff'><span class='line'>&amp;mdash; README.md   2015-11-02 22:07:43.728854981 +0100
-</span><span class='line'><span class="gi">+++ README2.md  2015-11-02 22:13:58.244839112 +0100</span>
-</span><span class='line'><span class="gu">@@ -1,6 +1,9 @@</span>
-</span><span class='line'> Ceci est un exemple.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;-Ceci est une ligne ajoutée&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;+
-</span><span class='line'><span class="gi">+</span>
-</span><span class='line'><span class="gi">+</span>
-</span><span class='line'><span class="gi">+j&#39;ai ajouté cette ligne</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<!--more-->
-
-
-<p>Cette vision doit vous être assez familière si vous faite du git, svn ou mercurial</p>
-
-<p>c&#8217;est la sortie d&#8217;un <code>git diff</code> si on avait modifié ce fichier.</p>
-
-<h2>Jouer un patch</h2>
-
-<p>Pour ce convaincre nous allons demander à linux de jouer le fichier <code>.diff</code> qui est tout simplement un patch</p>
-
-<p>Grâce à la commande suivante.</p>
-
-<pre><code class="sh">$ patch -p0 &lt; README.diff 
-patching file README.md
-</code></pre>
-
-<p>Comme toute modification je peux avoir des conflits. Si je modifie mon <code>README.md</code>
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='diff'><span class='line'>Ceci est un exemple.&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;Ceci est une autre ligne
-</span><span class='line'>Ceci est une ligne ajoutée
-</span><span class='line'>Mais celle ci aussi&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;patching file README.md
-</span><span class='line'>Hunk #1 FAILED at 1.
-</span><span class='line'>1 out of 1 hunk FAILED &amp;ndash; saving rejects to file README.md.rej
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>Vous retrouvez les fameux <code>.orig</code> et <code>.rej</code> qui pourrissent un peu la vie de ceux qui font du mercurial ou git (<code>hg purge</code> et <code>git clean</code> est probablement ce que vous cherchez).</p>
-
-<h2>Merger</h2>
-
-<p>Si vous voulez un merge. c&#8217;est possible
-<code>
-$ patch -p0 --merge &lt; README.diff
-</code>
-le résultat
-&#8220;`
-Ceci est un exemple.</p>
-
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt;
-Ceci est une autre ligne
-Ceci est une ligne ajoutée</p>
-
-<h1>Mais celle ci aussi</h1>
-
-<blockquote><blockquote><blockquote><blockquote><blockquote><blockquote><blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote>
-
-<p>j&#8217;ai ajouté cette ligne</p>
-
-<pre><code>L'option `-p0` ou le plus souvent `-p1` demande à la commande `patch` d'ignorer le chemin sur un niveau.
-
-Voici un exemple avec git et le même fichier
-</code></pre>
-
-<p>diff &ndash;git a/README.md b/README.md
-index 1030f85..5e8e5f9 100644
-&mdash; a/README.md
-+++ b/README.md
-@@ -1,6 +1,9 @@
- Ceci est un exemple.</p>
-
-<p>-Ceci est une ligne ajoutée</p>
-
-<p>+
-+
-+
-+j&#8217;ai ajouté cette ligne
-<code>``
-on voit que la ligne</code>a/README.md<code>et</code>b/README.md<code>, ici pour appliquer le patch il faut utiliser</code>-p1<code>pour ignorer le premier niveau (supprime le</code>a/<code>et</code>b/`)</p>
-
-<p>Sous Git c&#8217;est plus simple</p>
-
-<pre><code class="bash">$ git apply lefichier.diff
-</code></pre>
-
-<h2>Reverter</h2>
-
-<p>Enfin soyons complet il est possible de reverter un patch avec <code>-R</code>
-<code>bash
-patch -R -p1 &lt; mon patch
-</code></p>
-
-<p>Avec git</p>
-
-<pre><code class="bash">git apply -R &lt;mon fichier diff&gt;
-</code></pre>
-
-<h2>Conclusion</h2>
-
-<p>Pas besoin d&#8217;avoir git/mercurial/svn pour créer ou jouer des patchs.</p>
 ]]></content>
   </entry>
   

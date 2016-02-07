@@ -4,7 +4,7 @@
   <title><![CDATA[Category: vim | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/vim/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-02-01T22:30:17+01:00</updated>
+  <updated>2016-02-07T20:53:32+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,111 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Insérer avec classe dans VIM]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/02/07/inserer-avec-classe-dans-vim/"/>
+    <updated>2016-02-07T19:20:36+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/02/07/inserer-avec-classe-dans-vim</id>
+    <content type="html"><![CDATA[<p><em>tl;dr : sous vi utilisez <code>a</code> au lieu de <code>i</code></em></p>
+
+<p>Tout le monde utilise VI pour éditer ses fichiers de configs sous linux ou les fichiers sur un serveur distant (il y a aussi <code>nano</code> qui marche super bien). Moi personnellement je code aussi du php/js avec. Pour insérer du texte on utilise la touche <code>i</code> comme insérer puis <code>ESC</code> pour quitter le mode insertion. Je vais parler des autres touches pour insérer du texte.</p>
+
+<p><img class="center" src="/images/viminser.png" width="517" height="220" title="&lsquo;Il y a 6 touches pour insérer&rsquo; &lsquo;Il y a 6 touches pour insérer&rsquo;" ></p>
+
+<!--more-->
+
+
+<h2>Insérer.</h2>
+
+<p>Le problème de la touche <code>i</code> c&#8217;est justement que l&#8217;on insère le texte. Le curseur n&#8217;est pas à la bonne position. On souhaite plutôt ajouter du texte après le curseur. Et c&#8217;est le principe de la touche <code>a</code> (comme <strong>A</strong>ppend ou <strong>A</strong>jouter).</p>
+
+<p>Si c&#8217;est rajouter une ligne vide. La touche <code>o</code> comme <strong>o</strong>pen une nouvelle ligne.</p>
+
+<h3>Un concept important dans VIM</h3>
+
+<p><strong>la lettre majuscule est la version plus <em>musclée</em> que la minuscule</strong></p>
+
+<ul>
+<li><code>i</code> insère au <strong>début du curseur</strong>.</li>
+<li><code>I</code> insère au <strong>début de la ligne</strong></li>
+<li><code>a</code> ajoute du <strong>texte à la fin du curseur.</strong></li>
+<li><code>A</code> ajoute du <strong>texte à la fin de la ligne</strong>.</li>
+</ul>
+
+
+<p><strong>la lettre majuscule est le contraire de la version minuscule</strong></p>
+
+<ul>
+<li><code>o</code> ouvre une ligne <strong>après le curseur</strong></li>
+<li><code>O</code> ouvre une ligne <strong>avant le curseur</strong></li>
+</ul>
+
+
+<p><img class="center" src="/images/viminser.png" width="517" height="220" title="&lsquo;Il y a 6 touches pour insérer&rsquo; &lsquo;Il y a 6 touches pour insérer&rsquo;" ></p>
+
+<p>En résumé</p>
+
+<ul>
+<li>Si vous appuyez sur <code>i</code> et <code>-&gt;</code> : utiliser <code>a</code></li>
+<li>Si vous voulez commenter une ligne <code>I</code> suivi de<code>//</code></li>
+<li>vous avez oublié une virgule à la fin de la ligne. alors <code>A,</code></li>
+<li>vous voulez rajouter une ligne au lieu de <code>i</code> et <code>&lt;enter&gt;</code> , la touche <code>o</code>.</li>
+</ul>
+
+
+<h2>Se répéter</h2>
+
+<p>Essayons de commenter les trois lignes.</p>
+
+<pre><code class="">instruction 1 &lt;-mon curseur est à cette ligne.
+instruction 2
+instruction 3
+</code></pre>
+
+<p>J&#8217;appuie sur <code>I</code> puis <code>//</code> pour commenter</p>
+
+<p>J&#8217;obtiens
+<code>
+//instruction 1
+instruction 2
+instruction 3
+</code></p>
+
+<p>J&#8217;appuie sur <code>j</code> ou <code>bas</code></p>
+
+<pre><code>//instruction 1
+instruction 2 &lt;-mon curseur
+instruction 3
+</code></pre>
+
+<p>Si j&#8217;appuie sur la touche <code>.</code> je répète la dernière instruction. La touche <code>.</code> est probablement la touche la plus utile.</p>
+
+<pre><code>//instruction 1
+//instruction 2 &lt;-mon curseur
+instruction 3
+</code></pre>
+
+<p>Et ainsi de suite..</p>
+
+<p>Mais il y a beaucoup de manière sur VIM pour faire la même chose.</p>
+
+<p>Par exemple sélectionnons le texte avec la touche <code>v</code> ou la souris( <code>set mouse=a</code>). puis appuyons sur <code>:</code></p>
+
+<p>Vous deviez voir
+<code>
+'&lt;,'&gt;`
+</code>
+alors complétons la ligne par <code>'&lt;,'&gt;norm I//</code> et tout le texte sélectionné est commenté!
+La commande précédente se lit sur la zone sélectionnée <code>'&lt;,'&gt;</code>  appuyez(<code>norm</code>)  sur <code>I</code> puis <code>\\</code>.</p>
+
+<h2>Un dernier raccourci-clavier..</h2>
+
+<p>La touche <code>gi</code> vous emmène au dernier endroit ou vous avez inséré du texte et place directement en insertion.</p>
+
+<p>En conclusion, Il n&#8217;y pas que le touche <code>i</code> dans Vi. En fait on se sert assez peu de cette touche.. C&#8217;est pourtant la plus connue..</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Retour vers le futur avec Vim]]></title>
@@ -577,156 +682,6 @@ bonjour
 <p>A mon travail, on utilise Gmail, Je recois beaucoup de mail (BitBucket, Hipchat, Slack, Redmine, Jira, Wordpress, Meetup, Ovh). J&#8217;avoue que des que j&#8217;ai décidé de traiter les mails via raccourcis clavier, j&#8217;ai trouvé cela assez pratique.</p>
 
 <p>On peux retrouver un tableau qui résume tout en tapant &ldquo;?&rdquo; dans Gmail.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[PHP Code Sniffer mise en place]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/08/01/php-code-sniffer-mise-en-place/"/>
-    <updated>2015-08-01T18:33:12+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/08/01/php-code-sniffer-mise-en-place</id>
-    <content type="html"><![CDATA[<h2>Qualité de code et php</h2>
-
-<p>Dans ce post nous allons voir les logiciels qui permettent de respecter les standards de code en PHP.</p>
-
-<p>En pratique il n&#8217;y en a que 2.</p>
-
-<ul>
-<li><a href="https://github.com/squizlabs/PHP_CodeSniffer">CodeSniffer</a></li>
-<li><a href="http://cs.sensiolabs.org/">PHP Coding Standards Fixer</a></li>
-</ul>
-
-
-<!--more-->
-
-
-<h2>CodeSniffer</h2>
-
-<p>Il y a différentes normes de codage :  les plus connus sont la <a href="http://www.php-fig.org/psr/psr-1/">psr-1</a> et la <a href="http://www.php-fig.org/psr/psr-2/">psr-2</a>. La psr-2 hérite de la psr-1. Mais certain Framework ont leur propres méthodes d&#8217;indentations. On peux personnaliser d&#8217;ailleurs les différentes règles. Les gouts et les couleurs de chacun sur le code est subjectif. L&#8217;intérêt de suivre les recommandations est que cela dépassionne le débat. Cela passe CodeSniffer ou cela ne passe pas. Pour participer au projet Open-source, il faut suivre la norme.</p>
-
-<p>La norme est pointilleuse sur les commentaires aussi. Si pas de commentaire pas de validation. On est quasiment forcer d&#8217;écrire la documentation. Cela a parfois un effet pervers ou le programmeur remplit sans trop réfléchir pour faire passer code sniffer.</p>
-
-<p>Très souvent on ajoute un <em>hook</em> sur les commits de git. Lorsque on commite, git déclenche le logiciel, si un des fichiers n&#8217;est pas valide CodeSniffer on refuse de commiter. C&#8217;est assez peu contraignant quand la codebase est déjà indentée. (quoique parfois cela tombe vraiment au mauvais moment).En général on vérifie seulement sur les fichiers modifiés. Re-indenter tout le projet est souvent trop compliqué, trop long et un peu suicidaire si vous avez des rebases et des merges.</p>
-
-<h2>Installation de CodeSniffer</h2>
-
-<p>Deux possibilités</p>
-
-<h3>Dans le projet</h3>
-
-<p>via une dépendance au projet en l&#8217;ajoutant dans le <code>composer.json</code></p>
-
-<pre><code class="json">{
-    "require-dev": {
-        "squizlabs/php_codesniffer": "2.*"
-    }
-}
-</code></pre>
-
-<p>Alors dans le projet
-<code>sh
-./vendor/bin/phpcs -h
-</code></p>
-
-<p>Personnellement je définie toujours un répertoire <code>bin</code> par défaut</p>
-
-<pre><code class="json">    "config": {
-        "bin-dir": "bin"
-    },
-</code></pre>
-
-<p>Ainsi la commande précédente devient</p>
-
-<pre><code class="sh">bin/phpcs 
-</code></pre>
-
-<h3>Installation globale</h3>
-
-<p>Soit l&#8217;installer de manière globale</p>
-
-<pre><code>composer global require "squizlabs/php_codesniffer=*"
-</code></pre>
-
-<p>Attention si vous utilisez Composer de manière globale ne pas oublier de rajouter dans votre <code>$PATH</code>
-<code>
-export PATH=~/.composer/vendor/bin:$PATH
-</code></p>
-
-<h3>Ajoutez les reglès symfony</h3>
-
-<p>par défaut phpcs vient avec les règles suivantes</p>
-
-<ul>
-<li><a href="http://www.php-fig.org/psr/psr-1/">psr-1</a></li>
-<li><a href="http://www.php-fig.org/psr/psr-2/">psr-2</a></li>
-<li><a href="https://github.com/squizlabs/PHP_CodeSniffer/tree/master/CodeSniffer/Standards/Squiz">Squiz</a></li>
-<li><a href="http://framework.zend.com/manual/1.12/fr/coding-standard.html">Zend</a></li>
-<li><a href="https://pear.php.net/manual/en/standards.php">Pear</a></li>
-<li><a href="https://github.com/squizlabs/PHP_CodeSniffer/tree/master/CodeSniffer/Standards/PHPCS">Phpcs</a></li>
-</ul>
-
-
-<p>Il manque Symfony..</p>
-
-<p>Voici une méthode simple (mais pas la méthode officielle) si vous voulez l&#8217;installer de manière globale. Je rajoute dans le répertoire <code>Standards</code> un répertoire <code>Symfony2</code></p>
-
-<pre><code>$ composer global require "squizlabs/php_codesniffer=*"
-$ cd ~/.composer/vendor/squizlabs/php_codesniffer/CodeSniffer/Standards
-$ git clone git@github.com:escapestudios/Symfony2-coding-standard.git Symfony2
-</code></pre>
-
-<p>On vérifie que les règles symfony2 sont bien installées</p>
-
-<pre><code>phpcs -i
-</code></pre>
-
-<p>Symfony2 en défaut. Ainsi pas besoin de préciser <code>--standard=Symfony2</code></p>
-
-<pre><code>phpcs --config-set default_standard Symfony2
-</code></pre>
-
-<h3>Php-cbf</h3>
-
-<p>Code sniffer est capable de corriger certaines fautes tout seul. Encore une fois essayer de faire au fur et à mesure. Le commit d&#8217;indentation avec 500 fichiers modifiés est un calvaire à gérer si vous faite des revues de codes ou pire un rebase.</p>
-
-<p>La syntaxe est la même que phpcs.
-<code>
-php-cbf src/
-</code></p>
-
-<h2>Php-cs-fixer</h2>
-
-<p>Écris par <a href="http://sensiolabs.com/">Sensio</a> les créateurs de <a href="http://symfony.com/">Symfony</a>. Ce logiciel fixe automatiquement l&#8217;indentation et différentes règles. L&#8217;avantage est qu&#8217;il est simple à installer pas besoin de cloner d&#8217;autre dépôt.</p>
-
-<h2>Avoir tout les outils via docker.</h2>
-
-<p>J&#8217;ai déjà présenté les différentes méthodes avec <a href="https://github.com/jolicode/docker-images/tree/master/languages/php/phaudit">phaudit</a> ans cette article <a href="/blog/2015/04/18/dockers-et-ci/">ici</a></p>
-
-<h2>Méthode par rapport à git</h2>
-
-<p>Pour lancer une vérification avant chaque commit
-Il suffit de créer un fichier <code>pre-commit.sh</code> dans le répertoire <code>.git/hook</code>. Il y a plein d&#8217;exemples sur le net. Je n&#8217;ai pas d&#8217;exemple à partager. Le code ne m&#8217;appartient plus..</p>
-
-<h2>Installation sous VIM.</h2>
-
-<p>C&#8217;est très simple Il faut installer le plugin <a href="https://github.com/scrooloose/syntastic">syntastic</a>. C&#8217;est un plugin qui gère un peu près tout les formats possibles.</p>
-
-<p>Code-sniffer doit être installé de manière <strong>globale</strong></p>
-
-<p>Il suffit de rajouter cette ligne dans votre <code>.vimrc</code></p>
-
-<pre><code>let g:syntastic_php_checkers=['php', 'phpcs']
-</code></pre>
-
-<p>A chaque fois que l&#8217;on enregistre le fichier, le plugin lance automatiquement d&#8217;abord <code>php</code> pour vérifier que le fichier est valide, puis <code>phpcs</code>.</p>
-
-<p>Le résultat est très intuitif on a une flèche <code>&gt;</code> à chaque ligne qui pose problème. Il suffit de passer le curseur pour connaitre l&#8217;erreur. Enfin un screenshot sera plus clair.</p>
-
-<p><img class="center" src="/images/syntastic.png" width="600" height="212" title="&lsquo;Screenshot de syntastic&rsquo; &lsquo;syntastic&rsquo;" ></p>
-
-<h2>Conclusion</h2>
-
-<p>Respecter la norme psr-2 ou autre n&#8217;est pas très compliqué, avec l&#8217;habitude c&#8217;est même plutôt facile. Il est plus facile de d&#8217;intervenir sur un code propre. Sur la mise en place, on a vu qu&#8217;il y a deux possibilités soit des warning dans le code soit une correction automatique. Je ne suis pas <em>fan</em> pas la correction automatique. Je ne veux pas que le logiciel prennent des décisions pour moi.</p>
 ]]></content>
   </entry>
   

@@ -9,7 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Je me suis inscris sur FreecodeCamp. C'est gratuit et annonce une formation du Bootstrap/Nodejs/React/D3/javascript. Bon au moment ou j'écris ces &hellip;">
+  <meta name="description" content="tl;dr : sous vi utilisez a au lieu de i Tout le monde utilise VI pour éditer ses fichiers de configs sous linux ou les fichiers sur un serveur &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +68,51 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2016/02/07/inserer-avec-classe-dans-vim/">Insérer avec classe dans VIM</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-02-07T19:20:36+01:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><em>tl;dr : sous vi utilisez <code>a</code> au lieu de <code>i</code></em></p>
+
+<p>Tout le monde utilise VI pour éditer ses fichiers de configs sous linux ou les fichiers sur un serveur distant (il y a aussi <code>nano</code> qui marche super bien). Moi personnellement je code aussi du php/js avec. Pour insérer du texte on utilise la touche <code>i</code> comme insérer puis <code>ESC</code> pour quitter le mode insertion. Je vais parler des autres touches pour insérer du texte.</p>
+
+<p><img class="center" src="/images/viminser.png" width="517" height="220" title="Il y a 6 touches pour insérer" alt="Il y a 6 touches pour insérer"></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2016/02/07/inserer-avec-classe-dans-vim/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2016/02/01/cloud9-un-workspace-en-ligne/">Cloud9 un workspace en ligne</a></h1>
     
     
@@ -91,7 +136,7 @@
   </header>
 
 
-  <div class="entry-content"><p>Je me suis inscris sur <a href="www.freecodecamp.com">FreecodeCamp</a>. C&#8217;est gratuit et annonce une formation du Bootstrap/Nodejs/React/D3/javascript. Bon au moment ou j&#8217;écris ces lignes D3 et React sont en <em>coming soon</em> (c&#8217;est dommage c&#8217;était surtout ca qui m&#8217;intéressait). L&#8217;idée est de former des développeur back et front pour aider des associations. L&#8217;idée me semble bonne.</p>
+  <div class="entry-content"><p>Je me suis inscris sur <a href="http://www.freecodecamp.com">FreecodeCamp</a>. C&#8217;est gratuit et annonce une formation du Bootstrap/Nodejs/React/D3/javascript. Bon au moment ou j&#8217;écris ces lignes D3 et React sont en <em>coming soon</em> (c&#8217;est dommage c&#8217;était surtout ca qui m&#8217;intéressait). L&#8217;idée est de former des développeur back et front pour aider des associations. L&#8217;idée me semble bonne.</p>
 
 <p><img class="center" src="/images/freecodecamp.png" width="600" height="217" title="FreecodeCamp" alt="FreeCodeCamp"></p>
 
@@ -517,70 +562,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Les Monades (suite): Le Functor Maybe..</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-11-15T16:43:42+01:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="center" src="/images/lesdeuxcontainerMaybe.png" width="512" height="313" title="Il y a deux container" alt="Il y a deux containers"></p>
-
-<p>Nous avons vue dans le précédent <a href="blog/2015/11/11/les-monades-en-php-cest-possible-dot/">post</a> un pseudo-container qui nous permet d&#8217;emballer nos valeurs. Nous allons muscler un peu notre container mais partons d&#8217;un exemple.</p>
-
-<p>Je souhaite récupérer le mail du client &ldquo;bob&rdquo; ou afficher &ldquo;pas de mail&rdquo;</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">getMail</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'><span class="nv">$mail</span> <span class="o">=</span> <span class="nx">getUserByName</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">getAddress</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getMail</span><span class="p">();</span>
-</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="k">null</span> <span class="o">===</span> <span class="nv">$mail</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>   <span class="k">return</span> <span class="s2">&quot;pas de mail&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="k">return</span> <span class="nv">$mail</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Facile non ?</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -628,6 +609,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/02/07/inserer-avec-classe-dans-vim/">Insérer avec classe dans VIM</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/02/01/cloud9-un-workspace-en-ligne/">Cloud9 un workspace en ligne</a>
       </li>
     
@@ -641,10 +626,6 @@
     
       <li class="post">
         <a href="/blog/2015/12/27/haskell-stack/">Haskell : Stack</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/12/20/les-monades-5-les-applicatives/">Les monades 5: les applicatives</a>
       </li>
     
   </ul>

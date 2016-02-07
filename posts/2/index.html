@@ -9,7 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Introduction Nous allons voir ensemble les monades. Nous allons voir la monade Identity. elle n'est pas très utile mais nécessaire si vous voulez &hellip;">
+  <meta name="description" content="Nous avons vue dans le précédent post un pseudo-container qui nous permet d'emballer nos valeurs. Nous allons muscler un peu notre container mais &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -62,6 +62,70 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Les Monades (suite): Le Functor Maybe..</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-11-15T16:43:42+01:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="center" src="/images/lesdeuxcontainerMaybe.png" width="512" height="313" title="Il y a deux container" alt="Il y a deux containers"></p>
+
+<p>Nous avons vue dans le précédent <a href="blog/2015/11/11/les-monades-en-php-cest-possible-dot/">post</a> un pseudo-container qui nous permet d&#8217;emballer nos valeurs. Nous allons muscler un peu notre container mais partons d&#8217;un exemple.</p>
+
+<p>Je souhaite récupérer le mail du client &ldquo;bob&rdquo; ou afficher &ldquo;pas de mail&rdquo;</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">getMail</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'><span class="nv">$mail</span> <span class="o">=</span> <span class="nx">getUserByName</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">getAddress</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getMail</span><span class="p">();</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="k">null</span> <span class="o">===</span> <span class="nv">$mail</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>   <span class="k">return</span> <span class="s2">&quot;pas de mail&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">return</span> <span class="nv">$mail</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Facile non ?</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -744,76 +808,6 @@ le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/10/03/spl-surcharge-magique/">SPL surcharge magique</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-10-03T17:17:33+02:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Nous allons repartir sur la <a href="http://php.net/manual/fr/book.spl.php">SPL</a>.</p>
-
-<p>Je vais parler des différentes méthodes amusantes à surcharger.</p>
-
-<h2>Count</h2>
-
-<p>Soit la classe suivante</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">BadCounter</span> <span class="k">implements</span> <span class="nx">countable</span><span class="p">{</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">count</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="mi">42</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$counter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BadCounter</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="nv">$counter</span><span class="p">));</span><span class="c1">// int(42)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/10/03/spl-surcharge-magique/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -863,6 +857,10 @@ le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/02/07/inserer-avec-classe-dans-vim/">Insérer avec classe dans VIM</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/02/01/cloud9-un-workspace-en-ligne/">Cloud9 un workspace en ligne</a>
       </li>
     
@@ -876,10 +874,6 @@ le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code
     
       <li class="post">
         <a href="/blog/2015/12/27/haskell-stack/">Haskell : Stack</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/12/20/les-monades-5-les-applicatives/">Les monades 5: les applicatives</a>
       </li>
     
   </ul>

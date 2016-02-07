@@ -4,7 +4,7 @@
   <title><![CDATA[Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-02-01T22:30:17+01:00</updated>
+  <updated>2016-02-07T20:53:32+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -14,11 +14,130 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Insérer avec classe dans VIM]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/02/07/inserer-avec-classe-dans-vim/"/>
+    <updated>2016-02-07T19:20:36+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/02/07/inserer-avec-classe-dans-vim</id>
+    <content type="html"><![CDATA[<p><em>tl;dr : sous vi utilisez <code>a</code> au lieu de <code>i</code></em></p>
+
+<p>Tout le monde utilise VI pour éditer ses fichiers de configs sous linux ou les fichiers sur un serveur distant (il y a aussi <code>nano</code> qui marche super bien). Moi personnellement je code aussi du php/js avec. Pour insérer du texte on utilise la touche <code>i</code> comme insérer puis <code>ESC</code> pour quitter le mode insertion. Je vais parler des autres touches pour insérer du texte.</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/viminser.png" width="517" height="220" title="Il y a 6 touches pour insérer" alt="Il y a 6 touches pour insérer"></p>
+
+<!--more-->
+
+
+<h2>Insérer.</h2>
+
+<p>Le problème de la touche <code>i</code> c&#8217;est justement que l&#8217;on insère le texte. Le curseur n&#8217;est pas à la bonne position. On souhaite plutôt ajouter du texte après le curseur. Et c&#8217;est le principe de la touche <code>a</code> (comme <strong>A</strong>ppend ou <strong>A</strong>jouter).</p>
+
+<p>Si c&#8217;est rajouter une ligne vide. La touche <code>o</code> comme <strong>o</strong>pen une nouvelle ligne.</p>
+
+<h3>Un concept important dans VIM</h3>
+
+<p><strong>la lettre majuscule est la version plus <em>musclée</em> que la minuscule</strong></p>
+
+<ul>
+<li><code>i</code> insère au <strong>début du curseur</strong>.</li>
+<li><code>I</code> insère au <strong>début de la ligne</strong></li>
+<li><code>a</code> ajoute du <strong>texte à la fin du curseur.</strong></li>
+<li><code>A</code> ajoute du <strong>texte à la fin de la ligne</strong>.</li>
+</ul>
+
+
+<p><strong>la lettre majuscule est le contraire de la version minuscule</strong></p>
+
+<ul>
+<li><code>o</code> ouvre une ligne <strong>après le curseur</strong></li>
+<li><code>O</code> ouvre une ligne <strong>avant le curseur</strong></li>
+</ul>
+
+
+<p><img class="center" src="http://mcamuzat.github.io/images/viminser.png" width="517" height="220" title="Il y a 6 touches pour insérer" alt="Il y a 6 touches pour insérer"></p>
+
+<p>En résumé</p>
+
+<ul>
+<li>Si vous appuyez sur <code>i</code> et <code>-&gt;</code> : utiliser <code>a</code></li>
+<li>Si vous voulez commenter une ligne <code>I</code> suivi de<code>//</code></li>
+<li>vous avez oublié une virgule à la fin de la ligne. alors <code>A,</code></li>
+<li>vous voulez rajouter une ligne au lieu de <code>i</code> et <code>&lt;enter&gt;</code> , la touche <code>o</code>.</li>
+</ul>
+
+
+<h2>Se répéter</h2>
+
+<p>Essayons de commenter les trois lignes.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>instruction 1 &lt;-mon curseur est à cette ligne.
+</span><span class='line'>instruction 2
+</span><span class='line'>instruction 3</span></code></pre></td></tr></table></div></figure>
+
+
+<p>J&#8217;appuie sur <code>I</code> puis <code>//</code> pour commenter</p>
+
+<p>J&#8217;obtiens</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>//instruction 1
+</span><span class='line'>instruction 2
+</span><span class='line'>instruction 3</span></code></pre></td></tr></table></div></figure>
+
+
+<p>J&#8217;appuie sur <code>j</code> ou <code>bas</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>//instruction 1
+</span><span class='line'>instruction 2 &lt;-mon curseur
+</span><span class='line'>instruction 3</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si j&#8217;appuie sur la touche <code>.</code> je répète la dernière instruction. La touche <code>.</code> est probablement la touche la plus utile.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>//instruction 1
+</span><span class='line'>//instruction 2 &lt;-mon curseur
+</span><span class='line'>instruction 3</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Et ainsi de suite..</p>
+
+<p>Mais il y a beaucoup de manière sur VIM pour faire la même chose.</p>
+
+<p>Par exemple sélectionnons le texte avec la touche <code>v</code> ou la souris( <code>set mouse=a</code>). puis appuyons sur <code>:</code></p>
+
+<p>Vous deviez voir</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>'&lt;,'&gt;`</span></code></pre></td></tr></table></div></figure>
+
+
+<p>alors complétons la ligne par <code>'&lt;,'&gt;norm I//</code> et tout le texte sélectionné est commenté!
+La commande précédente se lit sur la zone sélectionnée <code>'&lt;,'&gt;</code>  appuyez(<code>norm</code>)  sur <code>I</code> puis <code>\\</code>.</p>
+
+<h2>Un dernier raccourci-clavier..</h2>
+
+<p>La touche <code>gi</code> vous emmène au dernier endroit ou vous avez inséré du texte et place directement en insertion.</p>
+
+<p>En conclusion, Il n&#8217;y pas que le touche <code>i</code> dans Vi. En fait on se sert assez peu de cette touche.. C&#8217;est pourtant la plus connue..</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Cloud9 un workspace en ligne]]></title>
     <link href="http://mcamuzat.github.io/blog/2016/02/01/cloud9-un-workspace-en-ligne/"/>
     <updated>2016-02-01T21:14:07+01:00</updated>
     <id>http://mcamuzat.github.io/blog/2016/02/01/cloud9-un-workspace-en-ligne</id>
-    <content type="html"><![CDATA[<p>Je me suis inscris sur <a href="www.freecodecamp.com">FreecodeCamp</a>. C&#8217;est gratuit et annonce une formation du Bootstrap/Nodejs/React/D3/javascript. Bon au moment ou j&#8217;écris ces lignes D3 et React sont en <em>coming soon</em> (c&#8217;est dommage c&#8217;était surtout ca qui m&#8217;intéressait). L&#8217;idée est de former des développeur back et front pour aider des associations. L&#8217;idée me semble bonne.</p>
+    <content type="html"><![CDATA[<p>Je me suis inscris sur <a href="http://www.freecodecamp.com">FreecodeCamp</a>. C&#8217;est gratuit et annonce une formation du Bootstrap/Nodejs/React/D3/javascript. Bon au moment ou j&#8217;écris ces lignes D3 et React sont en <em>coming soon</em> (c&#8217;est dommage c&#8217;était surtout ca qui m&#8217;intéressait). L&#8217;idée est de former des développeur back et front pour aider des associations. L&#8217;idée me semble bonne.</p>
 
 <p><img class="center" src="http://mcamuzat.github.io/images/freecodecamp.png" width="600" height="217" title="FreecodeCamp" alt="FreeCodeCamp"></p>
 
@@ -901,7 +1020,7 @@ Une fois que le logiciel est installé</p>
 
 <h2>En conclusion</h2>
 
-<p>Voila de quoi occupé vos soirées.</p>
+<p>Voila de quoi occuper vos soirées.</p>
 ]]></content>
   </entry>
   
@@ -5057,240 +5176,6 @@ le résultat</p>
 <p>Je vais revenir sur les autres vues bientôt.</p>
 
 <p>Merci de m&#8217;avoir lu.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[SPL surcharge magique]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/10/03/spl-surcharge-magique/"/>
-    <updated>2015-10-03T17:17:33+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/10/03/spl-surcharge-magique</id>
-    <content type="html"><![CDATA[<p>Nous allons repartir sur la <a href="http://php.net/manual/fr/book.spl.php">SPL</a>.</p>
-
-<p>Je vais parler des différentes méthodes amusantes à surcharger.</p>
-
-<h2>Count</h2>
-
-<p>Soit la classe suivante</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">BadCounter</span> <span class="k">implements</span> <span class="nx">countable</span><span class="p">{</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">count</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="mi">42</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$counter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BadCounter</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="nv">$counter</span><span class="p">));</span><span class="c1">// int(42)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<!--more-->
-
-
-<p>On peux surcharger la méthode <code>count</code>. C&#8217;est d&#8217;ailleurs le cas dans le cas du <a href="http://doctrine-orm.readthedocs.org/en/latest/tutorials/pagination.html">Paginator</a> de doctrine.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'>
-</span><span class='line'><span class="nv">$dql</span> <span class="o">=</span> <span class="s2">&quot;SELECT p, c FROM BlogPost p JOIN p.comments c&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$query</span> <span class="o">=</span> <span class="nv">$entityManager</span><span class="o">-&gt;</span><span class="na">createQuery</span><span class="p">(</span><span class="nv">$dql</span><span class="p">)</span>
-</span><span class='line'>                       <span class="o">-&gt;</span><span class="na">setFirstResult</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</span><span class='line'>                       <span class="o">-&gt;</span><span class="na">setMaxResults</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$paginator</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Paginator</span><span class="p">(</span><span class="nv">$query</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">count</span><span class="p">(</span><span class="nv">$paginator</span><span class="p">)</span> <span class="c1">// nombre de lignes dans la base</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Les ArrayObjects</h2>
-
-<p>On peut aussi changer toutes les méthodes pour un tableau.</p>
-
-<ul>
-<li><code>isset(counter['valeur'])</code></li>
-<li><code>unset(counter['valeur'])</code></li>
-<li><code>counter['valeur'] = 3</code></li>
-<li><code>counter[] = 3</code></li>
-<li><code>counter['valeur']</code></li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">GeekCounter</span> <span class="k">implements</span> <span class="nx">Countable</span><span class="p">,</span> <span class="nx">ArrayAccess</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">count</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="mi">42</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">offsetSet</span><span class="p">(</span><span class="nv">$offset</span><span class="p">,</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nb">is_null</span><span class="p">(</span><span class="nv">$offset</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">echo</span><span class="p">(</span><span class="s2">&quot;on ajoute </span><span class="si">$value</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">echo</span><span class="p">(</span><span class="s2">&quot;on change la clé </span><span class="si">$offset</span><span class="s2"> par </span><span class="si">$value</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">offsetExists</span><span class="p">(</span><span class="nv">$offset</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">echo</span><span class="p">(</span><span class="s2">&quot;on teste la clé  </span><span class="si">$offset</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
-</span><span class='line'>        <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">offsetUnset</span><span class="p">(</span><span class="nv">$offset</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">echo</span><span class="p">(</span><span class="s2">&quot;on unset la clé </span><span class="si">$offset</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">offsetGet</span><span class="p">(</span><span class="nv">$offset</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">echo</span><span class="p">(</span><span class="s2">&quot;on me demande la clé </span><span class="si">$offset</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
-</span><span class='line'>        <span class="k">return</span> <span class="mi">42</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$counter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">GeekCounter</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$counter</span><span class="p">[</span><span class="s2">&quot;IdontCare&quot;</span><span class="p">]));</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$counter</span><span class="p">[</span><span class="s2">&quot;IdontCare&quot;</span><span class="p">]);</span>
-</span><span class='line'><span class="nb">unset</span><span class="p">(</span><span class="nv">$counter</span><span class="p">[</span><span class="s2">&quot;IdontCare&quot;</span><span class="p">]);</span>
-</span><span class='line'><span class="nv">$counter</span><span class="p">[]</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$counter</span><span class="p">[</span><span class="s2">&quot;IdontCare&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">on</span> <span class="nx">teste</span> <span class="nx">la</span> <span class="nx">clé</span>  <span class="nx">IdontCare</span>
-</span><span class='line'><span class="nx">bool</span><span class="p">(</span><span class="k">true</span><span class="p">)</span>
-</span><span class='line'><span class="nx">on</span> <span class="nx">me</span> <span class="nx">demande</span> <span class="nx">la</span> <span class="nx">clé</span> <span class="nx">IdontCare</span>
-</span><span class='line'><span class="nx">int</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-</span><span class='line'><span class="nx">on</span> <span class="nb">unset</span> <span class="nx">la</span> <span class="nx">clé</span> <span class="nx">IdontCare</span>
-</span><span class='line'><span class="nx">on</span> <span class="nx">ajoute</span> <span class="mi">3</span>
-</span><span class='line'><span class="nx">on</span> <span class="nx">change</span> <span class="nx">la</span> <span class="nx">clé</span> <span class="nx">IdontCare</span> <span class="nx">par</span> <span class="mi">3</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On trouve la même idée dans les collections de doctrine.(l&#8217;interface <code>Collection</code> n&#8217;est qu&#8217;une surcharge);</p>
-
-<p>Si on ne souhaite pas tout implémenter il suffit de surcharger la Classe <code>ArrayObject</code></p>
-
-<p>Par exemple:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">ZooDeBeauval</span> <span class="k">extends</span> <span class="nx">ArrayObject</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">offsetSet</span><span class="p">(</span><span class="nv">$offset</span><span class="p">,</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">in_array</span><span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s2">&quot;Panda&quot;</span><span class="p">,</span> <span class="s2">&quot;Koala&quot;</span><span class="p">,</span> <span class="s2">&quot;Otarie&quot;</span><span class="p">)))</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">echo</span> <span class="s2">&quot;non cet animal </span><span class="si">$value</span><span class="s2"> n&#39;est pas autorisé&quot;</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">parent</span><span class="o">::</span><span class="na">offsetSet</span><span class="p">(</span><span class="nv">$offset</span><span class="p">,</span> <span class="nv">$value</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Un exemple</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$zoo</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ZooParcDeBeauval</span><span class="p">();</span>
-</span><span class='line'><span class="nv">$zoo</span><span class="p">[]</span> <span class="o">=</span> <span class="s1">&#39;Panda&#39;</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$zoo</span><span class="p">[]</span> <span class="o">=</span> <span class="s1">&#39;Koala&#39;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">echo</span> <span class="s2">&quot;liste :  &quot;</span><span class="o">.</span><span class="nb">implode</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">,</span> <span class="nb">iterator_to_array</span><span class="p">(</span><span class="nv">$zoo</span><span class="p">))</span> <span class="o">.</span> <span class="nx">PHP_EOL</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$zoo</span><span class="p">[]</span> <span class="o">=</span> <span class="s1">&#39;Lama&#39;</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<p>le résultat</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">liste</span> <span class="o">:</span>  <span class="nx">Panda</span><span class="p">,</span> <span class="nx">Koala</span>
-</span><span class='line'><span class="nx">non</span> <span class="nx">cet</span> <span class="nx">animal</span> <span class="nx">Lama</span> <span class="nx">n</span><span class="err">&#39;</span><span class="nx">est</span> <span class="nx">pas</span> <span class="nx">autorisé</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Pour les <code>foreach</code> j&#8217;ai déjà parlé des iterators et des <a href="blog/2015/09/06/php-yield-les-generateurs/">générateurs</a>.</p>
-
-<h2>Conclusion</h2>
-
-<p>Maintenant les interfaces <code>ArrayAccess</code> et <code>Countable</code> n&#8217;ont plus de secrets pour vous. Nous verrons dans un prochain Post les listes chainées. L&#8217;avantage de ces méthode est que l&#8217;on obtient une structure qui se comporte comme un <code>array</code> mais avec une occupation mémoire moindre.</p>
-
-<p>Dans un prochain post, je vais parler des listes chainées et des différentes structure de la SPL (j&#8217;ai déja parlé de la <a href="blog/2015/08/29/stacks-structures-meconnues/">SplStack</a>)</p>
 ]]></content>
   </entry>
   
