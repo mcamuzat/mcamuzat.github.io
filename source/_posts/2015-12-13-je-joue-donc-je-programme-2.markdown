@@ -52,4 +52,4 @@ Quand on connait l'astuce cela se résout en 30 secondes.
 
 ## En conclusion
 
-Voila de quoi occupé vos soirées.
+Voila de quoi occuper vos soirées.

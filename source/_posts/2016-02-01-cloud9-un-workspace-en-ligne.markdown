@@ -6,7 +6,7 @@ comments: true
 categories: ["linux", "nodejs", "virtualisation"]
 ---
 
-Je me suis inscris sur [FreecodeCamp](www.freecodecamp.com). C'est gratuit et annonce une formation du Bootstrap/Nodejs/React/D3/javascript. Bon au moment ou j'écris ces lignes D3 et React sont en *coming soon* (c'est dommage c'était surtout ca qui m'intéressait). L'idée est de former des développeur back et front pour aider des associations. L'idée me semble bonne.
+Je me suis inscris sur [FreecodeCamp](http://www.freecodecamp.com). C'est gratuit et annonce une formation du Bootstrap/Nodejs/React/D3/javascript. Bon au moment ou j'écris ces lignes D3 et React sont en *coming soon* (c'est dommage c'était surtout ca qui m'intéressait). L'idée est de former des développeur back et front pour aider des associations. L'idée me semble bonne.
 
 {% img center /images/freecodecamp.png 600 217 'FreecodeCamp' 'FreeCodeCamp' %}
 
