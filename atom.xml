@@ -4,7 +4,7 @@
   <title><![CDATA[Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-02-07T20:53:32+01:00</updated>
+  <updated>2016-02-14T19:43:19+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,100 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Remettre au propre son dépot git]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/02/14/remettre-au-propre-son-depot-git/"/>
+    <updated>2016-02-14T17:03:58+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/02/14/remettre-au-propre-son-depot-git</id>
+    <content type="html"><![CDATA[<p>Lorsque l&#8217;on code, on modifie certains fichiers, mais lorsque l&#8217;on souhaite sauvegarder son travail. Il y a toujours des fichiers modifiés que l&#8217;on ne souhaite pas commiter.</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/gitmenage.png" width="387" height="189" title="Ménage dans le dépot" alt="Ménage dans le dépot"></p>
+
+<!--more-->
+
+
+<h2>Pour éviter de tracker des fichiers.</h2>
+
+<p><strong>Règle N°1 : éviter <code>git add .</code></strong></p>
+
+<p>Personnellement j&#8217;utilise tig. (voir le <a href="http://mcamuzat.github.io/blog/2015/10/04/tig-status/">post</a>)</p>
+
+<p>Solution bis :</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git add -p </span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Pour reverter les fichiers modifiés</h2>
+
+<p><strong>Règle N°2 : éviter le <code>git reset --hard</code></strong></p>
+
+<p>La solution est un peu trop radicale. Comme le <code>git add .</code> vous allez le regretter un jour, car vous perdez tout votre travail. Ce que vous voulez c&#8217;est remettre certain fichier au propre et ce n&#8217;est pas forcement la bonne commande.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git checkout -- .</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A noter que cela réverte tout vos fichiers, mais s&#8217;il faut filtrer.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git checkout -- /web/.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bien entendu il existe le mode interactif</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git checkout -p</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Reverter un commit.</h2>
+
+<p><strong>Attention si le commit est déja pushé. Vous serez obliger de faire un <code>push -f</code> donc on évite de faire cela sur les branches master, staging, develop</strong></p>
+
+<p>Vous avez commiter mais le commit est pas le bon.</p>
+
+<p>Si c&#8217;est juste le message qui est faux</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git commit --amend</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si un des fichiers n&#8217;est pas bon</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git reset HEAD^ --soft</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Vous remarquez que j&#8217;utilise <code>--soft</code> au lieu <code>--hard</code>. Le reset soft me remets avant que j&#8217;ai commité. Je ne perds pas mon travail, même mieux les fichiers sont déjà prêt à être commités.</p>
+
+<h2>Supprimer les fichiers qui ne sont pas trackés</h2>
+
+<p>Vous avez un <code>export.sql</code>, <code>toto.txt</code>, <code>npm-debug.log</code></p>
+
+<p><em>Attention à ne pas perdre du travail.</em></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clean -f -d -x
+</span><span class='line'>git clean -fdx</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Avec <code>-f</code> force <strong>Obligatoire</strong> <code>-d</code> pour directory(répertoire) <code>-x</code> virer les fichiers ignorés de git.</p>
+
+<p>Pour voir ce qui pourrait être effacé pendant la commande.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clean -n</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Enfin il existe aussi un mode interactif</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clean -i </span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Insérer avec classe dans VIM]]></title>
@@ -4971,211 +5065,6 @@ le résultat</p>
 <p>Mon post sur les <a href="blog/2015/08/29/stacks-structures-meconnues/">Stack</a>.</p>
 
 <p>Dans le post suivant on implémentera les méthodes de <code>ArrayAccess</code> et <code>Iterator</code>, ce qui nous permettra de faire des <code>foreach</code> ou <code>isset($list[2])</code> etc ..</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Tig : Status]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/10/04/tig-status/"/>
-    <updated>2015-10-04T21:59:59+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/10/04/tig-status</id>
-    <content type="html"><![CDATA[<p>Tig est un client git en ligne de commande</p>
-
-<p>Il n&#8217;est pas compliqué à installer :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install tig
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Néanmoins c&#8217;est la version 1.2 dans les dépôts au moment ou j&#8217;écris ces lignes.</p>
-
-<p>On peut installer la version 2 qui a plus de fonctionnalités et de raccourcis.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>git clone https://github.com/jonas/tig
-</span><span class='line'>make
-</span><span class='line'>make install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>attention vous aurez probablement besoin d&#8217;avoir installer la librairies <code>libncursesw</code> pour l&#8217;utf-8</p>
-
-<h2>La vue principale</h2>
-
-<p>Elle permet de voir l&#8217;historique du dépôt.</p>
-
-<p><img class="center" src="http://mcamuzat.github.io/images/tig-defaut.png" width="600" height="398" title="la vue par défault" alt="la vue par défaut"></p>
-
-<!--more-->
-
-
-<p>Appuyer sur <code>&lt;Enter&gt;</code> pour voir la différence. (Dans la version 2, si le terminal fait plus de 160 caractères l&#8217;écran se splitte en 2 verticalement)</p>
-
-<p><img class="center" src="http://mcamuzat.github.io/images/tig-diff.png" width="600" height="399" title="quand on appuie sur la touche entrée, on affiche la différence" alt="l"></p>
-
-<p>Screenshot de la version 2 avec les deux colonnes.</p>
-
-<p><img class="center" src="http://mcamuzat.github.io/images/tig_view_v2.png" width="600" height="366" title="dans la version 2, si le terminal" alt="Screenshot de la version 2 avec les deux colonnes."></p>
-
-<p>Il va falloir apprendre les touches Vi car on se sert beaucoup de <code>j</code> et <code>k</code> (un rappel <code>j</code> descend vers le bas et <code>k</code> va vers le haut)</p>
-
-<p>De cette écran voici les différents modes (je ne les cites pas tous)</p>
-
-<ul>
-<li><code>S</code> ou <code>s</code> pour voir le stage (équivalent de git status)</li>
-<li><code>t</code> tree view affichage en explorateur de fichier</li>
-<li><code>r</code> permet de voir les différentes branches (<code>H</code> dans la version1</li>
-<li><code>l</code> voir les logs</li>
-</ul>
-
-
-<p>Je vais surtout m&#8217;intéresser à la status view.</p>
-
-<h2>La vue Status</h2>
-
-<p>Les touches à connaitre.</p>
-
-<ul>
-<li><code>u</code> sur un noms de fichiers pour <strong>u</strong>se cela fait l&#8217;équivalent de <code>git add &lt;nom du fichier&gt;</code></li>
-</ul>
-
-
-<p>Si vous appuyer sur <code>u</code> sur les lignes <code>Changes to be commited</code>, <code>Changed but not updated</code>, <code>Untracked files</code> vous ajoutez tous les fichiers.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>Changes to be committed:
-</span><span class='line'>M   fichier1
-</span><span class='line'>Changed but not updatedy://&lt;---<span class="o">(</span>*curseur*<span class="o">)</span>
-</span><span class='line'>M   fichier2
-</span><span class='line'>M   fichier3
-</span><span class='line'>M   fichier4
-</span><span class='line'>M   fichier5
-</span><span class='line'>M   fichier6
-</span><span class='line'>M   fichier7
-</span><span class='line'>Untracked files:
-</span><span class='line'>?   nouveau fichier
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Cela devient</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>Changes to be committed:
-</span><span class='line'>M   fichier1
-</span><span class='line'>M   fichier2
-</span><span class='line'>M   fichier3
-</span><span class='line'>M   fichier4
-</span><span class='line'>M   fichier5
-</span><span class='line'>M   fichier6
-</span><span class='line'>M   fichier7
-</span><span class='line'>Changed but not updatedy:
-</span><span class='line'><span class="o">(</span>no files<span class="o">)</span>
-</span><span class='line'>Untracked files:
-</span><span class='line'>?   nouveau fichier
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Enfin on peut aussi prendre chunk par chunck (l&#8217;équivalent de <code>git add -p</code>)</p>
-
-<p><img class="center" src="http://mcamuzat.github.io/images/tig-revert.png" width="600" height="398" title="la vue par défaut" alt="la vue par défaut"></p>
-
-<p>Il suffit d&#8217;appuyer sur <code>Enter</code> puis de se déplacer dans le commit avec <code>j</code> et <code>k</code> et appuyer sur <code>u</code> pour ajouter ce chunk. Les chunks pour faire simple sont les textes séparés par des <code>@@ ... @@</code>. On se déplace de chunk en chunk grâce à la touche <code>@</code>.</p>
-
-<p>Pour reverter le fichier, On utilise la touche <code>!</code>.</p>
-
-<p>Cela marche aussi sur un chunk. On peut donc reverter partiellement un fichier.</p>
-
-<p>Il est possible d&#8217;ajouter ligne par ligne dans un commit grâce à la touche <code>1</code>.</p>
-
-<p>Pour faire le git commit il suffit d&#8217;appuyer sur <code>C</code> comme <strong>C</strong>ommit.</p>
-
-<p>Enfin la touche <code>e</code> comme <strong>e</strong>dit ouvre le fichier dans l&#8217;éditeur par défaut.</p>
-
-<h2>Le fichier <code>.tigrc</code></h2>
-
-<p>Le fichier <code>.tigrc</code> permet de personnaliser l&#8217;affichage et d&#8217;ajouter des raccourcis claviers.</p>
-
-<p>Voici quelques exemples de ma config.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># Delete files in status view (useful for untracked files)</span>
-</span><span class='line'><span class="nb">bind </span>status D !@?rm %<span class="o">(</span>file<span class="o">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># Amend last commit with A</span>
-</span><span class='line'><span class="nb">bind </span>status A !git commit --amend
-</span><span class='line'>
-</span><span class='line'><span class="c"># Create and checkout a new branch; specify custom prompt</span>
-</span><span class='line'><span class="nb">bind </span>main B !git checkout -b <span class="s2">&quot;%(prompt Enter new branch name: )&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Les raccourcis claviers que j&#8217;ai rajouté</p>
-
-<ul>
-<li>Dans la vue status la touche <code>D</code> efface le fichier</li>
-<li>Dans la vue status la touche <code>A</code> fait un <code>git commit --amend</code></li>
-<li>Dans la vue principale la touche <code>B</code> permet de créer une branche.</li>
-</ul>
-
-
-<h2>Résumé de touches</h2>
-
-<ul>
-<li><code>s</code> ou <code>S</code> voir la vue status</li>
-<li><code>u</code> ajouter le commit/chunk</li>
-<li><code>!</code> revert</li>
-<li><code>1</code> ajoute une lignes au commit</li>
-<li><code>@</code> aller au chunck/diff suivant</li>
-<li><code>D</code> supprimer le fichier (<em>raccourcis perso</em>)</li>
-<li><code>A</code> git amend</li>
-<li><code>e</code> ouvre dans l&#8217;éditeur par défaut</li>
-</ul>
-
-
-<h2>Des liens</h2>
-
-<ul>
-<li><a href="http://jonas.nitro.dk/tig/">le site officiel</a></li>
-<li>la <a href="https://github.com/pmiossec/tig-cheat-sheet">cheat-sheet</a> avec les raccourcis claviers (<em>indispensable</em>)</li>
-</ul>
-
-
-<h2>Conclusion</h2>
-
-<p>Je vais revenir sur les autres vues bientôt.</p>
-
-<p>Merci de m&#8217;avoir lu.</p>
 ]]></content>
   </entry>
   

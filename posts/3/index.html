@@ -9,15 +9,8 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Nous allons repartir sur la SPL. Je vais parler des différentes méthodes amusantes à surcharger. Count Soit la classe suivante 1
-2
-3
-4
-5
-6
-7
-8
-9 &hellip;">
+  <meta name="description" content="Tig est un client git en ligne de commande Il n'est pas compliqué à installer : 1
+sudo apt-get install tig Néanmoins c'est la version 1.2 dans les &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -70,6 +63,75 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/10/04/tig-status/">Tig : Status</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-10-04T21:59:59+02:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Tig est un client git en ligne de commande</p>
+
+<p>Il n&#8217;est pas compliqué à installer :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install tig
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Néanmoins c&#8217;est la version 1.2 dans les dépôts au moment ou j&#8217;écris ces lignes.</p>
+
+<p>On peut installer la version 2 qui a plus de fonctionnalités et de raccourcis.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git clone https://github.com/jonas/tig
+</span><span class='line'>make
+</span><span class='line'>make install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>attention vous aurez probablement besoin d&#8217;avoir installer la librairies <code>libncursesw</code> pour l&#8217;utf-8</p>
+
+<h2>La vue principale</h2>
+
+<p>Elle permet de voir l&#8217;historique du dépôt.</p>
+
+<p><img class="center" src="/images/tig-defaut.png" width="600" height="398" title="la vue par défault" alt="la vue par défaut"></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/10/04/tig-status/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -799,53 +861,6 @@ Quand le résultat est connu,  la promise a 3 états possibles</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/08/26/array-walk/">Array_walk, array_map, array_walk_recursive</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-08-26T22:30:55+02:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Une question que l&#8217;on m&#8217;a posé.</p>
-
-<p>Quel instruction je n&#8217;ai jamais jamais réussi à utiliser dans php ? Dans le sens jamais trouvé d&#8217;utilisation pratique.</p>
-
-<p>Ma réponse est un <code>array_recursive_walk()</code> et dans la même idée les <code>RecursiveIteratorIterator</code></p>
-
-<p>Et puis on m&#8217;a demander la différence entre un <code>array_walk</code> et un <code>array_map</code>.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/08/26/array-walk/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/4">&larr; Older</a>
@@ -895,6 +910,10 @@ Quand le résultat est connu,  la promise a 3 états possibles</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/02/14/remettre-au-propre-son-depot-git/">Remettre au propre son dépot git</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/02/07/inserer-avec-classe-dans-vim/">Insérer avec classe dans VIM</a>
       </li>
     
@@ -908,10 +927,6 @@ Quand le résultat est connu,  la promise a 3 états possibles</p>
     
       <li class="post">
         <a href="/blog/2016/01/18/je-joue-donc-je-programme-3/">Je joue donc je programme 3</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/12/27/haskell-stack/">Haskell : Stack</a>
       </li>
     
   </ul>

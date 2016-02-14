@@ -9,7 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Introduction je vais parler de l'instruction __halt_compiler(). Cette instruction arrête l'interprétation du PHP. Instruction inutile ? Pas vraiment &hellip;">
+  <meta name="description" content="Une question que l'on m'a posé. Quel instruction je n'ai jamais jamais réussi à utiliser dans php ? Dans le sens jamais trouvé d'utilisation pratique &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -62,6 +62,53 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/26/array-walk/">Array_walk, array_map, array_walk_recursive</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-08-26T22:30:55+02:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Une question que l&#8217;on m&#8217;a posé.</p>
+
+<p>Quel instruction je n&#8217;ai jamais jamais réussi à utiliser dans php ? Dans le sens jamais trouvé d&#8217;utilisation pratique.</p>
+
+<p>Ma réponse est un <code>array_recursive_walk()</code> et dans la même idée les <code>RecursiveIteratorIterator</code></p>
+
+<p>Et puis on m&#8217;a demander la différence entre un <code>array_walk</code> et un <code>array_map</code>.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/08/26/array-walk/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -533,59 +580,6 @@ quand je lance mes tests je vois cela.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/07/19/histogramme-et-ligne-de-commande/">Histogramme et ligne de commande</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-07-19T18:16:57+02:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Un petit utilitaire.</h2>
-
-<p>J&#8217;ai reprogrammé en php un clone de <a href="https://github.com/holman/spark">spark</a>.</p>
-
-<p>Un petit exemple est plus parlant</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>spark([1,2,3,4,4,5,6,1,2]); // ▂▃▅▆▆▇█▂▃
-</span><span class='line'>spark([1,2,3,4,5,1,2,3,4,5]); //▂▄▅▇█▂▄▅▇█</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/07/19/histogramme-et-ligne-de-commande/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/5">&larr; Older</a>
@@ -635,6 +629,10 @@ quand je lance mes tests je vois cela.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/02/14/remettre-au-propre-son-depot-git/">Remettre au propre son dépot git</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/02/07/inserer-avec-classe-dans-vim/">Insérer avec classe dans VIM</a>
       </li>
     
@@ -648,10 +646,6 @@ quand je lance mes tests je vois cela.</p>
     
       <li class="post">
         <a href="/blog/2016/01/18/je-joue-donc-je-programme-3/">Je joue donc je programme 3</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/12/27/haskell-stack/">Haskell : Stack</a>
       </li>
     
   </ul>

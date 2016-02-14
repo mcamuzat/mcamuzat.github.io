@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Php en mode interactif - Journal d&#8217;un panda qui code</title>
+  <title>Remettre au propre son dépot git - Journal d&#8217;un panda qui code</title>
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Je me baladai sous Github Et je suis tombé sur ce dépôt https://github.com/borisrepl/boris (en fait c'est un des dépôts les plus actifs de ce mois &hellip;">
+  <meta name="description" content="Lorsque l'on code, on modifie certains fichiers, mais lorsque l'on souhaite sauvegarder son travail. Il y a toujours des fichiers modifiés que l'on &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mcamuzat.github.io/blog/2015/03/08/php-en-mode-interactif/">
+  <link rel="canonical" href="http://mcamuzat.github.io/blog/2016/02/14/remettre-au-propre-son-depot-git/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -65,7 +65,7 @@
   
   <header>
     
-      <h1 class="entry-title">Php en mode interactif</h1>
+      <h1 class="entry-title">Remettre au propre son dépot git</h1>
     
     
       <p class="meta">
@@ -81,61 +81,99 @@
   
 
 
-<time datetime="2015-03-08T19:24:57+01:00" pubdate data-updated="true"></time>
+<time datetime="2016-02-14T17:03:58+01:00" pubdate data-updated="true"></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>Je me baladai sous Github</p>
+<div class="entry-content"><p>Lorsque l&#8217;on code, on modifie certains fichiers, mais lorsque l&#8217;on souhaite sauvegarder son travail. Il y a toujours des fichiers modifiés que l&#8217;on ne souhaite pas commiter.</p>
 
-<p>Et je suis tombé sur ce dépôt</p>
+<p><img class="center" src="/images/gitmenage.png" width="387" height="189" title="Ménage dans le dépot" alt="Ménage dans le dépot"></p>
 
-<p><a href="https://github.com/borisrepl/boris">https://github.com/borisrepl/boris</a></p>
-
-<p>(en fait c&#8217;est un des dépôts les plus actifs de ce mois pour Php)</p>
-
-<p>C&#8217;est vraiment cool</p>
-
-<p>Bien entendu il existe déjà un mode interactif sous Php</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>php -a
-</span></code></pre></td></tr></table></div></figure>
+<!--more-->
 
 
-<p>On peux le refaire en encore moins de ligne.</p>
+<h2>Pour éviter de tracker des fichiers.</h2>
 
-<p>Explication : La documentation parle de REPL.
-c&#8217;est l&#8217;abréviation de <strong>R</strong>ead <strong>E</strong>val <strong>P</strong>rint <strong>L</strong>oop</p>
+<p><strong>Règle N°1 : éviter <code>git add .</code></strong></p>
 
-<p>et voici comment on peut l&#8217;implémenter (difficile de faire plus simple)</p>
+<p>Personnellement j&#8217;utilise tig. (voir le <a href="/blog/2015/10/04/tig-status/">post</a>)</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p>Solution bis :</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git add -p </span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Pour reverter les fichiers modifiés</h2>
+
+<p><strong>Règle N°2 : éviter le <code>git reset --hard</code></strong></p>
+
+<p>La solution est un peu trop radicale. Comme le <code>git add .</code> vous allez le regretter un jour, car vous perdez tout votre travail. Ce que vous voulez c&#8217;est remettre certain fichier au propre et ce n&#8217;est pas forcement la bonne commande.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git checkout -- .</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A noter que cela réverte tout vos fichiers, mais s&#8217;il faut filtrer.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git checkout -- /web/.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bien entendu il existe le mode interactif</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git checkout -p</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Reverter un commit.</h2>
+
+<p><strong>Attention si le commit est déja pushé. Vous serez obliger de faire un <code>push -f</code> donc on évite de faire cela sur les branches master, staging, develop</strong></p>
+
+<p>Vous avez commiter mais le commit est pas le bon.</p>
+
+<p>Si c&#8217;est juste le message qui est faux</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git commit --amend</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si un des fichiers n&#8217;est pas bon</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git reset HEAD^ --soft</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Vous remarquez que j&#8217;utilise <code>--soft</code> au lieu <code>--hard</code>. Le reset soft me remets avant que j&#8217;ai commité. Je ne perds pas mon travail, même mieux les fichiers sont déjà prêt à être commités.</p>
+
+<h2>Supprimer les fichiers qui ne sont pas trackés</h2>
+
+<p>Vous avez un <code>export.sql</code>, <code>toto.txt</code>, <code>npm-debug.log</code></p>
+
+<p><em>Attention à ne pas perdre du travail.</em></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="k">while</span> <span class="o">(</span><span class="nb">true</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>  <span class="nb">echo eval</span><span class="o">(</span>fgets<span class="o">(</span>STDIN<span class="o">))</span><span class="p">;</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clean -f -d -x
+</span><span class='line'>git clean -fdx</span></code></pre></td></tr></table></div></figure>
 
 
-<p> avec les commentaires</p>
+<p>Avec <code>-f</code> force <strong>Obligatoire</strong> <code>-d</code> pour directory(répertoire) <code>-x</code> virer les fichiers ignorés de git.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="k">while</span> <span class="o">(</span><span class="nb">true</span><span class="o">)</span>/*Loop*/ <span class="o">{</span>
-</span><span class='line'>  <span class="nb">echo</span> /*Print*/ <span class="nb">eval</span><span class="o">(</span>/*Read*/ fgets<span class="o">(</span>STDIN<span class="o">))</span><span class="p">;</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
+<p>Pour voir ce qui pourrait être effacé pendant la commande.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clean -n</span></code></pre></td></tr></table></div></figure>
 
 
-<p>Read Eval Print Loop. le nom donne le programme.</p>
+<p>Enfin il existe aussi un mode interactif</p>
 
-<p>C&#8217;est une technique qui marche avec un peu tout les langages.
-voir <a href="http://repl.it">http://repl.it</a></p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clean -i </span></code></pre></td></tr></table></div></figure>
+
 </div>
 
 
@@ -158,12 +196,12 @@ voir <a href="http://repl.it">http://repl.it</a></p>
   
 
 
-<time datetime="2015-03-08T19:24:57+01:00" pubdate data-updated="true"></time>
+<time datetime="2016-02-14T17:03:58+01:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/php/'>php</a>
+    <a class='category' href='/blog/categories/git/'>git</a>
   
 </span>
 
@@ -172,7 +210,7 @@ voir <a href="http://repl.it">http://repl.it</a></p>
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mcamuzat.github.io/blog/2015/03/08/php-en-mode-interactif/" data-via="" data-counturl="http://mcamuzat.github.io/blog/2015/03/08/php-en-mode-interactif/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mcamuzat.github.io/blog/2016/02/14/remettre-au-propre-son-depot-git/" data-via="" data-counturl="http://mcamuzat.github.io/blog/2016/02/14/remettre-au-propre-son-depot-git/" >Tweet</a>
   
   
   
@@ -181,10 +219,8 @@ voir <a href="http://repl.it">http://repl.it</a></p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/03/08/comprendre-les-raccourcis-claviers-de-vi-slash-vim/" title="Previous Post: Comprendre les raccourcis claviers de vi/vim">&laquo; Comprendre les raccourcis claviers de vi/vim</a>
+        <a class="basic-alignment left" href="/blog/2016/02/07/inserer-avec-classe-dans-vim/" title="Previous Post: Insérer avec classe dans VIM">&laquo; Insérer avec classe dans VIM</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2015/03/16/mapreduce-du-pauvre/" title="Next Post: MapReduce du pauvre">MapReduce du pauvre &raquo;</a>
       
     </p>
   </footer>
