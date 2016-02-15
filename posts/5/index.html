@@ -9,10 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Un petit utilitaire. J'ai reprogrammé en php un clone de spark. Un petit exemple est plus parlant 1
-2
-spark([1,2,3,4,4,5,6,1,2]); // ▂▃▅▆▆▇█▂▃
-spark &hellip;">
+  <meta name="description" content="Introduction J'avais montré dans le précédent Post, une fonction qui permet de créer des histogrammes. J'ai décidé de la publier sous Packagist. Je n &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +62,60 @@ spark &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/07/24/creer-son-depot-sous-packagist/">Créer son dépôt sous Packagist</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-24T17:50:58+02:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Introduction</h2>
+
+<p>J&#8217;avais montré dans le précédent <a href="/blog/2015/07/19/histogramme-et-ligne-de-commande/">Post</a>, une fonction qui permet de créer des histogrammes.</p>
+
+<p>J&#8217;ai décidé de la publier sous <a href="https://packagist.org/">Packagist</a>. Je n&#8217;avais jamais fais. Je vous propose de suivre mon cheminement</p>
+
+<ul>
+<li>Je mets au propre le fichier</li>
+<li>J&#8217;ajoute le <code>composer.json</code></li>
+<li>j&#8217;ajoute les tests unitaires</li>
+<li>Je crée le dépôt sur Github</li>
+<li>J&#8217;enregistre le dépôt sur Packagist</li>
+</ul>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/07/24/creer-son-depot-sous-packagist/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -211,7 +262,7 @@ spark &hellip;">
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>  <span class="c">#!/bin/sh</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>  <span class="c">#!/bin/sh</span>
 </span><span class='line'>  quine <span class="o">()</span> <span class="o">{</span>
 </span><span class='line'>  <span class="nb">echo</span> -e <span class="s2">&quot;#!/bin/sh\n$1&quot;</span>
 </span><span class='line'>  <span class="nb">echo</span> <span class="s2">&quot;quine &#39;$1&#39;&quot;</span>
@@ -557,51 +608,6 @@ spark &hellip;">
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/05/18/go-hello-server/">Go hello server</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-05-18T23:00:46+02:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2> Introduction</h2>
-
-<p>Je continue mon apprentissage en go. Nous allons essayer de faire un hello world via une page web.</p>
-
-<p>L&#8217;exemple le plus simple de la <a href="https://gowalker.org/net/http#HandleFunc">documentation officielle</a>.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/05/18/go-hello-server/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/6">&larr; Older</a>
@@ -651,6 +657,10 @@ spark &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/02/15/vim-et-markdown/">Vim et Markdown</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/02/14/remettre-au-propre-son-depot-git/">Remettre au propre son dépot git</a>
       </li>
     
@@ -664,10 +674,6 @@ spark &hellip;">
     
       <li class="post">
         <a href="/blog/2016/01/25/les-monades-applicative-et-les-listes/">Les Monades: Applicative et les listes</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/01/18/je-joue-donc-je-programme-3/">Je joue donc je programme 3</a>
       </li>
     
   </ul>

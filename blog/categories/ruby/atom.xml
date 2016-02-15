@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-02-14T19:43:19+01:00</updated>
+  <updated>2016-02-15T21:56:11+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -157,7 +157,7 @@ foreach ($generator as $value) {
 
 <p>J&#8217;obtiens</p>
 
-<pre><code class="">PHP Fatal error:  Uncaught exception 'Exception' with message 'Cannot traverse an already closed generator' in /home/marc/yield.php:16
+<pre><code>PHP Fatal error:  Uncaught exception 'Exception' with message 'Cannot traverse an already closed generator' in /home/marc/yield.php:16
 </code></pre>
 
 <h2>Quel est l&#8217;intérêt ?</h2>
@@ -338,7 +338,7 @@ for x in countdown(10):
     <id>http://mcamuzat.github.io/blog/2015/08/31/lancer-des-commandes-dans-vim</id>
     <content type="html"><![CDATA[<p>Soit le fichier texte suivant:</p>
 
-<pre><code class=""> * Alpha
+<pre><code> * Alpha
  * Foxtrot
  * Charlie
  * Delta
@@ -348,7 +348,7 @@ for x in countdown(10):
 
 <p>Dans VIM il suffit de taper.</p>
 
-<pre><code class="">:%sort ou :%!sort
+<pre><code>:%sort ou :%!sort
 </code></pre>
 
 <p>Pour obtenir
@@ -425,7 +425,7 @@ bonjour
 
 <p>La ligne devient</p>
 
-<pre><code class="">hello
+<pre><code>hello
 </code></pre>
 
 <h2>Exécuter une commande Bash depuis VIM</h2>

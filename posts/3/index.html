@@ -9,8 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Tig est un client git en ligne de commande Il n'est pas compliqué à installer : 1
-sudo apt-get install tig Néanmoins c'est la version 1.2 dans les &hellip;">
+  <meta name="description" content="Dans la partie 1 nous avons appris à surcharger le count ainsi que les différentes méthodes de ArrayAccess. Pour faire un exemple un peu plus concret &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -63,6 +62,59 @@ sudo apt-get install tig Néanmoins c'est la version 1.2 dans les &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/10/10/liste-chainees-implementation/">Listes chainées : implémentation</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-10-10T21:12:47+02:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Dans la <a href="/blog/2015/10/03/spl-surcharge-magique/">partie 1</a> nous avons appris à surcharger le <code>count</code> ainsi que les différentes méthodes de <code>ArrayAccess</code>. Pour faire un exemple un peu plus concret, je vais impémenter les listes chainées. Les listes doublement chainée sont <strong>déja</strong> implémentées dans la SPL via <a href="http://php.net/manual/fr/class.spldoublylinkedlist.php">SplDoublyLinkedList</a>.</p>
+
+<p>Le liste chainée (linked list en anglais) est une structure de donnée. Nous allons essayer d&#8217;implémenter une liste chainée en PHP. Cela nous permettra de comprendre l&#8217;idée. Nous allons implémenter l&#8217;interface <code>Countable</code>. (J&#8217;implémente <code>ArrayAccess</code> et <code>Iterator</code> dans le post suivant).</p>
+
+<p>Une liste chainée est constituée de <code>Node</code> ou noeud/chainon.</p>
+
+<p>Un node a deux propriétés.</p>
+
+<ul>
+<li>Sa valeurs</li>
+<li>Le liens vers le noeud suivant</li>
+</ul>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/10/10/liste-chainees-implementation/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -789,78 +841,6 @@ Quand le résultat est connu,  la promise a 3 états possibles</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/08/29/stacks-structures-meconnues/">Les stacks des structures méconnues</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-08-29T16:34:41+02:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Introduction</h2>
-
-<p>Je vais parler de <code>SplStack</code> une structure de donnée qui fait partie de La SPL (pour <strong>S</strong>tandart <strong>P</strong>HP <strong>L</strong>ibrairie). Nous allons voir trois façons de nous servir de cette structure.</p>
-
-<h2>Les Stacks ou Piles</h2>
-
-<p>La pile n&#8217;a que deux opérations.</p>
-
-<ul>
-<li>Empiler ou Push On ajoute une donnée sur le haut de la pile.</li>
-<li>Dépiler ou Pop On retire une donnée du haut de la pile.</li>
-</ul>
-
-
-<p>Il n&#8217;y a que le haut de la pile qui est visible. La pile est une mémoire LIFO (<strong>L</strong>ast <strong>I</strong>n <strong>F</strong>irst <strong>O</strong>ut).</p>
-
-<p>Quelques exemples.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$pile</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SplStack</span><span class="p">();</span> <span class="c1">// la pile est vide []</span>
-</span><span class='line'><span class="nv">$pile</span><span class="o">-&gt;</span><span class="na">push</span><span class="p">(</span><span class="mi">34</span><span class="p">)</span> <span class="c1">// [34]</span>
-</span><span class='line'><span class="nv">$pile</span><span class="o">-&gt;</span><span class="na">push</span><span class="p">(</span><span class="mi">45</span><span class="p">)</span> <span class="c1">// [34, 45]</span>
-</span><span class='line'><span class="nv">$value</span> <span class="o">=</span> <span class="nv">$pile</span><span class="o">-&gt;</span><span class="na">pop</span><span class="p">()</span> <span class="c1">// [34]</span>
-</span><span class='line'><span class="nv">$pile</span><span class="o">-&gt;</span><span class="na">push</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="c1">// [34, &#39;a&#39;]</span>
-</span><span class='line'><span class="nv">$value</span> <span class="o">=</span> <span class="nv">$pile</span><span class="o">-&gt;</span><span class="na">top</span><span class="p">()</span> <span class="c1">// $value = &#39;a&#39; pile [34, &#39;a&#39;]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/08/29/stacks-structures-meconnues/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/4">&larr; Older</a>
@@ -910,6 +890,10 @@ Quand le résultat est connu,  la promise a 3 états possibles</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/02/15/vim-et-markdown/">Vim et Markdown</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/02/14/remettre-au-propre-son-depot-git/">Remettre au propre son dépot git</a>
       </li>
     
@@ -923,10 +907,6 @@ Quand le résultat est connu,  la promise a 3 états possibles</p>
     
       <li class="post">
         <a href="/blog/2016/01/25/les-monades-applicative-et-les-listes/">Les Monades: Applicative et les listes</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/01/18/je-joue-donc-je-programme-3/">Je joue donc je programme 3</a>
       </li>
     
   </ul>

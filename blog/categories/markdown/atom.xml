@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: markdown | Journal d'un panda qui code]]></title>
+  <link href="http://mcamuzat.github.io/blog/categories/markdown/atom.xml" rel="self"/>
+  <link href="http://mcamuzat.github.io/"/>
+  <updated>2016-02-15T21:56:11+01:00</updated>
+  <id>http://mcamuzat.github.io/</id>
+  <author>
+    <name><![CDATA[mcamuzat]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Vim et Markdown]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/02/15/vim-et-markdown/"/>
+    <updated>2016-02-15T20:24:36+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/02/15/vim-et-markdown</id>
+    <content type="html"><![CDATA[<p>Une astuce que je viens d&#8217;apprendre.</p>
+
+<p>Pour écrire du code en Markdown on utilise la syntaxe suivante</p>
+
+<p><code>
+</code>php
+le code terminé par &#8220;`</p>
+
+<pre><code>C'est pas génial car on perd la coloration syntaxique, et j'ai fais pas mal d'erreurs.
+
+Mais grâce à la commande suivante
+</code></pre>
+
+<p>let g:markdown_fenced_languages = [&lsquo;html&rsquo;, &lsquo;vim&rsquo;, &lsquo;php&rsquo;, &lsquo;python&rsquo;, &lsquo;bash=sh&rsquo;]
+&#8220;`</p>
+
+<p>Voici un avant et après
+<img class="center" src="/images/avantapres.png" width="600" height="189" title="&lsquo;avant et après&rsquo; &lsquo;avant et après&rsquo;" ></p>
+
+<p>C&#8217;est beaucoup mieux ! Un petit bémol pour le PHP (ma joie !) il faut obligatoirement mettre <code>&lt;?php</code>.</p>
+
+<p>Bref un commande que j&#8217;aurai aimé avoir avant.</p>
+
+<p>Il y a plein d&#8217;astuce de ce genre sur le site suivant</p>
+
+<ul>
+<li><a href="https://til.hashrocket.com/">til</a> <strong>TIL</strong> est l&#8217;abbrévation de <strong>T</strong>oday <strong>I</strong> <strong>L</strong>ean cela vient de <a href="https://www.reddit.com/r/todayilearned/">reddit</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

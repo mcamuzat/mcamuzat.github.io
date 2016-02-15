@@ -4,7 +4,7 @@
   <title><![CDATA[Category: tutoriel | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/tutoriel/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-02-14T19:43:19+01:00</updated>
+  <updated>2016-02-15T21:56:11+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -145,7 +145,7 @@ console.log(i.reduce(function(a,b){return a + Number(b)},0));
 </code></pre>
 
 <p>Le logiciel donne une implémentation beaucoup plus simple(pas difficile)
-&#8220;` js
+&#8220;`js
    var result = 0</p>
 
 <pre><code>for (var i = 2; i &lt; process.argv.length; i++)
@@ -267,7 +267,7 @@ return 0;
 
 <p>Je vais découper cela en plusieurs fichiers et répertoires.</p>
 
-<pre><code class="">.
+<pre><code>.
 ├── bin
 │   └── spark
 ├── composer.json

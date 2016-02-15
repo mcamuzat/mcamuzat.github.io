@@ -4,7 +4,7 @@
   <title><![CDATA[Category: spl | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/spl/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-02-14T19:43:19+01:00</updated>
+  <updated>2016-02-15T21:56:11+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -455,7 +455,7 @@
 </span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">Mon</span> <span class="nx">constructor</span> <span class="nx">prend</span> <span class="nx">un</span> <span class="k">array</span> <span class="nx">ou</span> <span class="nx">un</span> <span class="nx">Objet</span> <span class="nx">qui</span> <span class="nx">implémente</span> <span class="o">&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">Traversable</span><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;</span> <span class="p">(</span><span class="nx">en</span> <span class="nx">gros</span> <span class="nx">un</span> <span class="nx">Itérateur</span><span class="p">);</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">Quelques</span> <span class="nx">exemples</span>
-</span></code></pre></td></tr></table></div></figure> php
+</span></code></pre></td></tr></table></div></figure>php
 $list = new LinkedList(array(&ldquo;one&rdquo;, &ldquo;two&rdquo;, &ldquo;three&rdquo;));
 foreach($list as $key => $value) {
     var_dump($value);
@@ -1219,7 +1219,7 @@ $value = $pile-&gt;top() // $value = 'a' pile [34, 'a']
 
 <p>Un exemple</p>
 
-<pre><code class="">soit 1 3 + 3 4 - * 
+<pre><code>soit 1 3 + 3 4 - * 
 # je prend la premiere valeur "1" c'est un chiffre je l'empile
 ma pile [ *1* ] 
 # je prend la seconde valeur "3" c'est un chiffre je l'empile

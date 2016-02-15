@@ -4,7 +4,7 @@
   <title><![CDATA[Category: git | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/git/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-02-14T19:43:19+01:00</updated>
+  <updated>2016-02-15T21:56:11+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -18,9 +18,9 @@
     <link href="http://mcamuzat.github.io/blog/2016/02/14/remettre-au-propre-son-depot-git/"/>
     <updated>2016-02-14T17:03:58+01:00</updated>
     <id>http://mcamuzat.github.io/blog/2016/02/14/remettre-au-propre-son-depot-git</id>
-    <content type="html"><![CDATA[<p>Lorsque l&#8217;on code, on modifie certains fichiers, mais lorsque l&#8217;on souhaite sauvegarder son travail. Il y a toujours des fichiers modifiés que l&#8217;on ne souhaite pas commiter.</p>
+    <content type="html"><![CDATA[<p>Lorsque l&#8217;on souhaite sauvegarder son travail. Il y a toujours des fichiers modifiés que l&#8217;on ne souhaite pas commiter.</p>
 
-<p><img class="center" src="/images/gitmenage.png" width="387" height="189" title="&lsquo;Ménage dans le dépot&rsquo; &lsquo;Ménage dans le dépot&rsquo;" ></p>
+<p><img class="center" src="/images/gitmenage.png" width="387" height="490" title="&lsquo;avant et après&rsquo; &lsquo;avant et après&rsquo;" ></p>
 
 <!--more-->
 
@@ -42,7 +42,7 @@
 
 <p>La solution est un peu trop radicale. Comme le <code>git add .</code> vous allez le regretter un jour, car vous perdez tout votre travail. Ce que vous voulez c&#8217;est remettre certain fichier au propre et ce n&#8217;est pas forcement la bonne commande.</p>
 
-<pre><code class="">git checkout -- .
+<pre><code>git checkout -- .
 </code></pre>
 
 <p>A noter que cela réverte tout vos fichiers, mais s&#8217;il faut filtrer.</p>
@@ -59,7 +59,7 @@
 
 <p><strong>Attention si le commit est déja pushé. Vous serez obliger de faire un <code>push -f</code> donc on évite de faire cela sur les branches master, staging, develop</strong></p>
 
-<p>Vous avez commiter mais le commit est pas le bon.</p>
+<p>Vous avez commiter mais le commit est pas bon.</p>
 
 <p>Si c&#8217;est juste le message qui est faux
 <code>
@@ -651,7 +651,7 @@ Untracked files:
 
 <p>Voici quelques exemples de ma config.</p>
 
-<pre><code class=""># Delete files in status view (useful for untracked files)
+<pre><code># Delete files in status view (useful for untracked files)
 bind status D !@?rm %(file)
 
 # Amend last commit with A

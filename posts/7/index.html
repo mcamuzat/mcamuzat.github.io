@@ -9,10 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Introduction: Nous allons refaire la même chose que notre interpréteur d'expressions.
-Mais avec des expressions booléennes.
-Par exemple 1
-$expression &hellip;">
+  <meta name="description" content="Docker Suite à une présentation à une conférence. J'ai commencé à m'y mettre. J'écris ce post en tant que grand débutant.. Docker est une solution de &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +62,213 @@ $expression &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/04/12/docker-je-debute/">Docker Je débute</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-04-12T22:25:27+02:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Docker</h2>
+
+<p>Suite à une présentation à une conférence. J&#8217;ai commencé à m&#8217;y mettre. J&#8217;écris ce post en tant que grand débutant..</p>
+
+<p>Docker est une solution de virtualisation d&#8217;instance, plus précisément de container. Il y a pas mal de différence avec les différentes visualisations de Virtual box/Xen/VmWare. On isole juste les process et le file-system. Ce qui fait que l&#8217;on consomme très peu de processeurs.</p>
+
+<h2>Installation</h2>
+
+<p>Installer docker n&#8217;est pas très compliqué sous ubuntu 14.04.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install docker.io
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Et c&#8217;est tout !</p>
+
+<p>Pour éviter de préfixer <code>sudo</code> à chaque commande il est plus facile d&#8217;ajouter son utilisateur au group docker.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo addgroup &lt;votre user&gt; docker
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Hello world sous docker</h2>
+
+<p>Lancer docker</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker run ubuntu:14.04 /bin/echo <span class="s1">&#39;Hello world&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cette commande fait plusieurs choses:</p>
+
+<ul>
+<li>si l&#8217;image <code>ubuntu:14.04</code> n&#8217;existe pas, elle va la télécharger.</li>
+<li>Puis on lance le container</li>
+<li>Puis on exécute echo &lsquo;Hello world&rsquo;</li>
+</ul>
+
+
+<p>D&#8217;ailleurs si on relance la même commande, on constate que l&#8217;image est déjà sur le disque dur.</p>
+
+<p>la commande prend moins d&#8217;une seconde. Pourtant on a chargé un container et lancer une commande !</p>
+
+<p>Essayons la commande suivante</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker run ubuntu:14.04 - it /bin/bash
+</span><span class='line'>root@b2634b81c3dc:/#
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Nous avons un bash intéractif. <code>-i</code> mode interactif, et <code>-t</code> affiche un pseudo terminal</p>
+
+<p>Il faut comprendre que  dès que la commande principale est finie, l&#8217;instance aussi. Dans le cas <code>Echo 'Hello World'</code> la commande se finit de suite. Dans le cas de <code>/bin/bash</code> On spécifie le mode interactif. Donc l&#8217;instance continue tant que l&#8217;on a pas quitté le bash.</p>
+
+<p>Ouvrons un nouveau terminal</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker ps
+</span><span class='line'>CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+</span><span class='line'>b2634b81c3dc        ubuntu:14.04        /bin/bash           <span class="m">43</span> seconds ago      Up <span class="m">42</span> seconds                           sharp_archimedes
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On voit que mon image est toujours en cours.</p>
+
+<p>La commande docker ps affiche tout les containers allumés pour afficher tout les containers allumés pendant la session. C&#8217;est <code>dockers ps -a</code></p>
+
+<p>On peux inspecter une instance avec la commande</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker inspect sharp_archimedes
+</span><span class='line'>docker inspect b2634b81c3dc
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cela renvoie un json.</p>
+
+<p>On peux aussi lister les images disponibles via la commande</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker images
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Vous voulez télécharger des images</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker pull centos
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Vous cherchez une images particulières</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker search php56
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>La liste des images disponibles est disponible sur <a href="https://hub.docker.com/">Docker Hub</a> . D&#8217;ailleurs Dockers est très couplé avec DockerHub. DockerHub est un le GitHub pour Docker. On peux très bien faire du Git sans GitHub. C&#8217;est la même chose pour docker.</p>
+
+<p>Docker et Git partage aussi la notion de commit et de push.</p>
+
+<p>relancons notre instance</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>docker run -it ubuntu:14.04 /bin/bash
+</span><span class='line'>root@f5882f7f608d:/#
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Installons un paquet au hasard</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install vim
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On quitte <code>Exit</code></p>
+
+<p>puis on commit</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo docker commit f5882f7f608do marc/vim
+</span><span class='line'>4f177bd27a9ff0f6dc2a830403925b5360bfe0b93d476f7fc3231110e7f71b1c
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si je liste les images.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker images
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>je vois apparaitre mon <code>marc/vim</code></p>
+
+<p>Je peux ainsi réutiliser mon container ainsi</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo docker run -it marc/vim vim
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On peux ainsi se créer ses propres containers. Mais c&#8217;est un peu laborieux. Docker utilise des <code>DockerFile</code> pour automatiser le process. Cela fera un prochain post</p>
+
+<h2>Résumé des commandes</h2>
+
+<ul>
+<li><code>docker run -i -t ubuntu:14.10 /bin/bash</code> lance en mode interactif et un terminal avec la commande Bash.</li>
+<li><code>docker run -i -t ubuntu:14.10 'hello world'</code></li>
+<li><code>docker ps</code> liste les containers en cours.</li>
+<li><code>docker ps -a</code> liste tout les containers.</li>
+<li><code>docker images</code> liste toutes les images.</li>
+<li><code>docker pull centos</code> pour télécharger une image (tout les images officielles sont sur le <a href="https://hub.docker.com/">Hub</a></li>
+<li><code>docker inspect uuid</code> affiche les informations sur l&#8217;instance.</li>
+<li><code>docker commit uuid name</code>pour commiter.</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>Bon j&#8217;avoue que je débute depuis 2 jours.  Ce qui m&#8217;impressionne dans Docker c&#8217;est la vitesse (moins d&#8217;une seconde pour démarrer). C&#8217;est plutôt simple d&#8217;utilisation. La notion de commit a l&#8217;air sympa (Même si au fond c&#8217;est l&#8217;équivalent d&#8217;un snapshot sous vmware). J&#8217;espère pouvoir faire mon premier dépôt sous DockerHub bientôt.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -341,8 +545,6 @@ Par exemple</p>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<p></p>
 
 <p>Quelques exemples.</p>
 
@@ -1985,58 +2187,58 @@ par exemple</p>
 <span class='line-number'>50</span>
 <span class='line-number'>51</span>
 <span class='line-number'>52</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="k">function</span> mysum<span class="o">(</span><span class="nv">$array</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">return</span> array_reduce<span class="o">(</span><span class="nv">$array</span>, <span class="k">function</span><span class="o">(</span><span class="nv">$acc</span>, <span class="nv">$item</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$acc</span> +<span class="o">=</span> <span class="nv">$item</span><span class="p">;</span>
-</span><span class='line'>    <span class="o">})</span><span class="p">;</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'><span class="k">function</span> mymult<span class="o">(</span><span class="nv">$array</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">return</span> array_reduce<span class="o">(</span><span class="nv">$array</span>, <span class="k">function</span><span class="o">(</span><span class="nv">$acc</span>, <span class="nv">$item</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$acc</span> *<span class="o">=</span> <span class="nv">$item</span><span class="p">;</span>
-</span><span class='line'>    <span class="o">}</span>,1<span class="o">)</span><span class="p">;</span>
-</span><span class='line'><span class="o">}</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">mysum</span><span class="p">(</span><span class="nv">$array</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">array_reduce</span><span class="p">(</span><span class="nv">$array</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$acc</span><span class="p">,</span> <span class="nv">$item</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$acc</span> <span class="o">+=</span> <span class="nv">$item</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">function</span> <span class="nf">mymult</span><span class="p">(</span><span class="nv">$array</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">array_reduce</span><span class="p">(</span><span class="nv">$array</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$acc</span><span class="p">,</span> <span class="nv">$item</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nv">$acc</span> <span class="o">*=</span> <span class="nv">$item</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">},</span><span class="mi">1</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">function</span> mymax<span class="o">(</span><span class="nv">$array</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">return</span> array_reduce<span class="o">(</span><span class="nv">$array</span>, <span class="k">function</span><span class="o">(</span><span class="nv">$acc</span>, <span class="nv">$item</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">return</span> max<span class="o">(</span><span class="nv">$acc</span>, <span class="nv">$item</span><span class="o">)</span><span class="p">;</span>
-</span><span class='line'>    <span class="o">})</span><span class="p">;</span>
-</span><span class='line'><span class="o">}</span>// le min est un peu moins simple
+</span><span class='line'><span class="k">function</span> <span class="nf">mymax</span><span class="p">(</span><span class="nv">$array</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">array_reduce</span><span class="p">(</span><span class="nv">$array</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$acc</span><span class="p">,</span> <span class="nv">$item</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="nv">$acc</span><span class="p">,</span> <span class="nv">$item</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'><span class="p">}</span><span class="c1">// le min est un peu moins simple</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">function</span> map<span class="o">(</span><span class="nv">$function</span>, <span class="nv">$array</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">return</span> array_reduce<span class="o">(</span>
-</span><span class='line'>        <span class="nv">$array</span>,
-</span><span class='line'>        <span class="k">function</span> <span class="o">(</span><span class="nv">$acc</span>, <span class="nv">$input</span><span class="o">)</span> use <span class="o">(</span><span class="nv">$function</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>            <span class="nv">$acc</span><span class="o">[]</span> <span class="o">=</span> <span class="nv">$function</span><span class="o">(</span><span class="nv">$input</span><span class="o">)</span><span class="p">;</span>
+</span><span class='line'><span class="k">function</span> <span class="nf">map</span><span class="p">(</span><span class="nv">$function</span><span class="p">,</span> <span class="nv">$array</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">array_reduce</span><span class="p">(</span>
+</span><span class='line'>        <span class="nv">$array</span><span class="p">,</span>
+</span><span class='line'>        <span class="k">function</span> <span class="p">(</span><span class="nv">$acc</span><span class="p">,</span> <span class="nv">$input</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$function</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nv">$acc</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$function</span><span class="p">(</span><span class="nv">$input</span><span class="p">);</span>
 </span><span class='line'>            <span class="k">return</span> <span class="nv">$acc</span><span class="p">;</span>
-</span><span class='line'>        <span class="o">})</span><span class="p">;</span>
-</span><span class='line'><span class="o">}</span>
+</span><span class='line'>        <span class="p">});</span>
+</span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">function</span> filter<span class="o">(</span><span class="nv">$function</span>, <span class="nv">$array</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">return</span> array_reduce<span class="o">(</span>
-</span><span class='line'>        <span class="nv">$array</span>,
-</span><span class='line'>        <span class="k">function</span> <span class="o">(</span><span class="nv">$acc</span>, <span class="nv">$input</span><span class="o">)</span> use <span class="o">(</span><span class="nv">$function</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>            <span class="k">if</span> <span class="o">(</span><span class="nv">$function</span><span class="o">(</span><span class="nv">$input</span><span class="o">))</span> <span class="o">{</span>
-</span><span class='line'>                <span class="nv">$acc</span><span class="o">[]</span> <span class="o">=</span> <span class="nv">$input</span><span class="p">;</span>
-</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'><span class="k">function</span> <span class="nf">filter</span><span class="p">(</span><span class="nv">$function</span><span class="p">,</span> <span class="nv">$array</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">array_reduce</span><span class="p">(</span>
+</span><span class='line'>        <span class="nv">$array</span><span class="p">,</span>
+</span><span class='line'>        <span class="k">function</span> <span class="p">(</span><span class="nv">$acc</span><span class="p">,</span> <span class="nv">$input</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$function</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="nv">$function</span><span class="p">(</span><span class="nv">$input</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>                <span class="nv">$acc</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$input</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">}</span>
 </span><span class='line'>            <span class="k">return</span> <span class="nv">$acc</span><span class="p">;</span>
-</span><span class='line'>        <span class="o">})</span><span class="p">;</span>
-</span><span class='line'><span class="o">}</span>
+</span><span class='line'>        <span class="p">});</span>
+</span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">function</span> mycount<span class="o">(</span><span class="nv">$array</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">return</span> array_reduce<span class="o">(</span>
-</span><span class='line'>        <span class="nv">$array</span>,
-</span><span class='line'>        <span class="k">function</span> <span class="o">(</span><span class="nv">$acc</span>, <span class="nv">$input</span><span class="o">)</span>  <span class="o">{</span>
-</span><span class='line'>        <span class="k">return</span> ++<span class="nv">$acc</span><span class="p">;</span>
-</span><span class='line'><span class="o">}</span>,0<span class="o">)</span><span class="p">;</span>
-</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="k">function</span> <span class="nf">mycount</span><span class="p">(</span><span class="nv">$array</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">array_reduce</span><span class="p">(</span>
+</span><span class='line'>        <span class="nv">$array</span><span class="p">,</span>
+</span><span class='line'>        <span class="k">function</span> <span class="p">(</span><span class="nv">$acc</span><span class="p">,</span> <span class="nv">$input</span><span class="p">)</span>  <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="o">++</span><span class="nv">$acc</span><span class="p">;</span>
+</span><span class='line'><span class="p">},</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="nv">$a</span> <span class="o">=</span> <span class="o">[</span>1,2,3,4,5<span class="o">]</span><span class="p">;</span>
-</span><span class='line'>var_dump<span class="o">(</span>mysum<span class="o">(</span><span class="nv">$a</span><span class="o">))</span><span class="p">;</span> // 15
-</span><span class='line'>var_dump<span class="o">(</span>mymult<span class="o">(</span><span class="nv">$a</span><span class="o">))</span><span class="p">;</span> // 120
-</span><span class='line'>var_dump<span class="o">(</span>mymax<span class="o">(</span><span class="nv">$a</span><span class="o">))</span><span class="p">;</span> // 5
-</span><span class='line'>var_dump<span class="o">(</span>mycount<span class="o">(</span><span class="nv">$a</span><span class="o">))</span><span class="p">;</span> // 5
-</span><span class='line'>var_dump<span class="o">(</span>map<span class="o">(</span><span class="k">function</span><span class="o">(</span><span class="nv">$input</span><span class="o">)</span> <span class="o">{</span> <span class="k">return</span> <span class="m">2</span> * <span class="nv">$input</span><span class="p">;</span><span class="o">}</span>, <span class="nv">$a</span><span class="o">))</span><span class="p">;</span> // <span class="o">[</span>2,4,6,8,10<span class="o">]</span>
-</span><span class='line'>var_dump<span class="o">(</span>filter<span class="o">(</span><span class="k">function</span><span class="o">(</span><span class="nv">$input</span><span class="o">)</span> <span class="o">{</span> <span class="k">return</span> <span class="o">(</span><span class="nv">$input</span> &gt; 4<span class="o">)</span><span class="p">;</span> <span class="o">}</span>, <span class="nv">$a</span><span class="o">))</span><span class="p">;</span> // <span class="o">[</span>6<span class="o">]</span>
+</span><span class='line'><span class="nv">$a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">];</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nx">mysum</span><span class="p">(</span><span class="nv">$a</span><span class="p">));</span> <span class="c1">// 15</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nx">mymult</span><span class="p">(</span><span class="nv">$a</span><span class="p">));</span> <span class="c1">// 120</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nx">mymax</span><span class="p">(</span><span class="nv">$a</span><span class="p">));</span> <span class="c1">// 5</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nx">mycount</span><span class="p">(</span><span class="nv">$a</span><span class="p">));</span> <span class="c1">// 5</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nx">map</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$input</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="nv">$input</span><span class="p">;},</span> <span class="nv">$a</span><span class="p">));</span> <span class="c1">// [2,4,6,8,10]</span>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nx">filter</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$input</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="p">(</span><span class="nv">$input</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">);</span> <span class="p">},</span> <span class="nv">$a</span><span class="p">));</span> <span class="c1">// [6]</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -2581,6 +2783,10 @@ par exemple:</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/02/15/vim-et-markdown/">Vim et Markdown</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/02/14/remettre-au-propre-son-depot-git/">Remettre au propre son dépot git</a>
       </li>
     
@@ -2594,10 +2800,6 @@ par exemple:</p>
     
       <li class="post">
         <a href="/blog/2016/01/25/les-monades-applicative-et-les-listes/">Les Monades: Applicative et les listes</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/01/18/je-joue-donc-je-programme-3/">Je joue donc je programme 3</a>
       </li>
     
   </ul>

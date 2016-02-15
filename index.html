@@ -9,7 +9,10 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Lorsque l'on code, on modifie certains fichiers, mais lorsque l'on souhaite sauvegarder son travail. Il y a toujours des fichiers modifiés que l'on &hellip;">
+  <meta name="description" content="Une astuce que je viens d'apprendre. Pour écrire du code en Markdown on utilise la syntaxe suivante 1
+2
+```php
+le code terminé par ``` C'est pas &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +71,74 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2016/02/15/vim-et-markdown/">Vim et Markdown</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-02-15T20:24:36+01:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Une astuce que je viens d&#8217;apprendre.</p>
+
+<p>Pour écrire du code en Markdown on utilise la syntaxe suivante</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>```php
+</span><span class='line'>le code terminé par ```
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>C&#8217;est pas génial car on perd la coloration syntaxique, et j&#8217;ai fais pas mal d&#8217;erreurs.</p>
+
+<p>Mais grâce à la commande suivante</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='vim'><span class='line'><span class="k">let</span> <span class="k">g</span>:markdown_fenced_languages <span class="p">=</span> [<span class="s1">&#39;html&#39;</span><span class="p">,</span> <span class="s1">&#39;vim&#39;</span><span class="p">,</span> <span class="s1">&#39;php&#39;</span><span class="p">,</span> <span class="s1">&#39;python&#39;</span><span class="p">,</span> <span class="s1">&#39;bash=sh&#39;</span>]
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Voici un avant et après
+<img class="center" src="/images/avantapres.png" width="600" height="189" title="avant et après" alt="avant et après"></p>
+
+<p>C&#8217;est beaucoup mieux ! Un petit bémol pour le PHP (ma joie !) il faut obligatoirement mettre <code>&lt;?php</code>.</p>
+
+<p>Bref un commande que j&#8217;aurai aimé avoir avant.</p>
+
+<p>Il y a plein d&#8217;astuce de ce genre sur le site suivant</p>
+
+<ul>
+<li><a href="https://til.hashrocket.com/">til</a> <strong>TIL</strong> est l&#8217;abbrévation de <strong>T</strong>oday <strong>I</strong> <strong>L</strong>ean cela vient de <a href="https://www.reddit.com/r/todayilearned/">reddit</a></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2016/02/14/remettre-au-propre-son-depot-git/">Remettre au propre son dépot git</a></h1>
     
     
@@ -91,9 +162,9 @@
   </header>
 
 
-  <div class="entry-content"><p>Lorsque l&#8217;on code, on modifie certains fichiers, mais lorsque l&#8217;on souhaite sauvegarder son travail. Il y a toujours des fichiers modifiés que l&#8217;on ne souhaite pas commiter.</p>
+  <div class="entry-content"><p>Lorsque l&#8217;on souhaite sauvegarder son travail. Il y a toujours des fichiers modifiés que l&#8217;on ne souhaite pas commiter.</p>
 
-<p><img class="center" src="/images/gitmenage.png" width="387" height="189" title="Ménage dans le dépot" alt="Ménage dans le dépot"></p>
+<p><img class="center" src="/images/gitmenage.png" width="387" height="490" title="avant et après" alt="avant et après"></p>
 
 </div>
   
@@ -516,52 +587,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/11/29/les-monades-les-listes/">Les Monades : Les listes</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-11-29T21:44:52+01:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Nous continuons notre exploration des Monades/Functors, nous allons parler de Collection, de lapins, de marteaux et de non-déterminisme.</p>
-
-<p>Voici notre nouveau <em>container</em> Le container <strong>List</strong>. Il prend en entrée un tableau (Array) ou en Php un <code>Traversable</code>.
-<img class="center" src="/images/collection.png" width="600" height="450" title="Le container Collection" alt="Le container collection"></p>
-
-<p>Nous allons voir ensemble les listes, Collections. Nous allons voir le <code>map</code>, le <code>bind</code> nous allons voir que le comportement n&#8217;est pas exactement le même..</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/11/29/les-monades-les-listes/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -609,6 +634,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/02/15/vim-et-markdown/">Vim et Markdown</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/02/14/remettre-au-propre-son-depot-git/">Remettre au propre son dépot git</a>
       </li>
     
@@ -622,10 +651,6 @@
     
       <li class="post">
         <a href="/blog/2016/01/25/les-monades-applicative-et-les-listes/">Les Monades: Applicative et les listes</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/01/18/je-joue-donc-je-programme-3/">Je joue donc je programme 3</a>
       </li>
     
   </ul>

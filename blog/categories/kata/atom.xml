@@ -4,7 +4,7 @@
   <title><![CDATA[Category: kata | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/kata/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-02-14T19:43:19+01:00</updated>
+  <updated>2016-02-15T21:56:11+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -20,7 +20,7 @@
     <id>http://mcamuzat.github.io/blog/2015/07/11/les-quines</id>
     <content type="html"><![CDATA[<p>Aujourd&#8217;hui commençons par un petit programme</p>
 
-<pre><code class="sh">  #!/bin/sh
+<pre><code class="bash">  #!/bin/sh
   quine () {
   echo -e "#!/bin/sh\n$1"
   echo "quine '$1'"

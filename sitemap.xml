@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://mcamuzat.github.io/blog/2016/02/15/vim-et-markdown/</loc>
+    <lastmod>2016-02-15T20:24:36+01:00</lastmod>
+  </url>
+  <url>
     <loc>http://mcamuzat.github.io/blog/2016/02/14/remettre-au-propre-son-depot-git/</loc>
     <lastmod>2016-02-14T17:03:58+01:00</lastmod>
   </url>
@@ -274,15 +278,15 @@
   </url>
   <url>
     <loc>http://mcamuzat.github.io/</loc>
-    <lastmod>2016-02-14T19:43:19+01:00</lastmod>
+    <lastmod>2016-02-15T21:56:11+01:00</lastmod>
   </url>
   <url>
     <loc>http://mcamuzat.github.io/blog/archives/</loc>
-    <lastmod>2016-02-14T19:43:19+01:00</lastmod>
+    <lastmod>2016-02-15T21:56:11+01:00</lastmod>
   </url>
   <url>
     <loc>http://mcamuzat.github.io/about/</loc>
-    <lastmod>2016-02-14T19:43:19+01:00</lastmod>
+    <lastmod>2016-02-15T21:56:11+01:00</lastmod>
   </url>
   <url>
     <loc>http://mcamuzat.github.io/google8cb39a84ece2ce48.html</loc>

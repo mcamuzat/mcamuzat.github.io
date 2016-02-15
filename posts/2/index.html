@@ -9,7 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Dans la partie de 3 : Nous allons utiliser le functor Maybe avec l'instruction bind. Soit le tableau suivant. ">
+  <meta name="description" content="Nous continuons notre exploration des Monades/Functors, nous allons parler de Collection, de lapins, de marteaux et de non-déterminisme. Voici notre &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -62,6 +62,52 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/11/29/les-monades-les-listes/">Les Monades : Les listes</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-11-29T21:44:52+01:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Nous continuons notre exploration des Monades/Functors, nous allons parler de Collection, de lapins, de marteaux et de non-déterminisme.</p>
+
+<p>Voici notre nouveau <em>container</em> Le container <strong>List</strong>. Il prend en entrée un tableau (Array) ou en Php un <code>Traversable</code>.
+<img class="center" src="/images/collection.png" width="600" height="450" title="Le container Collection" alt="Le container collection"></p>
+
+<p>Nous allons voir ensemble les listes, Collections. Nous allons voir le <code>map</code>, le <code>bind</code> nous allons voir que le comportement n&#8217;est pas exactement le même..</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/11/29/les-monades-les-listes/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -729,59 +775,6 @@ le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/10/10/liste-chainees-implementation/">Listes chainées : implémentation</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-10-10T21:12:47+02:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Dans la <a href="/blog/2015/10/03/spl-surcharge-magique/">partie 1</a> nous avons appris à surcharger le <code>count</code> ainsi que les différentes méthodes de <code>ArrayAccess</code>. Pour faire un exemple un peu plus concret, je vais impémenter les listes chainées. Les listes doublement chainée sont <strong>déja</strong> implémentées dans la SPL via <a href="http://php.net/manual/fr/class.spldoublylinkedlist.php">SplDoublyLinkedList</a>.</p>
-
-<p>Le liste chainée (linked list en anglais) est une structure de donnée. Nous allons essayer d&#8217;implémenter une liste chainée en PHP. Cela nous permettra de comprendre l&#8217;idée. Nous allons implémenter l&#8217;interface <code>Countable</code>. (J&#8217;implémente <code>ArrayAccess</code> et <code>Iterator</code> dans le post suivant).</p>
-
-<p>Une liste chainée est constituée de <code>Node</code> ou noeud/chainon.</p>
-
-<p>Un node a deux propriétés.</p>
-
-<ul>
-<li>Sa valeurs</li>
-<li>Le liens vers le noeud suivant</li>
-</ul>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/10/10/liste-chainees-implementation/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -831,6 +824,10 @@ le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/02/15/vim-et-markdown/">Vim et Markdown</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/02/14/remettre-au-propre-son-depot-git/">Remettre au propre son dépot git</a>
       </li>
     
@@ -844,10 +841,6 @@ le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code
     
       <li class="post">
         <a href="/blog/2016/01/25/les-monades-applicative-et-les-listes/">Les Monades: Applicative et les listes</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/01/18/je-joue-donc-je-programme-3/">Je joue donc je programme 3</a>
       </li>
     
   </ul>

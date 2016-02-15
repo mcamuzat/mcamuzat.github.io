@@ -4,7 +4,7 @@
   <title><![CDATA[Category: bash | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/bash/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-02-14T19:43:19+01:00</updated>
+  <updated>2016-02-15T21:56:11+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -102,7 +102,7 @@ Noms3,SIRET3
 join -11 -24 file1.txt file2.txt  -t, -o1.2,2.1,2.2 -a 1 -e NULL
 </code></pre>
 
-<pre><code class="">Noms1,SIRET1,Adresse1
+<pre><code>Noms1,SIRET1,Adresse1
 Noms2,SIRET2,Adresse2
 Noms2,SIRET2,Adresse2
 Noms3,SIRET3,Adresse3
@@ -254,7 +254,7 @@ il suffit d&#8217;appuyer sur <code>g</code> de faire la recherche.</p>
     <id>http://mcamuzat.github.io/blog/2015/08/31/lancer-des-commandes-dans-vim</id>
     <content type="html"><![CDATA[<p>Soit le fichier texte suivant:</p>
 
-<pre><code class=""> * Alpha
+<pre><code> * Alpha
  * Foxtrot
  * Charlie
  * Delta
@@ -264,7 +264,7 @@ il suffit d&#8217;appuyer sur <code>g</code> de faire la recherche.</p>
 
 <p>Dans VIM il suffit de taper.</p>
 
-<pre><code class="">:%sort ou :%!sort
+<pre><code>:%sort ou :%!sort
 </code></pre>
 
 <p>Pour obtenir
@@ -341,7 +341,7 @@ bonjour
 
 <p>La ligne devient</p>
 
-<pre><code class="">hello
+<pre><code>hello
 </code></pre>
 
 <h2>Exécuter une commande Bash depuis VIM</h2>
