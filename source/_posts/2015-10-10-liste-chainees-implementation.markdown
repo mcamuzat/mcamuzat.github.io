@@ -20,7 +20,7 @@ Un node a deux propriétés.
 <!--more-->
 En php 
 
-``` php
+```php
 class Node {
     private $data;
     private $next;
@@ -53,7 +53,7 @@ class Node {
 
 pour créer une liste rien de bien compliqué.
 
-``` php 
+```php 
 $noeud1 = new Node(12);
 $noeud2 = new Node(99);
 $noeud3 = new Node(37);
@@ -70,7 +70,7 @@ Résultat le dessin suivant (wikipedia)
 
 Nous allons créer des méthodes pour ajouter simplement nos chainons.
 
-``` php
+```php
 class LinkedList implements Countable, ArrayAccess, Iterator {
     
     private $first;
@@ -110,7 +110,7 @@ C'est assez simple.
  * On augmente la taille de 1
 
 en code cela donne
-``` php
+```php
     public function insertAtEnd($data) {
         // nouveau noeud
         $node = new Node($data);
@@ -133,7 +133,7 @@ en code cela donne
 
 Exemple
 
-``` php
+```php
 $list = new LinkedList();
 $list->insertAtEnd("ha")->insertAtEnd("hi");
 $list->printMe() // -ha-hi
@@ -148,7 +148,7 @@ C'est un peu près la même idée.
  * On pointe le `first` vers notre nouveau noeud.
 
 En code 
-``` php 
+```php 
     public function insertFirstValue($data)
     {
        $node = new Node($data, $this->first);
@@ -174,7 +174,7 @@ $list->printMe(); // -second-first
 Il faut faire dans l'autre sens.
 
 En code 
-``` php
+```php
     public function removeFirstValue() {
        if ($this->count == 0) {
             throw new \Exception('La liste est vide');
@@ -201,7 +201,7 @@ $list->printMe(); //
 Comme le dernier chainon ne connait pas son prédécesseur. C'est beaucoup plus compliqué. On est obligé de repartir depuis le début. Donc pour supprimer le dernier chainon d'un liste d'un million de chainon, il nous faut parcourir les 1 millions de chainons.
 
 En Code 
-``` php
+```php
     public function RemoveLastValue()
     {
         // cas particulier la liste est vide
@@ -240,7 +240,7 @@ Même punition que pour supprimer un lien à la fin de la liste. Si on a une lis
 
 {% img center /images/LinkedLists-addingnode.png 474 116 'Ajout d'un chainon' 'Ajout d'un chainon' %}
 
-``` php
+```php
     public function insertAtPosition($position, $data)
     {
         if ($position <= 0) {
@@ -268,7 +268,7 @@ Même punition que pour supprimer un lien à la fin de la liste. Si on a une lis
 
 Si vous avez lu le [post précédent]() il suffit d'ajouter une méthode `count`
 
-``` php
+```php
     public function count()
     {
         return $this->count;
@@ -281,7 +281,7 @@ Si vous avez lu le [post précédent]() il suffit d'ajouter une méthode `count`
 Si on renomme la méthode `insertAtEnd($data)` par `enqueue($job)` et la méthode `removeFirstValue()` par `dequeue()`
 
 On obtient une file d'attente ou une `Queue` en anglais.
-``` php 
+```php 
 $fileAttente = new LinkedList();
 $fileAttente->enqueue("job1")->enqueue("job2");
 var_dump($fileAttente->dequeue()); // job1
@@ -294,7 +294,7 @@ var_dump($fileAttente->dequeue()); // OtherJob
 Si on renomme la méthode `insertFirstValue` en `push` et la méthode `removeFirstValue()` par `pop()` On obtient une Stack.
 
 Voici le code pour inverser un array sans utiliser `array_reverse`
-``` php
+```php
 $list1 = array(1,2,3,4,5);
 $stack = new LinkedList();
 foreach ($list as $value) {

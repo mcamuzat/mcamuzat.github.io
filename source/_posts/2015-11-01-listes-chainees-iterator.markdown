@@ -19,7 +19,7 @@ Je vais rajouter deux méthodes. Attention les `Array` commencent traditionnelle
 
 <!--more-->
  * Supprimer le chainon N
-``` php
+```php
     public function removeAtPosition($position)
     {
         if (!$this->validateInterval($position)) {
@@ -48,7 +48,7 @@ Je vais rajouter deux méthodes. Attention les `Array` commencent traditionnelle
 ```
 
  * Récupérer le chainon N
-``` php
+```php
     public function getAtPosition($position)
     {
         if (!$this->validateInterval($position)) {
@@ -77,7 +77,7 @@ Pour avoir le 9999 chainon,  il faut parcourir les 9998 chainons précédents.
 Avec les deux méthodes précédentes. Il suffit d'implémenter les méthodes suivantes
 
 
-``` php
+```php
 
     public function offsetSet($offset, $value) {
         if ($offset == null) {
@@ -108,7 +108,7 @@ Avec les deux méthodes précédentes. Il suffit d'implémenter les méthodes su
 
 Pour vérifier que les valeurs en entrée sont correctes j'utilise la fonction suivante 
 
-``` php 
+```php 
     private function validateInterval($offset) {
         return (false !== filter_var(
             $offset,
@@ -126,7 +126,7 @@ Pour vérifier que les valeurs en entrée sont correctes j'utilise la fonction s
 
 Bon cela semble un peu abstrait, voici quelques exemples d'utilisations.
 
-``` php
+```php
 $list = new LinkedList();
 $list[] = "first";
 $list[] = "second";
@@ -142,7 +142,7 @@ Nous avons une liste qui se comporte comme un array. c'est pratique, mais on ne 
 ## Ajout de l'itérator
 
 Pour faire un itérator il faut implémenter l'interface suivante
-``` php
+```php
  Iterator extends Traversable {
 /* Méthodes */
 abstract public mixed current ( void )
@@ -155,7 +155,7 @@ abstract public boolean valid ( void )
 
 Dans le cas de notre liste chainée cela n'est pas très compliqué.
 
-``` php
+```php
  class LinkedList implements Countable, ArrayAccess, *Iterator* {
     .....	
     private $current;
@@ -187,7 +187,7 @@ Dans le cas de notre liste chainée cela n'est pas très compliqué.
 
 Un petit code d'exemple 
 
-``` php
+```php
 $list = new LinkedList();
 //
 $list[] = "first";
@@ -204,7 +204,7 @@ foreach($list as $key => $value) {
 
 Je peux a tout moment le retransformer en `array` grâce à la méthode `iterator_to_array($list)`
 
-``` php
+```php
 
 array(3) {
   [0] =>
@@ -217,7 +217,7 @@ array(3) {
 ```
 
 Pour faire dans l'autre sens nous pouvons implémenter le constructor
-``` php
+```php
     public function __construct($input = null) 
     {
         if ($input) {
@@ -234,7 +234,7 @@ Pour faire dans l'autre sens nous pouvons implémenter le constructor
 Mon constructor prend un array ou un Objet qui implémente `Traversable` (en gros un Itérateur);
 
 Quelques exemples
-``` php
+```php
 $list = new LinkedList(array("one", "two", "three"));
 foreach($list as $key => $value) {
     var_dump($value);

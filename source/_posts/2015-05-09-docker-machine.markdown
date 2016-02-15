@@ -21,18 +21,18 @@ La commande classique est `uname -a`.
 Puis télécharger l'exécutable via `curl`
 
 Sous linux.
-``` bash
+```bash
 curl -L https://github.com/docker/machine/releases/download/v0.2.0/docker-machine_linux-amd64 > docker-machine
 sudo mv docker-machine /usr/local/bin/docker-machine
 ```
 
 Puis le marquer comme exécutable.
-``` bash
+```bash
 sudo chmod +x /usr/local/bin/docker-machine
 ```
 
 Testons notre application. 
-``` bash
+```bash
 docker-machine -v
 ```
 
@@ -42,7 +42,7 @@ Enfin vous avez besoin d'avoir [Virtual-Box](https://www.virtualbox.org/wiki/Dow
 
 Voici la commande pour tout lancer
 
-``` bash
+```bash
 docker-machine create --driver virtualbox dev
 ```
 
@@ -61,7 +61,7 @@ eval "$(docker-machine env dev)"
 ```
 
 Toutes mes commandes sont directement envoyées sur la vm à distance
-``` 
+```
 docker run busybox echo hello
 ```
 

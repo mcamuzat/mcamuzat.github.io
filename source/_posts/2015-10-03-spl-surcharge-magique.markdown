@@ -29,7 +29,7 @@ var_dump(count($counter));// int(42)
 <!--more-->
 On peux surcharger la méthode `count`. C'est d'ailleurs le cas dans le cas du [Paginator](http://doctrine-orm.readthedocs.org/en/latest/tutorials/pagination.html) de doctrine.
 
-``` php
+```php
   
 $dql = "SELECT p, c FROM BlogPost p JOIN p.comments c";
 $query = $entityManager->createQuery($dql)
@@ -51,7 +51,7 @@ On peut aussi changer toutes les méthodes pour un tableau.
  * `counter[] = 3`
  * `counter['valeur']`
  
-``` php
+```php
 
 class GeekCounter implements Countable, ArrayAccess {
     public function count() {
@@ -92,7 +92,7 @@ $counter["IdontCare"] = 3;
 ```
 
 
-``` php
+```php
 on teste la clé  IdontCare 
 bool(true)
 on me demande la clé IdontCare 
@@ -107,7 +107,7 @@ On trouve la même idée dans les collections de doctrine.(l'interface `Collecti
 Si on ne souhaite pas tout implémenter il suffit de surcharger la Classe `ArrayObject` 
 
 Par exemple: 
-``` php
+```php
 class ZooDeBeauval extends ArrayObject {
     public function offsetSet($offset, $value) {
         if (!in_array($value, array("Panda", "Koala", "Otarie"))) {
@@ -121,18 +121,18 @@ class ZooDeBeauval extends ArrayObject {
 
 ```
 Un exemple
-``` php
+```php
 $zoo = new ZooParcDeBeauval();
 $zoo[] = 'Panda';
 $zoo[] = 'Koala';
 
 echo "liste :  ".implode(', ', iterator_to_array($zoo)) . PHP_EOL;
 $zoo[] = 'Lama';
-``` 
+```
 
 le résultat
 
-``` php
+```php
 liste :  Panda, Koala
 non cet animal Lama n'est pas autorisé
 ```

@@ -16,7 +16,7 @@ Docker est une solution de virtualisation d'instance, plus précisément de cont
 
 Installer docker n'est pas très compliqué sous ubuntu 14.04.
 
-``` bash
+```bash
 sudo apt-get install docker.io
 ```
 
@@ -24,7 +24,7 @@ Et c'est tout !
 
 Pour éviter de préfixer `sudo` à chaque commande il est plus facile d'ajouter son utilisateur au group docker.
 
-``` bash
+```bash
 sudo addgroup <votre user> docker
 ```
 
@@ -108,20 +108,20 @@ sudo apt-get install vim
 On quitte `Exit`
 
 puis on commit 
-``` sh
+```sh
 sudo docker commit f5882f7f608do marc/vim
 4f177bd27a9ff0f6dc2a830403925b5360bfe0b93d476f7fc3231110e7f71b1c
 ```
 
 Si je liste les images.
-``` sh
+```sh
 docker images
 ```
 
 je vois apparaitre mon `marc/vim`
 
 Je peux ainsi réutiliser mon container ainsi
-``` sh
+```sh
 sudo docker run -it marc/vim vim
 ```
 

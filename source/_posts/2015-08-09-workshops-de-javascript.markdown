@@ -68,18 +68,18 @@ donc je resume on me demande de programmer un **Hello world".
 
 donc je crée un `hello.js`
 
-``` js
+```js
 console.log('HELLO WORLD');
 ```
 
 Je peux tester celui-ci avec un programme de test avec la commande suivante
-``` sh
+```sh
 $ learnyounode run hello.js
 ```
 
 Si je suis content du résultat alors je peux faire vérifier le programme par le logiciel.
 
-``` sh
+```sh
 $ learnyounode verify program.js
 ```
 Si le programme passe, le niveau est marquer comme `[COMPLETED]` et on peux passer au suivant. 
@@ -130,7 +130,7 @@ Donc il s'agit de créer un programme qui prend les nombres en entrée et faire 
 
 Voici ma solution (atroce ... )
 
-``` js
+```js
 var i = process.argv;
 i.shift(); 
 i.shift();// supprime les deux premiers arguments ('node', 'programme.js')
@@ -138,7 +138,7 @@ console.log(i.reduce(function(a,b){return a + Number(b)},0));
 ```
 
 Le logiciel donne une implémentation beaucoup plus simple(pas difficile)
-``` js
+```js
    var result = 0
     
     for (var i = 2; i < process.argv.length; i++)

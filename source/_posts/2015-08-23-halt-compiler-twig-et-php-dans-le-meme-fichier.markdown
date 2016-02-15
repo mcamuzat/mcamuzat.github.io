@@ -28,7 +28,7 @@ D'après php.net
 
 Soit le fichier php suivant :
 
-``` php
+```php
 <?php
 echo 'salut la compagnie!!';
 __halt_compiler();
@@ -39,7 +39,7 @@ Comme prévu la deuxième ligne ne s'affiche pas.
 
 ## Une seconde expérimentation. 
 
-``` php
+```php
 <?php
 $txt = file_get_contents(__FILE__, false, null, __COMPILER_HALT_OFFSET__);
 echo strtoupper($txt);
@@ -49,7 +49,7 @@ Bonjour tout le monde!
 
 La constante `__FILE__` représente le fichier actuelle, la constante `__COMPILER_HALT_OFFSET__` représente la position de l'instruction `__halt_compiler()`. On récupère le texte qui ne s'affiche pas.
 
-``` sh
+```sh
 BONJOUR TOUT LE MONDE!
 ```
 
@@ -59,17 +59,17 @@ Un exemple un peu théorique car pas très optimisé.
 
 J'ai besoin de twig, voici le `composer.json`
 
-``` json
+```json
 {
    "require": {
         "twig/twig": "^1.20"
     }
 }
-``` 
+```
 
 Voici mon programme.
 
-``` php
+```php
 <?php
 require_once __DIR__ . '/vendor/autoload.php'; // Autoload files using Composer autoload
 
@@ -89,7 +89,7 @@ hello {\{name}\}
 
 ```
 
-``` sh
+```sh
 hello fabien
 ```
 
@@ -105,7 +105,7 @@ Ouvrons pour voir le fichier `composer.phar`
 
 Voici ce que je vois. Nous retrouvons notre instruction du jour.
 
-``` php
+```php
 ...
 Phar::mapPhar('composer.phar');
 define('COMPOSER_DEV_WARNING_TIME', 1445255994);

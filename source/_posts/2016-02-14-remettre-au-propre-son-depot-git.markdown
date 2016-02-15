@@ -6,9 +6,9 @@ comments: true
 categories: [git] 
 ---
 
-Lorsque l'on code, on modifie certains fichiers, mais lorsque l'on souhaite sauvegarder son travail. Il y a toujours des fichiers modifiés que l'on ne souhaite pas commiter.
+Lorsque l'on souhaite sauvegarder son travail. Il y a toujours des fichiers modifiés que l'on ne souhaite pas commiter.
 
-{% img center /images/gitmenage.png 387 189 'Ménage dans le dépot' 'Ménage dans le dépot' %}
+{% img center /images/gitmenage.png 387 490 'avant et après' 'avant et après' %}
 
 <!--more-->
 
@@ -29,7 +29,7 @@ git add -p
 
 La solution est un peu trop radicale. Comme le `git add .` vous allez le regretter un jour, car vous perdez tout votre travail. Ce que vous voulez c'est remettre certain fichier au propre et ce n'est pas forcement la bonne commande.
 
-``` 
+```
 git checkout -- .
 ```
 
@@ -49,7 +49,7 @@ git checkout -p
 
 **Attention si le commit est déja pushé. Vous serez obliger de faire un `push -f` donc on évite de faire cela sur les branches master, staging, develop**
 
-Vous avez commiter mais le commit est pas le bon.
+Vous avez commiter mais le commit est pas bon.
 
 Si c'est juste le message qui est faux
 ```

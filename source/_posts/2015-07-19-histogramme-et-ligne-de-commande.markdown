@@ -21,7 +21,7 @@ spark([1,2,3,4,5,1,2,3,4,5]); //▂▄▅▇█▂▄▅▇█
 
 Voici l'implémentation
 
-``` php
+```php
 function spark($array) {
     $bars = array('▁','▂','▃','▄','▅','▆','▇','█');
     $divide = max($array);
@@ -44,7 +44,7 @@ spark 0 30 55 80 33 150
 ```
 
 Est ce qu'on peux faire la même chose ? Il suffit de rajouter les deux lignes suivantes.
-``` php
+```php
 $iDontCare =array_shift($argv);
 spark($argv);
 return 0;
@@ -65,7 +65,7 @@ Les implémentations des Pipes se présentent toujours un peu de la même maniè
 
 Un exemple qui traduit les caractères accentués. `é->&eacute`
 
-``` php
+```php
 #!/usr/bin/env php
 <?php
 while (!feof(STDIN)) {
@@ -92,7 +92,7 @@ Ce qui est cool c'est que l'on peux chainer les opérateur.
 
 Un programme qui passe la première lettre en majuscule.
 
-``` php
+```php
 #!/usr/bin/env php
 <?php
 while (!feof(STDIN)) {
@@ -102,7 +102,7 @@ while (!feof(STDIN)) {
 
 Un programme qui aime crier !!!!.
 
-``` php
+```php
 #!/usr/bin/env php
 <?php
 while (!feof(STDIN)) {
@@ -120,7 +120,7 @@ C'est un peu plus compliqué dans la vrai vie avec les retours à la ligne vide.
 Retour à notre script.
 
 Voici la partie pour récupérer de la ligne de commande.
-``` php
+```php
 // si je n'ai aucun argument ..
 if (count($argv) == 0) {
     $str = '';
@@ -139,7 +139,7 @@ Essayons une commande sur le dépôt git du blog que vous lisez.
 ```
 git shortlog -s | cut -f1 | php ~/prog/spark/spark.php
 ```
-``` sh
+```sh
 $ git shortlog -s
 (...)
    2  Manu

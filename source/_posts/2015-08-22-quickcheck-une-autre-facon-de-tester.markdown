@@ -16,7 +16,7 @@ Nous allons voir ensemble, une nouvelle façon de faire des tests. Nous allons i
 
 Nous allons créer le `composer.json` suivant.
 
-``` json
+```json
 {
   "require": {
     "steos/php-quickcheck": "dev-master"
@@ -26,7 +26,7 @@ Nous allons créer le `composer.json` suivant.
 
 Puis créer un fichier `test.php`.
 
-``` php
+```php
 
 require_once __DIR__ . '/vendor/autoload.php'; // Autoload files using Composer autoload
 
@@ -45,7 +45,7 @@ Je vais essayer de prouver que `array_merge($list1, $list2) == $list1 + $list2` 
 
 Je l'écris dans la fonction suivante
 
-``` php
+```php
 function isEqual(array $list1, array $list2) {
     return (array_merge($list1, $list2) == $list1 + $list2);
 }
@@ -55,7 +55,7 @@ function isEqual(array $list1, array $list2) {
 
 Voici le code
 
-``` php
+```php
 $test = Gen::forAll(
     [Gen::ints()->intoArrays(), Gen::ints()->intoArrays()], isEqual
  );
@@ -125,7 +125,7 @@ Le résultat est intéressant, Le logiciel a essayé 3 fois, au troisième essai
 
 Vérifions avec `php -a`
 
-``` 
+```
 php > var_dump(array_merge([1], [-2,1]));
 array(3) {
   [0] =>
@@ -193,7 +193,7 @@ Le logiciel semble d'accord. Il a fait 101 tests, mais il n'a pas trouvé de con
 Nous allons encoder en `run legth encoding` qui est l'actuel encodage des fichiers bitmaps.
 
 Quelque exemples:
-``` 
+```
 Input: WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWBWWWWWWWWWWWWWW 
 Output: 12W1B12W3B24W1B14W 
 ```
@@ -208,7 +208,7 @@ Output: WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWBWWWWWWWWWWWWWW
 
 Voici une implémentation en php
 
-``` php
+```php
 function encode($str) {
     return preg_replace_callback(
         '/(.)\1+/',
@@ -235,7 +235,7 @@ A priori `$input == decode(encode($input))`
 
 ### Mise en place. 
 
-``` php
+```php
 $test3 = Gen::forAll(
     [Gen::alphaNumStrings()],
     function ($string) {

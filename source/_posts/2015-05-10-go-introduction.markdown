@@ -43,7 +43,7 @@ go version go1.4.2 linux/amd64
 
 Ouvrons un fichier `hello.go`
 
-``` go
+```go
 package main
 
 import "fmt"
@@ -54,7 +54,7 @@ func main() {
 ```
 
 Pour l'exécuter 
-``` sh
+```sh
 go run hello.go
 hello, world
 ```
@@ -92,7 +92,7 @@ Votre `username` est votre namespace pour les packages (un peu comme java).
 * Tout est en place. Il n'y a plus qu'a taper `go install github.com/user/hello`. 
 
 * autre possibilité se rendre dans le répertoire `src/github.com/<votreusername>/hello`
-``` bash
+```bash
 go install
 ```
 

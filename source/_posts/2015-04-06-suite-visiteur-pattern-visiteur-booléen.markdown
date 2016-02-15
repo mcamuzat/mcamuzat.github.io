@@ -10,11 +10,11 @@ categories:  [design-pattern, interpret, visiteur, php]
 Nous allons refaire la même chose que notre interpréteur d'expressions.
 Mais avec des expressions booléennes.
 Par exemple
-``` php
+```php
 $expression = new Or( new And(New False(), New True()), new False);
 ```
 Nous allons ensuite rajouter les comparaisons `==`, `<`, etc ..
-``` php
+```php
 $expression = new Not(new NotEqual(new Constant(5), new Variable('i')));
 ```
 
@@ -24,7 +24,7 @@ Beaucoup de code. mais si vous avez compris la première partie. cela devrait al
 
 Nous définissons l'interface suivante.
 
-``` php
+```php
 /**
  * Une expression Booléenne
  */
@@ -48,7 +48,7 @@ Pour faire l'algèbre booléen j'ai besoin de `False` et de `True`
 
 Voici le code.
 
-``` php
+```php
 class True extends Unary {}
 
 class False extends Unary {}
@@ -58,7 +58,7 @@ class False extends Unary {}
 
 J'ai aussi besoin de la négation
 
-``` php
+```php
 class Not extends Unary {
     private $value;
     public function __construct(BoolExpression $expr) {
@@ -73,7 +73,7 @@ class Not extends Unary {
 Je vais rajouter la condition And, Or, Nand (No-et), Nor(Non-ou)
 
 Je définis une classe avec deux arguments dans le constructeur.
-``` php
+```php
 class Binary extends Unary
 {
     private $left;
@@ -92,7 +92,7 @@ class Binary extends Unary
 ```
 
 Les classes sont alors très simples.
-``` php
+```php
 // Or et And sont des mots réservés en Php.
 class BinaryOr extends Binary{}
 class BinaryAnd extends Binary{}
@@ -103,7 +103,7 @@ class BinaryNor extends Binary{}
 J'ai un peu près tout.
 
 On peut passer au Visiteur.
-``` php
+```php
 interface VisitorBoolExpression{
     public function visit(BoolExpression $expr);
 }
@@ -150,13 +150,13 @@ class VisitorBoolEvaluation implements VisitorBoolExpression {
         return !($expr->getLeft()->accept($this) && $expr->getRight()->accept($this));
     }
 }
-``` 
+```
 
 Quelques exemples. 
 
 On réutilise notre mémoire du billet précédent. On utilise aussi `var_dump` plutôt que `echo` car `echo false` ne renvoie rien.
 
-``` php
+```php
 $memory = new Memory();
 $memory->write('i', 10);
 
@@ -172,7 +172,7 @@ var_dump($expression->accept($ve)) //Affiche bool(true);
 ```
 
 bien sur on peux refaire un autre visiteur pour traduire en chaînes de caractères
-``` php
+```php
 class VisitorBoolPrint implements VisitorBoolExpression {
     protected $context;
     function __construct($context){
@@ -206,7 +206,7 @@ class VisitorBoolPrint implements VisitorBoolExpression {
 ```
 Le même exemple .
 
-``` php
+```php
 $memory = new Memory();
 $memory->write('i', 10);
 $ve = new VisitorBoolPrint($memory);
@@ -227,7 +227,7 @@ Nous pouvons rajouter le `==`, `!=`, `>` , `<` !
 
 ajoutons de nouveau objet. les object prennent en entrée des expressions mais sortent des boléens. 
 
-``` php
+```php
 class BinaryComparaison extends Unary
 {
     private $left;
@@ -259,7 +259,7 @@ class Gt extends BinaryComparaison{}
 Pour mon visiteur je vais utiliser mon visiteur d'expression du post précédent.
 
 donc je modifie le constructeur.
-``` php
+```php
     function __construct($context, $ve){
         $this->context = $context;
         $this->ve = $ve;
@@ -267,7 +267,7 @@ donc je modifie le constructeur.
 
 ```
 je ne montre que le égal, mais vous avez un peu près l'idée pour le reste. 
-``` php
+```php
     public function visitEqual(BoolExpression $expr)
     {
         return ($expr->getLeft()->accept($this->ve)  == $expr->getRight()->accept($this->ve));
@@ -277,7 +277,7 @@ je ne montre que le égal, mais vous avez un peu près l'idée pour le reste.
 Le visiteur booléen utilise un autre visiteur pour évaluer une expression. 
 
 Un exemple d'utilisation
-``` php
+```php
 $memory = new Memory();
 $memory->write('i', 10);
 // une visiteur d'expression
@@ -291,7 +291,7 @@ var_dump ( $expression->accept($vb) );// affiche bool(true)
 
 si je reprend mon autre visiteur `VisitorToPhp` avec le `visitorBoolPrint`
 
-``` php
+```php
 $memory = new Memory();
 $memory->write('i', 10);
 $ve = new VisitorToPhp($memory);

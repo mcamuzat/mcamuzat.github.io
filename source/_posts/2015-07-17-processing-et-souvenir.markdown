@@ -33,7 +33,7 @@ void draw() // sera appellé 30 à 50 fois par seconde
 ```
 
 Un exemple très simple 
-``` java
+```java
 void setup() {
   size(640, 360); //j'initialise la taille 640*
   stroke(255); // le trait est blanc

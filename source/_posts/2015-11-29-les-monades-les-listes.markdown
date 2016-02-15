@@ -18,7 +18,7 @@ Nous allons voir ensemble les listes, Collections. Nous allons voir le `map`, le
 
 Ne nous embêtons pas allons directement dans l'implémentation.
 
-``` php
+```php
 class Collection extends Container{
     /**
      * @param array $value
@@ -63,7 +63,7 @@ class Collection extends Container{
 On garde toujours la même définition. `map` prend toujours une fonction et renvoie un Objet du même type. `extract` renvoie la valeur, `Collection::of` renvoie une collection.
 
 Quelques exemples
-``` php
+```php
 var_dump(
    Collection::of(array(1,2,3,4))
      ->map(function($value) {return 2 * value;})
@@ -81,7 +81,7 @@ var_dump(Collection::of(array("one","two","three"))
 
 Nous allons reprendre notre liste du post [précédent](blog/2015/11/22/les-monades-3-le-maybe-suite/)
 
-``` php
+```php
 $data = [
     ['id_article' => 1, 'titre' => 'titre1', 'meta' => ['images' => ['//first.jpg', '//second.jpg']]],
     ['id_article' => 2, 'titre' => 'titre2', 'meta' => ['images' => ['//third.jpg']]],
@@ -103,7 +103,7 @@ l'algo :
 
 Cela donne ..
 
-``` php
+```php
 function get($key)
 {
     return function ($value) use ($key) {
@@ -117,7 +117,7 @@ Oui vous ne rêvez pas c'est une fonction qui renvoie une fonction qui renvoie u
 
 L'implémentation est sympathique..
 
-``` php
+```php
 $result = Collection:of($data)
    ->map(fromValue)
    ->bind(get("meta"))
@@ -128,7 +128,7 @@ $result = Collection:of($data)
 
 Nous obtenons en une ligne *sans if sans condition*.
 
-``` php
+```php
 ["//first.jpg", "//third.jpg", null]
 
 ```
@@ -137,7 +137,7 @@ Nous obtenons en une ligne *sans if sans condition*.
 
 Je n'ai pas donnée le code du bind qui se résume à 
 
-``` php
+```php
     public function bind(callable $transformation)
     {
         return self::of($this->concat($this->map($transformation)));
@@ -150,7 +150,7 @@ Partons d'abord du principe que `$this->concat` n'existe pas..
 
 Donc mon `bind` devient
 
-``` php
+```php
     public function bind(callable $transformation)
     {
         return self::of($this->map($transformation));
@@ -158,7 +158,7 @@ Donc mon `bind` devient
 ```
 
 Un exemple 
-``` php
+```php
 function addOne($input) {
 	return Collection::of($input+1);
 }
@@ -169,7 +169,7 @@ var_dump($result);
 ```
 
 Le résultat
-``` php 
+```php 
 class Collection#6 (1) {
   protected $value =>
   array(1) {
@@ -214,7 +214,7 @@ Partons du principe que c'est un array..
 
 On aplati notre liste ainsi
 
-``` php
+```php
 $flatten = array(array("a","d"), array("b"), array("c"));
 $result;
 foreach($flatten as $value) {
@@ -227,7 +227,7 @@ var_dump($result); //array("a", "d", "b", "c");
 
 Le problème est que notre collection n'est pas un `Array`.. Mais essayons avec une fonction un peu plus tordue
 
-``` php
+```php
 $result = array_reduce(
     $flatten,
     function ($acc, $value){
@@ -242,7 +242,7 @@ C'est un façon un peu plus complexe d'exprimer la même chose que le code plus 
  
 Le reduce pour notre collection est facilement exprimable.
 
-``` php
+```php
     // dans la classe Collection
      public function reduce(callable $function, $accumulator)
     {
@@ -256,7 +256,7 @@ Le reduce pour notre collection est facilement exprimable.
 
 Reprenons le code du `array_reduce` et utilisons notre `reduce`
 
-``` php
+```php
  // dans la classe Collection
     private function concat(Collection $collection)
     {
@@ -280,7 +280,7 @@ Montrons quelque exemples de bind.
 
 Soit le fonction suivante
 
-``` php 
+```php 
 function reproduction($input) {
        return Collection::of(array($input, $input, $input);
 }
@@ -293,7 +293,7 @@ $lapin = Collection::of(array("lapin"))
     ->bind("reproduction")
     ->bind("reproduction")
     ->extract();
-``` 
+```
 
 Le résultat 
  
@@ -301,13 +301,13 @@ Le résultat
 
 * premier bind
 
-``` php
+```php
 ["lapin"] -> map ->[["lapin", "lapin","lapin"]] -> concat -> ["lapin", "lapin","lapin"]
 ```
 
 * second bind 
 
-``` php
+```php
 ["lapin", "lapin","lapin"] -> map [["lapin","lapin","lapin"][..][..]] -> ["lapin" .. *9]
 ```
 
@@ -317,7 +317,7 @@ Nous commençons avec un lapin, nous multiplions par 3 à chaque interaction. Co
 
 Soit la fonction suivante
 
-``` php
+```php
 
 function fractale($value) {
     if ($value == "#")
@@ -336,7 +336,7 @@ Soit la fonction suivante
 
 La fonction inférieure à 20 renvoie un array vide.
 
-``` php
+```php
 function moiEtMonSuccesseur($input) {
     return Collection::of($input, $input+1); 
 }
@@ -354,18 +354,18 @@ $result = Collection::of([10,20,30])->bind("moiEtMonSuccesseur")->bind("inferieu
 
  * premier `bind`
 
-``` php
+```php
 [10,20, 30] -> map -> [[10,11],[20,21],[30,31]]->concat -> [10, 11, 20, 21, 30, 31]
 ```
 
  * second `bind` 
 
-``` php
+```php
 [10, 11, 20, 21, 30, 31] -> map -> [[10],[11],[20],[],[],[]]-> concat -> [10,11,20]
 ```
  * troisième `bind`
 
-``` php
+```php
 [10, 11, 20] -> map [[10,11], [11,12], [20, 21]]-> concat -> [10,11,11,12,20,21]
 ```
 
@@ -373,7 +373,7 @@ $result = Collection::of([10,20,30])->bind("moiEtMonSuccesseur")->bind("inferieu
 
 ### Exemple 4: Trouver les positions possibles d'un jeux de société
 
-``` php 
+```php 
 function donneTousLesCoupsPossibles($position) {
     //renvoie toutes les positions légales
     return Collection::of(array(position_possible..));

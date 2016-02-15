@@ -79,7 +79,7 @@ FOUND 85 ERRORS AND 3 WARNINGS AFFECTING 63 LINES
 
 * [PHP Copy/Paste Detector](http://github.com/sebastianbergmann/phpcpd) `phpcpd` détecte les copier/coller 
 
-``` 
+```
 
 docker run -t -i -v `pwd`:/project jolicode/phaudit phpcpd src
 Found 2 exact clones with 101 duplicated lines in 4 files:
@@ -131,7 +131,7 @@ wget url du fichier phar
 ```
 
 il faut créer un fichier `.travis.yml` voici les lignes à ajouter pour un projet en php
-``` yml
+```yml
 language: php
 php:
   - "5.5"

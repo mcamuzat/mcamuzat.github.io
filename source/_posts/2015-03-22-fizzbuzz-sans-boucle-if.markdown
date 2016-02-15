@@ -21,7 +21,7 @@ Les règles sont simples.
 Il y a plein de solutions possibles
 
 ##la plus littérale
-``` php
+```php
 for ($i = 1; $i <= 100; $i++) {
     if ($i % 15 == 0) {
         echo 'fizzbuzz'. "\n";
@@ -37,7 +37,7 @@ for ($i = 1; $i <= 100; $i++) {
 
 ##la version de wikipedia
 
-``` php
+```php
 for ($i = 1; $i <= 100; $i++) {
     $output = '';
     if ( $i%3 == 0) {
@@ -58,7 +58,7 @@ for ($i = 1; $i <= 100; $i++) {
 
 Le `continue` n'est pas souvent utilisé. Mais je trouve qu'il remplit son rôle ici. 
 
-``` php
+```php
 for ($i = 1; $i <= 100; $i++) {
     if ($i % 15 == 0) {
         echo 'fizzbuzz'. "\n";
@@ -106,7 +106,7 @@ for ($i = 1; $i <= 100; $i++) {
 ```
 
 En php on ne peux pas faire la commande suivante qui correcte en javascript;
-``` js
+```js
 var a = value || defautvalue ;
 ```
 

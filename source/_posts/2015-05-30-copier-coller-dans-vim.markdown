@@ -11,7 +11,7 @@ categories: ["linux", "vim"]
 
 ### solution n°1 : utiliser la souris
 tapez :
-``` bash
+```bash
 set mouse=a
 ```
 vous pouvez sélectionnez avec la souris. Pour copier appuyer sur `y` comme **y**ank
@@ -40,7 +40,7 @@ La notion de presse-papier est appelle registre dans Vi.
 
 Pour voir l'état des registres (et si il ne fallait retenir qu'une seule commande..)
 
-``` bash
+```bash
 :register ou :reg
 ```
 

@@ -9,7 +9,7 @@ categories: ["Git", "Bash", "Github"]
 
 Il est possible de faire des commits qui clignotent avec la commande suivante.
 
-``` sh
+```sh
 git commit --all-empty -m "^[[5m Bonjour ^[[0"
 
 ```
@@ -20,7 +20,7 @@ Bienvenue dans le monde du terminal et du ANSI. Il existe de véritable oeuvre d
 
 On peut rajouter des trucs plus rigolos
 
-``` sh
+```sh
 git commit --allow-empty -F <(curl https://raw.githubusercontent.com/thiderman/doge/master/doge/static/doge.txt)
 ```
 
@@ -53,7 +53,7 @@ Mais a quoi cela sert ?
 Dans une ligne de commande (aucun danger).
 ```
 ssh whoami.filippo.io
-``` 
+```
 
 Le résultat est surprenant. Le logiciel me reconnait immédiatement (nom et prénom).
 

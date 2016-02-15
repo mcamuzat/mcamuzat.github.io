@@ -12,14 +12,14 @@ J'ai besoin pour le prochain chapitre d'introduire la notion d'application parti
 
 Soit la fonction suivante.
 
-``` php
+```php
 function plus($a, $b) {
    return $a + $b;
 }
 ```
 
 Que donne l'exécution ?
-``` php
+```php
 $result = plus(10); 
 ```
 
@@ -29,7 +29,7 @@ Une erreur bien entendu, puisque il manque un argument..
 
 Voici une fonction tirée de la librairie [php-functionnal](https://github.com/widmogrod/php-functional)
 
-``` php
+```php
 function push(array $array, array $values)
 {
     foreach ($values as $value) {
@@ -50,25 +50,25 @@ function curryN($numberOfArguments, callable $function, array $args = [])
 ```
 
 Et maintenant reprenons ma première fonction
-``` php
+```php
 $add = curryN(2, function($a, $b) {return $a + $b;});
 ```
 
 Maintenant réessayons notre commande
 
-``` php
+```php
 $add10 = $add(10);
 ```
 
 Je n'ai pas d'erreur mais il y a mieux !
 
-``` php
+```php
 $result = $add10(10) // 20.
 ```
 
 Varions encore un peu avec aucun argument
 
-``` php
+```php
 $addition = $add();
 result = $addition(10,10);//20
 ```
@@ -111,11 +111,11 @@ Nous allons nous servir de cette astuce pour nos monades/functors. Depuis le dé
 Il faut quand même noter que le langage PHP n'est pas génial pour le coup.
 
 L'expression suivante en javascript est parfaitement légale.
-``` js
+```js
 result = add(10)(5);
 ```
 je suis obligé d'utiliser une variable intermédiaire en PHP.
-``` php 
+```php 
 $add10= add(10);
 $result = $add10(5);
 ```
@@ -124,11 +124,11 @@ Bref la syntaxe n'est pas très pratique.
 ## Conclusion
 
 En Haskell et [OCaml](https://fr.wikipedia.org/wiki/OCaml) l'évaluation partielle est la norme.
-``` haskell
+```haskell
 max 10 10
 ```
 En fait le langage fait. 
-``` haskell
+```haskell
 (max 10) 10
 ```
 

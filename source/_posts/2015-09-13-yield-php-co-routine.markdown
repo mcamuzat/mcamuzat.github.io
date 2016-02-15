@@ -12,7 +12,7 @@ Nous allons continuer sur le *yield* [partie1](/blog/2015/09/06/php-yield-les-ge
 Nous avons vu la fonction xrange qui permet de générer un million de valeurs pour un coup très faible en mémoire. 
 
 Mais il y a mieux ! On peux envoyer des valeurs dans le générateur
-``` php
+```php
 <?php
 function generateAnimal() {
     $input = (yield 'Panda');
@@ -30,7 +30,7 @@ var_dump($gen->send('Poney')); // j'ai recus Poney.
 
 Si j'avais fais deux fois `->next()`  au lieux de `->send()`
 
-``` php
+```php
 $gen = generateAnimal();
 var_dump($gen->current());// string(5) "Panda"
 var_dump($gen->next());//string(16) "j'ai recu NULL"
@@ -45,7 +45,7 @@ Une co-routine est une fonction qui peut se suspendre en reprendre quand on le s
 
 Nous allons faire une classe `Task`  pour mieux comprendre.
 
-``` php
+```php
 class Task
 {
     protected $generator;
@@ -78,7 +78,7 @@ class Task
 
 J'ai besoin d'un Runner
 
-``` php
+```php
 
 class Runner
 {
@@ -162,7 +162,7 @@ Je prend une tache de la file d'attente. Je l'exécute avec `->run()`, si la tac
 
 Reprenons un code d'exemple
 
-``` php
+```php
 function task1() {
     for ($i = 1; $i <= 10; ++$i) {
         echo "This is task 1 iteration $i.\n";

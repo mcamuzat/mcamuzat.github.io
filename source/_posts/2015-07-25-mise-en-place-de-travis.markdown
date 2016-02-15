@@ -18,7 +18,7 @@ Il faut bien entendu s'inscrire sur Travis. On s'authentifie grâce à son ident
 
 Nous allons rajouter le fichier `.travis.yml` dans notre dépôt.
 
-``` yml
+```yml
 language: php
 install: composer install
 php:

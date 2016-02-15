@@ -20,7 +20,7 @@ il existe des variantes avec `--testdox`
 
 <!--more-->
 
-``` sh
+```sh
 $ bin/phpunit --testdox
 PHPUnit 4.8-ge1cc585 by Sebastian Bergmann and contributors.
 
@@ -34,7 +34,7 @@ Spark\Spark
 C'est un peu mieux.
 
 Il existe aussi `--debug`
-``` sh
+```sh
 PHPUnit 4.8-ge1cc585 by Sebastian Bergmann and contributors.
 
 Starting test 'Spark\SparkTest::testItCreatesAStringFromData'.
@@ -62,7 +62,7 @@ On peux surcharger l'affichage de PHPunit et cela grâce au listener.
 
 Il suffit d'éditer `phpunit.xml` et de rajouter les lignes suivantes
 
-``` xml
+```xml
   <listeners>
     <listener class="SparkListener" 
 	    file="../src/un-projet-pro/FooBundle/Tests/Listener/SparkListener.php">
@@ -75,7 +75,7 @@ Il suffit d'éditer `phpunit.xml` et de rajouter les lignes suivantes
 
 Le plus propre est d'implémenter tout les méthodes de l'interface 
 
-``` php
+```php
 <?php
 
 class Monlistener implements PHPUnit_Framework_TestListener {
@@ -132,7 +132,7 @@ class MaxListener extends PHPUnit_TextUI_ResultPrinter
 ```
 
 Avec ma librairie que j'ai développé dans les [posts](/blog/2015/07/19/histogramme-et-ligne-de-commande/) précédents.
-``` php
+```php
 use Spark\Spark;
 class SparkListener extends PHPUnit_TextUI_ResultPrinter
 {
@@ -208,7 +208,7 @@ On pourrait faire cela sur un `tearDown()`
 
 Normalement il n'y a pas de fixture dans PHPUnit. Mais en pratique pour tester certaines méthodes dans les repository, ben il n'y pas beaucoup le choix.  On peux refaire la base, dropper le schéma, un truncate à chaque test ou `memory::sqlite`. Mais sur certaines bases de données, c'est un peu compliqué. Une solution est de vider la base entre chaque suites de tests. Une proposition 
 
-``` php
+```php
 class DBListener implements PHPUnit_Framework_TestListener
 {
     // .. 
@@ -251,7 +251,7 @@ Si le nom du test contient `truncate` et `fixture` alors on force le truncate et
 
     }
 
-``` 
+```
 
 ### Relancer les tests qui ne passent pas.
 
@@ -291,7 +291,7 @@ class FailureListener extends PHPUnit_TextUI_ResultPrinter
 ```
 
 Le script en action.
-``` sh
+```sh
 bin/phpunit -c build/phpunit.xml 
 PHPUnit 4.5.1 by Sebastian Bergmann and contributors.
 

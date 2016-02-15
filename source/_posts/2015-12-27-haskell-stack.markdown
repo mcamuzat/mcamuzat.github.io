@@ -29,7 +29,7 @@ Une fois que le logiciel est installé
 
 ### Etape 1 : structure d'un projet.
 
-``` 
+```
 $ stack new my-project
 ```
 
@@ -80,7 +80,7 @@ yesod-sqlite
 ```
 $ cd mon-projet
 $ stack setup
-``` 
+```
 
 Si Haskell n'est pas encore installé dans `~/.stack`, le logiciel s'occupe de tout, il installe aussi toutes les dépendances.
 
@@ -138,7 +138,7 @@ Alors
  
 ```
 $ stack image container
-``` 
+```
 
 Cela génère le container.
 

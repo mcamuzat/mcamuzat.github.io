@@ -23,7 +23,7 @@ la signature de la fonction est un peu près la même que [react/promise](https:
 
 Attention *Guzzle* ne fait pas la différence entre le *Deferred* qui est un travail dont la réponse est encore inconnu et représenter par une *promise*. Dans *Guzzle* le travail et la réponse sont la même chose.
 
-``` php
+```php
 use GuzzleHttp\Promise\Promise;
 
 $promise = new Promise();
@@ -46,7 +46,7 @@ $promise->reject(null); // 'On a un problème.';
 <!--more-->
 *Guzzle* est un client Web essayons un cas concret.
 
-``` php
+```php
 $client = new GuzzleHttp\Client();
 
 $promise = $client->requestAsync('GET', 'http://httpbin.org/get');
@@ -62,7 +62,7 @@ $client->wait();
 
 L'avantage ici est que je décide quand je lance l'appel. Par exemple on peut lancer en parallèle les requêtes.
 
-``` php
+```php
 $client = new Client(['base_uri' => 'http://httpbin.org/']);
 
 // Je crée toute mes requetes
@@ -80,7 +80,7 @@ $results = Promise\unwrap($promises);
 
 On peux créer des pools. Si on souhaite limiter le nombre de requête en même temps.
 
-``` php
+```php
 $client = new Client(['base_uri' => 'http://httpbin.org/']);
 
 $batch = [
@@ -107,7 +107,7 @@ $promise->wait();
 ```
 le résultat ici. 
 
-``` php
+```php
 int(3)
 int(0)
 int(1)
@@ -137,7 +137,7 @@ $result->wait();
 
 Je veux juste les deux premières réponses `some(2, $promise)`
 
-``` php
+```php
 $client = new Client(['base_uri' => 'http://httpbin.org/']);
 
 // je crée toute mes requetes
@@ -156,7 +156,7 @@ $result = Promise\some(2, $promises)
 );
 $result->wait();
 
-``` 
+```
 
 ## Yield + Promise == Coroutine promise
 
@@ -164,7 +164,7 @@ Bon Nous allons complexifier encore un peu.
 
 Soit le code suivant
 
-``` php
+```php
 $client = new Client(['base_uri' => 'http://httpbin.org/']);
 
 $promiseGenerator = function () use ($client) {
@@ -187,7 +187,7 @@ Je laisse Guzzle gérer avec un limitation de 2. des que le programme a une plac
 
 Mais il existe dans Guzzle des co-routines..
 
-``` php
+```php
 $client = new Client(['base_uri' => 'http://httpbin.org/']);
 
 $myfunction = function ($url) use ($client) {
@@ -220,7 +220,7 @@ Le code est complètement asynchrone.
 
 Il est intéressant de voir le code synchrone et non parallèle.
 
-``` php
+```php
 $client = new Client(['base_uri' => 'http://httpbin.org/']);
 
 $getImages = function ($url) use ($client) {

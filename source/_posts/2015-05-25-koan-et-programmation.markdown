@@ -26,7 +26,7 @@ Le plus connu et le premier est [RubyKoan](http://rubykoans.com/).
 
 Regardons ensemble la première utilisation.
 
-``` bash
+```bash
 cd koans
 /home/marc/.rvm/rubies/ruby-2.2.0/bin/ruby path_to_enlightenment.rb
 AboutAsserts#test_assert_truth has damaged your karma.
@@ -47,7 +47,7 @@ your path thus far [X_________________________________________________] 0/282
 
 J'ouvre le fichier `about_asserts.rb`.
 
-``` ruby
+```ruby
 #!/usr/bin/env ruby
 # -*- ruby -*-
 
@@ -69,7 +69,7 @@ Il suffit de changer le `false` en `true`
 Relancons, On avance petit à petit et toutes les notions du ruby sont expliquées.
 
 
-``` bash
+```bash
 cd koans
 /home/marc/.rvm/rubies/ruby-2.2.0/bin/ruby path_to_enlightenment.rb
 AboutAsserts#test_assert_truth has expanded your awareness.

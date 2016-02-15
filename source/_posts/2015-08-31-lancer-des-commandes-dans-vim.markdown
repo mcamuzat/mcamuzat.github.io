@@ -8,7 +8,7 @@ categories: [Vim, Linux, Bash, Php, Ruby, Python]
 
 Soit le fichier texte suivant:
 
-``` 
+```
  * Alpha
  * Foxtrot
  * Charlie
@@ -19,7 +19,7 @@ Soit le fichier texte suivant:
 
 Dans VIM il suffit de taper.
 
-``` 
+```
 :%sort ou :%!sort
 ```
 
@@ -71,7 +71,7 @@ et Ajoutez la commande que vous allez appliquer à la sélection. Par exemple `:
 
 Plus rigolo. On peux appeler des langages que l'on veut dans VIM 
 
-``` php
+```php
 <?php echo "bonjour";
 ```
 
@@ -89,7 +89,7 @@ bonjour
 
 Cela marche aussi avec python 
 
-``` python
+```python
 print "olleh"[::-1]
 ```
 
@@ -97,7 +97,7 @@ Avec le curseur sur la ligne, appuyer sur `!!` puis ajoutez `:.!python`
 
 La ligne devient
 
-``` 
+```
 hello
 ```
 

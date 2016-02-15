@@ -16,7 +16,7 @@ Cela permet de mettre en place ce qu'on appelle les générateurs.
 
 Regardons un exemple ensemble
 
-``` php
+```php
 <?php
 function generateAnimal() {
     echo "Je suis dans le générateur\n";
@@ -52,7 +52,7 @@ Je vais refaire pas à pas avec des commentaires.
 <!--more-->
 ### premier passage
 
-``` php
+```php
 <?php
 function generateAnimal() {
     echo "Je suis dans le générateur\n";
@@ -76,7 +76,7 @@ echo $generator->current();
 
 En fait le générateur reste en suspens, `yield` est un pseudo `return` (enfin c'est comme cela que je l'ai compris)
 
-``` php
+```php
 <?php
 function generateAnimal() {
     echo "Je suis dans le générateur\n";
@@ -98,7 +98,7 @@ echo $generator->current();
 
 ### Troisième itération
 
-``` php
+```php
 <?php
 function generateAnimal() {
     echo "Je suis dans le générateur\n";
@@ -121,7 +121,7 @@ echo $generator->current();
 
 Nous y sommes presque..
 
-``` php
+```php
 <?php
 function generateAnimal() {
     echo "Je suis dans le générateur\n";
@@ -142,7 +142,7 @@ echo $generator->current();
 
 Une fois qu'un générateur a fini, on ne peux le réutiliser
 
-``` php
+```php
 foreach ($generator as $value) {
     echo "j'ai reçu $value \n";
 }
@@ -154,7 +154,7 @@ foreach ($generator as $value) {
 
 J'obtiens 
 
-``` 
+```
 PHP Fatal error:  Uncaught exception 'Exception' with message 'Cannot traverse an already closed generator' in /home/marc/yield.php:16
 ```
 
@@ -164,13 +164,13 @@ Admettons que je veux faire un `foreach` sur un tableau d'un millions de lignes.
 
 Pour faire un Array de 1 Million de valeurs ce n'est pas très compliqué. Une instruction suffit.
 
-``` php
+```php
 range(1000000) = [1,2,3,4,...,1000000];
 ```
 
 Mais cela prend un peu de mémoire. Utilisons notre générateur de manière sympathique
 
-``` php
+```php
 function xrange($min, $max) {
   for ($i = $min; $i < $max; $i++) yield $i;
 }
@@ -185,7 +185,7 @@ l'énorme avantage est que je n'ai pas besoin de générer un array de 1 Million
 
 Pour lire un fichier:
 
-``` php 
+```php 
 function getLinesFromFile($fileName) {
     $fileHandle = fopen($fileName, 'r');
     while (false !== $line = fgets($fileHandle)) {
@@ -235,7 +235,7 @@ foreach (mystere() as $value) {
 
 Les générateurs se comportent comme des itérateurs, mais pour implémenter un [iterator](http://php.net/manual/fr/class.iterator.php) il faut implémenter l'interface suivante.
 
-``` php 
+```php 
  Iterator extends Traversable {
 /* Méthodes */
 abstract public mixed current ( void )
@@ -248,7 +248,7 @@ abstract public boolean valid ( void )
 
 Par exemple pour l'exemple du fichier (je recopie la doc de php)
 
-``` php
+```php
 class LineIterator implements Iterator {
     protected $fileHandle;
  
@@ -294,7 +294,7 @@ class LineIterator implements Iterator {
 
 L'implémentation en générateur.
 
-``` php
+```php
 function getLinesFromFile($fileName) {
     if (!$fileHandle = fopen($fileName, 'r')) {
         throw new RuntimeException('Impossible d\'ouvrir le fichier : "' . $fileName . '"');
@@ -317,7 +317,7 @@ Cela existe aussi dans les autres langages
 
 On trouve l'instruction `yield` surtout dans python
 
-``` python
+```python
 def countdown(n):
     while n > 0:
         yield n

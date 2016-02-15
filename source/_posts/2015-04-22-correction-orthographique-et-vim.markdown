@@ -18,7 +18,7 @@ set spell spelllang=fr
 
 Normalement Vim va télécharger pour vous les différents fichiers sur le Ftp officiel.  Il y a une commande interactive pour vous aider dans l'installation. Si jamais il a un souci le wiki français indique de se placer dans son répertoire `spell` (chez moi `~/.vim/spell`) et de lancer les commandes suivantes
 
-``` sh
+```sh
 wget http://ftp.vim.org/vim/runtime/spell/fr.latin1.spl
 wget http://ftp.vim.org/vim/runtime/spell/fr.latin1.sug
 wget http://ftp.vim.org/vim/runtime/spell/fr.utf-8.spl

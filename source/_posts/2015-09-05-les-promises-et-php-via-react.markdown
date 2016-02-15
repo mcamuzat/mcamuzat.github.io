@@ -23,7 +23,7 @@ Mais essayons quelques exemples qui seront un peu plus parlant.
 
 Pour ce faire nous allons d'abord installer [react/promises](https://github.com/reactphp/promise)
 
-``` php
+```php
 <?php
 require __DIR__.'/vendor/autoload.php';
 
@@ -44,20 +44,20 @@ $deferred->resolve();
 
 Voici ce que j'obtiens si je lance le programme.
 
-``` php
+```php
 tout va bien
 ```
 
 Si je remplace `$deferred->resolve()` par `$deferred->reject()`. Le travail n'as pas marché. J'obtiens 
 
-``` php
+```php
 Tout va mal
 ```
  <!--more-->
 
 La syntaxe de `then` est 
 
-``` php
+```php
 then(callable $onFulfilled = null, callable $onRejected = null, callable $onProgress = null)
 ```
 
@@ -67,7 +67,7 @@ then(callable $onFulfilled = null, callable $onRejected = null, callable $onProg
 
 A noter qu'une promise une fois qu'elle est résolue ou rejetée ne peut plus être réutilisée sauf dans le cas du `pending`
 
-``` php
+```php
 $promise->notify();
 $promise->notify();
 $promise->notify();
@@ -76,7 +76,7 @@ $promise->resolve();
 
 Le résultat
 
-``` 
+```
 j'attends
 j'attends
 j'attends
@@ -85,7 +85,7 @@ tout va bien
 
 Pour l'instant rien de bien compliqué. On peut chainer les promises
 
-``` php 
+```php 
 $promise  = $deferred->promise()->then(
     function () { echo "action 1 ok\n"; }
 )->then(
@@ -114,7 +114,7 @@ une des actions n'est pas ok..
 ```
 
 Ajoutons un exception à la deuxième étape.
-``` php 
+```php 
 $promise  = $deferred->promise()->then(
     function () { echo "action 1 ok\n"; }
 )->then(
@@ -133,7 +133,7 @@ une des actions n'est pas ok..
 ```
 
 Ajoutons une exception dans le premier, et ajoutons un cas pour gérer l'erreur
-``` php
+```php
 $promise  = $deferred->promise()->then(
     function () { throw new \Exception(); }
 )->then(
@@ -200,7 +200,7 @@ Devient
             function($result2){doAction3($result2);},
             function() {echo "une des actions n'est pas ok"}
         );
-``` 
+```
 
 C'est mieux non ?
 

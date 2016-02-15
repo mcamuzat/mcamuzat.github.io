@@ -8,7 +8,7 @@ categories: ["kata", "php", "livre"]
 
 Aujourd'hui commençons par un petit programme 
 
-``` sh
+```bash
   #!/bin/sh
   quine () {
   echo -e "#!/bin/sh\n$1"
@@ -36,18 +36,18 @@ Mais toute en quelque sorte peuvent se résumer à l'idée suivante.
 
 Le code python suivant est une interprétation littérale.
 
-``` py
+```py
 a='a=%r;print(a%%a)';print(a%a)
 ```
 
 En php
-``` php
+```php
 <?$a='<?$a=%c%s%c;printf($a,39,$a,39);';printf($a,39,$a,39);
 ```
 
 Seulement possible en php
 
-``` php
+```php
 <?php
 echo file_get_contents(__FILE__);
 ```

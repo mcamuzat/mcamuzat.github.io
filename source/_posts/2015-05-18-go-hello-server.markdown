@@ -25,7 +25,7 @@ Je crée un répertoire `hello-server`
 
 Dans ce répertoire je crée le fichier server.go
 
-``` go
+```go
 package main
 
 import (
@@ -65,7 +65,7 @@ Dans votre répertoire `bin` vous avez un exécutable `hello-server`
 
 si on reprend notre répertoire `go` avec le précédent post
 
-``` bash
+```bash
 
 .
 ├── bin

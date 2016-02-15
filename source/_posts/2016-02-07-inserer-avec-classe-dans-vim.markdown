@@ -50,7 +50,7 @@ En résumé
 
 Essayons de commenter les trois lignes.
 
-``` 
+```
 instruction 1 <-mon curseur est à cette ligne.
 instruction 2
 instruction 3

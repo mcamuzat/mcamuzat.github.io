@@ -37,7 +37,7 @@ Il reste la force brute.
 
 Voici ma version du xkcd en php
 
-``` php
+```php
 function findSolution($total, $list, $menu) {
     foreach($menu as $plat => $prix) {
         $result = array_merge($list, array($plat));
@@ -116,7 +116,7 @@ var_dump($count);
  * Alors `array_unique` vire les doublons 
  * Je deserialize avec à nouveau `array_map` et l'opération inverse.
 
-``` php
+```php
 array([resultat1], [resultat1],[resultat2])
 // array_map("serialize", $result);
 array("resultat1_serialisé","resultat1_serialisé","resultat2_serialisé");
@@ -124,9 +124,9 @@ array("resultat1_serialisé","resultat1_serialisé","resultat2_serialisé");
 array("resultat1_serialise", "resultat2_serialise");
 // array_map("unserialize", ..)
 array([resultat1], [resultat2])
-``` 
+```
 
-``` php
+```php
 int(12040)
 array(2) {
   [0] =>

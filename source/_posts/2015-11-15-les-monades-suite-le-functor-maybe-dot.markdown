@@ -12,7 +12,7 @@ Nous avons vue dans le précédent [post](blog/2015/11/11/les-monades-en-php-ces
 
 Je souhaite récupérer le mail du client "bob" ou afficher "pas de mail"
 
-``` php
+```php
 function getMail($name) {
 $mail = getUserByName($name)->getAddress()->getMail();
 if (null === $mail) {
@@ -33,7 +33,7 @@ PHP Fatal error: Call to a member function getMail() on a non-object..
 
 L'utilisateur n'existe pas forcement et puis l'adresse est peut-être vide.. Une implémentation naïve
 
-``` php
+```php
 function getMail($name) {
     $user = getUserByName($name);
     if ($user) {
@@ -63,7 +63,7 @@ J'ai un container `Some` et un Container `Nothing`.
 
 Le container `Nothing` est un container qui n'a aucune valeurs. La méthode `map` renvoie toujours un container `Nothing`.
 
-``` php
+```php
 class Nothing extends Container{
     public function map($function)
     {
@@ -89,7 +89,7 @@ class Nothing extends Container{
 
 Le container `Some` le résultats de `map` est un nouveau container `Some` s'il y a un résultat non-null sinon c'est un container `Nothing`.
 
-``` php 
+```php 
 class Some extends Container{
     public function map($function)
     {
@@ -132,7 +132,7 @@ Notons que j'ai une méthode qui me permet de sortir avec une valeurs par défau
 
 Quelques exemples:
 
-``` php
+```php
 echo maybeFromValue(null)->map("ucfirst")->getOrElse("non!!");
 // non!!
 echo maybeFromValue("oui!!")->map("ucfirst")->getOrElse("non!!");
@@ -147,7 +147,7 @@ Nous pouvons simplifier notre problème
 
 En le refactorisant ainsi
 
-``` php
+```php
 // example
 // method("name") return function($obj) {return $obj->getName()};
 
@@ -184,14 +184,14 @@ La syntaxe est un peu près le même
 
 Mais il y a plein de fonctionnalités
 
-``` php
+```php
 $entity = $this->findSomeEntity()->getOrElse(new Entity());
 $entity = $this->findSomeEntity()->getOrCall('createAnNewAddress');
 $entity = $this->findSomeEntity()->getOrThrow(new \Exception('ha!!!!!'));
 ```
 
 Il y a aussi des possibilité de chainer les réponses si pas de résultats
-``` php
+```php
 $entity = $this->findSomeEntity()->orElse($this->findSomeOtherEntity())
             ->orElse($this->createEntity());
 ```

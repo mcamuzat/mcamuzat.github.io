@@ -18,7 +18,7 @@ Nous allons créer un simple calculatrice.
 
 Nous définissons l'interface suivante
 
-``` php
+```php
 /**
  * Une expression arithmétique
  */
@@ -33,7 +33,7 @@ interface Expression
 ##Evaluer des constantes
 
 Voici le code pour évaluer des constantes
-``` php
+```php
 Class Constant implements Expression
 {
     private $value;
@@ -102,7 +102,7 @@ Faire la multiplication, la soustraction, la division ne sont pas plus compliqu�
 ##Ajouter d'autres méthodes
 
 Ajoutons la methode Abso qui renvoie la valeur absolue, la fonction min qui renvoie le minimum 
-``` php
+```php
 Class Abso Implements Expression
 {
     public function __construct($value) {
@@ -139,7 +139,7 @@ Nous allons ajouter les variables.
 Il nous faut d'abord implémenter le Context
 
 Voici la définition
-``` php
+```php
 /**
  * Interface Context
  */
@@ -183,7 +183,7 @@ class Memory implements Context
 
 Il ne nous reste plus qu'à implémenter la variable.
 
-``` php
+```php
 class Variable implements Expression
 {    public function __construct($name) {
         $this->name = $name;
@@ -214,7 +214,7 @@ On peux rajouter plein d'autre expression. L'avantage est qu'il suffit de rajout
 Changeons le cahier des charges. Je souhaite transformer mon Expression en chaine de caractères. Je peux m'en sortir en surchargeant la méthode `__tostring`
 
 Par exemple :
-``` php
+```php
 $expression = new Addition (new Addition(new Constant(3), new Constant(4)), new Constante(4));
 $expression->__toString() // me donne ((3 + 4) + 4);
 ```
@@ -245,7 +245,7 @@ je suis un peu bloqué, je dois rajouter à chaque fois une méthode dans chaque
 ##Visiteur Pattern à la rescousse !
 
 Je vais définir une méthode `accept(Visitor $visitor)`
-``` php
+```php
 interface Expression{
      public function accept(VisitorExpression $v);
 }
@@ -260,7 +260,7 @@ abstract class VisitorExpression{
 ```
 
 Voici comment se transforme l'addition, la constante et la variable (je ne mets pas tout..)
-``` php
+```php
 Class Constant implements Expression
 {
     private $value;
@@ -366,7 +366,7 @@ L'avantage de cette méthode est qu'il est très simple de changer le visiteur s
 
 Par exemple le visiteur qui convertit en php
 
-``` php
+```php
 }
 class VisitorToPhp extends VisitorEvaluation {
     public function visitAddition(Expression $expr)

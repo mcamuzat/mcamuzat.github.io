@@ -9,7 +9,7 @@ categories: [Bash, Php, MapReduce]
 #MapReduce du pauvre.
 
 ##une commande linux
-``` bash
+```bash
 find -name '*.php' | xargs -p 4 grep "ma chaine de caractère" | wc -l
 ```
 Cela ne se voit pas mais je viens de faire un map/reduce 
@@ -27,7 +27,8 @@ ici l'astuce tient dans une astuces `xargs -p 4` qui ordonne à xargs d'utiliser
 Il existe bien entendu les fonctions `array_map`, `array_filter`, `array_reduce` mais il ne sont pas spécialement plus rapide qu'une boucle foreach. Il existe un map pour les Collection de doctrine.
 
 je vais montrer que l'on peux écrires toute les opérations possibles avec 'array_reduce'. 
-```
+
+```php
 function mysum($array) {
     return array_reduce($array, function($acc, $item) {
         return $acc += $item;

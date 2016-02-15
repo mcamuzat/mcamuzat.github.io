@@ -18,7 +18,7 @@ Nous allons voir comment multiplier par 5 voir 10 les tests et l'environnement d
 
 Il suffit de modifier le `AppKernel.php`
 
-``` php
+```php
 public function getCacheDir()
 {
     if (in_array($this->environment, array('dev', 'test'))) {
@@ -119,7 +119,7 @@ Le code n'est pas modifié. Donc pas de commit bizarre et pas de problème en Pr
 
 J'ai pris un projet de mon boulot voici la différence pour les tests Behat
 
-``` 
+```
 Avant
 49 scenarios (49 passed)
 396 steps (396 passed)

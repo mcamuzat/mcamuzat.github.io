@@ -39,13 +39,13 @@ Enregistrons celui-ci en `README2.md`
 
 Et lançons la commande suivante
 
-``` sh
+```sh
 diff README.md README2.md
 ```
 
 Nous obtenons le résultat suivant
 
-``` diff
+```diff
 4d3
 < Ceci est une ligne ajoutée
 6a6,9
@@ -59,12 +59,12 @@ Il y a en fait plusieurs formats
 
 Essayez la commande suivante
 
-``` sh
+```sh
 diff -u README.md README2.md > readme.diff
 ```
 
 On obtient le fichier suivant
-``` diff
+```diff
 --- README.md   2015-11-02 22:07:43.728854981 +0100
 +++ README2.md  2015-11-02 22:13:58.244839112 +0100
 @@ -1,6 +1,9 @@
@@ -90,7 +90,7 @@ Pour ce convaincre nous allons demander à linux de jouer le fichier `.diff` qui
 
 Grâce à la commande suivante.
 
-``` sh
+```sh
 $ patch -p0 < README.diff 
 patching file README.md
 ```
@@ -118,7 +118,7 @@ Vous retrouvez les fameux `.orig` et `.rej` qui pourrissent un peu la vie de ceu
 Si vous voulez un merge. c'est possible
 ```
 $ patch -p0 --merge < README.diff
-``` 
+```
 le résultat
 ```
 Ceci est un exemple.
@@ -141,7 +141,7 @@ L'option `-p0` ou le plus souvent `-p1` demande à la commande `patch` d'ignorer
 
 Voici un exemple avec git et le même fichier
 
-``` diff
+```diff
 diff --git a/README.md b/README.md
 index 1030f85..5e8e5f9 100644
 --- a/README.md
@@ -162,19 +162,19 @@ on voit que la ligne `a/README.md` et `b/README.md`, ici pour appliquer le patch
 
 Sous Git c'est plus simple
 
-``` bash
+```bash
 $ git apply lefichier.diff
 ```
 ## Reverter 
 
 Enfin soyons complet il est possible de reverter un patch avec `-R`
-``` bash
+```bash
 patch -R -p1 < mon patch
 ```
 
 Avec git 
 
-``` bash
+```bash
 git apply -R <mon fichier diff>
 ```
 

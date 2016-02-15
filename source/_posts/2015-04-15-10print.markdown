@@ -30,7 +30,7 @@ Bon la police d'écriture ne rend pas vraiment justice au code.
 C'est possible de faire le même motif en PHP et en peu de code ?
 
 Une solution
-``` php
+```php
 $out = array('/', '\\');
 for($i = 0; $i < 1000; $i++){
     echo $out[array_rand($out)];
@@ -42,7 +42,7 @@ Attention `array_rand` renvoie la clé et non la valeur d'où le `$out[array_ran
 Et puis je me suis dit que array_rand ne sert pas à grand chose.
 
 Donc j'ai essayé
-``` php
+```php
 $out = array('/', '\\');
 for($i =0; $i < 1000; $i++){
  echo $out[rand(0,1)];
@@ -69,7 +69,7 @@ On minimise les variables et la notation avec les `[]`
 
 Nous obtenons le code suivant
 
-``` php
+```php
 for($i =0, $o = ['/', '\\']; $i < 1000; $i++, echo $o[mt_rand(0,1)]);
 ```
 

@@ -30,7 +30,7 @@ il faut alors ajouter dans votre `php.ini` la ligne suivante
 
 ```
 zend_extension=/usr/lib/php5/20090626/xdebug.so
-``` 
+```
 
 Ou plus propre rajouter dans un nouveau fichier  `/etc/php5/apache2/conf.d/xdebug.ini` et pareil pour la ligne de commande `/etc/php5/cli/conf.d/xdebug.ini`
 
@@ -59,19 +59,19 @@ Il y a des plugins Firefox et Chrome qui s'occupe de cela.
 
 Pour que le debugger soit lancer par défaut. Vous pouvez rajouter la ligne suivante
 
-``` ini
+```ini
 xdebug.remote_autostart=1
 ```
 
 Pour tester en ligne de commande.
 
-``` sh
+```sh
 php -dxdebug.remote_autostart=1 test.php
 ```
 
 un simple script bash fait l'affaire. `php-debug`
 
-``` sh
+```sh
 #!/bin/bash
 /usr/bin/php -dxdebug.remote_autostart=1 "$@"
 

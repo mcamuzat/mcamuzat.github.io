@@ -21,7 +21,7 @@ Il n'y a que le haut de la pile qui est visible. La pile est une mémoire LIFO (
 
 Quelques exemples.
 
-``` php
+```php
 $pile = new SplStack(); // la pile est vide []
 $pile->push(34) // [34]
 $pile->push(45) // [34, 45]
@@ -51,7 +51,7 @@ Voici l'algorithme :
 
 Un exemple
 
-``` 
+```
 soit 1 3 + 3 4 - * 
 # je prend la premiere valeur "1" c'est un chiffre je l'empile
 ma pile [ *1* ] 
@@ -73,7 +73,7 @@ L'avantage de la notation est qu'elle n'a pas besoin de parenthèse. Il n'y pas 
 
 L'implémentation est simple
 
-``` php
+```php
 function execute(array $ops)
 {
     $stack = new \SplStack();
@@ -111,7 +111,7 @@ function execute(array $ops)
 ```
 essayons notre exemple.
 
-``` php
+```php
 var_dump(execute(explode(' ', '1 3 + 3 4 - *');
 int(-4)
 ```
@@ -124,7 +124,7 @@ Je présente une version simplifié. *Shunting-yard* peut se traduire en **Aigui
 
 Soit la chaîne suivante:
 
-``` php
+```php
 var_dump($calculate(explode(' ', '( ( 1 + 3 ) * ( 3 - 4 ) )')));
 
 # int(-4)
@@ -235,14 +235,14 @@ operators [*] values [4 -1] expression:  )
 # ')' on dépile deux valeur de values et on depile une valeur de operators et on empile le résultat dans values
 operators [] values [-4] expression: 
 
-``` 
+```
 
 On se rend compte que cette algorithme très simple permet de calculer toutes les expressions que l'on passe du moment qu'elles sont bien formées. 
 
-``` php
+```php
 $expression = "( ( 1 + 3 ) * ( 3 - 4 ) )"
 var_dump(calculate(explode(" ", $expression)));
-``` 
+```
 
 Félicitation vous venez d'écrire votre premier interpréteur.
 
@@ -334,7 +334,7 @@ stack: [] output [1, 3, +, 3, 4, -, *] expression:  )
 
 # ')' on re depile la stack mais ici elle est déja vide. 
 
-``` 
+```
 
 Il suffit de transformer en array `$output` pour avoir le résultats suivants
 `( ( 1 + 3 ) * ( 3 - 4 ) )` -> `1 3 + 3 4 - *`

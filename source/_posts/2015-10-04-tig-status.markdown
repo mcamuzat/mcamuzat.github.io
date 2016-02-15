@@ -10,7 +10,7 @@ Tig est un client git en ligne de commande
 
 Il n'est pas compliqué à installer : 
 
-``` bash
+```bash
 sudo apt-get install tig
 ```
 
@@ -18,7 +18,7 @@ Néanmoins c'est la version 1.2 dans les dépôts au moment ou j'écris ces lign
 
 On peut installer la version 2 qui a plus de fonctionnalités et de raccourcis.
 
-``` bash
+```bash
 git clone https://github.com/jonas/tig
 make
 make install
@@ -111,7 +111,7 @@ Le fichier `.tigrc` permet de personnaliser l'affichage et d'ajouter des raccour
 
 Voici quelques exemples de ma config.
 
-``` 
+```
 # Delete files in status view (useful for untracked files)
 bind status D !@?rm %(file)
 

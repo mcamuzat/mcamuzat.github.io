@@ -13,7 +13,7 @@ Soit le tableau suivant.
 
 <!--more-->
 
-``` php
+```php
 $data = [
     ['id_article' => 1, 'titre' => 'titre1', 'meta' => ['images' => ['//first.jpg', '//second.jpg']]],
     ['id_article' => 2, 'titre' => 'titre2', 'meta' => ['images' => ['//third.jpg']]],
@@ -24,7 +24,7 @@ nous voulons afficher une liste avec une titre et et une image.
 
 Nous allons utilisez la fonction suivante
 
-``` php 
+```php 
 function get($key)
 {
     return function ($array) use ($key) {
@@ -35,7 +35,7 @@ function get($key)
 
 Exemple d'utilisation.
 
-``` php
+```php
 $getTitre = get("titre");
 foreach ($data as $line) {
   var_dump $getTitre($line");
@@ -44,14 +44,14 @@ foreach ($data as $line) {
 
 Le résultat
 
-``` sh 
+```sh 
 string (6) "titre1"
 string (6) "titre2"
 string (6) "titre3"
 ```
 
 Pour extraire les images utilisons notre Maybe
-``` php
+```php
 foreach ($data as $line) {
     maybeFromValue($line)->map(get("meta"))
        ->map(get("images"))
@@ -62,7 +62,7 @@ foreach ($data as $line) {
 ```
 Le résultat
 
-``` php
+```php
 string(11) "//first.jpg"
 string(11) "//third.jpg"
 string(3) "no-image.png"
@@ -75,7 +75,7 @@ Ré-ecrivons pour utiliser le bind. (Nous utilisons l'idée que la fonction que 
 {% img center /images/functionretourneSome.png 600 450 'la fonction renvoie un maybe' 'la fonction renvoie un maybe' %}
 
 
-``` php
+```php
 function get($key)
 {
     return function ($array) use ($key) {
@@ -87,7 +87,7 @@ function get($key)
 
 La fonction devient.
 
-``` php
+```php
 foreach ($data as $line) {
    var_dump(maybeFromValue($line)->bind(get("meta"))
        ->bind(get("images"))

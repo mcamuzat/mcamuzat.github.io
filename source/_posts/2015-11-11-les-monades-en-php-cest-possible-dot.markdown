@@ -56,7 +56,7 @@ Ainsi je suis protégé des effets néfastes.
 
 Voici le début de l'implémentation
  
-``` php
+```php
 class Container {
 
    /**
@@ -80,13 +80,13 @@ class Container {
 J'ai deux méthodes:  un constructeur, et une factory statique. 
 deux possibilités 
 
-``` php
+```php
 $valueNotSecure = "Je ne suis pas sympa";
 var_dump(new Container($valueNotSecure));
 var_dump(Container::of($valueNotSecure));
 ```
 
-``` php
+```php
 class Container#1 (1) {
   protected $value =>
   string(20) "Je ne suis pas sympa"
@@ -109,7 +109,7 @@ Je vais ajouter un sas de décontamination à ma structure via l'instruction `ma
 
 Soit la fonction suivante qui ajoute 1 à la valeur en entrée.
 
-``` php
+```php
 function addOne($value) {
     return $value + 1;
 }
@@ -127,7 +127,7 @@ Regardons le dessin suivant:
 
 Voici l'implémentation de `map` dans ma classe container.
 
-``` php 
+```php 
     public function map($function)
     {
         // call_user_func => $function($this->value)
@@ -137,14 +137,14 @@ Voici l'implémentation de `map` dans ma classe container.
 
 Et le code d'exemple.
 
-``` php
+```php
 $output = Container::of(5)
     ->map("addOne")
 var_dump($output);
 
 ```
 Et le résultat
-``` php
+```php
 class Container#2 (1) {
   protected $value =>
   int(6)
@@ -164,7 +164,7 @@ Quelques remarques
 {% img center /images/chainagecontainer.png 600 450 'J'ajoute un sas' 'J'ajoute un sas' %}
 
 
-``` php
+```php
 $output = Container::of(5)
     ->map("addOne")
     ->map("addOne")
@@ -181,7 +181,7 @@ var_dump($output);
 
 Bien sur il est parfaitement possible d'utiliser des callbacks
 
-``` php
+```php
 $output = Container::of(5)
     ->map("addOne")
     ->map(function($value) { return $value * 4;});
@@ -202,7 +202,7 @@ Donc j'ai un Sas d'entrée qui me permet d'interagir avec ma valeur. Je n'ai tou
 
 C'est pas très spectaculaire, j'ajoute une fonction extract() qui n'est qu'un simple return
 
-``` php 
+```php 
     ...
     public function extract()
     {
@@ -214,7 +214,7 @@ C'est pas très spectaculaire, j'ajoute une fonction extract() qui n'est qu'un s
 
 Exemple 
 
-``` php
+```php
 var_dump(
      Container::of("je suis tranquille")
          ->map(strtoupper)->extract()
@@ -228,7 +228,7 @@ var_dump(
 Nous allons utiliser la capacité de chainage de notre container pour faire un pseudo-décorateur.
 
 Soit les fonctions suivantes
-``` php 
+```php 
 function h1($text) 
 
 $output = Container::of("  la réponse est Non   ")
@@ -265,7 +265,7 @@ Par exemple reprenons notre fonction `addOne`
 
 {% img center /images/functionretournecontainer.png 600 450 'Ma fonction renvoie un container' 'ma fonction renvoie un container' %}
 
-``` php
+```php
 function addOne($value) {
     return Container::of($value + 1);
 }
@@ -280,7 +280,7 @@ Si j'utilise l'instruction `map`, je risque de mettre un container dans le conta
 
 D'où l'ajout de la méthode `bind`
 
-``` php
+```php
     public function bind($transformation)
     {
         return call_user_func($transformation, $this->value);
@@ -290,7 +290,7 @@ D'où l'ajout de la méthode `bind`
 
 On remarque que mon résultat reste chaînable.
 
-``` php
+```php
 $output = Container::of(5)
     ->bind("addOne")
     ->bind("addOne")
@@ -322,7 +322,7 @@ Dans le prochain post nous allons implémenter un  la Monade/Functor Maybe.
 
 Elle nous permettra de réfactoriser le code suivant
 
-``` php
+```php
 function getAbonnementByUserConnected() {
     $user = getUserConnected();
     // l'utilisateur est anonyme pas d'abonnement
@@ -348,7 +348,7 @@ function getPromotion() {
 ```
 
 Pour devenir 
-``` php
+```php
 $promotion = Maybe::of("getUserConnected")
     ->map("getAbonnementByUser")
     ->map("getPromotion")

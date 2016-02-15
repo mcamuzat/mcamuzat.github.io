@@ -19,7 +19,7 @@ Dans un projet, il n'y a rarement qu'une seule instance. Voir il peut y avoir pl
 
 Par exemple le `docker-compose.yml` suivant:
 
-``` yml
+```yml
 web:
   image: php:5.6-apache
   links:
@@ -40,13 +40,13 @@ Il suffit de faire `docker-compose up` (comme un `vagrant up`)  pour automatique
 
 Il existe deux façons de l'installer soit passer par `pip` (pip est l'équivalent de `npm` pour le python).
 
-``` bash
+```bash
 sudo pip install -U docker-compose
 ```
 
 Ou de passer par curl 
 
-``` bash
+```bash
 curl -L https://github.com/docker/compose/releases/download/1.2.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 ```

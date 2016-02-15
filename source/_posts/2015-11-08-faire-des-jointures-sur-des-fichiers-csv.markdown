@@ -42,7 +42,7 @@ Et puis je me suis souvenu de la commande `join`
 
 Voici la commande que j'ai utilisé 
 
-``` sh
+```sh
 join -11 -24 file1.csv file2.csv  -t,
 ```
 
@@ -86,12 +86,12 @@ deux possibilités
 
 
 
-``` sh
+```sh
 # Left-join
 join -11 -24 file1.txt file2.txt  -t, -o1.2,2.1,2.2 -a 1 -e NULL
 ```
 
-``` 
+```
 Noms1,SIRET1,Adresse1
 Noms2,SIRET2,Adresse2
 Noms2,SIRET2,Adresse2
@@ -100,7 +100,7 @@ Noms5,NULL,NULL
 
 ```
 
-``` sh
+```sh
 # Right-join
 join -11 -24 file1.txt file2.txt  -t, -o1.2,2.1,2.2 -a 2 -e NULL
 ```

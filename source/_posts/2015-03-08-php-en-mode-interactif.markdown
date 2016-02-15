@@ -18,7 +18,7 @@ C'est vraiment cool
 
 Bien entendu il existe déjà un mode interactif sous Php
 
-``` sh
+```sh
 php -a
 ```
 

@@ -25,7 +25,7 @@ J'ai décidé de la publier sous [Packagist](https://packagist.org/). Je n'avais
 
 Nous sommes partis du code suivant.
 
-``` php
+```php
 function spark($array) {
     $bars = array('▁','▂','▃','▄','▅','▆','▇','█');
     $divide = max($array);
@@ -60,7 +60,7 @@ return 0;
 
 Je vais découper cela en plusieurs fichiers et répertoires.
 
-``` 
+```
 .
 ├── bin
 │   └── spark
@@ -78,7 +78,7 @@ Je vais découper cela en plusieurs fichiers et répertoires.
 
 Voici `Spark.php`
 
-``` php
+```php
 <?php
 namespace Spark;
 
@@ -108,7 +108,7 @@ class Spark
 
 Et le fichier `spark` dans le répertoire `bin`
 
-``` php
+```php
 #!/usr/bin/env php
 <?php
 
@@ -138,7 +138,7 @@ C'est plutôt simple en fait. Il suffit de lancer la commande `composer init`. T
 
 à la fin j'obtiens.
 
-``` javascript
+```javascript
 {
     "name": "mcamuzat/spark",
     "description": "histogram in command line. Clone of holman/spark",
@@ -183,7 +183,7 @@ Et installer PHPUnit (qui est déjà dans mon `composer.json`)
 
 Le `phpunit.xml.dist` 
 
-``` xml
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 
 <phpunit backupGlobals="false"
@@ -213,7 +213,7 @@ Le `phpunit.xml.dist`
 
 On appelle le `bootstrap.php` qui fait venir l'autoloader
 
-``` php
+```php
 <?php
 $loader = @include __DIR__.'/../vendor/autoload.php';
 if (!$loader) {
@@ -224,7 +224,7 @@ if (!$loader) {
 
 Et enfin les tests
 
-``` php
+```php
 <?php
 namespace Spark;
 use Spark\Spark;
@@ -255,7 +255,7 @@ class SparkTest extends \PHPUnit_Framework_TestCase
 
 Lançons les tests
 
-``` sh
+```sh
 $ bin/phpunit 
 PHPUnit 4.8-ge1cc585 by Sebastian Bergmann and contributors.
 

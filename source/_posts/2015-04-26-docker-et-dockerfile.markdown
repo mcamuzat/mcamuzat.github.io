@@ -24,7 +24,7 @@ Nous allons faire
 ## Création du container à la main
 Je commence avec une Ubuntu que je lance en mode interactif.
 
-``` sh
+```sh
 docker run -it ubuntu:14.10
 ```
 Je mets à jour ma distribution
@@ -34,7 +34,7 @@ apt-get update
 
 J'installe tig (il est dans les dépôts officiels)
 
-``` sh
+```sh
 apt-get install -y tig
 ```
 

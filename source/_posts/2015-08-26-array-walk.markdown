@@ -19,7 +19,7 @@ Et puis on m'a demander la différence entre un `array_walk` et un `array_map`.
 
 Voici quelques exemples
 
-``` php
+```php
 // via un array_map
 $array = ['one', 'two', 'three']
 $out = array_map(uc_first, $array);
@@ -47,7 +47,7 @@ array_map(function($a),[a ,b, ..,z])
 
 ## `Array_walk`
 
-``` php
+```php
 $array = ['one', 'two', 'three']
 function toMaj(&$input, $key) {
     // ucfirst give error with 2 arguments
@@ -90,7 +90,7 @@ Je voulais faire un `CamelCase` -> `snake_case` mais comme le `array_walk` impos
 
 Soit l'exemple suivant
 
-``` php
+```php
 $array =  ["Tortue-ninja" => ["leonardo" , "donatello", "michelangelo","raphael"], "Mechant" => ["shredder", "krang"]];
 array_walk_recursive($array, function(&$item, $key) {
     if ($key === "Tortue-ninja") {
@@ -132,7 +132,7 @@ On ne passe jamais sur le clé : `Tortue-ninja`, d'ailleurs la documentation est
 > Toute clé qui est associée à un tableau n'est pas passée à la fonction de rappel.
 
 Un vrai exemple
-``` php
+```php
         array_walk_recursive($data, function (&$value) {
             if ($value instanceof \Traversable) {
                 $value = iterator_to_array($value);

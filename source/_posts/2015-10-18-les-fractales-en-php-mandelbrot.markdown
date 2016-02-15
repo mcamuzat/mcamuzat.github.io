@@ -7,7 +7,7 @@ categories: [PHP]
 ---
 
 
-``` 
+```
 ______________________________________
 ______________________________________
 ___________________________*__________
@@ -51,7 +51,7 @@ _____________________________________
 
 Voici le code : 
 
-``` php
+```php
 class Mandelbrot
 {
 
@@ -162,7 +162,7 @@ C'est le code de la fonction `iterate`. le php ne connaît pas les complexes(c'e
 
 Si on compte le nombre d'étapes pour dépasser 2 on obtient le schéma suivant.
 
-``` php
+```php
     function Mandelbrot()
     {
         for ($x = -19; $x < 19; $x++) {
@@ -181,7 +181,7 @@ Si on compte le nombre d'étapes pour dépasser 2 on obtient le schéma suivant.
 
 Voici le résultat
 
-``` 
+```
 --------------.......///1241410/....--
 -------------.......///023.2520//....-
 ------------.......///053)1 ,*1///....

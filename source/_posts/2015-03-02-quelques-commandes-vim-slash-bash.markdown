@@ -11,7 +11,7 @@ Quelques commandes utiles que j'utilise souvent
 
 ## Quand je ne suis pas sudo
 
-``` bash
+```bash
 $ apt-get install npm
 E: Could not open lock file /var/lib/dpkg/lock - open (13: Permission denied)
 E: Unable to lock the administration directory (/var/lib/dpkg/), are you root?
@@ -20,7 +20,7 @@ $ sudo !!
 `!!` est la dernière commande exécutée
 
 ### Une variante
-``` bash
+```bash
 mkdir log/
 cd !$ 
 ```
@@ -46,7 +46,7 @@ D'ailleurs si vous utilisez tout le temps `:wq` vous pouvez essayer
  - `:tabe fichier.txt` ouvre dans un nouvel onglet (vim seulement). on peux se ballader d'onglet en onglet avec les touches `gt` et `gT` `g` est le diminutif de *go* et `t` pour *tab*. ou avec `ctrl+<pageUp>` et `ctrl+<pageDown>` ou encore tout simplement cliquer avec la souris (astuce suivante)
 
 ### Active la souris
-``` 
+```
 set mouse=a
 ```
 une astuce est d'ajouter un .vimrc et d'ajouter cette ligne dans ce fichier de config.

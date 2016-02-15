@@ -32,7 +32,7 @@ Deux possibilités
 ### Dans le projet
 via une dépendance au projet en l'ajoutant dans le `composer.json`
 
-``` json
+```json
 {
     "require-dev": {
         "squizlabs/php_codesniffer": "2.*"
@@ -41,13 +41,13 @@ via une dépendance au projet en l'ajoutant dans le `composer.json`
 ```
 
 Alors dans le projet
-``` sh
+```sh
 ./vendor/bin/phpcs -h
 ```
 
 Personnellement je définie toujours un répertoire `bin` par défaut
 
-``` json
+```json
     "config": {
         "bin-dir": "bin"
     },
@@ -55,7 +55,7 @@ Personnellement je définie toujours un répertoire `bin` par défaut
 
 Ainsi la commande précédente devient
 
-``` sh
+```sh
 bin/phpcs 
 ```
 ### Installation globale
@@ -110,7 +110,7 @@ Code sniffer est capable de corriger certaines fautes tout seul. Encore une fois
 La syntaxe est la même que phpcs.
 ```
 php-cbf src/ 
-``` 
+```
 ## Php-cs-fixer
 
 Écris par [Sensio](http://sensiolabs.com/) les créateurs de [Symfony](http://symfony.com/). Ce logiciel fixe automatiquement l'indentation et différentes règles. L'avantage est qu'il est simple à installer pas besoin de cloner d'autre dépôt.

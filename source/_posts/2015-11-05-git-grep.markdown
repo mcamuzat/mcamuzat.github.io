@@ -33,7 +33,7 @@ le résultat s'affiche dans un pager (sous linux c'est souvent `less`).
 
 par exemple 
 
-``` sh
+```sh
 git grep -n -C 10 hello
 ```
  * `-n` numérote les lignes
@@ -45,17 +45,17 @@ A noter que git grep n'utilise que les fichiers dans le dépôt qui sont déjà 
 
 Mais la vrai force de git grep est de pouvoir chercher sur toute les branches !
 
-``` sh
+```sh
 git grep -n -C 10 -e <ma regex> <la branche>
 ```
 
 D'ailleurs si vous voulez savoir qui a commité a ajouté un bug qui contient le mot "Panda"
-``` sh
+```sh
 git rev-list --all | xargs git grep 'Panda'
 ```
 
 Il y a des alternatives
-``` sh
+```sh
 git log -G Panda
 git log -S Panda
 ```
@@ -80,7 +80,7 @@ Les différentes commandes
 ## Conclusion
 
 L'intégration dans *tig* me plait beaucoup, j'ai beaucoup tapé le commande suivante pour faire mes recherches. 
-``` sh
+```sh
  find . -name '*.php'| xargs grep 'array_walk_recur'
 ```
 

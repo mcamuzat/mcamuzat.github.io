@@ -14,7 +14,7 @@ Reprenons le container Maybe
 
 Ce que j'aimerai c'est pouvoir faire ce genre d'opération
 
-``` php
+```php
 Maybe(3) + Maybe(3) = Maybe(6)
 Container(4) * Container(5) = Container(40)
 str_repeat(Maybe(".oOo"), Maybe("3")) = Maybe(".oOo.oOo.oOo");
@@ -34,12 +34,12 @@ J'ai besoin de 2 étapes:
 
 Grâce à composer c'est très simple.
 
-``` 
+```
 composer require widmogrod/php-functional
 ```
 
 Voici le fichier php dans la racine du projet 
-``` php
+```php
 <?php
 require_once __DIR__ . '/vendor/autoload.php'; // Autoload files using Composer autoload
 
@@ -52,7 +52,7 @@ var_dump($b);
 ```
 
 Si vous obtenez ceci 
-``` php
+```php
 class Monad\Maybe\Just#4 (1) {
   protected $value =>
   int(2)
@@ -74,7 +74,7 @@ Nous allons faire quelque chose de curieux puisque nous ne mettons pas une valeu
 
 Regardons un exemple simple
 
-``` php
+```php
 $addOne = new Maybe\just(function($a) { return $a + 1;});
 $value = new Maybe\just(5);
 $result = $addOne->ap($value);
@@ -85,7 +85,7 @@ var_dump($result);
 Dans le premier Maybe on a mis une fonction. `ap` prend en entrée un Maybe.
 
 Nous obtenons 
-``` php
+```php
 class Monad\Maybe\Just#5 (1) {
   protected $value =>
   int(6)
@@ -95,14 +95,14 @@ class Monad\Maybe\Just#5 (1) {
 
 Essayons avec `Nothing`
 
-``` php
+```php
 $addOne = new Maybe\just(function($a) { return $a + 1;});
 $value = new Maybe\nothing();
 $result = $addOne->ap($value);
 ```
 
 Le résultat
-``` php
+```php
 class Monad\Maybe\Nothing#4 (0) {
 }
 ```
@@ -111,7 +111,7 @@ Cela ne semble pas très utiles
 
 Nous allons utiliser notre fonction `curryN` du [post précédent](). 
 
-``` php
+```php
 function add($a, $b)
 {
     return $a + $b;
@@ -163,7 +163,7 @@ Quand on "augmente" les fonctions pour travailler avec d'autre types,  on appell
 
 D'ailleurs cela s'exprime en 1 ligne avec la librairie
 
-``` php
+```php
 var_dump(f\liftA2("add", MayBe\just(5), Maybe\just(5)));
 // Maybe\Just(10)
 
