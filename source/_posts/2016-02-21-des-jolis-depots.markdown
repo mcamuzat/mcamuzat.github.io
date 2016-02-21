@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "De bien beau dépôt"
+title: "Des jolis dépôts"
 date: 2016-02-21 16:26:09 +0100
 comments: true
 categories: ["Github", "Git"] 
