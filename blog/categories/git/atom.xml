@@ -4,7 +4,7 @@
   <title><![CDATA[Category: git | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/git/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-02-15T21:56:11+01:00</updated>
+  <updated>2016-02-21T17:52:29+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,65 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[De bien beau dépôt]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/02/21/de-bien-beau-depot/"/>
+    <updated>2016-02-21T16:26:09+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/02/21/de-bien-beau-depot</id>
+    <content type="html"><![CDATA[<p>Aujourd&#8217;hui on va se faire plaisir et admirer des images de notre travail.</p>
+
+<p><img class="center" src="/images/codeologyreact.png" width="600" height="578" title="&lsquo;représentation 3D de ReactJs&rsquo; &lsquo;représentation 3D de ReactJs&rsquo;" ></p>
+
+<!--more-->
+
+
+<h2>Gource</h2>
+
+<p>Cela crée une animation des différents commits. Cela permet de visualiser le travail accompli, les différents intervenants.</p>
+
+<p><img class="center" src="/images/gource.png" width="600" height="353" title="&lsquo;screenshot du site officiel&rsquo; &lsquo;screenshot du site officiel&rsquo;" ></p>
+
+<ul>
+<li><a href="http://gource.io/">Gource</a></li>
+</ul>
+
+
+<h2>Codeology</h2>
+
+<p>Crée un modèle 3D du dépots.</p>
+
+<p>C&#8217;est assez bizarre.. On ne comprend pas trop ce qui est représenté. Mais C&#8217;est plûtot joli.</p>
+
+<p><img class="center" src="/images/codeology.png" width="600" height="346" title="&lsquo;representation 3D de Three.js&rsquo; &lsquo;representation 3D de Three.js&rsquo;" ></p>
+
+<ul>
+<li><a href="http://codeology.braintreepayments.com/">codeology</a></li>
+<li>vue de <a href="http://codeology.braintreepayments.com/featured/facebook/react">ReactJs</a></li>
+<li>vue de <a href="http://codeology.braintreepayments.com/featured/django/django">Danjgo</a></li>
+</ul>
+
+
+<h2><a href="http://ghv.artzub.com/">http://ghv.artzub.com/</a></h2>
+
+<p>Rentrez l&#8217;utilisateur et puis le projet (la visualisation s&#8217;inspire de <a href="http://www.michaelogawa.com/code_swarm/">codeswarm</a>)</p>
+
+<ul>
+<li><p>Vue par auteur
+<img class="center" src="/images/githubvisualbyauthor.png" width="600" height="350" title="&lsquo;vue par auteur&rsquo; &lsquo;vue par auteur&rsquo;" ></p></li>
+<li><p>Vue par projet
+<img class="center" src="/images/githubvisualbyproject.png" width="600" height="342" title="&lsquo;vue par auteur&rsquo; &lsquo;vue par auteur&rsquo;" ></p></li>
+<li><p><a href="http://ghv.artzub.com/">http://ghv.artzub.com</a></p></li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>Il y a eu des tentatives de générer un CV via le dépôt de github (Notamment <a href="http://resume.github.io/">resumé (down)</a> et <a href="https://github.com/dfm/osrc">The Open Source Report Card (down)</a>. <strong>Les deux sites ne marchent plus depuis la modifcation de l&#8217;API de Github</strong>.</p>
+
+<p>Un Github bien rempli montre que l&#8217;utilisateur est actif et qu&#8217;il participe. Mais le contraire ne prouve rien. Cela fait 7 ans que je bosse dans le monde de l&#8217;informatique. Mon Github est plutôt vide (mais grâce au blog je le remplis chaque semaine..)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Remettre au propre son dépot git]]></title>
@@ -532,171 +591,6 @@ patch -R -p1 &lt; mon patch
 <li><a href="https://github.com/sjl/gundo.vim/">Gundo</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Tig : Status]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/10/04/tig-status/"/>
-    <updated>2015-10-04T21:59:59+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/10/04/tig-status</id>
-    <content type="html"><![CDATA[<p>Tig est un client git en ligne de commande</p>
-
-<p>Il n&#8217;est pas compliqué à installer :</p>
-
-<pre><code class="bash">sudo apt-get install tig
-</code></pre>
-
-<p>Néanmoins c&#8217;est la version 1.2 dans les dépôts au moment ou j&#8217;écris ces lignes.</p>
-
-<p>On peut installer la version 2 qui a plus de fonctionnalités et de raccourcis.</p>
-
-<pre><code class="bash">git clone https://github.com/jonas/tig
-make
-make install
-</code></pre>
-
-<p>attention vous aurez probablement besoin d&#8217;avoir installer la librairies <code>libncursesw</code> pour l&#8217;utf-8</p>
-
-<h2>La vue principale</h2>
-
-<p>Elle permet de voir l&#8217;historique du dépôt.</p>
-
-<p><img class="center" src="/images/tig-defaut.png" width="600" height="398" title="&lsquo;la vue par défault&rsquo; &lsquo;la vue par défaut&rsquo;" ></p>
-
-<!--more-->
-
-
-<p>Appuyer sur <code>&lt;Enter&gt;</code> pour voir la différence. (Dans la version 2, si le terminal fait plus de 160 caractères l&#8217;écran se splitte en 2 verticalement)</p>
-
-<p><img class="center" src="/images/tig-diff.png" width="600" height="399" title="&lsquo;quand on appuie sur la touche entrée, on affiche la différence&rsquo; &lsquo;l'écran de différence&rsquo;" ></p>
-
-<p>Screenshot de la version 2 avec les deux colonnes.</p>
-
-<p><img class="center" src="/images/tig_view_v2.png" width="600" height="366" title="&lsquo;dans la version 2, si le terminal&rsquo; &lsquo;Screenshot de la version 2 avec les deux colonnes.&rsquo;" ></p>
-
-<p>Il va falloir apprendre les touches Vi car on se sert beaucoup de <code>j</code> et <code>k</code> (un rappel <code>j</code> descend vers le bas et <code>k</code> va vers le haut)</p>
-
-<p>De cette écran voici les différents modes (je ne les cites pas tous)</p>
-
-<ul>
-<li><code>S</code> ou <code>s</code> pour voir le stage (équivalent de git status)</li>
-<li><code>t</code> tree view affichage en explorateur de fichier</li>
-<li><code>r</code> permet de voir les différentes branches (<code>H</code> dans la version1</li>
-<li><code>l</code> voir les logs</li>
-</ul>
-
-
-<p>Je vais surtout m&#8217;intéresser à la status view.</p>
-
-<h2>La vue Status</h2>
-
-<p>Les touches à connaitre.</p>
-
-<ul>
-<li><code>u</code> sur un noms de fichiers pour <strong>u</strong>se cela fait l&#8217;équivalent de <code>git add &lt;nom du fichier&gt;</code></li>
-</ul>
-
-
-<p>Si vous appuyer sur <code>u</code> sur les lignes <code>Changes to be commited</code>, <code>Changed but not updated</code>, <code>Untracked files</code> vous ajoutez tous les fichiers.</p>
-
-<pre><code>Changes to be committed:
-M   fichier1
-Changed but not updatedy://&lt;---(*curseur*) 
-M   fichier2
-M   fichier3
-M   fichier4
-M   fichier5
-M   fichier6
-M   fichier7
-Untracked files:
-?   nouveau fichier
-</code></pre>
-
-<p>Cela devient</p>
-
-<pre><code>Changes to be committed:
-M   fichier1
-M   fichier2
-M   fichier3
-M   fichier4
-M   fichier5
-M   fichier6
-M   fichier7
-Changed but not updatedy:
-(no files)
-Untracked files:
-?   nouveau fichier
-</code></pre>
-
-<p>Enfin on peut aussi prendre chunk par chunck (l&#8217;équivalent de <code>git add -p</code>)</p>
-
-<p><img class="center" src="/images/tig-revert.png" width="600" height="398" title="&lsquo;la vue par défaut&rsquo; &lsquo;la vue par défaut&rsquo;" ></p>
-
-<p>Il suffit d&#8217;appuyer sur <code>Enter</code> puis de se déplacer dans le commit avec <code>j</code> et <code>k</code> et appuyer sur <code>u</code> pour ajouter ce chunk. Les chunks pour faire simple sont les textes séparés par des <code>@@ ... @@</code>. On se déplace de chunk en chunk grâce à la touche <code>@</code>.</p>
-
-<p>Pour reverter le fichier, On utilise la touche <code>!</code>.</p>
-
-<p>Cela marche aussi sur un chunk. On peut donc reverter partiellement un fichier.</p>
-
-<p>Il est possible d&#8217;ajouter ligne par ligne dans un commit grâce à la touche <code>1</code>.</p>
-
-<p>Pour faire le git commit il suffit d&#8217;appuyer sur <code>C</code> comme <strong>C</strong>ommit.</p>
-
-<p>Enfin la touche <code>e</code> comme <strong>e</strong>dit ouvre le fichier dans l&#8217;éditeur par défaut.</p>
-
-<h2>Le fichier <code>.tigrc</code></h2>
-
-<p>Le fichier <code>.tigrc</code> permet de personnaliser l&#8217;affichage et d&#8217;ajouter des raccourcis claviers.</p>
-
-<p>Voici quelques exemples de ma config.</p>
-
-<pre><code># Delete files in status view (useful for untracked files)
-bind status D !@?rm %(file)
-
-# Amend last commit with A
-bind status A !git commit --amend
-
-# Create and checkout a new branch; specify custom prompt
-bind main B !git checkout -b "%(prompt Enter new branch name: )"
-</code></pre>
-
-<p>Les raccourcis claviers que j&#8217;ai rajouté</p>
-
-<ul>
-<li>Dans la vue status la touche <code>D</code> efface le fichier</li>
-<li>Dans la vue status la touche <code>A</code> fait un <code>git commit --amend</code></li>
-<li>Dans la vue principale la touche <code>B</code> permet de créer une branche.</li>
-</ul>
-
-
-<h2>Résumé de touches</h2>
-
-<ul>
-<li><code>s</code> ou <code>S</code> voir la vue status</li>
-<li><code>u</code> ajouter le commit/chunk</li>
-<li><code>!</code> revert</li>
-<li><code>1</code> ajoute une lignes au commit</li>
-<li><code>@</code> aller au chunck/diff suivant</li>
-<li><code>D</code> supprimer le fichier (<em>raccourcis perso</em>)</li>
-<li><code>A</code> git amend</li>
-<li><code>e</code> ouvre dans l&#8217;éditeur par défaut</li>
-</ul>
-
-
-<h2>Des liens</h2>
-
-<ul>
-<li><a href="http://jonas.nitro.dk/tig/">le site officiel</a></li>
-<li>la <a href="https://github.com/pmiossec/tig-cheat-sheet">cheat-sheet</a> avec les raccourcis claviers (<em>indispensable</em>)</li>
-</ul>
-
-
-<h2>Conclusion</h2>
-
-<p>Je vais revenir sur les autres vues bientôt.</p>
-
-<p>Merci de m&#8217;avoir lu.</p>
 ]]></content>
   </entry>
   

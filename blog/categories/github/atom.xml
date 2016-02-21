@@ -4,7 +4,7 @@
   <title><![CDATA[Category: github | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/github/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-02-15T21:56:11+01:00</updated>
+  <updated>2016-02-21T17:52:29+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,65 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[De bien beau dépôt]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/02/21/de-bien-beau-depot/"/>
+    <updated>2016-02-21T16:26:09+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/02/21/de-bien-beau-depot</id>
+    <content type="html"><![CDATA[<p>Aujourd&#8217;hui on va se faire plaisir et admirer des images de notre travail.</p>
+
+<p><img class="center" src="/images/codeologyreact.png" width="600" height="578" title="&lsquo;représentation 3D de ReactJs&rsquo; &lsquo;représentation 3D de ReactJs&rsquo;" ></p>
+
+<!--more-->
+
+
+<h2>Gource</h2>
+
+<p>Cela crée une animation des différents commits. Cela permet de visualiser le travail accompli, les différents intervenants.</p>
+
+<p><img class="center" src="/images/gource.png" width="600" height="353" title="&lsquo;screenshot du site officiel&rsquo; &lsquo;screenshot du site officiel&rsquo;" ></p>
+
+<ul>
+<li><a href="http://gource.io/">Gource</a></li>
+</ul>
+
+
+<h2>Codeology</h2>
+
+<p>Crée un modèle 3D du dépots.</p>
+
+<p>C&#8217;est assez bizarre.. On ne comprend pas trop ce qui est représenté. Mais C&#8217;est plûtot joli.</p>
+
+<p><img class="center" src="/images/codeology.png" width="600" height="346" title="&lsquo;representation 3D de Three.js&rsquo; &lsquo;representation 3D de Three.js&rsquo;" ></p>
+
+<ul>
+<li><a href="http://codeology.braintreepayments.com/">codeology</a></li>
+<li>vue de <a href="http://codeology.braintreepayments.com/featured/facebook/react">ReactJs</a></li>
+<li>vue de <a href="http://codeology.braintreepayments.com/featured/django/django">Danjgo</a></li>
+</ul>
+
+
+<h2><a href="http://ghv.artzub.com/">http://ghv.artzub.com/</a></h2>
+
+<p>Rentrez l&#8217;utilisateur et puis le projet (la visualisation s&#8217;inspire de <a href="http://www.michaelogawa.com/code_swarm/">codeswarm</a>)</p>
+
+<ul>
+<li><p>Vue par auteur
+<img class="center" src="/images/githubvisualbyauthor.png" width="600" height="350" title="&lsquo;vue par auteur&rsquo; &lsquo;vue par auteur&rsquo;" ></p></li>
+<li><p>Vue par projet
+<img class="center" src="/images/githubvisualbyproject.png" width="600" height="342" title="&lsquo;vue par auteur&rsquo; &lsquo;vue par auteur&rsquo;" ></p></li>
+<li><p><a href="http://ghv.artzub.com/">http://ghv.artzub.com</a></p></li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>Il y a eu des tentatives de générer un CV via le dépôt de github (Notamment <a href="http://resume.github.io/">resumé (down)</a> et <a href="https://github.com/dfm/osrc">The Open Source Report Card (down)</a>. <strong>Les deux sites ne marchent plus depuis la modifcation de l&#8217;API de Github</strong>.</p>
+
+<p>Un Github bien rempli montre que l&#8217;utilisateur est actif et qu&#8217;il participe. Mais le contraire ne prouve rien. Cela fait 7 ans que je bosse dans le monde de l&#8217;informatique. Mon Github est plutôt vide (mais grâce au blog je le remplis chaque semaine..)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Git un peu de fun]]></title>
@@ -703,44 +762,6 @@ git push origin master
 <p>Nous avons d&#8217;installer Go.</p>
 
 <p>Je viens juste de m&#8217;y mettre, Je ne sais pas encore ce que la suite nous réserve..</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Awesome et liste de liens]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/04/29/awesome-et-liste-de-liens/"/>
-    <updated>2015-04-29T22:15:34+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/04/29/awesome-et-liste-de-liens</id>
-    <content type="html"><![CDATA[<h2>Introduction</h2>
-
-<p>Les développeurs aiment les liens. Il y a toujours un article à partager et/ou sauvegarder. Pour les sauvegarder, Personnelement j&#8217;utilisai un fichier texte ou j&#8217;ajoutai en favori dans mon navigateur (avec plus ou moins de bonheur au moment du changement d&#8217;ordinateur). Des gens ont décidé de versionner leurs listes de liens sur Github.  Cela s&#8217;appelle  <strong>Awesome</strong>-(la techno ou le thème que vous vous voulez)</p>
-
-<p>par exemple:</p>
-
-<ul>
-<li>PHP : <a href="https://github.com/ziadoz/awesome-php">awesome-php</a></li>
-<li>Symfony2 : <a href="https://github.com/EmanueleMinotto/awesome-symfony2">awesome-symfony2</a></li>
-<li>Docker : <a href="https://github.com/veggiemonk/awesome-docker">awesome-docker</a></li>
-<li>Les meilleurs cours en ligne : <a href="https://github.com/prakhar1989/awesome-courses">awesome-courses</a></li>
-<li>React : <a href="https://github.com/enaqx/awesome-react">awesome-react</a></li>
-<li>Sysadmin: <a href="https://github.com/kahun/awesome-sysadmin">awesome-sysadmin</a></li>
-<li>Web Performance Optimization:<a href="https://github.com/davidsonfellipe/awesome-wpo">awesome-wpo</a></li>
-<li>etc ..</li>
-</ul>
-
-
-<h2>Des listes qui contiennent des listes.</h2>
-
-<p>Ben oui la liste est longue. C&#8217;est pour cela qu&#8217;il existe une awesome-list de awesome</p>
-
-<ul>
-<li><a href="https://github.com/bayandin/awesome-awesomeness">awesome-awesomeness</a></li>
-</ul>
-
-
-<h2>Une conclusion</h2>
-
-<p>Si vous cherchez à vous former dans une techno, je crois que vous savez par où commencer.</p>
 ]]></content>
   </entry>
   
