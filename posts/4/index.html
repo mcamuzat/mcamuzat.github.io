@@ -9,13 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Soit le fichier texte suivant: 1
-2
-3
-4
-5
-6 * Alpha * Foxtrot * Charlie * Delta * Echo * Bravo Dans VIM il suffit de taper. 1
-:%sort ou :%!sort Pour &hellip;">
+  <meta name="description" content="Les promises sont une alternative plus puissante au Callback. Relativement peu connues au début. Elle sont maintenant en standard dans beaucoup de &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +62,114 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/09/05/les-promises-et-php-via-react/">Les promises et Php via ReactPhp</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-09-05T19:10:10+02:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Les promises sont une alternative plus puissante au Callback. Relativement peu connues au début. Elle sont maintenant en standard dans beaucoup de langage javascript ES6, python 3.2, java. Où via des librairies comme <a href="https://github.com/reactphp/promise">react/promise</a> pour php</p>
+
+<p>Une promise représente une valeur donc le résultat n&#8217;est pas encore connu.
+Quand le résultat est connu,  la promise a 3 états possibles</p>
+
+<ul>
+<li><strong>Pending</strong> ou <strong>Unfulfillled</strong>  en Attente..</li>
+<li><strong>Resolved</strong> ou <strong>fulfillled</strong>  Succès</li>
+<li><strong>Rejected</strong> ou <strong>Failed</strong>  Erreur.</li>
+</ul>
+
+
+<p>Un <em>Deffered</em> représente un travail qui n&#8217;est pas encore fini. Donc un <em>Deferred</em> possède une promise (une valeur pas encore connues).</p>
+
+<p>Quand la valeur est connue, la promesse utilise un <em>handler</em> (en général <code>-&gt;then()</code>) qui lui-même renvoie une promise. L&#8217;intérêt est que les promises sont chainables.</p>
+
+<p>Mais essayons quelques exemples qui seront un peu plus parlant.</p>
+
+<p>Pour ce faire nous allons d&#8217;abord installer <a href="https://github.com/reactphp/promise">react/promises</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">require</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/vendor/autoload.php&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// On crée un travail</span>
+</span><span class='line'><span class="nv">$deferred</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">React\Promise\Deferred</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// On veux la promise</span>
+</span><span class='line'><span class="nv">$promise</span>  <span class="o">=</span> <span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">promise</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
+</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&quot;tout va bien </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span> <span class="p">},</span>
+</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&quot;tout va mal </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span> <span class="p">},</span>
+</span><span class='line'>    <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&quot;j&#39;attends</span><span class="se">\n</span><span class="s2"> &quot;</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Le travail est un succes, on résoud la promise</span>
+</span><span class='line'><span class="nv">$deferred</span><span class="o">-&gt;</span><span class="na">resolve</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Voici ce que j&#8217;obtiens si je lance le programme.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">tout</span> <span class="nx">va</span> <span class="nx">bien</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Si je remplace <code>$deferred-&gt;resolve()</code> par <code>$deferred-&gt;reject()</code>. Le travail n&#8217;as pas marché. J&#8217;obtiens</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">Tout</span> <span class="nx">va</span> <span class="nx">mal</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> </div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/09/05/les-promises-et-php-via-react/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -587,57 +689,6 @@ quand je lance mes tests je vois cela.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/08/01/php-code-sniffer-mise-en-place/">PHP Code Sniffer mise en place</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-08-01T18:33:12+02:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Qualité de code et php</h2>
-
-<p>Dans ce post nous allons voir les logiciels qui permettent de respecter les standards de code en PHP.</p>
-
-<p>En pratique il n&#8217;y en a que 2.</p>
-
-<ul>
-<li><a href="https://github.com/squizlabs/PHP_CodeSniffer">CodeSniffer</a></li>
-<li><a href="http://cs.sensiolabs.org/">PHP Coding Standards Fixer</a></li>
-</ul>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/08/01/php-code-sniffer-mise-en-place/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/5">&larr; Older</a>
@@ -687,6 +738,10 @@ quand je lance mes tests je vois cela.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/02/28/installation-dun-proxmox-4-dot-0/">Installation d&#8217;un proxmox 4.0</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/02/21/des-jolis-depots/">Des jolis dépôts</a>
       </li>
     
@@ -700,10 +755,6 @@ quand je lance mes tests je vois cela.</p>
     
       <li class="post">
         <a href="/blog/2016/02/07/inserer-avec-classe-dans-vim/">Insérer avec classe dans VIM</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/02/01/cloud9-un-workspace-en-ligne/">Cloud9 un workspace en ligne</a>
       </li>
     
   </ul>

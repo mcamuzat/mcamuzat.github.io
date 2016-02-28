@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-02-21T18:01:12+01:00</updated>
+  <updated>2016-02-28T18:59:18+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,210 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Installation d'un proxmox 4.0]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/02/28/installation-dun-proxmox-4-dot-0/"/>
+    <updated>2016-02-28T16:47:39+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/02/28/installation-dun-proxmox-4-dot-0</id>
+    <content type="html"><![CDATA[<h2>Introduction</h2>
+
+<p><img class="center" src="/images/proxmox-logo.png" width="292" height="35" title="&lsquo;logo de proxmox&rsquo; &lsquo;logo de proxmox&rsquo;" ></p>
+
+<p>J&#8217;ai acheté un serveur dédié chez OVH. Au travail nous utilisons un <a href="https://www.proxmox.com/en/proxmox-ve">Proxmox</a> En solution de virtualisation. Étant plutôt content du logiciel. J&#8217;ai tout naturellement installé Proxmox sur mon serveur dédié. J&#8217;en ai profité pour passer à la version 4.</p>
+
+<p>Mais &hellip;</p>
+
+<p>Proxmox V4 utilise <a href="https://help.ubuntu.com/community/LXC">LXC</a>  alors que la version précédente utilise <a href="https://openvz.org/Main_Page">OpenVZ</a>. Et tous les tutoriaux sont globalement sur les versions 3.</p>
+
+<p>Je suis arrivé à installer le logiciel. Voici le résumé de la première partie</p>
+
+<ul>
+<li>Installation du Proxmox</li>
+<li>Reglage du Réseau</li>
+<li>Création d&#8217;un première instance.</li>
+</ul>
+
+
+<!--more-->
+
+
+<h2>Installations de proxmox</h2>
+
+<p>J&#8217;ai acheté la machine déjà installée sur <a href="https://www.ovh.com/fr/">OVH</a>.</p>
+
+<p>Pas grand chose à dire dessus.</p>
+
+<h2>Réglage du réseau</h2>
+
+<p>se connecter en ssh
+<code>
+ssh root@&lt;ip_de_la_machine&gt;
+</code>
+dans le <code>/etc/network/interfaces</code>
+C&#8217;est un peu la ou j&#8217;ai eu beaucoup de mal. Par défaut il y a normalement déjà deux interfaces virtuelles (des bridges pour être plus précis) déjà installées. <code>vmbr0</code> et <code>vmbr1</code>.</p>
+
+<ul>
+<li><strong>Ne touchez pas à <code>vmbr0</code></strong></li>
+</ul>
+
+
+<p>Voici la configuration de mon serveur.</p>
+
+<pre><code># This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# for Routing
+auto vmbr1
+iface vmbr1 inet static
+        #post-up /etc/pve/kvm-networking.sh
+        address 192.168.15.20/24
+        bridge_ports none
+        bridge_stp off
+        bridge_fd 0
+
+
+# vmbr0: Bridging. Make sure to use only MAC adresses that were assigned to you.
+auto vmbr0
+iface vmbr0 inet static
+      ... l'ip de la machine ..
+
+iface vmbr0 inet6 static
+      ... la même chose en ipv6..
+</code></pre>
+
+<p>Je n&#8217;ai rajouté que les lignes suivantes dans vmbr1
+<code>
+        address 192.168.15.20/24
+        bridge_ports none
+        bridge_stp off
+        bridge_fd 0
+</code></p>
+
+<p>Il faut aussi activer l&#8217;IP forwarding
+pour ce faire il faut éditer le fichier <code>/etc/sysctl.conf</code>
+<code>
+/etc/sysctl.conf:
+net.ipv4.ip_forward = 1
+</code></p>
+
+<p>Il faut lancer le programme pour prendre en compte les modifications</p>
+
+<pre><code>sysctl -p /etc/sysctl.conf
+</code></pre>
+
+<p>Et redémarrer le service network</p>
+
+<pre><code>service network restart
+</code></pre>
+
+<h2>Mise en place de Iptable.</h2>
+
+<p>Voici le script dans le répertoire
+<code>/root/iptables_start.sh</code></p>
+
+<pre><code class="sh">#!/bin/bash
+
+#vider table NAT
+iptables -F
+iptables -X
+iptables -t nat -F
+iptables -t nat -X
+iptables -t mangle -F
+iptables -t mangle -X
+iptables -P INPUT ACCEPT
+iptables -P FORWARD ACCEPT
+iptables -P OUTPUT ACCEPT
+
+# On laisse sortir les vm
+iptables -t nat -A POSTROUTING -s 192.168.15.0/24 -o vmbr0 -j MASQUERADE
+</code></pre>
+
+<p>La première partie vide toute les règles de redirection.</p>
+
+<p>La seconde partie va permettre au vm dont l&#8217;ip est entre 192.168.15.1 à 192.168.15.254 de sortir sur le réseau.</p>
+
+<h2>Résumé</h2>
+
+<ul>
+<li>Nous avons réglé <code>vmbr1</code> avec une adresse en 192.168.15.20/24</li>
+<li>Nous avons activé le forward d&#8217;Ip</li>
+<li>Nous avons créer un script <code>iptables_start.sh</code> qui supprime les anciennes regles et qui permet au réseau 192.168.15.0/24 de récuperer le net.</li>
+</ul>
+
+
+<h2>Créer sa Première instance.</h2>
+
+<p>Allons sur la dashboard de votre proxmox (voir mail OVH)</p>
+
+<h3>Récupérer des Isos/templates</h3>
+
+<p>Normalement vous avez une icônes avec un disque dur avec normal(..) cliquer sur <code>content-&gt;menu Template</code></p>
+
+<p><img class="center" src="/images/choixtemplate.png" width="600" height="407" title="&lsquo;choix des isos templates&rsquo; &lsquo;choix des isos templates&rsquo;" ></p>
+
+<p>Téléchargeons une Ubuntu.</p>
+
+<h3>Créer un container</h3>
+
+<p>Cliquer sur l&#8217;icone <code>create CT</code> en haut à droite.</p>
+
+<h4>Général</h4>
+
+<p>Normalement avoir l&#8217;image suivante.
+<img class="center" src="/images/creationvmgeneral.png" width="600" height="379" title="&lsquo;création nouveau container&rsquo; &lsquo;création nouveau container&rsquo;" >
+Mettons le noms de l&#8217;instance <code>nginxproxy</code> et mettons un mots de passe. Normalement on vous propose <code>VM ID 101</code> si vous n&#8217;avez aucun container.</p>
+
+<h4>Template</h4>
+
+<p>Mettre l&#8217;iso Ubuntu que vous venez de télécharger</p>
+
+<h4>Root Disk</h4>
+
+<p>8 giga c&#8217;est très bien</p>
+
+<h4>CPU</h4>
+
+<p>C&#8217;est ici que l&#8217;on regle le nombre de cpu</p>
+
+<h4>La mémoire</h4>
+
+<p>Vous pouvez rajouter de la mémoire ici (2Giga en Memoire, Swap 512)</p>
+
+<h4>Network</h4>
+
+<p>C&#8217;est ici que c&#8217;est un peu plus compliqué</p>
+
+<p><img class="center" src="/images/creationvmreseau.png" width="600" height="390" title="&lsquo;réglage du réseau&rsquo; &lsquo;réglage du réseau&rsquo;" >
+dans le bridge mettre <strong>vmbr1</strong></p>
+
+<p>dans l&#8217;ip c&#8217;est simple c&#8217;est <code>192.168.15.&lt;numéro d'instance&gt;/24</code>. si vous avez l&#8217;instance 101 alors l&#8217;ip est <code>192.168.15.101/24</code></p>
+
+<p>dans la gateway c&#8217;est <code>192.168.15.20</code> la même ip défini dans le <code>vmbr1</code></p>
+
+<h4>Dns</h4>
+
+<p>Rien à faire..</p>
+
+<p>Vous n&#8217;avez plus qu&#8217;a confirmer. Normalement en 15 secondes la vm est crée.</p>
+
+<h4>Finition.</h4>
+
+<p>Avant d&#8217;allumer la vm cliquer sur l&#8217;icône de la vm puis <code>Options</code> puis cliquez sur la ligne <code>Start at boot</code> puis <code>Edit</code> et <code>yes</code> si le proxmox redémarre, on relance la machine (ce qui n&#8217;est pas le cas par défaut)</p>
+
+<h4>Allumage</h4>
+
+<p>Vous pouvez lancer la vm cliquez sur start.</p>
+
+<h2>Conclusion</h2>
+
+<p>Nous avons réglé le proxmox, installé la première instance. dans la partie 2 nous nous connecterons sur l&#8217;instance pour terminer les réglages. Nous mettrons en place aussi le nginx pour rediriger les urls vers les bonnes instances.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Insérer avec classe dans VIM]]></title>
@@ -387,125 +591,6 @@ NULL,SIRET4,Adresse4
 <p>Si un jour vous avez besoin de merger deux fichiers sans forcement sortir un script complexe, penser à linux.</p>
 
 <p>Pour le csv et PHP, c&#8217;est inclus dans l&#8217;instruction <code>fgetcsv</code> mais ce n&#8217;est pas la joie, la librairie suivante <a href="http://csv.thephpleague.com/">thephpleague/csv</a> rend cela nettement plus agréable.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Git grep]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/11/05/git-grep/"/>
-    <updated>2015-11-05T22:22:13+01:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/11/05/git-grep</id>
-    <content type="html"><![CDATA[<p>Dans le post <a href="blog/2015/11/02/diff-patch-git">précédent</a> j&#8217;ai parlé des commandes linux <code>patch</code> et <code>diff</code>. des fonctionnalités ou on utiliserait plutôt Git. Ici je vais faire le contraire : utiliser git sans utiliser les commandes linux. Je vais parler de <code>git grep</code>.</p>
-
-<h2>git grep</h2>
-
-<p>l&#8217;utilisation est très simple</p>
-
-<pre><code class="sh">git grep hello
-</code></pre>
-
-<p>On peut utiliser une regex
-le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code>less</code>).</p>
-
-<!--more-->
-
-
-<p><strong>Rappel des touches sur Less</strong></p>
-
-<table>
-<thead>
-<tr>
-<th> Touche      </th>
-<th style="text-align:center;"> Description </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td> <code>g</code>               </td>
-<td style="text-align:center;"> début du fichier</td>
-</tr>
-<tr>
-<td> <code>G</code>               </td>
-<td style="text-align:center;"> fin  du fichier</td>
-</tr>
-<tr>
-<td> <code>/mot</code>            </td>
-<td style="text-align:center;"> cherche <code>mot</code>. <code>n</code> pour suivant <code>N</code> pour précédent</td>
-</tr>
-<tr>
-<td> <code>&amp;mot</code>            </td>
-<td style="text-align:center;"> seulement le mot</td>
-</tr>
-</tbody>
-</table>
-
-
-<p><code>git grep</code> utilise un peu près les mêmes options que le <code>grep</code>.</p>
-
-<p>par exemple</p>
-
-<pre><code class="sh">git grep -n -C 10 hello
-</code></pre>
-
-<ul>
-<li><code>-n</code> numérote les lignes</li>
-<li><code>-C 5</code> affiche un contexte de 5 lignes</li>
-</ul>
-
-
-<p>A noter que git grep n&#8217;utilise que les fichiers dans le dépôt qui sont déjà indexé. Donc il est plutôt rapide (alors qu&#8217;un grep devrait faire tous les répertoires).</p>
-
-<h2>Git grep et l&#8217;historique</h2>
-
-<p>Mais la vrai force de git grep est de pouvoir chercher sur toute les branches !</p>
-
-<pre><code class="sh">git grep -n -C 10 -e &lt;ma regex&gt; &lt;la branche&gt;
-</code></pre>
-
-<p>D&#8217;ailleurs si vous voulez savoir qui a commité a ajouté un bug qui contient le mot &ldquo;Panda&rdquo;
-<code>sh
-git rev-list --all | xargs git grep 'Panda'
-</code></p>
-
-<p>Il y a des alternatives
-<code>sh
-git log -G Panda
-git log -S Panda
-</code></p>
-
-<h2>Git grep et tig</h2>
-
-<p>Depuis la version 2 de <a href="https://github.com/jonas/tig">tig</a> (<strong>pas encore</strong> dans les dépots au moment ou j&#8217;écris ces lignes)
-il suffit d&#8217;appuyer sur <code>g</code> de faire la recherche.</p>
-
-<p>Les différentes commandes</p>
-
-<ul>
-<li><code>e</code> ouvrir dans l&#8217;éditeur</li>
-<li><code>b</code> ouvre la vue blame</li>
-<li><code>Enter</code> permet de se déplacer dans le fichiers.</li>
-</ul>
-
-
-<p><img class="center" src="/images/tiggrep.png" width="600" height="398" title="&lsquo;Git grep&rsquo; &lsquo;Git grep&rsquo;" ></p>
-
-<h2>Git grep et vim</h2>
-
-<ul>
-<li>Il est dispo dans le plugin <a href="https://github.com/tpope/vim-fugitive">Fugitive</a>.</li>
-</ul>
-
-
-<h2>Conclusion</h2>
-
-<p>L&#8217;intégration dans <em>tig</em> me plait beaucoup, j&#8217;ai beaucoup tapé le commande suivante pour faire mes recherches.
-<code>sh
- find . -name '*.php'| xargs grep 'array_walk_recur'
-</code></p>
-
-<p>Je me suis forcé à lire un peu la documentation de git grep, et je ne le regrette pas.</p>
-
-<p>Enfin il existe des alternative à <code>grep</code> comme <a href="http://beyondgrep.com/">ack</a> ou plus récemment <a href="https://github.com/ggreer/the_silver_searcher">the silver searcher</a>. Je vais essayer d&#8217;en parler plus tard.</p>
 ]]></content>
   </entry>
   
