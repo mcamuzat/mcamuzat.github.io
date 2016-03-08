@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: nginx | Journal d'un panda qui code]]></title>
+  <link href="http://mcamuzat.github.io/blog/categories/nginx/atom.xml" rel="self"/>
+  <link href="http://mcamuzat.github.io/"/>
+  <updated>2016-03-08T22:47:12+01:00</updated>
+  <id>http://mcamuzat.github.io/</id>
+  <author>
+    <name><![CDATA[mcamuzat]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Installation d'un proxmox 4.0 : Nginx]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/"/>
+    <updated>2016-03-08T21:35:36+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx</id>
+    <content type="html"><![CDATA[<p>Dans le <a href="/blog/2016/02/28/installation-dun-proxmox-4-dot-0/">post précédent</a>, nous avons réglé le réseau pour que les instances récupèrent le réseau. Enfin nous avons crée une première instance que j&#8217;ai nommé <code>nginxproxy</code>.</p>
+
+<p>Ce que je veux..</p>
+
+<p>J&#8217;ai plusieurs sites et noms de domaine sur mon Proxmox. Je souhaite mettre chaque site dans un container. Ainsi tout est isolé, je peux mettre toute les versions que je veux.</p>
+
+<p>Par exemple, je souhaite</p>
+
+<ul>
+<li>blog.domaine1.fr partte vers l&#8217;instance 102 qui contient son propre apache.</li>
+<li>image.domaine1.fr vers l&#8217;instance 103 etc ..</li>
+</ul>
+
+
+<p>Nous allons utiliser  <strong>Nginx</strong> pour rediriger le trafic.
+<img class="center" src="/images/nginx-logo.png" width="313" height="72" title="&lsquo;logo de nginx&rsquo; &lsquo;logo de nginx&rsquo;" ></p>
+
+<p>Je vais</p>
+
+<ul>
+<li>rediriger tout le trafic du port 80 du proxmox vers mon instance1 (que j&#8217;ai appellé nginxProxy)</li>
+<li>installer Nginx en proxy sur cette VM. j&#8217;arrive sur la machine avec l&#8217;url blog.domaine1.fr, je renvoie vers la machine 102</li>
+</ul>
+
+
+<!--more-->
+
+
+<h2>Partie 1 rediriger le port 80</h2>
+
+<p>Il suffit de rajouter la ligne suivante dans mon fichier <code>iptables_start.sh</code> sur le <strong>Proxmox</strong></p>
+
+<pre><code># VM &lt;numero de la vm&gt; : nginx proxy/gateway
+iptables -t nat -A PREROUTING -i vmbr0 -p tcp --dport 80 -j DNAT --to-destination 192.168.15.&lt;ip de la vm&gt;:80
+</code></pre>
+
+<p>Maintenant tout le trafic web se redirige vers le futur Nginx.</p>
+
+<h2>Partie 2 installation de Nginx</h2>
+
+<p>Sur la vm précédemment crée.</p>
+
+<pre><code class="sh">sudo apt-get install nginx
+</code></pre>
+
+<p>Il faut rajouter la ligne suivante dans le fichier <code>/etc/nginx/nginx.conf</code></p>
+
+<pre><code>      ##
+        # Virtual Host Configs
+        ##
+        ## la ligne à rajouter ##
+        include /etc/nginx/proxy_params;
+        ## 
+        include /etc/nginx/conf.d/*.conf;
+        include /etc/nginx/sites-enabled/*;
+</code></pre>
+
+<p>Et rajouter ou créer (je ne me souviens plus ..)  le fichier <code>/etc/nginx/proxy_params</code></p>
+
+<pre><code>proxy_set_header Host $http_host;
+proxy_set_header X-Real-IP $remote_addr;
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+proxy_set_header X-Forwarded-Proto $scheme;
+</code></pre>
+
+<p>Enfin voici un exemple pour blog.domaine1.com</p>
+
+<ul>
+<li>créer un fichier <code>/etc/nginx/sites-available/blog.domaine1.com.conf</code></li>
+<li>dans ce fichier recopier la conf suivante</li>
+</ul>
+
+
+<pre><code>server {
+        server_name blog.domaine1.com.conf;
+
+        location / {
+            proxy_pass http://192.168.15.&lt;ip de la vm&gt;;
+        }
+}
+</code></pre>
+
+<p>Pas grand chose à rajouter la conf parle d&#8217;elle-même.</p>
+
+<p>Il ne reste plus qu&#8217;a activer le site
+<code>
+cd /etc/nginx/sites-enabled/
+ln -s ../site-available/blog.domaine1.com.conf
+</code></p>
+
+<p>Un Nginx restart..</p>
+
+<pre><code>service nginx restart
+</code></pre>
+
+<p>Il ne nous reste plus qu&#8217;a créer une VM pour héberger le blog.domaine1.com</p>
+
+<h2>Conclusion</h2>
+
+<p>Tout cela marche bien mais je suis resté assez flou sur la façon de se connecter sur les VMs</p>
+
+<p>Dans la partie 3 Je vais essayer de clarifier tout cela.. Je m&#8217;excuse pour les fautes d&#8217;orthographes. Et je vous remercie de m&#8217;avoir lu.</p>
+
+<ul>
+<li>Partie 1 : <a href="/blog/2016/02/28/installation-dun-proxmox-4-dot-0/">Proxmox : mise en place</a></li>
+<li>Partie 2 : <a href="/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/">Proxmox : Nginx</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

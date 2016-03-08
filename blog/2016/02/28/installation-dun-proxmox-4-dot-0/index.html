@@ -102,8 +102,8 @@
 
 <ul>
 <li>Installation du Proxmox</li>
-<li>Reglage du Réseau</li>
-<li>Création d&#8217;un première instance.</li>
+<li>Réglage du Réseau</li>
+<li>Création d&#8217;une première instance.</li>
 </ul>
 
 
@@ -250,20 +250,20 @@ pour ce faire il faut éditer le fichier <code>/etc/sysctl.conf</code></p>
 </span><span class='line'>iptables -P FORWARD ACCEPT
 </span><span class='line'>iptables -P OUTPUT ACCEPT
 </span><span class='line'>
-</span><span class='line'><span class="c"># On laisse sortir les vm</span>
+</span><span class='line'><span class="c"># On laisse sortir les VM/container</span>
 </span><span class='line'>iptables -t nat -A POSTROUTING -s 192.168.15.0/24 -o vmbr0 -j MASQUERADE
 </span></code></pre></td></tr></table></div></figure>
 
 
 <p>La première partie vide toute les règles de redirection.</p>
 
-<p>La seconde partie va permettre au vm dont l&#8217;ip est entre 192.168.15.1 à 192.168.15.254 de sortir sur le réseau.</p>
+<p>La seconde partie va permettre au VM dont l&#8217;IP est entre 192.168.15.1 à 192.168.15.254 de sortir sur le réseau.</p>
 
 <h2>Résumé</h2>
 
 <ul>
 <li>Nous avons réglé <code>vmbr1</code> avec une adresse en 192.168.15.20/24</li>
-<li>Nous avons activé le forward d&#8217;Ip</li>
+<li>Nous avons activé le forward d&#8217;IP</li>
 <li>Nous avons créer un script <code>iptables_start.sh</code> qui supprime les anciennes regles et qui permet au réseau 192.168.15.0/24 de récuperer le net.</li>
 </ul>
 
@@ -282,7 +282,7 @@ pour ce faire il faut éditer le fichier <code>/etc/sysctl.conf</code></p>
 
 <h3>Créer un container</h3>
 
-<p>Cliquer sur l&#8217;icone <code>create CT</code> en haut à droite.</p>
+<p>Cliquer sur l&#8217;icône <code>create CT</code> en haut à droite.</p>
 
 <h4>Général</h4>
 
@@ -313,19 +313,19 @@ Mettons le noms de l&#8217;instance <code>nginxproxy</code> et mettons un mots d
 <p><img class="center" src="/images/creationvmreseau.png" width="600" height="390" title="réglage du réseau" alt="réglage du réseau">
 dans le bridge mettre <strong>vmbr1</strong></p>
 
-<p>dans l&#8217;ip c&#8217;est simple c&#8217;est <code>192.168.15.&lt;numéro d'instance&gt;/24</code>. si vous avez l&#8217;instance 101 alors l&#8217;ip est <code>192.168.15.101/24</code></p>
+<p>Dans l&#8217;ip c&#8217;est simple c&#8217;est <code>192.168.15.&lt;numéro d'instance&gt;/24</code>. si vous avez l&#8217;instance 101 alors l&#8217;ip est <code>192.168.15.101/24</code></p>
 
-<p>dans la gateway c&#8217;est <code>192.168.15.20</code> la même ip défini dans le <code>vmbr1</code></p>
+<p>Dans la <em>gateway</em> c&#8217;est <code>192.168.15.20</code> la même IP défini dans le <code>vmbr1</code></p>
 
 <h4>Dns</h4>
 
 <p>Rien à faire..</p>
 
-<p>Vous n&#8217;avez plus qu&#8217;a confirmer. Normalement en 15 secondes la vm est crée.</p>
+<p>Vous n&#8217;avez plus qu&#8217;a confirmer. Normalement en 15 secondes la VM est crée.</p>
 
 <h4>Finition.</h4>
 
-<p>Avant d&#8217;allumer la vm cliquer sur l&#8217;icône de la vm puis <code>Options</code> puis cliquez sur la ligne <code>Start at boot</code> puis <code>Edit</code> et <code>yes</code> si le proxmox redémarre, on relance la machine (ce qui n&#8217;est pas le cas par défaut)</p>
+<p>Avant d&#8217;allumer la vm cliquer sur l&#8217;icône de la VM puis <code>Options</code> puis cliquez sur la ligne <code>Start at boot</code> puis <code>Edit</code> et <code>yes</code> si le proxmox redémarre, on relance la machine (ce qui n&#8217;est pas le cas par défaut)</p>
 
 <h4>Allumage</h4>
 
@@ -334,6 +334,12 @@ dans le bridge mettre <strong>vmbr1</strong></p>
 <h2>Conclusion</h2>
 
 <p>Nous avons réglé le proxmox, installé la première instance. dans la partie 2 nous nous connecterons sur l&#8217;instance pour terminer les réglages. Nous mettrons en place aussi le nginx pour rediriger les urls vers les bonnes instances.</p>
+
+<ul>
+<li>Partie 1 : <a href="/blog/2016/02/28/installation-dun-proxmox-4-dot-0/">Proxmox : mise en place</a></li>
+<li>Partie 2 : <a href="/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/">Proxmox : Nginx</a></li>
+</ul>
+
 </div>
 
 
@@ -382,6 +388,8 @@ dans le bridge mettre <strong>vmbr1</strong></p>
         <a class="basic-alignment left" href="/blog/2016/02/21/des-jolis-depots/" title="Previous Post: Des jolis dépôts">&laquo; Des jolis dépôts</a>
       
       
+        <a class="basic-alignment right" href="/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/" title="Next Post: Installation d'un proxmox 4.0 : Nginx">Installation d&#8217;un proxmox 4.0 : Nginx &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -427,6 +435,10 @@ dans le bridge mettre <strong>vmbr1</strong></p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/">Installation d&#8217;un proxmox 4.0 : Nginx</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/02/28/installation-dun-proxmox-4-dot-0/">Installation d&#8217;un proxmox 4.0</a>
       </li>
     
@@ -440,10 +452,6 @@ dans le bridge mettre <strong>vmbr1</strong></p>
     
       <li class="post">
         <a href="/blog/2016/02/14/remettre-au-propre-son-depot-git/">Remettre au propre son dépot git</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/02/07/inserer-avec-classe-dans-vim/">Insérer avec classe dans VIM</a>
       </li>
     
   </ul>

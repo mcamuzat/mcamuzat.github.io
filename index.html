@@ -9,7 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Introduction J'ai acheté un serveur dédié chez OVH. Au travail nous utilisons un Proxmox En solution de virtualisation. Étant plutôt content du &hellip;">
+  <meta name="description" content="Dans le post précédent, nous avons réglé le réseau pour que les instances récupèrent le réseau. Enfin nous avons crée une première instance que j'ai &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +68,70 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/">Installation d&#8217;un proxmox 4.0 : Nginx</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-03-08T21:35:36+01:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Dans le <a href="/blog/2016/02/28/installation-dun-proxmox-4-dot-0/">post précédent</a>, nous avons réglé le réseau pour que les instances récupèrent le réseau. Enfin nous avons crée une première instance que j&#8217;ai nommé <code>nginxproxy</code>.</p>
+
+<p>Ce que je veux..</p>
+
+<p>J&#8217;ai plusieurs sites et noms de domaine sur mon Proxmox. Je souhaite mettre chaque site dans un container. Ainsi tout est isolé, je peux mettre toute les versions que je veux.</p>
+
+<p>Par exemple, je souhaite</p>
+
+<ul>
+<li>blog.domaine1.fr partte vers l&#8217;instance 102 qui contient son propre apache.</li>
+<li>image.domaine1.fr vers l&#8217;instance 103 etc ..</li>
+</ul>
+
+
+<p>Nous allons utiliser  <strong>Nginx</strong> pour rediriger le trafic.
+<img class="center" src="/images/nginx-logo.png" width="313" height="72" title="logo de nginx" alt="logo de nginx"></p>
+
+<p>Je vais</p>
+
+<ul>
+<li>rediriger tout le trafic du port 80 du proxmox vers mon instance1 (que j&#8217;ai appellé nginxProxy)</li>
+<li>installer Nginx en proxy sur cette VM. j&#8217;arrive sur la machine avec l&#8217;url blog.domaine1.fr, je renvoie vers la machine 102</li>
+</ul>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2016/02/28/installation-dun-proxmox-4-dot-0/">Installation d&#8217;un proxmox 4.0</a></h1>
     
     
@@ -105,8 +169,8 @@
 
 <ul>
 <li>Installation du Proxmox</li>
-<li>Reglage du Réseau</li>
-<li>Création d&#8217;un première instance.</li>
+<li>Réglage du Réseau</li>
+<li>Création d&#8217;une première instance.</li>
 </ul>
 
 
@@ -522,64 +586,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/12/20/les-monades-5-les-applicatives/">Les monades 5: les applicatives</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-12-20T15:49:14+01:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Nous allons voir les foncteurs applicatifs.</p>
-
-<p>Reprenons le container Maybe</p>
-
-<p><img class="center" src="/images/applicative.png" width="428" height="212" title="Avec évaluation partielle" alt="avec évaluation partielle"></p>
-
-<p>Ce que j&#8217;aimerai c&#8217;est pouvoir faire ce genre d&#8217;opération</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">Maybe</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="nx">Maybe</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="nx">Maybe</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
-</span><span class='line'><span class="nx">Container</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">*</span> <span class="nx">Container</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">=</span> <span class="nx">Container</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span>
-</span><span class='line'><span class="nb">str_repeat</span><span class="p">(</span><span class="nx">Maybe</span><span class="p">(</span><span class="s2">&quot;.oOo&quot;</span><span class="p">),</span> <span class="nx">Maybe</span><span class="p">(</span><span class="s2">&quot;3&quot;</span><span class="p">))</span> <span class="o">=</span> <span class="nx">Maybe</span><span class="p">(</span><span class="s2">&quot;.oOo.oOo.oOo&quot;</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>La bonne nouvelle c&#8217;est que c&#8217;est possible.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/12/20/les-monades-5-les-applicatives/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -627,6 +633,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/">Installation d&#8217;un proxmox 4.0 : Nginx</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/02/28/installation-dun-proxmox-4-dot-0/">Installation d&#8217;un proxmox 4.0</a>
       </li>
     
@@ -640,10 +650,6 @@
     
       <li class="post">
         <a href="/blog/2016/02/14/remettre-au-propre-son-depot-git/">Remettre au propre son dépot git</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/02/07/inserer-avec-classe-dans-vim/">Insérer avec classe dans VIM</a>
       </li>
     
   </ul>

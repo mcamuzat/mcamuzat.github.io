@@ -9,8 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Pour commencer : comment sélectionner sous vim solution n°1 : utiliser la souris tapez : 1
-set mouse=a vous pouvez sélectionnez avec la souris. Pour &hellip;">
+  <meta name="description" content="Je suis tombé un peu par hasard sur ce livre &ldquo;If Hemingway Wrote JavaScript&rdquo;. Cela part de l'idée que tout les auteurs ont un certain &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -63,6 +62,47 @@ set mouse=a vous pouvez sélectionnez avec la souris. Pour &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/06/21/if-hemingway-wrote-javascript/">If Hemingway wrote javascript</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-06-21T19:06:54+02:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Je suis tombé un peu par hasard sur ce livre &ldquo;If Hemingway Wrote JavaScript&rdquo;. Cela part de l&#8217;idée que tout les auteurs ont un certain style. Et que s&#8217;il devait programmer en javascript le résultat serait diffèrent. L&#8217;auteur est un expert du javascript.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/06/21/if-hemingway-wrote-javascript/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -733,103 +773,6 @@ pour simplifier je vais utiliser une autre distribution <a href="https://www.alp
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/04/22/correction-orthographique-et-vim/">Correction orthographique et VIM</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-04-22T22:26:43+02:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>J&#8217;ai assisté à un Meetup sur VIM.</p>
-
-<p>Le speaker parlait de la correction orthographique sous VIM. Je savais que c&#8217;était possible, mais je ne m&#8217;en suis jamais servis. J&#8217;ai donc décidé de réessayer.. Et j&#8217;ai vu de façon différente mes posts sur ce blog. Je suis repasser un peu sur tout.</p>
-
-<p>Voici la commande pour activer/installer la correction automatique</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>set spell spelllang=fr</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Normalement Vim va télécharger pour vous les différents fichiers sur le Ftp officiel.  Il y a une commande interactive pour vous aider dans l&#8217;installation. Si jamais il a un souci le wiki français indique de se placer dans son répertoire <code>spell</code> (chez moi <code>~/.vim/spell</code>) et de lancer les commandes suivantes</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>wget http://ftp.vim.org/vim/runtime/spell/fr.latin1.spl
-</span><span class='line'>wget http://ftp.vim.org/vim/runtime/spell/fr.latin1.sug
-</span><span class='line'>wget http://ftp.vim.org/vim/runtime/spell/fr.utf-8.spl
-</span><span class='line'>wget http://ftp.vim.org/vim/runtime/spell/fr.utf-8.sug
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>La touche magique ici est <code>z=</code> puis les touches du <code>0..n</code>. <code>]s</code> pour aller à l&#8217;erreur suivante <code>[s</code> pour l&#8217;erreur précédente. Il y a différentes touches pour ajouter à son propre dictionnaire. J&#8217;avoue que cela ne m&#8217;intéresse pas trop de suite.</p>
-
-<p>On peut aussi faire de l&#8217;auto complétion ou plutôt de l&#8217;auto correction pendant la saisie avec les touche <code>Ctrl-x</code> + <code>s</code>.</p>
-
-<h2>Résumé</h2>
-
-<table>
-<thead>
-<tr>
-<th> Touche      </th>
-<th style="text-align:center;"> Description </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td> <code>z=</code>               </td>
-<td style="text-align:center;"> auto correct si <code>spell</code> est activée</td>
-</tr>
-<tr>
-<td> <code>[s</code>               </td>
-<td style="text-align:center;"> erreur précédente</td>
-</tr>
-<tr>
-<td> <code>]s</code>               </td>
-<td style="text-align:center;"> erreur suivante</td>
-</tr>
-<tr>
-<td> <code>Crtl-x s</code>      </td>
-<td style="text-align:center;">auto complétion via le dictionnaire </td>
-</tr>
-</tbody>
-</table>
-
-
-<p>Warning : <code>Ctrl-s</code> parfois freeze le terminal (option pratique quand je regarde les tests fonctionnels passés). Pour <em>defreezer</em> le terminal c&#8217;est <code>Ctrl-Q</code></p>
-
-<h2>Conclusion:</h2>
-
-<p>Il manque le correcteur grammatical :-)</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/7">&larr; Older</a>
@@ -879,6 +822,10 @@ pour simplifier je vais utiliser une autre distribution <a href="https://www.alp
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/">Installation d&#8217;un proxmox 4.0 : Nginx</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/02/28/installation-dun-proxmox-4-dot-0/">Installation d&#8217;un proxmox 4.0</a>
       </li>
     
@@ -892,10 +839,6 @@ pour simplifier je vais utiliser une autre distribution <a href="https://www.alp
     
       <li class="post">
         <a href="/blog/2016/02/14/remettre-au-propre-son-depot-git/">Remettre au propre son dépot git</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/02/07/inserer-avec-classe-dans-vim/">Insérer avec classe dans VIM</a>
       </li>
     
   </ul>

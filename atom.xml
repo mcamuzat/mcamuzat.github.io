@@ -4,7 +4,7 @@
   <title><![CDATA[Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-02-28T18:59:18+01:00</updated>
+  <updated>2016-03-08T22:47:12+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,153 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Installation d'un proxmox 4.0 : Nginx]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/"/>
+    <updated>2016-03-08T21:35:36+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx</id>
+    <content type="html"><![CDATA[<p>Dans le <a href="http://mcamuzat.github.io/blog/2016/02/28/installation-dun-proxmox-4-dot-0/">post précédent</a>, nous avons réglé le réseau pour que les instances récupèrent le réseau. Enfin nous avons crée une première instance que j&#8217;ai nommé <code>nginxproxy</code>.</p>
+
+<p>Ce que je veux..</p>
+
+<p>J&#8217;ai plusieurs sites et noms de domaine sur mon Proxmox. Je souhaite mettre chaque site dans un container. Ainsi tout est isolé, je peux mettre toute les versions que je veux.</p>
+
+<p>Par exemple, je souhaite</p>
+
+<ul>
+<li>blog.domaine1.fr partte vers l&#8217;instance 102 qui contient son propre apache.</li>
+<li>image.domaine1.fr vers l&#8217;instance 103 etc ..</li>
+</ul>
+
+
+<p>Nous allons utiliser  <strong>Nginx</strong> pour rediriger le trafic.
+<img class="center" src="http://mcamuzat.github.io/images/nginx-logo.png" width="313" height="72" title="logo de nginx" alt="logo de nginx"></p>
+
+<p>Je vais</p>
+
+<ul>
+<li>rediriger tout le trafic du port 80 du proxmox vers mon instance1 (que j&#8217;ai appellé nginxProxy)</li>
+<li>installer Nginx en proxy sur cette VM. j&#8217;arrive sur la machine avec l&#8217;url blog.domaine1.fr, je renvoie vers la machine 102</li>
+</ul>
+
+
+<!--more-->
+
+
+<h2>Partie 1 rediriger le port 80</h2>
+
+<p>Il suffit de rajouter la ligne suivante dans mon fichier <code>iptables_start.sh</code> sur le <strong>Proxmox</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># VM &lt;numero de la vm&gt; : nginx proxy/gateway
+</span><span class='line'>iptables -t nat -A PREROUTING -i vmbr0 -p tcp --dport 80 -j DNAT --to-destination 192.168.15.&lt;ip de la vm&gt;:80</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Maintenant tout le trafic web se redirige vers le futur Nginx.</p>
+
+<h2>Partie 2 installation de Nginx</h2>
+
+<p>Sur la vm précédemment crée.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo apt-get install nginx
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il faut rajouter la ligne suivante dans le fichier <code>/etc/nginx/nginx.conf</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>  <span class="c">##</span>
+</span><span class='line'>    <span class="c"># Virtual Host Configs</span>
+</span><span class='line'>    <span class="c">##</span>
+</span><span class='line'>    <span class="c">## la ligne à rajouter ##</span>
+</span><span class='line'>    include /etc/nginx/proxy_params<span class="p">;</span>
+</span><span class='line'>    <span class="c">## </span>
+</span><span class='line'>    include /etc/nginx/conf.d/*.conf<span class="p">;</span>
+</span><span class='line'>    include /etc/nginx/sites-enabled/*<span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Et rajouter ou créer (je ne me souviens plus ..)  le fichier <code>/etc/nginx/proxy_params</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>proxy_set_header Host <span class="nv">$http_host</span><span class="p">;</span>
+</span><span class='line'>proxy_set_header X-Real-IP <span class="nv">$remote_addr</span><span class="p">;</span>
+</span><span class='line'>proxy_set_header X-Forwarded-For <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+</span><span class='line'>proxy_set_header X-Forwarded-Proto <span class="nv">$scheme</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Enfin voici un exemple pour blog.domaine1.com</p>
+
+<ul>
+<li>créer un fichier <code>/etc/nginx/sites-available/blog.domaine1.com.conf</code></li>
+<li>dans ce fichier recopier la conf suivante</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>server <span class="o">{</span>
+</span><span class='line'>        server_name blog.domaine1.com.conf<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        location / <span class="o">{</span>
+</span><span class='line'>            proxy_pass http://192.168.15.&lt;ip de la vm&gt;<span class="p">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pas grand chose à rajouter la conf parle d&#8217;elle-même.</p>
+
+<p>Il ne reste plus qu&#8217;a activer le site</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">cd</span> /etc/nginx/sites-enabled/
+</span><span class='line'>ln -s ../site-available/blog.domaine1.com.conf
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Un Nginx restart..</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>service nginx restart
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il ne nous reste plus qu&#8217;a créer une VM pour héberger le blog.domaine1.com</p>
+
+<h2>Conclusion</h2>
+
+<p>Tout cela marche bien mais je suis resté assez flou sur la façon de se connecter sur les VMs</p>
+
+<p>Dans la partie 3 Je vais essayer de clarifier tout cela.. Je m&#8217;excuse pour les fautes d&#8217;orthographes. Et je vous remercie de m&#8217;avoir lu.</p>
+
+<ul>
+<li>Partie 1 : <a href="http://mcamuzat.github.io/blog/2016/02/28/installation-dun-proxmox-4-dot-0/">Proxmox : mise en place</a></li>
+<li>Partie 2 : <a href="http://mcamuzat.github.io/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/">Proxmox : Nginx</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Installation d'un proxmox 4.0]]></title>
@@ -32,8 +179,8 @@
 
 <ul>
 <li>Installation du Proxmox</li>
-<li>Reglage du Réseau</li>
-<li>Création d&#8217;un première instance.</li>
+<li>Réglage du Réseau</li>
+<li>Création d&#8217;une première instance.</li>
 </ul>
 
 
@@ -180,20 +327,20 @@ pour ce faire il faut éditer le fichier <code>/etc/sysctl.conf</code></p>
 </span><span class='line'>iptables -P FORWARD ACCEPT
 </span><span class='line'>iptables -P OUTPUT ACCEPT
 </span><span class='line'>
-</span><span class='line'><span class="c"># On laisse sortir les vm</span>
+</span><span class='line'><span class="c"># On laisse sortir les VM/container</span>
 </span><span class='line'>iptables -t nat -A POSTROUTING -s 192.168.15.0/24 -o vmbr0 -j MASQUERADE
 </span></code></pre></td></tr></table></div></figure>
 
 
 <p>La première partie vide toute les règles de redirection.</p>
 
-<p>La seconde partie va permettre au vm dont l&#8217;ip est entre 192.168.15.1 à 192.168.15.254 de sortir sur le réseau.</p>
+<p>La seconde partie va permettre au VM dont l&#8217;IP est entre 192.168.15.1 à 192.168.15.254 de sortir sur le réseau.</p>
 
 <h2>Résumé</h2>
 
 <ul>
 <li>Nous avons réglé <code>vmbr1</code> avec une adresse en 192.168.15.20/24</li>
-<li>Nous avons activé le forward d&#8217;Ip</li>
+<li>Nous avons activé le forward d&#8217;IP</li>
 <li>Nous avons créer un script <code>iptables_start.sh</code> qui supprime les anciennes regles et qui permet au réseau 192.168.15.0/24 de récuperer le net.</li>
 </ul>
 
@@ -212,7 +359,7 @@ pour ce faire il faut éditer le fichier <code>/etc/sysctl.conf</code></p>
 
 <h3>Créer un container</h3>
 
-<p>Cliquer sur l&#8217;icone <code>create CT</code> en haut à droite.</p>
+<p>Cliquer sur l&#8217;icône <code>create CT</code> en haut à droite.</p>
 
 <h4>Général</h4>
 
@@ -243,19 +390,19 @@ Mettons le noms de l&#8217;instance <code>nginxproxy</code> et mettons un mots d
 <p><img class="center" src="http://mcamuzat.github.io/images/creationvmreseau.png" width="600" height="390" title="réglage du réseau" alt="réglage du réseau">
 dans le bridge mettre <strong>vmbr1</strong></p>
 
-<p>dans l&#8217;ip c&#8217;est simple c&#8217;est <code>192.168.15.&lt;numéro d'instance&gt;/24</code>. si vous avez l&#8217;instance 101 alors l&#8217;ip est <code>192.168.15.101/24</code></p>
+<p>Dans l&#8217;ip c&#8217;est simple c&#8217;est <code>192.168.15.&lt;numéro d'instance&gt;/24</code>. si vous avez l&#8217;instance 101 alors l&#8217;ip est <code>192.168.15.101/24</code></p>
 
-<p>dans la gateway c&#8217;est <code>192.168.15.20</code> la même ip défini dans le <code>vmbr1</code></p>
+<p>Dans la <em>gateway</em> c&#8217;est <code>192.168.15.20</code> la même IP défini dans le <code>vmbr1</code></p>
 
 <h4>Dns</h4>
 
 <p>Rien à faire..</p>
 
-<p>Vous n&#8217;avez plus qu&#8217;a confirmer. Normalement en 15 secondes la vm est crée.</p>
+<p>Vous n&#8217;avez plus qu&#8217;a confirmer. Normalement en 15 secondes la VM est crée.</p>
 
 <h4>Finition.</h4>
 
-<p>Avant d&#8217;allumer la vm cliquer sur l&#8217;icône de la vm puis <code>Options</code> puis cliquez sur la ligne <code>Start at boot</code> puis <code>Edit</code> et <code>yes</code> si le proxmox redémarre, on relance la machine (ce qui n&#8217;est pas le cas par défaut)</p>
+<p>Avant d&#8217;allumer la vm cliquer sur l&#8217;icône de la VM puis <code>Options</code> puis cliquez sur la ligne <code>Start at boot</code> puis <code>Edit</code> et <code>yes</code> si le proxmox redémarre, on relance la machine (ce qui n&#8217;est pas le cas par défaut)</p>
 
 <h4>Allumage</h4>
 
@@ -264,6 +411,12 @@ dans le bridge mettre <strong>vmbr1</strong></p>
 <h2>Conclusion</h2>
 
 <p>Nous avons réglé le proxmox, installé la première instance. dans la partie 2 nous nous connecterons sur l&#8217;instance pour terminer les réglages. Nous mettrons en place aussi le nginx pour rediriger les urls vers les bonnes instances.</p>
+
+<ul>
+<li>Partie 1 : <a href="http://mcamuzat.github.io/blog/2016/02/28/installation-dun-proxmox-4-dot-0/">Proxmox : mise en place</a></li>
+<li>Partie 2 : <a href="http://mcamuzat.github.io/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/">Proxmox : Nginx</a></li>
+</ul>
+
 ]]></content>
   </entry>
   
@@ -3253,7 +3406,7 @@ deux possibilités</p>
 
 <p>Je me suis lancé dans une tache bien compliquée mais passionnante. Je m&#8217;excuse d&#8217;avance pour certaines approximations. J&#8217;avais confondu <code>map</code> et <code>bind</code> dans la première version</p>
 
-<p>Je vous remercies de m&#8217;avoir lu..
+<p>Je vous remercie de m&#8217;avoir lu..
  * Partie 1 : <a href="http://mcamuzat.github.io/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a>
  * Partie 2 : <a href="http://mcamuzat.github.io/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a>
  * Partie 3 : <a href="http://mcamuzat.github.io/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a>
@@ -3831,479 +3984,6 @@ il suffit d&#8217;appuyer sur <code>g</code> de faire la recherche.</p>
 <h2>Conclusion</h2>
 
 <p>Pas besoin d&#8217;avoir git/mercurial/svn pour créer ou jouer des patchs.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Listes Chainées Iterator]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/11/01/listes-chainees-iterator/"/>
-    <updated>2015-11-01T19:46:40+01:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/11/01/listes-chainees-iterator</id>
-    <content type="html"><![CDATA[<p>Troisième partie sur la SPL et les listes chainées.</p>
-
-<ul>
-<li>partie 1 <a href="blog/2015/10/03/spl-surcharge-magique">SPL et surcharge</a></li>
-<li>partie 2 <a href="blog/2015/10/10/liste-chainees-implementation">Implémentation</a></li>
-</ul>
-
-
-<p>Nous allons implémenter l&#8217;interface <code>ArrayAccess</code>. Donc notre liste chainée va se comporter comme un array.</p>
-
-<p>Je vais rajouter deux méthodes. Attention les <code>Array</code> commencent traditionnellement à 0 d&#8217;où le <code>$this-&gt;count -1</code></p>
-
-<!--more-->
-
-
-<ul>
-<li>Supprimer le chainon N</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">removeAtPosition</span><span class="p">(</span><span class="nv">$position</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">validateInterval</span><span class="p">(</span><span class="nv">$position</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">throw</span> <span class="k">new</span> <span class="nx">\Exception</span><span class="p">(</span><span class="s2">&quot;L&#39;index doit être valide&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$position</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">removeFirstValue</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$position</span>  <span class="o">==</span>  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">count</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">removeLastValue</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="nv">$current</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span><span class="p">;</span>
-</span><span class='line'>    <span class="nv">$last</span> <span class="o">=</span> <span class="nv">$current</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="nv">$position</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$last</span> <span class="o">=</span> <span class="nv">$current</span><span class="p">;</span>
-</span><span class='line'>        <span class="nv">$current</span> <span class="o">=</span> <span class="nv">$current</span><span class="o">-&gt;</span><span class="na">getNext</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nv">$last</span><span class="o">-&gt;</span><span class="na">setNext</span><span class="p">(</span><span class="nv">$current</span><span class="o">-&gt;</span><span class="na">getNext</span><span class="p">());</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="nv">$this</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>Récupérer le chainon N</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">getAtPosition</span><span class="p">(</span><span class="nv">$position</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">validateInterval</span><span class="p">(</span><span class="nv">$position</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nx">\Exception</span><span class="p">(</span><span class="s2">&quot;L&#39;index doit être numerique&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$position</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span><span class="o">-&gt;</span><span class="na">getData</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$position</span> <span class="o">==</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">count</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">last</span><span class="o">-&gt;</span><span class="na">getData</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nv">$current</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="nv">$position</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$current</span> <span class="o">=</span> <span class="nv">$current</span><span class="o">-&gt;</span><span class="na">getNext</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="nv">$current</span><span class="o">-&gt;</span><span class="na">getData</span><span class="p">();</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Pour avoir le 9999 chainon,  il faut parcourir les 9998 chainons précédents.</p>
-
-<p>Avec les deux méthodes précédentes. Il suffit d&#8217;implémenter les méthodes suivantes</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">offsetSet</span><span class="p">(</span><span class="nv">$offset</span><span class="p">,</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$offset</span> <span class="o">==</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">insertAtEnd</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">validateInterval</span><span class="p">(</span><span class="nv">$offset</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>                <span class="k">throw</span> <span class="k">new</span> <span class="nx">\Exception</span><span class="p">(</span><span class="s2">&quot;L&#39;index doit être valide&quot;</span><span class="p">);</span>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">insertAtPosition</span><span class="p">(</span><span class="nv">$offset</span><span class="p">,</span> <span class="nv">$value</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">offsetExists</span><span class="p">(</span><span class="nv">$offset</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">validInterval</span><span class="p">(</span><span class="nv">$offset</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">offsetUnset</span><span class="p">(</span><span class="nv">$offset</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>         <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">removeAtPosition</span><span class="p">(</span><span class="nv">$offset</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">offsetGet</span><span class="p">(</span><span class="nv">$offset</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getAtPosition</span><span class="p">(</span><span class="nv">$offset</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Pour vérifier que les valeurs en entrée sont correctes j&#8217;utilise la fonction suivante</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">private</span> <span class="k">function</span> <span class="nf">validateInterval</span><span class="p">(</span><span class="nv">$offset</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="p">(</span><span class="k">false</span> <span class="o">!==</span> <span class="nb">filter_var</span><span class="p">(</span>
-</span><span class='line'>        <span class="nv">$offset</span><span class="p">,</span>
-</span><span class='line'>        <span class="nx">FILTER_VALIDATE_INT</span><span class="p">,</span>
-</span><span class='line'>        <span class="k">array</span><span class="p">(</span>
-</span><span class='line'>            <span class="s1">&#39;options&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-</span><span class='line'>                <span class="s1">&#39;min_range&#39;</span> <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">,</span>
-</span><span class='line'>                <span class="s1">&#39;max_range&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">count</span><span class="o">-</span><span class="mi">1</span>
-</span><span class='line'>            <span class="p">)</span>
-</span><span class='line'>        <span class="p">)</span>
-</span><span class='line'>    <span class="p">));</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Bon cela semble un peu abstrait, voici quelques exemples d&#8217;utilisations.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$list</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LinkedList</span><span class="p">();</span>
-</span><span class='line'><span class="nv">$list</span><span class="p">[]</span> <span class="o">=</span> <span class="s2">&quot;first&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$list</span><span class="p">[]</span> <span class="o">=</span> <span class="s2">&quot;second&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$list</span><span class="p">[]</span> <span class="o">=</span> <span class="s2">&quot;third&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="c1">//</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$list</span><span class="p">[</span><span class="mi">1</span><span class="p">]));</span><span class="c1">// =&gt; true</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$list</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="c1">// =&gt; &quot;second&quot;</span>
-</span><span class='line'><span class="nb">unset</span><span class="p">(</span><span class="nv">$list</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$list</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="c1">// =&gt; third</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Nous avons une liste qui se comporte comme un array. c&#8217;est pratique, mais on ne peux pas faire de <code>foreach</code> dessus.. Enfin pas encore.</p>
-
-<h2>Ajout de l&#8217;itérator</h2>
-
-<p>Pour faire un itérator il faut implémenter l&#8217;interface suivante</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'> <span class="nx">Iterator</span> <span class="k">extends</span> <span class="nx">Traversable</span> <span class="p">{</span>
-</span><span class='line'><span class="cm">/* Méthodes */</span>
-</span><span class='line'><span class="k">abstract</span> <span class="k">public</span> <span class="nx">mixed</span> <span class="nb">current</span> <span class="p">(</span> <span class="nx">void</span> <span class="p">)</span>
-</span><span class='line'><span class="k">abstract</span> <span class="k">public</span> <span class="nx">scalar</span> <span class="nb">key</span> <span class="p">(</span> <span class="nx">void</span> <span class="p">)</span>
-</span><span class='line'><span class="k">abstract</span> <span class="k">public</span> <span class="nx">void</span> <span class="nb">next</span> <span class="p">(</span> <span class="nx">void</span> <span class="p">)</span>
-</span><span class='line'><span class="k">abstract</span> <span class="k">public</span> <span class="nx">void</span> <span class="nb">rewind</span> <span class="p">(</span> <span class="nx">void</span> <span class="p">)</span>
-</span><span class='line'><span class="k">abstract</span> <span class="k">public</span> <span class="nx">boolean</span> <span class="nx">valid</span> <span class="p">(</span> <span class="nx">void</span> <span class="p">)</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Dans le cas de notre liste chainée cela n&#8217;est pas très compliqué.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'> <span class="k">class</span> <span class="nc">LinkedList</span> <span class="k">implements</span> <span class="nx">Countable</span><span class="p">,</span> <span class="nx">ArrayAccess</span><span class="p">,</span> <span class="o">*</span><span class="nx">Iterator</span><span class="o">*</span> <span class="p">{</span>
-</span><span class='line'>    <span class="o">.....</span>  
-</span><span class='line'>    <span class="k">private</span> <span class="nv">$current</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">private</span> <span class="nv">$position</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>    <span class="o">....</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">current</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">current</span><span class="o">-&gt;</span><span class="na">getData</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">key</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">position</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">next</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">position</span><span class="o">++</span><span class="p">;</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">current</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">current</span><span class="o">-&gt;</span><span class="na">getNext</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">rewind</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">position</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">current</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">first</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">valid</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">current</span> <span class="o">!==</span> <span class="k">null</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Un petit code d&#8217;exemple</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$list</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LinkedList</span><span class="p">();</span>
-</span><span class='line'><span class="c1">//</span>
-</span><span class='line'><span class="nv">$list</span><span class="p">[]</span> <span class="o">=</span> <span class="s2">&quot;first&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$list</span><span class="p">[]</span> <span class="o">=</span> <span class="s2">&quot;second&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$list</span><span class="p">[]</span> <span class="o">=</span> <span class="s2">&quot;third&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="k">foreach</span><span class="p">(</span><span class="nv">$list</span> <span class="k">as</span> <span class="nv">$key</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nb">var_dump</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">$key</span><span class="s2"> =&gt; </span><span class="si">$value</span><span class="s2">&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// string(10) &quot;0 =&gt; first&quot;</span>
-</span><span class='line'><span class="c1">// string(11) &quot;1 =&gt; second&quot;</span>
-</span><span class='line'><span class="c1">// string(10) &quot;2 =&gt; third&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Je peux a tout moment le retransformer en <code>array</code> grâce à la méthode <code>iterator_to_array($list)</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">array</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>  <span class="nx">string</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="s2">&quot;first&quot;</span>
-</span><span class='line'>  <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>  <span class="nx">string</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="s2">&quot;second&quot;</span>
-</span><span class='line'>  <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=&gt;</span>
-</span><span class='line'>  <span class="nx">string</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="s2">&quot;third&quot;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Pour faire dans l&#8217;autre sens nous pouvons implémenter le constructor</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$input</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$input</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="p">(</span><span class="nb">is_array</span><span class="p">(</span><span class="nv">$input</span><span class="p">)</span> <span class="o">||</span> <span class="nv">$input</span> <span class="nx">instanceof</span> <span class="nx">Traversable</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">throw</span> <span class="k">new</span> <span class="nx">\Exception</span><span class="p">(</span><span class="s2">&quot;Un array ou Un iterator..&quot;</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="k">foreach</span><span class="p">(</span><span class="nv">$input</span> <span class="k">as</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">insertAtEnd</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Mon constructor prend un array ou un Objet qui implémente <code>Traversable</code> (en gros un Itérateur);</p>
-
-<p>Quelques exemples</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$list</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LinkedList</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s2">&quot;one&quot;</span><span class="p">,</span> <span class="s2">&quot;two&quot;</span><span class="p">,</span> <span class="s2">&quot;three&quot;</span><span class="p">));</span>
-</span><span class='line'><span class="k">foreach</span><span class="p">(</span><span class="nv">$list</span> <span class="k">as</span> <span class="nv">$key</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nb">var_dump</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="c1">//string(3) &quot;one&quot;</span>
-</span><span class='line'><span class="c1">//string(3) &quot;two&quot;</span>
-</span><span class='line'><span class="c1">//string(5) &quot;three&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$spl</span> <span class="o">=</span> <span class="k">New</span> <span class="nx">SplQueue</span><span class="p">();</span>
-</span><span class='line'><span class="nv">$spl</span><span class="p">[]</span> <span class="o">=</span> <span class="s2">&quot;travail1&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$spl</span><span class="p">[]</span> <span class="o">=</span> <span class="s2">&quot;travail2&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$spl</span><span class="p">[]</span> <span class="o">=</span> <span class="s2">&quot;travail3&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$list</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LinkedList</span><span class="p">(</span><span class="nv">$spl</span><span class="p">));</span>
-</span><span class='line'><span class="k">foreach</span><span class="p">(</span><span class="nv">$list</span> <span class="k">as</span> <span class="nv">$key</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nb">var_dump</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// string(8) &quot;travail1&quot;</span>
-</span><span class='line'><span class="c1">// string(8) &quot;travail2&quot;</span>
-</span><span class='line'><span class="c1">// string(8) &quot;travail3&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$linked</span> <span class="o">=</span> <span class="k">New</span> <span class="nx">LinkedList</span><span class="p">();</span>
-</span><span class='line'><span class="nv">$linked</span><span class="p">[]</span> <span class="o">=</span> <span class="s2">&quot;valeur 1&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$linked</span><span class="p">[]</span> <span class="o">=</span> <span class="s2">&quot;valeur 2&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$linked</span><span class="p">[]</span> <span class="o">=</span> <span class="s2">&quot;valeur 3&quot;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$list</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LinkedList</span><span class="p">(</span><span class="nv">$linked</span><span class="p">);</span>
-</span><span class='line'><span class="k">foreach</span><span class="p">(</span><span class="nv">$list</span> <span class="k">as</span> <span class="nv">$key</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nb">var_dump</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="c1">// string(9) &quot;valeur 1&quot;</span>
-</span><span class='line'><span class="c1">// string(8) &quot;valeur 2&quot;</span>
-</span><span class='line'><span class="c1">// string(8) &quot;valeur 3&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>En conclusion.</h2>
-
-<p>Nous avons implémenter Les listes chainées avec toutes les méthodes. Mon exemple est un peu théorique. Mais je vous conseille de re-regarder les doctrines collections.</p>
-
-<p>Merci de m&#8217;avoir lu.</p>
 ]]></content>
   </entry>
   

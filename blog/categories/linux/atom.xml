@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-02-28T18:59:18+01:00</updated>
+  <updated>2016-03-08T22:47:12+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,122 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Installation d'un proxmox 4.0 : Nginx]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/"/>
+    <updated>2016-03-08T21:35:36+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx</id>
+    <content type="html"><![CDATA[<p>Dans le <a href="/blog/2016/02/28/installation-dun-proxmox-4-dot-0/">post précédent</a>, nous avons réglé le réseau pour que les instances récupèrent le réseau. Enfin nous avons crée une première instance que j&#8217;ai nommé <code>nginxproxy</code>.</p>
+
+<p>Ce que je veux..</p>
+
+<p>J&#8217;ai plusieurs sites et noms de domaine sur mon Proxmox. Je souhaite mettre chaque site dans un container. Ainsi tout est isolé, je peux mettre toute les versions que je veux.</p>
+
+<p>Par exemple, je souhaite</p>
+
+<ul>
+<li>blog.domaine1.fr partte vers l&#8217;instance 102 qui contient son propre apache.</li>
+<li>image.domaine1.fr vers l&#8217;instance 103 etc ..</li>
+</ul>
+
+
+<p>Nous allons utiliser  <strong>Nginx</strong> pour rediriger le trafic.
+<img class="center" src="/images/nginx-logo.png" width="313" height="72" title="&lsquo;logo de nginx&rsquo; &lsquo;logo de nginx&rsquo;" ></p>
+
+<p>Je vais</p>
+
+<ul>
+<li>rediriger tout le trafic du port 80 du proxmox vers mon instance1 (que j&#8217;ai appellé nginxProxy)</li>
+<li>installer Nginx en proxy sur cette VM. j&#8217;arrive sur la machine avec l&#8217;url blog.domaine1.fr, je renvoie vers la machine 102</li>
+</ul>
+
+
+<!--more-->
+
+
+<h2>Partie 1 rediriger le port 80</h2>
+
+<p>Il suffit de rajouter la ligne suivante dans mon fichier <code>iptables_start.sh</code> sur le <strong>Proxmox</strong></p>
+
+<pre><code># VM &lt;numero de la vm&gt; : nginx proxy/gateway
+iptables -t nat -A PREROUTING -i vmbr0 -p tcp --dport 80 -j DNAT --to-destination 192.168.15.&lt;ip de la vm&gt;:80
+</code></pre>
+
+<p>Maintenant tout le trafic web se redirige vers le futur Nginx.</p>
+
+<h2>Partie 2 installation de Nginx</h2>
+
+<p>Sur la vm précédemment crée.</p>
+
+<pre><code class="sh">sudo apt-get install nginx
+</code></pre>
+
+<p>Il faut rajouter la ligne suivante dans le fichier <code>/etc/nginx/nginx.conf</code></p>
+
+<pre><code>      ##
+        # Virtual Host Configs
+        ##
+        ## la ligne à rajouter ##
+        include /etc/nginx/proxy_params;
+        ## 
+        include /etc/nginx/conf.d/*.conf;
+        include /etc/nginx/sites-enabled/*;
+</code></pre>
+
+<p>Et rajouter ou créer (je ne me souviens plus ..)  le fichier <code>/etc/nginx/proxy_params</code></p>
+
+<pre><code>proxy_set_header Host $http_host;
+proxy_set_header X-Real-IP $remote_addr;
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+proxy_set_header X-Forwarded-Proto $scheme;
+</code></pre>
+
+<p>Enfin voici un exemple pour blog.domaine1.com</p>
+
+<ul>
+<li>créer un fichier <code>/etc/nginx/sites-available/blog.domaine1.com.conf</code></li>
+<li>dans ce fichier recopier la conf suivante</li>
+</ul>
+
+
+<pre><code>server {
+        server_name blog.domaine1.com.conf;
+
+        location / {
+            proxy_pass http://192.168.15.&lt;ip de la vm&gt;;
+        }
+}
+</code></pre>
+
+<p>Pas grand chose à rajouter la conf parle d&#8217;elle-même.</p>
+
+<p>Il ne reste plus qu&#8217;a activer le site
+<code>
+cd /etc/nginx/sites-enabled/
+ln -s ../site-available/blog.domaine1.com.conf
+</code></p>
+
+<p>Un Nginx restart..</p>
+
+<pre><code>service nginx restart
+</code></pre>
+
+<p>Il ne nous reste plus qu&#8217;a créer une VM pour héberger le blog.domaine1.com</p>
+
+<h2>Conclusion</h2>
+
+<p>Tout cela marche bien mais je suis resté assez flou sur la façon de se connecter sur les VMs</p>
+
+<p>Dans la partie 3 Je vais essayer de clarifier tout cela.. Je m&#8217;excuse pour les fautes d&#8217;orthographes. Et je vous remercie de m&#8217;avoir lu.</p>
+
+<ul>
+<li>Partie 1 : <a href="/blog/2016/02/28/installation-dun-proxmox-4-dot-0/">Proxmox : mise en place</a></li>
+<li>Partie 2 : <a href="/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/">Proxmox : Nginx</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Installation d'un proxmox 4.0]]></title>
@@ -32,8 +148,8 @@
 
 <ul>
 <li>Installation du Proxmox</li>
-<li>Reglage du Réseau</li>
-<li>Création d&#8217;un première instance.</li>
+<li>Réglage du Réseau</li>
+<li>Création d&#8217;une première instance.</li>
 </ul>
 
 
@@ -131,19 +247,19 @@ iptables -P INPUT ACCEPT
 iptables -P FORWARD ACCEPT
 iptables -P OUTPUT ACCEPT
 
-# On laisse sortir les vm
+# On laisse sortir les VM/container
 iptables -t nat -A POSTROUTING -s 192.168.15.0/24 -o vmbr0 -j MASQUERADE
 </code></pre>
 
 <p>La première partie vide toute les règles de redirection.</p>
 
-<p>La seconde partie va permettre au vm dont l&#8217;ip est entre 192.168.15.1 à 192.168.15.254 de sortir sur le réseau.</p>
+<p>La seconde partie va permettre au VM dont l&#8217;IP est entre 192.168.15.1 à 192.168.15.254 de sortir sur le réseau.</p>
 
 <h2>Résumé</h2>
 
 <ul>
 <li>Nous avons réglé <code>vmbr1</code> avec une adresse en 192.168.15.20/24</li>
-<li>Nous avons activé le forward d&#8217;Ip</li>
+<li>Nous avons activé le forward d&#8217;IP</li>
 <li>Nous avons créer un script <code>iptables_start.sh</code> qui supprime les anciennes regles et qui permet au réseau 192.168.15.0/24 de récuperer le net.</li>
 </ul>
 
@@ -162,7 +278,7 @@ iptables -t nat -A POSTROUTING -s 192.168.15.0/24 -o vmbr0 -j MASQUERADE
 
 <h3>Créer un container</h3>
 
-<p>Cliquer sur l&#8217;icone <code>create CT</code> en haut à droite.</p>
+<p>Cliquer sur l&#8217;icône <code>create CT</code> en haut à droite.</p>
 
 <h4>Général</h4>
 
@@ -193,19 +309,19 @@ Mettons le noms de l&#8217;instance <code>nginxproxy</code> et mettons un mots d
 <p><img class="center" src="/images/creationvmreseau.png" width="600" height="390" title="&lsquo;réglage du réseau&rsquo; &lsquo;réglage du réseau&rsquo;" >
 dans le bridge mettre <strong>vmbr1</strong></p>
 
-<p>dans l&#8217;ip c&#8217;est simple c&#8217;est <code>192.168.15.&lt;numéro d'instance&gt;/24</code>. si vous avez l&#8217;instance 101 alors l&#8217;ip est <code>192.168.15.101/24</code></p>
+<p>Dans l&#8217;ip c&#8217;est simple c&#8217;est <code>192.168.15.&lt;numéro d'instance&gt;/24</code>. si vous avez l&#8217;instance 101 alors l&#8217;ip est <code>192.168.15.101/24</code></p>
 
-<p>dans la gateway c&#8217;est <code>192.168.15.20</code> la même ip défini dans le <code>vmbr1</code></p>
+<p>Dans la <em>gateway</em> c&#8217;est <code>192.168.15.20</code> la même IP défini dans le <code>vmbr1</code></p>
 
 <h4>Dns</h4>
 
 <p>Rien à faire..</p>
 
-<p>Vous n&#8217;avez plus qu&#8217;a confirmer. Normalement en 15 secondes la vm est crée.</p>
+<p>Vous n&#8217;avez plus qu&#8217;a confirmer. Normalement en 15 secondes la VM est crée.</p>
 
 <h4>Finition.</h4>
 
-<p>Avant d&#8217;allumer la vm cliquer sur l&#8217;icône de la vm puis <code>Options</code> puis cliquez sur la ligne <code>Start at boot</code> puis <code>Edit</code> et <code>yes</code> si le proxmox redémarre, on relance la machine (ce qui n&#8217;est pas le cas par défaut)</p>
+<p>Avant d&#8217;allumer la vm cliquer sur l&#8217;icône de la VM puis <code>Options</code> puis cliquez sur la ligne <code>Start at boot</code> puis <code>Edit</code> et <code>yes</code> si le proxmox redémarre, on relance la machine (ce qui n&#8217;est pas le cas par défaut)</p>
 
 <h4>Allumage</h4>
 
@@ -214,6 +330,12 @@ dans le bridge mettre <strong>vmbr1</strong></p>
 <h2>Conclusion</h2>
 
 <p>Nous avons réglé le proxmox, installé la première instance. dans la partie 2 nous nous connecterons sur l&#8217;instance pour terminer les réglages. Nous mettrons en place aussi le nginx pour rediriger les urls vers les bonnes instances.</p>
+
+<ul>
+<li>Partie 1 : <a href="/blog/2016/02/28/installation-dun-proxmox-4-dot-0/">Proxmox : mise en place</a></li>
+<li>Partie 2 : <a href="/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/">Proxmox : Nginx</a></li>
+</ul>
+
 ]]></content>
   </entry>
   
@@ -476,121 +598,6 @@ https://github.com/johnstonbl01/clementinejs-fcc.git
 
 
 <p>Je vous laisse j&#8217;ai un crime à résoudre.. Il y a de quoi s&#8217;occuper.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Faire des jointures sur des fichiers csv]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/11/08/faire-des-jointures-sur-des-fichiers-csv/"/>
-    <updated>2015-11-08T20:27:16+01:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/11/08/faire-des-jointures-sur-des-fichiers-csv</id>
-    <content type="html"><![CDATA[<h2>Introduction</h2>
-
-<p>Un problème que j&#8217;ai eu au travail.</p>
-
-<p>Soit les deux fichiers suivants csv suivant</p>
-
-<pre><code>ID_1,Noms1,Personne1
-ID_2,Noms2,Personne1
-ID_2,Noms2,Personne2
-ID_3,Noms3,Personne1
-ID_5,Noms5,Personne5
-</code></pre>
-
-<pre><code>SIRET1,Adresse1,Noms1Annuaire,ID_1
-SIRET2,Adresse2,Noms2Annuaire,ID_2
-SIRET3,Adresse3,Noms3Annuaire,ID_3
-SIRET4,Adresse4,Noms4Annuaire,ID_4
-</code></pre>
-
-<p>Je souhaite faire un merge de ces deux csv. Comment faire ?</p>
-
-<!--more-->
-
-
-<p>En solution 1 j&#8217;ai pensé.</p>
-
-<ul>
-<li>Créer une table temporaire</li>
-<li>dumper les deux fichiers</li>
-<li>faire un jointure sql</li>
-<li>faire un export</li>
-</ul>
-
-
-<p>Et puis je me suis souvenu de la commande <code>join</code></p>
-
-<p>Voici la commande que j&#8217;ai utilisé</p>
-
-<pre><code class="sh">join -11 -24 file1.csv file2.csv  -t,
-</code></pre>
-
-<p>Voici le détail de la commande</p>
-
-<ul>
-<li><code>-11</code> <code>-24</code> faire une jointure entre la colonne <strong>1</strong> du <code>file1.csv</code> et la colonne <strong>4</strong> du <code>file2.csv</code></li>
-<li><code>-t,</code> définie le séparateur dans le fichier ici c&#8217;est un <code>csv</code> <strong>C</strong>omma <strong>S</strong>epared <strong>V</strong>alue, donc le séparateur est <code>,</code></li>
-</ul>
-
-
-<p>Voici le résultat
-<code>
-ID_1,Noms1,Personne1,SIRET1,Adresse1,Noms1Annuaire
-ID_2,Noms2,Personne1,SIRET2,Adresse2,Noms2Annuaire
-ID_2,Noms2,Personne2,SIRET2,Adresse2,Noms2Annuaire
-ID_3,Noms3,Personne1,SIRET3,Adresse3,Noms3Annuaire
-</code></p>
-
-<p>C&#8217;est une jointure classique <code>ID_5</code> n&#8217;apparait pas dans le résultats pas plus que <code>Adresse4</code></p>
-
-<h2>Faire un select</h2>
-
-<p>On précise les colonnes que l&#8217;on souhaite avec l&#8217;option <code>-o</code></p>
-
-<pre><code>join -11 -24 file1.txt file2.txt  -t, -o1.2,2.1
-</code></pre>
-
-<p><code>-o1.2,2.1</code> la colonne <strong>2</strong> du <code>file1.csv</code> et la colonne <strong>1</strong> du <code>file2.csv</code></p>
-
-<pre><code>Noms1,SIRET1
-Noms2,SIRET2
-Noms2,SIRET2
-Noms3,SIRET3
-</code></pre>
-
-<h2>Left-join et Right Join</h2>
-
-<p>C&#8217;est possible à émuler avec l&#8217;option <code>-a</code> et <code>-e</code> <code>-a</code> affiche le fichier <strong>1</strong> ou <strong>2</strong>  même s&#8217;il n&#8217;y a pas de jointure et  et <code>-e</code>  la valeur par défaut à l&#8217;affichage</p>
-
-<p>deux possibilités</p>
-
-<pre><code class="sh"># Left-join
-join -11 -24 file1.txt file2.txt  -t, -o1.2,2.1,2.2 -a 1 -e NULL
-</code></pre>
-
-<pre><code>Noms1,SIRET1,Adresse1
-Noms2,SIRET2,Adresse2
-Noms2,SIRET2,Adresse2
-Noms3,SIRET3,Adresse3
-Noms5,NULL,NULL
-</code></pre>
-
-<pre><code class="sh"># Right-join
-join -11 -24 file1.txt file2.txt  -t, -o1.2,2.1,2.2 -a 2 -e NULL
-</code></pre>
-
-<pre><code>Noms1,SIRET1,Adresse1
-Noms2,SIRET2,Adresse2
-Noms2,SIRET2,Adresse2
-Noms3,SIRET3,Adresse3
-NULL,SIRET4,Adresse4
-</code></pre>
-
-<h2>Conclusion</h2>
-
-<p>Si un jour vous avez besoin de merger deux fichiers sans forcement sortir un script complexe, penser à linux.</p>
-
-<p>Pour le csv et PHP, c&#8217;est inclus dans l&#8217;instruction <code>fgetcsv</code> mais ce n&#8217;est pas la joie, la librairie suivante <a href="http://csv.thephpleague.com/">thephpleague/csv</a> rend cela nettement plus agréable.</p>
 ]]></content>
   </entry>
   

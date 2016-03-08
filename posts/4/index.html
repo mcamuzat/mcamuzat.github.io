@@ -9,7 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Les promises sont une alternative plus puissante au Callback. Relativement peu connues au début. Elle sont maintenant en standard dans beaucoup de &hellip;">
+  <meta name="description" content="Nous allons voir une nouveauté de PHP 5.5 l'instruction yield Cela permet de mettre en place ce qu'on appelle les générateurs. Un premier exemple &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -62,6 +62,107 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/09/06/php-yield-les-generateurs/">PHP yield les générateurs</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-09-06T19:06:48+02:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Nous allons voir une nouveauté de PHP 5.5 l&#8217;instruction <strong>yield</strong></p>
+
+<p>Cela permet de mettre en place ce qu&#8217;on appelle les générateurs.</p>
+
+<h2>Un premier exemple</h2>
+
+<p>Regardons un exemple ensemble</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'><span class="k">function</span> <span class="nf">generateAnimal</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;Je suis dans le générateur</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Panda&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;Je suis retourné dans le générateur</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Lama&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;je suis de retour</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">yield</span> <span class="s2">&quot;Alpaga&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;plus de d&#39;animaux</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$generator</span> <span class="o">=</span> <span class="nx">generateAnimal</span><span class="p">();</span>
+</span><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$generator</span> <span class="k">as</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s2">&quot;j&#39;ai reçu </span><span class="si">$value</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Voici le résultat</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">j</span><span class="s1">&#39;ai reçu Panda </span>
+</span><span class='line'><span class="s1">Je suis retourné dans le générateur</span>
+</span><span class='line'><span class="s1">j&#39;</span><span class="nx">ai</span> <span class="nx">reçu</span> <span class="nx">Lama</span>
+</span><span class='line'><span class="nx">je</span> <span class="nx">suis</span> <span class="nx">de</span> <span class="nx">retour</span>
+</span><span class='line'><span class="nx">j</span><span class="s1">&#39;ai reçu Alpaga </span>
+</span><span class='line'><span class="s1">plus de d&#39;</span><span class="nx">animaux</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>D&#8217;abord un générateur se comporte comme un iterator. C&#8217;est grâce à cela que je peux faire un <code>foreach</code>.</p>
+
+<p>Je vais refaire pas à pas avec des commentaires.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/09/06/php-yield-les-generateurs/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -639,56 +740,6 @@ L&#8217;octet de la position du début des données peut être déterminé par l
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/08/04/decorer-phpunit-avec-les-listeners/">Décorer PHPUnit avec les Listeners</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-08-04T19:44:52+02:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Des test unitaires plus jolis</h2>
-
-<p>Comme tout les programmeurs vous faites des tests unitaires. En php, On utilise souvent PHPUnit.
-quand je lance mes tests je vois cela.</p>
-
-<p><img class="center" src="/images/phpunit_screenshot.png" width="499" height="168" title="Screenshot de phpunit" alt="Mon terminal n\"></p>
-
-<p>C&#8217;est un peu triste. Et encore j&#8217;ai activé la couleur !.</p>
-
-<p>il existe des variantes avec <code>--testdox</code></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/08/04/decorer-phpunit-avec-les-listeners/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/5">&larr; Older</a>
@@ -738,6 +789,10 @@ quand je lance mes tests je vois cela.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/">Installation d&#8217;un proxmox 4.0 : Nginx</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/02/28/installation-dun-proxmox-4-dot-0/">Installation d&#8217;un proxmox 4.0</a>
       </li>
     
@@ -751,10 +806,6 @@ quand je lance mes tests je vois cela.</p>
     
       <li class="post">
         <a href="/blog/2016/02/14/remettre-au-propre-son-depot-git/">Remettre au propre son dépot git</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/02/07/inserer-avec-classe-dans-vim/">Insérer avec classe dans VIM</a>
       </li>
     
   </ul>
