@@ -19,8 +19,8 @@ Proxmox V4 utilise [LXC](https://help.ubuntu.com/community/LXC)  alors que la ve
 Je suis arrivé à installer le logiciel. Voici le résumé de la première partie
 
  * Installation du Proxmox
- * Reglage du Réseau
- * Création d'un première instance.
+ * Réglage du Réseau
+ * Création d'une première instance.
 
 <!--more-->
 
@@ -115,18 +115,18 @@ iptables -P INPUT ACCEPT
 iptables -P FORWARD ACCEPT
 iptables -P OUTPUT ACCEPT
 
-# On laisse sortir les vm
+# On laisse sortir les VM/container
 iptables -t nat -A POSTROUTING -s 192.168.15.0/24 -o vmbr0 -j MASQUERADE
 ```
 
 La première partie vide toute les règles de redirection.
 
-La seconde partie va permettre au vm dont l'ip est entre 192.168.15.1 à 192.168.15.254 de sortir sur le réseau.
+La seconde partie va permettre au VM dont l'IP est entre 192.168.15.1 à 192.168.15.254 de sortir sur le réseau.
 
 
 ## Résumé
  * Nous avons réglé `vmbr1` avec une adresse en 192.168.15.20/24
- * Nous avons activé le forward d'Ip
+ * Nous avons activé le forward d'IP
  * Nous avons créer un script `iptables_start.sh` qui supprime les anciennes regles et qui permet au réseau 192.168.15.0/24 de récuperer le net.
 
 
@@ -143,7 +143,7 @@ Téléchargeons une Ubuntu.
 
 ### Créer un container 
 
-Cliquer sur l'icone `create CT` en haut à droite.
+Cliquer sur l'icône `create CT` en haut à droite.
 
 #### Général
 Normalement avoir l'image suivante.
@@ -169,17 +169,17 @@ C'est ici que c'est un peu plus compliqué
 {% img center /images/creationvmreseau.png 600 390 'réglage du réseau' 'réglage du réseau' %}
 dans le bridge mettre **vmbr1**
 
-dans l'ip c'est simple c'est `192.168.15.<numéro d'instance>/24`. si vous avez l'instance 101 alors l'ip est `192.168.15.101/24`
+Dans l'ip c'est simple c'est `192.168.15.<numéro d'instance>/24`. si vous avez l'instance 101 alors l'ip est `192.168.15.101/24`
 
-dans la gateway c'est `192.168.15.20` la même ip défini dans le `vmbr1`
+Dans la *gateway* c'est `192.168.15.20` la même IP défini dans le `vmbr1`
 
 #### Dns
 Rien à faire..
 
-Vous n'avez plus qu'a confirmer. Normalement en 15 secondes la vm est crée.
+Vous n'avez plus qu'a confirmer. Normalement en 15 secondes la VM est crée.
 
 #### Finition.
-Avant d'allumer la vm cliquer sur l'icône de la vm puis `Options` puis cliquez sur la ligne `Start at boot` puis `Edit` et `yes` si le proxmox redémarre, on relance la machine (ce qui n'est pas le cas par défaut)
+Avant d'allumer la vm cliquer sur l'icône de la VM puis `Options` puis cliquez sur la ligne `Start at boot` puis `Edit` et `yes` si le proxmox redémarre, on relance la machine (ce qui n'est pas le cas par défaut)
 
 #### Allumage
 Vous pouvez lancer la vm cliquez sur start.
@@ -187,4 +187,9 @@ Vous pouvez lancer la vm cliquez sur start.
 ## Conclusion
 
 Nous avons réglé le proxmox, installé la première instance. dans la partie 2 nous nous connecterons sur l'instance pour terminer les réglages. Nous mettrons en place aussi le nginx pour rediriger les urls vers les bonnes instances.
+
+
+
+ * Partie 1 : [Proxmox : mise en place](/blog/2016/02/28/installation-dun-proxmox-4-dot-0/)
+ * Partie 2 : [Proxmox : Nginx](/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/)
 
