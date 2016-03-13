@@ -4,7 +4,7 @@
   <title><![CDATA[Category: vim | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/vim/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-03-08T22:47:12+01:00</updated>
+  <updated>2016-03-13T18:38:10+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,166 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Vim-plug : Gestion des plugins]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/03/13/vim-plug-gestion-des-plugins/"/>
+    <updated>2016-03-13T17:44:53+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/03/13/vim-plug-gestion-des-plugins</id>
+    <content type="html"><![CDATA[<h2>Introduction</h2>
+
+<p>Il existe une quantité monstrueuse de plugin sur Vim. Je vais parler de la gestion de plugin. Avant de commencer une série sur les meilleurs plugins de Vim.</p>
+
+<h2>Installation de Vim-plug</h2>
+
+<p>Nous allons utiliser un gestionnaire de plugin : <a href="https://github.com/junegunn/vim-plug">vim-plug</a>.</p>
+
+<p>Nous allons éditer notre fichier <code>~/.vimrc</code></p>
+
+<!--more-->
+
+
+<p>Nous collons les lignes suivantes au tout début de votre fichier.</p>
+
+<pre><code>" Auto load / install plugin manager
+
+if !1 | finish | endif
+
+" auto-install vim-plug
+if empty(glob('~/.vim/autoload/plug.vim'))
+    echo "Installing VimPlug..."
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall
+endif
+
+" VimPlug 
+call plug#begin('~/.vim/plugged')
+
+
+" VIMPROC 
+Plug 'Shougo/vimproc', { 'do': 'make' }
+
+" Syntastic  
+" https://github.com/scrooloose/syntastic
+Plug 'scrooloose/syntastic'
+
+" Fugitive
+" fugitive.vim: a Git wrapper so awesome, it should be illegal
+" https://github.com/tpope/vim-fugitive
+Plug 'tpope/vim-fugitive'
+
+" Surround
+" surround.vim: quoting/parenthesizing made simple
+" https://github.com/tpope/vim-surround
+Plug 'tpope/vim-surround'
+
+
+call plug#end()
+" Required:
+filetype plugin indent on
+</code></pre>
+
+<p>Voila exactement ce que fais le programme.</p>
+
+<ul>
+<li>Si Vim-plug n&#8217;existe pas, On va le télécharger</li>
+<li>On donne la liste des plugins à télécharger. Pour rajoutez un plugin il suffit de le rajouter entre <code>call plug#begin('~/.vim/plugged')</code> et <code>call plug#end()</code></li>
+</ul>
+
+
+<p>Par exemple si je souhaite rajoutez le plugin Nerdtree (permet un d&#8217;avoir une affichage en arbre des fichiers)</p>
+
+<pre><code>call plug#begin('~/.vim/plugged')
+...
+Plug 'scrooloose/nerdtree'
+...
+call plug#end()
+</code></pre>
+
+<p>Pour installer dans vim
+<code>
+:PlugInstall
+</code></p>
+
+<p>Normalement tout les plugins s&#8217;installent en parallèles avec des jolies barres de progressions.</p>
+
+<p>Pour updater les plugins
+<code>
+:PlugUpdate
+</code></p>
+
+<p>Pour supprimer les plugins inutiles
+<code>
+:PlugClean
+</code></p>
+
+<p>Enfin il existe une vue spécifique pour voir le status des plugins
+<code>
+:PlugStatus
+</code></p>
+
+<h2>Mais encore..</h2>
+
+<p>Ce qui est sympa avec Vim-plug est que l&#8217;on peut mettre des conditions dans les plugins</p>
+
+<pre><code>Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+</code></pre>
+
+<p>ici <code>vim-snippets</code> dépends de <code>ultisnips</code></p>
+
+<p>On charge paresseusement les plugins</p>
+
+<pre><code>Plug 'StanAngeloff/php.vim', { 'for': 'php' }
+</code></pre>
+
+<p>Je n&#8217;ai besoin du plugin <code>php-vim</code> que si j&#8217;utilise un fichier PHP.</p>
+
+<pre><code>Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+</code></pre>
+
+<p>Je charge le plugin que si je l&#8217;appelle.</p>
+
+<h2>Les alternatives</h2>
+
+<ul>
+<li><a href="https://github.com/tpope/vim-pathogen">Pathogen</a> historiquement le premier. Il suffisait de créer un dossier <code>bundle</code> dans <code>.vim</code> et de cloner le plugin vim. Et le plugin était installé. Pour supprimer le plugin, il suffit faire un rm du dépôt</li>
+</ul>
+
+
+<pre><code class="sh">mkdir  .vim/bundle
+cd .vim/bundle
+// on clone le plugin
+git clone https://github.com/tpope/vim-surround.git
+git clone https://github.com/scrooloose/nerdtree.git
+</code></pre>
+
+<p>J&#8217;ai utilisé ceci pendant des années et cela me suffisait</p>
+
+<ul>
+<li><a href="https://github.com/Shougo/neobundle.vim">NeoBundle</a> Un peu près la même chose que vim-plug. Il est censé être un peu plus complet que <a href="https://github.com/junegunn/vim-plug">vim-plug</a>.</li>
+</ul>
+
+
+<h2>Commiter son <code>.vimrc</code></h2>
+
+<p> L&#8217;idée est de versionner son fichier <code>.vimrc</code> sur github. Et de partager les raccourcis claviers, Il n&#8217;est pas rare d&#8217;avoir des fichiers de 1000 lignes. Je suis en train de refaire le mien.</p>
+
+<p> Un vimrc c&#8217;est pour résumer.</p>
+
+<ol>
+<li>Je copie/colle tout les <code>.vimrc</code> que je trouve</li>
+<li>J&#8217;installe 70 plugins</li>
+<li>Je me rend compte que j&#8217;utilise 5 plugins à peine.</li>
+<li>Je n&#8217;utilise aucun raccourci donc je supprime tout.</li>
+<li>heu..  je ne suis plus du tout à jours sur les plugins,.. On recommence à l&#8217;étape 1</li>
+</ol>
+
+
+<p>Nous allons continuer avec les plugins dans une future série d&#8217;articles.</p>
+
+<p>Merci de m&#8217;avoir lu, Je m&#8217;excuse pour les fautes.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Vim et Markdown]]></title>
@@ -453,137 +613,6 @@ bind main B !git checkout -b "%(prompt Enter new branch name: )"
 <p>Je vais revenir sur les autres vues bientôt.</p>
 
 <p>Merci de m&#8217;avoir lu.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Lancer des commandes dans Vim]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/08/31/lancer-des-commandes-dans-vim/"/>
-    <updated>2015-08-31T23:49:17+02:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/08/31/lancer-des-commandes-dans-vim</id>
-    <content type="html"><![CDATA[<p>Soit le fichier texte suivant:</p>
-
-<pre><code> * Alpha
- * Foxtrot
- * Charlie
- * Delta
- * Echo 
- * Bravo
-</code></pre>
-
-<p>Dans VIM il suffit de taper.</p>
-
-<pre><code>:%sort ou :%!sort
-</code></pre>
-
-<p>Pour obtenir
-<code>
- * Alpha
- * Bravo
- * Charlie
- * Delta
- * Echo
- * Foxtrot
-</code></p>
-
-<!--more-->
-
-
-<p>On peux aussi lancer plein de commandes amusantes</p>
-
-<pre><code> * Doublon
- * Pas unique
- * Doublon
- * 
- * ...
-</code></pre>
-
-<pre><code>!sort | uniq -c | tr "[A-Z]" "[a-z]"
-</code></pre>
-
-<p>Pour ceux qui ne se rappelle plus trop les commandes de Bash</p>
-
-<ul>
-<li><code>sort</code> trie le texte</li>
-<li><code>uniq -c</code> prend toute les valeurs et les comptes c&#8217;est l&#8217;équivalent d&#8217;un <code>GROUP BY</code> en SQL</li>
-<li><code>tr</code> est l&#8217;abréviation de <strong>tr</strong>anspose je remplace les lettres en <code>[A-Z]</code> par leur équivalent en minuscule.</li>
-</ul>
-
-
-<pre><code>      1  * 
-      1  * ...
-      2  * doublon
-      1  * pas unique
-</code></pre>
-
-<p>Si vous sélectionnez le texte avec <code>v</code> et que vous appuyer sur <code>:</code></p>
-
-<p>Alors vous devez voir la commande suivante
-<code>
-:'&lt;,'&gt;
-</code>
-et Ajoutez la commande que vous allez appliquer à la sélection. Par exemple <code>:'&lt;,'&gt;!sort</code></p>
-
-<p>Plus rigolo. On peux appeler des langages que l&#8217;on veut dans VIM</p>
-
-<pre><code class="php">&lt;?php echo "bonjour";
-</code></pre>
-
-<p>Tapez <code>!!</code>
-vous devriez voir apparaître
-<code>
-:.!
-</code>
-Compléter avec <code>:.!php</code></p>
-
-<p>votre texte va se remplacer
-<code>
-bonjour
-</code></p>
-
-<p>Cela marche aussi avec python</p>
-
-<pre><code class="python">print "olleh"[::-1]
-</code></pre>
-
-<p>Avec le curseur sur la ligne, appuyer sur <code>!!</code> puis ajoutez <code>:.!python</code></p>
-
-<p>La ligne devient</p>
-
-<pre><code>hello
-</code></pre>
-
-<h2>Exécuter une commande Bash depuis VIM</h2>
-
-<p>La commande suivante</p>
-
-<pre><code>php app/console cache:clear --env=prod
-</code></pre>
-
-<p>Si vous voulez exécuter la commande mais ne pas modifiez la ligne.</p>
-
-<pre><code>:.w !bash
-</code></pre>
-
-<p>C&#8217;est un peu moins simple.</p>
-
-<ul>
-<li><code>:.</code> représente la ligne actuelle.</li>
-<li><code>w</code> représente une écriture</li>
-<li><code>!bash</code> via Bash.</li>
-</ul>
-
-
-<p>La documentation de VIM <code>:help :w_c</code></p>
-
-<h2>en résumé</h2>
-
-<ul>
-<li>Si vous voulez appliquer votre commande sur tout le fichier <code>:%!commande</code></li>
-<li>S vous voulez juste la ligne <code>:.!commande</code> ou tapez <code>!!</code>.</li>
-<li>Si vous voulez sur une sélection <code>v</code> ou <code>V</code> puis <code>:</code> vous deviez voir ceci <code>:'&lt;,'&gt;</code>, ajoutez la commande souhaitée.</li>
-</ul>
-
 ]]></content>
   </entry>
   

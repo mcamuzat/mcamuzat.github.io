@@ -9,10 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Nous allons voir les foncteurs applicatifs. Reprenons le container Maybe Ce que j'aimerai c'est pouvoir faire ce genre d'opération 1
-2
-3
-Maybe(3) + &hellip;">
+  <meta name="description" content="Introduction Je ne développe pas en Haskell mais je regarde beaucoup. La série que j'écris sur la programmation fonctionnelle me force à regarder le &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +62,63 @@ Maybe(3) + &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/12/27/haskell-stack/">Haskell : Stack</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-12-27T18:39:17+01:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Introduction</h2>
+
+<p>Je ne développe pas en <a href="https://www.haskell.org/">Haskell</a> mais je regarde beaucoup. La série que j&#8217;écris sur la programmation fonctionnelle me force à regarder le langage de plus près. Le monde haskell s&#8217;est enrichi d&#8217;un nouvel outil <strong>Stack</strong>.</p>
+
+<h2>Stack et Haskell</h2>
+
+<p>Stack est un logiciel qui gère l&#8217;installation/les packages/la création/le build/les tests d&#8217;un projet Haskell.</p>
+
+<p>Il a plusieurs avantages:</p>
+
+<ul>
+<li>Il a été pensé pour automatiser le build.</li>
+<li>Il a une ligne de commande sympathique que nous allons voir par la suite.</li>
+<li>Il utilise un fichier <code>stack.yml</code> c&#8217;est l&#8217;équivalent d&#8217;un <code>composer.json</code> en php ou un <code>package.json</code> en node.</li>
+<li>Tout est installé dans le <code>~/.stack</code> tout les programmes sont <em>isolés</em> et n&#8217;interfèrent pas avec les autres logiciels déjà pré installés.</li>
+</ul>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/12/27/haskell-stack/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -551,156 +605,6 @@ le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/11/02/diff-patch-git/">Diff et patch, pas besoin de git</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-11-02T22:24:03+01:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Nous allons jouer un peu avec les diff et les patchs.</p>
-
-<h1> Mise en place</h1>
-
-<p>Soit le fichier suivant <code>README.md</code></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Ceci est un exemple.
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>Ceci est une ligne ajoutée
-</span><span class='line'>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Modifions le fichier par ceci.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Ceci est un exemple.
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>j'ai ajouté cette ligne</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Enregistrons celui-ci en <code>README2.md</code></p>
-
-<p>Et lançons la commande suivante</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>diff README.md README2.md
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Nous obtenons le résultat suivant</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='diff'><span class='line'>4d3
-</span><span class='line'>&lt; Ceci est une ligne ajoutée
-</span><span class='line'>6a6,9
-</span><span class='line'>&gt;
-</span><span class='line'>&gt;
-</span><span class='line'>&gt;
-</span><span class='line'>&gt; j&#39;ai ajouté cette ligne
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Il y a en fait plusieurs formats</p>
-
-<p>Essayez la commande suivante</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>diff -u README.md README2.md &gt; readme.diff
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On obtient le fichier suivant</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='diff'><span class='line'><span class="gd">--- README.md   2015-11-02 22:07:43.728854981 +0100</span>
-</span><span class='line'><span class="gi">+++ README2.md  2015-11-02 22:13:58.244839112 +0100</span>
-</span><span class='line'><span class="gu">@@ -1,6 +1,9 @@</span>
-</span><span class='line'> Ceci est un exemple.
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="gd">-Ceci est une ligne ajoutée</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="gi">+</span>
-</span><span class='line'><span class="gi">+</span>
-</span><span class='line'><span class="gi">+</span>
-</span><span class='line'><span class="gi">+j&#39;ai ajouté cette ligne</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/11/02/diff-patch-git/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -750,6 +654,10 @@ le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/03/13/vim-plug-gestion-des-plugins/">Vim-plug : Gestion des plugins</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/">Installation d&#8217;un proxmox 4.0 : Nginx</a>
       </li>
     
@@ -763,10 +671,6 @@ le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code
     
       <li class="post">
         <a href="/blog/2016/02/15/vim-et-markdown/">Vim et Markdown</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/02/14/remettre-au-propre-son-depot-git/">Remettre au propre son dépot git</a>
       </li>
     
   </ul>

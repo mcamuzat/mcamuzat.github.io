@@ -4,7 +4,7 @@
   <title><![CDATA[Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-03-08T22:47:12+01:00</updated>
+  <updated>2016-03-13T18:38:10+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,221 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Vim-plug : Gestion des plugins]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/03/13/vim-plug-gestion-des-plugins/"/>
+    <updated>2016-03-13T17:44:53+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/03/13/vim-plug-gestion-des-plugins</id>
+    <content type="html"><![CDATA[<h2>Introduction</h2>
+
+<p>Il existe une quantité monstrueuse de plugin sur Vim. Je vais parler de la gestion de plugin. Avant de commencer une série sur les meilleurs plugins de Vim.</p>
+
+<h2>Installation de Vim-plug</h2>
+
+<p>Nous allons utiliser un gestionnaire de plugin : <a href="https://github.com/junegunn/vim-plug">vim-plug</a>.</p>
+
+<p>Nous allons éditer notre fichier <code>~/.vimrc</code></p>
+
+<!--more-->
+
+
+<p>Nous collons les lignes suivantes au tout début de votre fichier.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>" Auto load / install plugin manager
+</span><span class='line'>
+</span><span class='line'>if !1 | finish | endif
+</span><span class='line'>
+</span><span class='line'>" auto-install vim-plug
+</span><span class='line'>if empty(glob('~/.vim/autoload/plug.vim'))
+</span><span class='line'>    echo "Installing VimPlug..."
+</span><span class='line'>    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+</span><span class='line'>    autocmd VimEnter * PlugInstall
+</span><span class='line'>endif
+</span><span class='line'>
+</span><span class='line'>" VimPlug 
+</span><span class='line'>call plug#begin('~/.vim/plugged')
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>" VIMPROC 
+</span><span class='line'>Plug 'Shougo/vimproc', { 'do': 'make' }
+</span><span class='line'>
+</span><span class='line'>" Syntastic  
+</span><span class='line'>" https://github.com/scrooloose/syntastic
+</span><span class='line'>Plug 'scrooloose/syntastic'
+</span><span class='line'>
+</span><span class='line'>" Fugitive
+</span><span class='line'>" fugitive.vim: a Git wrapper so awesome, it should be illegal
+</span><span class='line'>" https://github.com/tpope/vim-fugitive
+</span><span class='line'>Plug 'tpope/vim-fugitive'
+</span><span class='line'>
+</span><span class='line'>" Surround
+</span><span class='line'>" surround.vim: quoting/parenthesizing made simple
+</span><span class='line'>" https://github.com/tpope/vim-surround
+</span><span class='line'>Plug 'tpope/vim-surround'
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>call plug#end()
+</span><span class='line'>" Required:
+</span><span class='line'>filetype plugin indent on
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Voila exactement ce que fais le programme.</p>
+
+<ul>
+<li>Si Vim-plug n&#8217;existe pas, On va le télécharger</li>
+<li>On donne la liste des plugins à télécharger. Pour rajoutez un plugin il suffit de le rajouter entre <code>call plug#begin('~/.vim/plugged')</code> et <code>call plug#end()</code></li>
+</ul>
+
+
+<p>Par exemple si je souhaite rajoutez le plugin Nerdtree (permet un d&#8217;avoir une affichage en arbre des fichiers)</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>call plug#begin('~/.vim/plugged')
+</span><span class='line'>...
+</span><span class='line'>Plug 'scrooloose/nerdtree'
+</span><span class='line'>...
+</span><span class='line'>call plug#end()</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pour installer dans vim</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:PlugInstall</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Normalement tout les plugins s&#8217;installent en parallèles avec des jolies barres de progressions.</p>
+
+<p>Pour updater les plugins</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:PlugUpdate </span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pour supprimer les plugins inutiles</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:PlugClean</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Enfin il existe une vue spécifique pour voir le status des plugins</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>:PlugStatus</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Mais encore..</h2>
+
+<p>Ce qui est sympa avec Vim-plug est que l&#8217;on peut mettre des conditions dans les plugins</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ici <code>vim-snippets</code> dépends de <code>ultisnips</code></p>
+
+<p>On charge paresseusement les plugins</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Plug 'StanAngeloff/php.vim', { 'for': 'php' }</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je n&#8217;ai besoin du plugin <code>php-vim</code> que si j&#8217;utilise un fichier PHP.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je charge le plugin que si je l&#8217;appelle.</p>
+
+<h2>Les alternatives</h2>
+
+<ul>
+<li><a href="https://github.com/tpope/vim-pathogen">Pathogen</a> historiquement le premier. Il suffisait de créer un dossier <code>bundle</code> dans <code>.vim</code> et de cloner le plugin vim. Et le plugin était installé. Pour supprimer le plugin, il suffit faire un rm du dépôt</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>mkdir  .vim/bundle
+</span><span class='line'><span class="nb">cd</span> .vim/bundle
+</span><span class='line'>// on clone le plugin
+</span><span class='line'>git clone https://github.com/tpope/vim-surround.git
+</span><span class='line'>git clone https://github.com/scrooloose/nerdtree.git
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>J&#8217;ai utilisé ceci pendant des années et cela me suffisait</p>
+
+<ul>
+<li><a href="https://github.com/Shougo/neobundle.vim">NeoBundle</a> Un peu près la même chose que vim-plug. Il est censé être un peu plus complet que <a href="https://github.com/junegunn/vim-plug">vim-plug</a>.</li>
+</ul>
+
+
+<h2>Commiter son <code>.vimrc</code></h2>
+
+<p> L&#8217;idée est de versionner son fichier <code>.vimrc</code> sur github. Et de partager les raccourcis claviers, Il n&#8217;est pas rare d&#8217;avoir des fichiers de 1000 lignes. Je suis en train de refaire le mien.</p>
+
+<p> Un vimrc c&#8217;est pour résumer.</p>
+
+<ol>
+<li>Je copie/colle tout les <code>.vimrc</code> que je trouve</li>
+<li>J&#8217;installe 70 plugins</li>
+<li>Je me rend compte que j&#8217;utilise 5 plugins à peine.</li>
+<li>Je n&#8217;utilise aucun raccourci donc je supprime tout.</li>
+<li>heu..  je ne suis plus du tout à jours sur les plugins,.. On recommence à l&#8217;étape 1</li>
+</ol>
+
+
+<p>Nous allons continuer avec les plugins dans une future série d&#8217;articles.</p>
+
+<p>Merci de m&#8217;avoir lu, Je m&#8217;excuse pour les fautes.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Installation d'un proxmox 4.0 : Nginx]]></title>
@@ -3710,280 +3925,6 @@ il suffit d&#8217;appuyer sur <code>g</code> de faire la recherche.</p>
 <p>Je me suis forcé à lire un peu la documentation de git grep, et je ne le regrette pas.</p>
 
 <p>Enfin il existe des alternative à <code>grep</code> comme <a href="http://beyondgrep.com/">ack</a> ou plus récemment <a href="https://github.com/ggreer/the_silver_searcher">the silver searcher</a>. Je vais essayer d&#8217;en parler plus tard.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Diff et patch, pas besoin de git]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/11/02/diff-patch-git/"/>
-    <updated>2015-11-02T22:24:03+01:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/11/02/diff-patch-git</id>
-    <content type="html"><![CDATA[<p>Nous allons jouer un peu avec les diff et les patchs.</p>
-
-<h1> Mise en place</h1>
-
-<p>Soit le fichier suivant <code>README.md</code></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Ceci est un exemple.
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>Ceci est une ligne ajoutée
-</span><span class='line'>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Modifions le fichier par ceci.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Ceci est un exemple.
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>j'ai ajouté cette ligne</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Enregistrons celui-ci en <code>README2.md</code></p>
-
-<p>Et lançons la commande suivante</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>diff README.md README2.md
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Nous obtenons le résultat suivant</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='diff'><span class='line'>4d3
-</span><span class='line'>&lt; Ceci est une ligne ajoutée
-</span><span class='line'>6a6,9
-</span><span class='line'>&gt;
-</span><span class='line'>&gt;
-</span><span class='line'>&gt;
-</span><span class='line'>&gt; j&#39;ai ajouté cette ligne
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Il y a en fait plusieurs formats</p>
-
-<p>Essayez la commande suivante</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>diff -u README.md README2.md &gt; readme.diff
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On obtient le fichier suivant</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='diff'><span class='line'><span class="gd">--- README.md   2015-11-02 22:07:43.728854981 +0100</span>
-</span><span class='line'><span class="gi">+++ README2.md  2015-11-02 22:13:58.244839112 +0100</span>
-</span><span class='line'><span class="gu">@@ -1,6 +1,9 @@</span>
-</span><span class='line'> Ceci est un exemple.
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="gd">-Ceci est une ligne ajoutée</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="gi">+</span>
-</span><span class='line'><span class="gi">+</span>
-</span><span class='line'><span class="gi">+</span>
-</span><span class='line'><span class="gi">+j&#39;ai ajouté cette ligne</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<!--more-->
-
-
-<p>Cette vision doit vous être assez familière si vous faite du git, svn ou mercurial</p>
-
-<p>c&#8217;est la sortie d&#8217;un <code>git diff</code> si on avait modifié ce fichier.</p>
-
-<h2>Jouer un patch</h2>
-
-<p>Pour ce convaincre nous allons demander à linux de jouer le fichier <code>.diff</code> qui est tout simplement un patch</p>
-
-<p>Grâce à la commande suivante.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>patch -p0 &lt; README.diff
-</span><span class='line'>patching file README.md
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Comme toute modification je peux avoir des conflits. Si je modifie mon <code>README.md</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>Ceci est un exemple.
-</span><span class='line'>
-</span><span class='line'>Ceci est une autre ligne
-</span><span class='line'>Ceci est une ligne ajoutée
-</span><span class='line'>Mais celle ci aussi
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>patching file README.md
-</span><span class='line'>Hunk <span class="c">#1 FAILED at 1.</span>
-</span><span class='line'><span class="m">1</span> out of <span class="m">1</span> hunk FAILED -- saving rejects to file README.md.rej
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Vous retrouvez les fameux <code>.orig</code> et <code>.rej</code> qui pourrissent un peu la vie de ceux qui font du mercurial ou git (<code>hg purge</code> et <code>git clean</code> est probablement ce que vous cherchez).</p>
-
-<h2>Merger</h2>
-
-<p>Si vous voulez un merge. c&#8217;est possible</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>patch -p0 --merge &lt; README.diff
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>le résultat</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>Ceci est un exemple.
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;&lt;&lt;&lt;&lt;&lt;</span>&lt;
-</span><span class='line'>Ceci est une autre ligne
-</span><span class='line'>Ceci est une ligne ajoutée
-</span><span class='line'>Mais celle ci <span class="nv">aussi</span>
-</span><span class='line'><span class="o">=======</span>
-</span><span class='line'>&gt;&gt;&gt;&gt;&gt;&gt;&gt;
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>j<span class="err">&#39;</span>ai ajouté cette ligne
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>L&#8217;option <code>-p0</code> ou le plus souvent <code>-p1</code> demande à la commande <code>patch</code> d&#8217;ignorer le chemin sur un niveau.</p>
-
-<p>Voici un exemple avec git et le même fichier</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='diff'><span class='line'><span class="gh">diff --git a/README.md b/README.md</span>
-</span><span class='line'><span class="gh">index 1030f85..5e8e5f9 100644</span>
-</span><span class='line'><span class="gd">--- a/README.md</span>
-</span><span class='line'><span class="gi">+++ b/README.md</span>
-</span><span class='line'><span class="gu">@@ -1,6 +1,9 @@</span>
-</span><span class='line'> Ceci est un exemple.
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="gd">-Ceci est une ligne ajoutée</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="gi">+</span>
-</span><span class='line'><span class="gi">+</span>
-</span><span class='line'><span class="gi">+</span>
-</span><span class='line'><span class="gi">+j&#39;ai ajouté cette ligne</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>on voit que la ligne <code>a/README.md</code> et <code>b/README.md</code>, ici pour appliquer le patch il faut utiliser <code>-p1</code> pour ignorer le premier niveau (supprime le <code>a/</code> et <code>b/</code>)</p>
-
-<p>Sous Git c&#8217;est plus simple</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git apply lefichier.diff
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Reverter</h2>
-
-<p>Enfin soyons complet il est possible de reverter un patch avec <code>-R</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>patch -R -p1 &lt; mon patch
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Avec git</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>git apply -R &lt;mon fichier diff&gt;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Conclusion</h2>
-
-<p>Pas besoin d&#8217;avoir git/mercurial/svn pour créer ou jouer des patchs.</p>
 ]]></content>
   </entry>
   

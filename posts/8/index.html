@@ -9,7 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Comprendre les raccourcis claviers Vim : la méthode des deux tableaux Aujourd'hui nous allons essayer de comprendre les raccourcis de vi/vim. Je vous &hellip;">
+  <meta name="description" content="Je me baladai sous Github Et je suis tombé sur ce dépôt https://github.com/borisrepl/boris (en fait c'est un des dépôts les plus actifs de ce mois &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -62,6 +62,89 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/03/08/php-en-mode-interactif/">Php en mode interactif</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-03-08T19:24:57+01:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Je me baladai sous Github</p>
+
+<p>Et je suis tombé sur ce dépôt</p>
+
+<p><a href="https://github.com/borisrepl/boris">https://github.com/borisrepl/boris</a></p>
+
+<p>(en fait c&#8217;est un des dépôts les plus actifs de ce mois pour Php)</p>
+
+<p>C&#8217;est vraiment cool</p>
+
+<p>Bien entendu il existe déjà un mode interactif sous Php</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>php -a
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On peux le refaire en encore moins de ligne.</p>
+
+<p>Explication : La documentation parle de REPL.
+c&#8217;est l&#8217;abréviation de <strong>R</strong>ead <strong>E</strong>val <strong>P</strong>rint <strong>L</strong>oop</p>
+
+<p>et voici comment on peut l&#8217;implémenter (difficile de faire plus simple)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="k">while</span> <span class="o">(</span><span class="nb">true</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="nb">echo eval</span><span class="o">(</span>fgets<span class="o">(</span>STDIN<span class="o">))</span><span class="p">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> avec les commentaires</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="k">while</span> <span class="o">(</span><span class="nb">true</span><span class="o">)</span>/*Loop*/ <span class="o">{</span>
+</span><span class='line'>  <span class="nb">echo</span> /*Print*/ <span class="nb">eval</span><span class="o">(</span>/*Read*/ fgets<span class="o">(</span>STDIN<span class="o">))</span><span class="p">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Read Eval Print Loop. le nom donne le programme.</p>
+
+<p>C&#8217;est une technique qui marche avec un peu tout les langages.
+voir <a href="http://repl.it">http://repl.it</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -513,6 +596,10 @@ par exemple:</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/03/13/vim-plug-gestion-des-plugins/">Vim-plug : Gestion des plugins</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/">Installation d&#8217;un proxmox 4.0 : Nginx</a>
       </li>
     
@@ -526,10 +613,6 @@ par exemple:</p>
     
       <li class="post">
         <a href="/blog/2016/02/15/vim-et-markdown/">Vim et Markdown</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/02/14/remettre-au-propre-son-depot-git/">Remettre au propre son dépot git</a>
       </li>
     
   </ul>

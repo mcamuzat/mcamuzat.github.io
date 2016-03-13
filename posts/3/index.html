@@ -9,8 +9,12 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Troisième partie sur la SPL et les listes chainées. partie 1 SPL et surcharge
-partie 2 Implémentation Nous allons implémenter l'interface ArrayAccess &hellip;">
+  <meta name="description" content="Nous allons jouer un peu avec les diff et les patchs.  Mise en place Soit le fichier suivant README.md 1
+2
+3
+4
+5
+Ceci est un exemple. Ceci est une &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -63,6 +67,156 @@ partie 2 Implémentation Nous allons implémenter l'interface ArrayAccess &helli
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/11/02/diff-patch-git/">Diff et patch, pas besoin de git</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-11-02T22:24:03+01:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Nous allons jouer un peu avec les diff et les patchs.</p>
+
+<h1> Mise en place</h1>
+
+<p>Soit le fichier suivant <code>README.md</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Ceci est un exemple.
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>Ceci est une ligne ajoutée
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Modifions le fichier par ceci.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Ceci est un exemple.
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>j'ai ajouté cette ligne</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Enregistrons celui-ci en <code>README2.md</code></p>
+
+<p>Et lançons la commande suivante</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>diff README.md README2.md
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Nous obtenons le résultat suivant</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='diff'><span class='line'>4d3
+</span><span class='line'>&lt; Ceci est une ligne ajoutée
+</span><span class='line'>6a6,9
+</span><span class='line'>&gt;
+</span><span class='line'>&gt;
+</span><span class='line'>&gt;
+</span><span class='line'>&gt; j&#39;ai ajouté cette ligne
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il y a en fait plusieurs formats</p>
+
+<p>Essayez la commande suivante</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>diff -u README.md README2.md &gt; readme.diff
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On obtient le fichier suivant</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='diff'><span class='line'><span class="gd">--- README.md   2015-11-02 22:07:43.728854981 +0100</span>
+</span><span class='line'><span class="gi">+++ README2.md  2015-11-02 22:13:58.244839112 +0100</span>
+</span><span class='line'><span class="gu">@@ -1,6 +1,9 @@</span>
+</span><span class='line'> Ceci est un exemple.
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="gd">-Ceci est une ligne ajoutée</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="gi">+</span>
+</span><span class='line'><span class="gi">+</span>
+</span><span class='line'><span class="gi">+</span>
+</span><span class='line'><span class="gi">+j&#39;ai ajouté cette ligne</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/11/02/diff-patch-git/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -747,55 +901,6 @@ partie 2 Implémentation Nous allons implémenter l'interface ArrayAccess &helli
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/09/09/probleme-np-complet/">Problème Np-Complet</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-09-09T21:55:10+02:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Aujourd&#8217;hui je vais parler des problèmes Np-complets avec le <a href="http://xkcd.com/">xkcd</a> suivant. L&#8217;original est <a href="http://xkcd.com/287/">ici</a></p>
-
-<p><img class="center" src="/images/np_complete.png" width="600" height="388" title="xkcd" alt="xkcd"></p>
-
-<p>On appelle ce genre de problème les NP-complets</p>
-
-<p>Pour faire simple (Ce que j&#8217;en ai compris)</p>
-
-<p>Les NP-problèmes sont des problèmes donc il est très facile de vérifier une solutions. Dans notre cas ici il suffit de commander 7 * 2.15 pour obtenir 15.05. Le problème a une solution. Mais il est quasiment impossible de trouver une méthode efficace pour déterminer la solution, voir même de savoir s&#8217;il y a une solutions.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/09/09/probleme-np-complet/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/4">&larr; Older</a>
@@ -845,6 +950,10 @@ partie 2 Implémentation Nous allons implémenter l'interface ArrayAccess &helli
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/03/13/vim-plug-gestion-des-plugins/">Vim-plug : Gestion des plugins</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/">Installation d&#8217;un proxmox 4.0 : Nginx</a>
       </li>
     
@@ -858,10 +967,6 @@ partie 2 Implémentation Nous allons implémenter l'interface ArrayAccess &helli
     
       <li class="post">
         <a href="/blog/2016/02/15/vim-et-markdown/">Vim et Markdown</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/02/14/remettre-au-propre-son-depot-git/">Remettre au propre son dépot git</a>
       </li>
     
   </ul>
