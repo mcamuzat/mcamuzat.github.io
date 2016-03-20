@@ -4,7 +4,7 @@
   <title><![CDATA[Category: plugin | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/plugin/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-03-13T18:38:10+01:00</updated>
+  <updated>2016-03-20T22:24:48+01:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,85 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Les plugins sous VIM : Tabular]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/03/20/les-plugins-sous-vim-tabular/"/>
+    <updated>2016-03-20T21:49:10+01:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/03/20/les-plugins-sous-vim-tabular</id>
+    <content type="html"><![CDATA[<p>Nous allons voir ensemble un Plugin sous vim <a href="https://github.com/godlygeek/tabular">Tabular</a>.</p>
+
+<p>Il permet d&#8217;aligner les lignes de codes
+par exemple :</p>
+
+<pre><code>|un tableau | une autre colonne|
+| ha | Ho|
+| bonjour | hello|
+</code></pre>
+
+<!--more-->
+
+
+<p>Si je sélectionne le texte et que j&#8217;appuie sur <code>:</code> et que je tape <code>:Tabularize /|</code></p>
+
+<p>Mon tableau devient</p>
+
+<pre><code>| un tableau | une autre colonne |
+| un         | deux              |
+| bonjour    | hello             |
+</code></pre>
+
+<p>Cela marche avec n&#8217;importe quelle clés
+<code>
+var var1 = "hello";
+var une_variable_tres_longue =  "atchoum";
+</code></p>
+
+<p>J&#8217;appuie <code>:Tabularize /=</code></p>
+
+<pre><code>var var1                     = "hello";
+var une_variable_tres_longue = "atchoum";
+</code></pre>
+
+<p>la syntaxe est <code>:Tabularize /&lt;le ou les caractères que vous voulez indenter&gt;</code>
+Pour les tableaux en php
+<code>php
+[
+ "a" =&gt; "b",
+ "salut" =&gt; "bonjour",
+]
+</code></p>
+
+<p>Résultats : <code>:Tabularize /=&gt;</code>:
+<code>php
+[
+ "a"     =&gt; "b",
+ "salut" =&gt; "bonjour",
+]
+</code></p>
+
+<p>Je m&#8217;en sers surtout pour indenter les tableaux dans les features dans <a href="http://docs.behat.org/en/v3.0/">Behat</a>.</p>
+
+<h2>installation</h2>
+
+<p>Si vous avez installé <a href="https://github.com/junegunn/vim-plug">vim-plug</a> il suffit de rajouter la ligne suivante.</p>
+
+<pre><code>Plug 'godlygeek/tabular'
+</code></pre>
+
+<h2>Des liens</h2>
+
+<p>Une <a href="http://vimcasts.org/episodes/aligning-text-with-tabular-vim/">video</a> qui explique tout (en anglais).</p>
+
+<h2>La série sur les plugin VIM</h2>
+
+<ul>
+<li><a href="/blog/2016/03/13/vim-plug-gestion-des-plugins/">Installation des plugins</a></li>
+<li><a href="/blog/2016/03/20/les-plugins-sous-vim-tabular/">Tabularize</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Vim et Debbuger]]></title>

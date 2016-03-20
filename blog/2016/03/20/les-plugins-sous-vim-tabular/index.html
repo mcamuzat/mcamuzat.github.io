@@ -5,11 +5,16 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Correction orthographique et VIM - Journal d&#8217;un panda qui code</title>
+  <title>Les plugins sous VIM : Tabular - Journal d&#8217;un panda qui code</title>
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="J'ai assisté à un Meetup sur VIM. Le speaker parlait de la correction orthographique sous VIM. Je savais que c'était possible, mais je ne m'en suis &hellip;">
+  <meta name="description" content="Nous allons voir ensemble un Plugin sous vim Tabular. Il permet d'aligner les lignes de codes
+par exemple : 1
+2
+3
+|un tableau | une autre colonne|
+| &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +23,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://mcamuzat.github.io/blog/2015/04/22/correction-orthographique-et-vim/">
+  <link rel="canonical" href="http://mcamuzat.github.io/blog/2016/03/20/les-plugins-sous-vim-tabular/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -65,7 +70,7 @@
   
   <header>
     
-      <h1 class="entry-title">Correction orthographique et VIM</h1>
+      <h1 class="entry-title">Les plugins sous VIM : Tabular</h1>
     
     
       <p class="meta">
@@ -81,75 +86,107 @@
   
 
 
-<time datetime="2015-04-22T22:26:43+02:00" pubdate data-updated="true"></time>
+<time datetime="2016-03-20T21:49:10+01:00" pubdate data-updated="true"></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>J&#8217;ai assisté à un Meetup sur VIM.</p>
+<div class="entry-content"><p>Nous allons voir ensemble un Plugin sous vim <a href="https://github.com/godlygeek/tabular">Tabular</a>.</p>
 
-<p>Le speaker parlait de la correction orthographique sous VIM. Je savais que c&#8217;était possible, mais je ne m&#8217;en suis jamais servis. J&#8217;ai donc décidé de réessayer.. Et j&#8217;ai vu de façon différente mes posts sur ce blog. Je suis repasser un peu sur tout.</p>
-
-<p>Voici la commande pour activer/installer la correction automatique</p>
+<p>Il permet d&#8217;aligner les lignes de codes
+par exemple :</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>set spell spelllang=fr</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>|un tableau | une autre colonne|
+</span><span class='line'>| ha | Ho|
+</span><span class='line'>| bonjour | hello|
+</span></code></pre></td></tr></table></div></figure>
 
 
-<p>Normalement Vim va télécharger pour vous les différents fichiers sur le Ftp officiel.  Il y a une commande interactive pour vous aider dans l&#8217;installation. Si jamais il a un souci le wiki français indique de se placer dans son répertoire <code>spell</code> (chez moi <code>~/.vim/spell</code>) et de lancer les commandes suivantes</p>
+<!--more-->
+
+
+<p>Si je sélectionne le texte et que j&#8217;appuie sur <code>:</code> et que je tape <code>:Tabularize /|</code></p>
+
+<p>Mon tableau devient</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>| un tableau | une autre colonne |
+</span><span class='line'>| un         | deux              |
+</span><span class='line'>| bonjour    | hello             |</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cela marche avec n&#8217;importe quelle clés</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var var1 = "hello";
+</span><span class='line'>var une_variable_tres_longue =  "atchoum";</span></code></pre></td></tr></table></div></figure>
+
+
+<p>J&#8217;appuie <code>:Tabularize /=</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var var1                     = "hello";
+</span><span class='line'>var une_variable_tres_longue = "atchoum";</span></code></pre></td></tr></table></div></figure>
+
+
+<p>la syntaxe est <code>:Tabularize /&lt;le ou les caractères que vous voulez indenter&gt;</code>
+Pour les tableaux en php</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>wget http://ftp.vim.org/vim/runtime/spell/fr.latin1.spl
-</span><span class='line'>wget http://ftp.vim.org/vim/runtime/spell/fr.latin1.sug
-</span><span class='line'>wget http://ftp.vim.org/vim/runtime/spell/fr.utf-8.spl
-</span><span class='line'>wget http://ftp.vim.org/vim/runtime/spell/fr.utf-8.sug
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="p">[</span>
+</span><span class='line'> <span class="s2">&quot;a&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span>
+</span><span class='line'> <span class="s2">&quot;salut&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;bonjour&quot;</span><span class="p">,</span>
+</span><span class='line'><span class="p">]</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>La touche magique ici est <code>z=</code> puis les touches du <code>0..n</code>. <code>]s</code> pour aller à l&#8217;erreur suivante <code>[s</code> pour l&#8217;erreur précédente. Il y a différentes touches pour ajouter à son propre dictionnaire. J&#8217;avoue que cela ne m&#8217;intéresse pas trop de suite.</p>
+<p>Résultats : <code>:Tabularize /=&gt;</code>:</p>
 
-<p>On peut aussi faire de l&#8217;auto complétion ou plutôt de l&#8217;auto correction pendant la saisie avec les touche <code>Ctrl-x</code> + <code>s</code>.</p>
-
-<h2>Résumé</h2>
-
-<table>
-<thead>
-<tr>
-<th> Touche      </th>
-<th style="text-align:center;"> Description </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td> <code>z=</code>               </td>
-<td style="text-align:center;"> auto correct si <code>spell</code> est activée</td>
-</tr>
-<tr>
-<td> <code>[s</code>               </td>
-<td style="text-align:center;"> erreur précédente</td>
-</tr>
-<tr>
-<td> <code>]s</code>               </td>
-<td style="text-align:center;"> erreur suivante</td>
-</tr>
-<tr>
-<td> <code>Crtl-x s</code>      </td>
-<td style="text-align:center;">auto complétion via le dictionnaire </td>
-</tr>
-</tbody>
-</table>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="p">[</span>
+</span><span class='line'> <span class="s2">&quot;a&quot;</span>     <span class="o">=&gt;</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span>
+</span><span class='line'> <span class="s2">&quot;salut&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;bonjour&quot;</span><span class="p">,</span>
+</span><span class='line'><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
-<p>Warning : <code>Ctrl-s</code> parfois freeze le terminal (option pratique quand je regarde les tests fonctionnels passés). Pour <em>defreezer</em> le terminal c&#8217;est <code>Ctrl-Q</code></p>
+<p>Je m&#8217;en sers surtout pour indenter les tableaux dans les features dans <a href="http://docs.behat.org/en/v3.0/">Behat</a>.</p>
 
-<h2>Conclusion:</h2>
+<h2>installation</h2>
 
-<p>Il manque le correcteur grammatical :-)</p>
+<p>Si vous avez installé <a href="https://github.com/junegunn/vim-plug">vim-plug</a> il suffit de rajouter la ligne suivante.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">Plug</span> <span class="s1">&#39;godlygeek/tabular&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Des liens</h2>
+
+<p>Une <a href="http://vimcasts.org/episodes/aligning-text-with-tabular-vim/">video</a> qui explique tout (en anglais).</p>
+
+<h2>La série sur les plugin VIM</h2>
+
+<ul>
+<li><a href="/blog/2016/03/13/vim-plug-gestion-des-plugins/">Installation des plugins</a></li>
+<li><a href="/blog/2016/03/20/les-plugins-sous-vim-tabular/">Tabularize</a></li>
+</ul>
+
 </div>
 
 
@@ -172,12 +209,12 @@
   
 
 
-<time datetime="2015-04-22T22:26:43+02:00" pubdate data-updated="true"></time>
+<time datetime="2016-03-20T21:49:10+01:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/vim/'>vim</a>
+    <a class='category' href='/blog/categories/plugin/'>plugin</a>, <a class='category' href='/blog/categories/vim/'>vim</a>
   
 </span>
 
@@ -186,7 +223,7 @@
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mcamuzat.github.io/blog/2015/04/22/correction-orthographique-et-vim/" data-via="" data-counturl="http://mcamuzat.github.io/blog/2015/04/22/correction-orthographique-et-vim/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mcamuzat.github.io/blog/2016/03/20/les-plugins-sous-vim-tabular/" data-via="" data-counturl="http://mcamuzat.github.io/blog/2016/03/20/les-plugins-sous-vim-tabular/" >Tweet</a>
   
   
   
@@ -195,10 +232,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/04/18/dockers-et-ci/" title="Previous Post: Docker et CI">&laquo; Docker et CI</a>
+        <a class="basic-alignment left" href="/blog/2016/03/13/vim-plug-gestion-des-plugins/" title="Previous Post: Vim-plug : Gestion des plugins">&laquo; Vim-plug : Gestion des plugins</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2015/04/26/docker-et-dockerfile/" title="Next Post: Docker et Dockerfile">Docker et Dockerfile &raquo;</a>
       
     </p>
   </footer>

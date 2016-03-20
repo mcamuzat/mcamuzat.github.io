@@ -9,12 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Nous allons jouer un peu avec les diff et les patchs.  Mise en place Soit le fichier suivant README.md 1
-2
-3
-4
-5
-Ceci est un exemple. Ceci est une &hellip;">
+  <meta name="description" content="Dans le post précédent j'ai parlé des commandes linux patch et diff. des fonctionnalités ou on utiliserait plutôt Git. Ici je vais faire le contraire &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +62,59 @@ Ceci est un exemple. Ceci est une &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/11/05/git-grep/">Git grep</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-11-05T22:22:13+01:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Dans le post <a href="blog/2015/11/02/diff-patch-git">précédent</a> j&#8217;ai parlé des commandes linux <code>patch</code> et <code>diff</code>. des fonctionnalités ou on utiliserait plutôt Git. Ici je vais faire le contraire : utiliser git sans utiliser les commandes linux. Je vais parler de <code>git grep</code>.</p>
+
+<h2>git grep</h2>
+
+<p>l&#8217;utilisation est très simple</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git grep hello
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On peut utiliser une regex
+le résultat s&#8217;affiche dans un pager (sous linux c&#8217;est souvent <code>less</code>).</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/11/05/git-grep/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -810,97 +858,6 @@ Ceci est un exemple. Ceci est une &hellip;">
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/09/13/yield-php-co-routine/">Yield PHP Co-routine</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-09-13T20:31:37+02:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Nous allons continuer sur le <em>yield</em> <a href="/blog/2015/09/06/php-yield-les-generateurs/">partie1</a></p>
-
-<p>Nous avons vu la fonction xrange qui permet de générer un million de valeurs pour un coup très faible en mémoire.</p>
-
-<p>Mais il y a mieux ! On peux envoyer des valeurs dans le générateur</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
-</span><span class='line'><span class="k">function</span> <span class="nf">generateAnimal</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nv">$input</span> <span class="o">=</span> <span class="p">(</span><span class="k">yield</span> <span class="s1">&#39;Panda&#39;</span><span class="p">);</span>
-</span><span class='line'>    <span class="nb">var_dump</span><span class="p">(</span><span class="s2">&quot;j&#39;ai reçu </span><span class="si">$input</span><span class="s2">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="nv">$input</span> <span class="o">=</span> <span class="p">(</span><span class="k">yield</span> <span class="s1">&#39;Lama&#39;</span><span class="p">);</span>
-</span><span class='line'>    <span class="nb">var_dump</span><span class="p">(</span><span class="s2">&quot;j&#39;ai reçu </span><span class="si">$input</span><span class="s2">&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$gen</span> <span class="o">=</span> <span class="nx">generateAnimal</span><span class="p">();</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$gen</span><span class="o">-&gt;</span><span class="na">current</span><span class="p">());</span><span class="c1">// string(5) &quot;Panda&quot;</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$gen</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">(</span><span class="s1">&#39;Canard&#39;</span><span class="p">));</span><span class="c1">//string(16) &quot;j&#39;ai recu Canard&quot;</span>
-</span><span class='line'>                               <span class="c1">//string(4) &quot;Lama&quot;</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$gen</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">(</span><span class="s1">&#39;Poney&#39;</span><span class="p">));</span> <span class="c1">// j&#39;ai recus Poney.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Si j&#8217;avais fais deux fois <code>-&gt;next()</code>  au lieux de <code>-&gt;send()</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$gen</span> <span class="o">=</span> <span class="nx">generateAnimal</span><span class="p">();</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$gen</span><span class="o">-&gt;</span><span class="na">current</span><span class="p">());</span><span class="c1">// string(5) &quot;Panda&quot;</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$gen</span><span class="o">-&gt;</span><span class="na">next</span><span class="p">());</span><span class="c1">//string(16) &quot;j&#39;ai recu NULL&quot;</span>
-</span><span class='line'>                               <span class="c1">//string(4) &quot;Lama&quot;</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$gen</span><span class="o">-&gt;</span><span class="na">next</span><span class="p">());</span> <span class="c1">// j&#39;ai recus NULL.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/09/13/yield-php-co-routine/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/4">&larr; Older</a>
@@ -950,6 +907,10 @@ Ceci est un exemple. Ceci est une &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/03/20/les-plugins-sous-vim-tabular/">Les plugins sous VIM : Tabular</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/13/vim-plug-gestion-des-plugins/">Vim-plug : Gestion des plugins</a>
       </li>
     
@@ -963,10 +924,6 @@ Ceci est un exemple. Ceci est une &hellip;">
     
       <li class="post">
         <a href="/blog/2016/02/21/des-jolis-depots/">Des jolis dépôts</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/02/15/vim-et-markdown/">Vim et Markdown</a>
       </li>
     
   </ul>
