@@ -4,7 +4,7 @@
   <title><![CDATA[Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-03-20T22:24:48+01:00</updated>
+  <updated>2016-03-27T22:51:39+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,74 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Nano : Activer la coloration syntaxique]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/03/27/nano-activer-la-coloration-syntaxique/"/>
+    <updated>2016-03-27T21:41:45+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/03/27/nano-activer-la-coloration-syntaxique</id>
+    <content type="html"><![CDATA[<p>Sous linux, on utilise le plus souvent <code>vim</code> ou <code>nano</code>. Je suis un grand fan de de <code>vim</code> mais aujourd&#8217;hui je vais parler de <code>nano</code>. Par défaut il n&#8217;y a pas de coloration syntaxique et pas de couleurs tout cours. Nous allons activer celle-ci</p>
+
+<p>Et voici le résultat sur un fichier php.</p>
+
+<p><img class="center" src="http://mcamuzat.github.io/images/nanocolors.png" width="600" height="404" title="la coloration syntaxique sous nano" alt="la coloration syntaxique"></p>
+
+<p>Il faut créer un fichier <code>.nanorc</code> dans votre home. Et rajouter la ligne suivante.</p>
+
+<!--more-->
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>include /usr/share/nano/sh.nanorc</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Tous les fichiers se situent <code>/usr/share/nano</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>asm.nanorc     fortran.nanorc   man.nanorc     ocaml.nanorc   ruby.nanorc
+</span><span class='line'>awk.nanorc     gentoo.nanorc    mgp.nanorc     patch.nanorc   sh.nanorc
+</span><span class='line'>cmake.nanorc   groff.nanorc     mutt.nanorc    perl.nanorc    tcl.nanorc
+</span><span class='line'>c.nanorc       html.nanorc      nano-menu.xpm  php.nanorc     tex.nanorc
+</span><span class='line'>css.nanorc     java.nanorc      nanorc.nanorc  pov.nanorc     xml.nanorc
+</span><span class='line'>debian.nanorc  makefile.nanorc  objc.nanorc    python.nanorc</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il suffit d&#8217;ajouter la ligne avec le langage que voulez.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>include /usr/share/nano/&lt;le language&gt;.nanorc</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Mais il y a encore mieux !</p>
+
+<p>Un <a href="https://github.com/serialhex/nano-highlight">dépot</a> avec plein de fichier <code>.nanorc</code>.</p>
+
+<p>Pour installer</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clone git://github.com/serialhex/nano-highlight.git ~/.nano</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il suffit de rajouter dans son <code>.nanorc</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>include "~/.nano/php.nanorc"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il y a aussi ce <a href="https://github.com/scopatz/nanorc">dépôt</a>.</p>
+
+<h2>En conclusion</h2>
+
+<p>Nano est un outil très chouette. C&#8217;est souvent l&#8217;éditeur par défault dans linux.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Les plugins sous VIM : Tabular]]></title>
@@ -3731,170 +3799,6 @@ deux possibilités</p>
  * Interlude : <a href="http://mcamuzat.github.io/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a>
  * Partie 5 : <a href="http://mcamuzat.github.io/blog/2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a>
  * Partie 6 : <a href="http://mcamuzat.github.io/blog/2016/01/25/les-monades-applicative-et-les-listes/">Les applicatives et les listes</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Faire des jointures sur des fichiers csv]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/11/08/faire-des-jointures-sur-des-fichiers-csv/"/>
-    <updated>2015-11-08T20:27:16+01:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/11/08/faire-des-jointures-sur-des-fichiers-csv</id>
-    <content type="html"><![CDATA[<h2>Introduction</h2>
-
-<p>Un problème que j&#8217;ai eu au travail.</p>
-
-<p>Soit les deux fichiers suivants csv suivant</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>ID_1,Noms1,Personne1
-</span><span class='line'>ID_2,Noms2,Personne1
-</span><span class='line'>ID_2,Noms2,Personne2
-</span><span class='line'>ID_3,Noms3,Personne1
-</span><span class='line'>ID_5,Noms5,Personne5</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>SIRET1,Adresse1,Noms1Annuaire,ID_1
-</span><span class='line'>SIRET2,Adresse2,Noms2Annuaire,ID_2
-</span><span class='line'>SIRET3,Adresse3,Noms3Annuaire,ID_3
-</span><span class='line'>SIRET4,Adresse4,Noms4Annuaire,ID_4</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Je souhaite faire un merge de ces deux csv. Comment faire ?</p>
-
-<!--more-->
-
-
-<p>En solution 1 j&#8217;ai pensé.</p>
-
-<ul>
-<li>Créer une table temporaire</li>
-<li>dumper les deux fichiers</li>
-<li>faire un jointure sql</li>
-<li>faire un export</li>
-</ul>
-
-
-<p>Et puis je me suis souvenu de la commande <code>join</code></p>
-
-<p>Voici la commande que j&#8217;ai utilisé</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>join -11 -24 file1.csv file2.csv  -t,
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Voici le détail de la commande</p>
-
-<ul>
-<li><code>-11</code> <code>-24</code> faire une jointure entre la colonne <strong>1</strong> du <code>file1.csv</code> et la colonne <strong>4</strong> du <code>file2.csv</code></li>
-<li><code>-t,</code> définie le séparateur dans le fichier ici c&#8217;est un <code>csv</code> <strong>C</strong>omma <strong>S</strong>epared <strong>V</strong>alue, donc le séparateur est <code>,</code></li>
-</ul>
-
-
-<p>Voici le résultat</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>ID_1,Noms1,Personne1,SIRET1,Adresse1,Noms1Annuaire
-</span><span class='line'>ID_2,Noms2,Personne1,SIRET2,Adresse2,Noms2Annuaire
-</span><span class='line'>ID_2,Noms2,Personne2,SIRET2,Adresse2,Noms2Annuaire
-</span><span class='line'>ID_3,Noms3,Personne1,SIRET3,Adresse3,Noms3Annuaire
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>C&#8217;est une jointure classique <code>ID_5</code> n&#8217;apparait pas dans le résultats pas plus que <code>Adresse4</code></p>
-
-<h2>Faire un select</h2>
-
-<p>On précise les colonnes que l&#8217;on souhaite avec l&#8217;option <code>-o</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>join -11 -24 file1.txt file2.txt  -t, -o1.2,2.1
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>-o1.2,2.1</code> la colonne <strong>2</strong> du <code>file1.csv</code> et la colonne <strong>1</strong> du <code>file2.csv</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>Noms1,SIRET1
-</span><span class='line'>Noms2,SIRET2
-</span><span class='line'>Noms2,SIRET2
-</span><span class='line'>Noms3,SIRET3
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Left-join et Right Join</h2>
-
-<p>C&#8217;est possible à émuler avec l&#8217;option <code>-a</code> et <code>-e</code> <code>-a</code> affiche le fichier <strong>1</strong> ou <strong>2</strong>  même s&#8217;il n&#8217;y a pas de jointure et  et <code>-e</code>  la valeur par défaut à l&#8217;affichage</p>
-
-<p>deux possibilités</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c"># Left-join</span>
-</span><span class='line'>join -11 -24 file1.txt file2.txt  -t, -o1.2,2.1,2.2 -a <span class="m">1</span> -e NULL
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>Noms1,SIRET1,Adresse1
-</span><span class='line'>Noms2,SIRET2,Adresse2
-</span><span class='line'>Noms2,SIRET2,Adresse2
-</span><span class='line'>Noms3,SIRET3,Adresse3
-</span><span class='line'>Noms5,NULL,NULL
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c"># Right-join</span>
-</span><span class='line'>join -11 -24 file1.txt file2.txt  -t, -o1.2,2.1,2.2 -a <span class="m">2</span> -e NULL
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>Noms1,SIRET1,Adresse1
-</span><span class='line'>Noms2,SIRET2,Adresse2
-</span><span class='line'>Noms2,SIRET2,Adresse2
-</span><span class='line'>Noms3,SIRET3,Adresse3
-</span><span class='line'>NULL,SIRET4,Adresse4
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Conclusion</h2>
-
-<p>Si un jour vous avez besoin de merger deux fichiers sans forcement sortir un script complexe, penser à linux.</p>
-
-<p>Pour le csv et PHP, c&#8217;est inclus dans l&#8217;instruction <code>fgetcsv</code> mais ce n&#8217;est pas la joie, la librairie suivante <a href="http://csv.thephpleague.com/">thephpleague/csv</a> rend cela nettement plus agréable.</p>
 ]]></content>
   </entry>
   

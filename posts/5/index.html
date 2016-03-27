@@ -9,7 +9,8 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Et si on essayait un workshop&hellip; Les workshops de javascript sont des cours interactifs de javascript. Installation Pour installer le cours de &hellip;">
+  <meta name="description" content="Il est possible de faire des commits qui clignotent avec la commande suivante. 1
+git commit --all-empty -m &quot;^[[5m Bonjour ^[[0&quot; Attention &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -62,6 +63,75 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/15/git-un-peu-de-fun/">Git un peu de fun</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-08-15T21:35:25+02:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Il est possible de faire des commits qui clignotent avec la commande suivante.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git commit --all-empty -m <span class="s2">&quot;^[[5m Bonjour ^[[0&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Attention</strong> le caractère <code>^[</code> est la touche <code>Escape</code> (on parle de caractère d&#8217;échappement). Il n&#8217;est pas très simple à taper. Il faut appuyer sur <code>Ctrl+v</code> puis <code>&lt;ESC&gt;</code></p>
+
+<p>Bienvenue dans le monde du terminal et du ANSI. Il existe de véritable oeuvre d&#8217;art juste en mode texte. Et dans le temps les fichiers pirates contenaient souvent des fichiers textes avec Logo et présentation de la team.</p>
+
+<p>On peut rajouter des trucs plus rigolos</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git commit --allow-empty -F &lt;<span class="o">(</span>curl https://raw.githubusercontent.com/thiderman/doge/master/doge/static/doge.txt<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Tout les terminaux ne sont pas égaux.</h2>
+
+<p>Voici un gif animé de mes commits</p>
+
+<p><img class="center" src="/images/outgnome.gif" width="554" height="410" title="So meme" alt="So meme"></p>
+
+<p>Cela ne clignote pas beaucoup sur <code>gnometerminal</code> essayons avec  Xterm</p>
+
+<p><img class="center" src="/images/outxterm.gif" width="585" height="397" title="Gif animé" alt="On a un menu interactif"></p>
+
+<p>C&#8217;est un peu mieux.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/08/15/git-un-peu-de-fun/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -539,49 +609,6 @@ quand je lance mes tests je vois cela.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/07/06/des-tests-plus-rapides-sous-symfony/">Des tests Behat plus rapides sous symfony</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-07-06T19:46:43+02:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Introduction</h2>
-
-<p>Nous allons voir comment multiplier par 5 voir 10 les tests et l&#8217;environnement de test et de dev. L&#8217;astuce ici est de mettre le répertoire <code>cache</code> et <code>log</code> dans la Ram de l&#8217;ordinateur. Ainsi plus d&#8217;écriture sur le disque dur. C&#8217;est très pratique aussi pour les tests Behat. Attention à ne pas utiliser cette astuce sur une instance en production.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/07/06/des-tests-plus-rapides-sous-symfony/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/6">&larr; Older</a>
@@ -631,6 +658,10 @@ quand je lance mes tests je vois cela.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/03/27/nano-activer-la-coloration-syntaxique/">Nano : Activer la coloration syntaxique</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/20/les-plugins-sous-vim-tabular/">Les plugins sous VIM : Tabular</a>
       </li>
     
@@ -644,10 +675,6 @@ quand je lance mes tests je vois cela.</p>
     
       <li class="post">
         <a href="/blog/2016/02/28/installation-dun-proxmox-4-dot-0/">Installation d&#8217;un proxmox 4.0</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/02/21/des-jolis-depots/">Des jolis dépôts</a>
       </li>
     
   </ul>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: vim | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/vim/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-03-20T22:24:48+01:00</updated>
+  <updated>2016-03-27T22:51:39+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,62 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Nano : Activer la coloration syntaxique]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/03/27/nano-activer-la-coloration-syntaxique/"/>
+    <updated>2016-03-27T21:41:45+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/03/27/nano-activer-la-coloration-syntaxique</id>
+    <content type="html"><![CDATA[<p>Sous linux, on utilise le plus souvent <code>vim</code> ou <code>nano</code>. Je suis un grand fan de de <code>vim</code> mais aujourd&#8217;hui je vais parler de <code>nano</code>. Par défaut il n&#8217;y a pas de coloration syntaxique et pas de couleurs tout cours. Nous allons activer celle-ci</p>
+
+<p>Et voici le résultat sur un fichier php.</p>
+
+<p><img class="center" src="/images/nanocolors.png" width="600" height="404" title="&lsquo;la coloration syntaxique sous nano&rsquo; &lsquo;la coloration syntaxique&rsquo;" ></p>
+
+<p>Il faut créer un fichier <code>.nanorc</code> dans votre home. Et rajouter la ligne suivante.</p>
+
+<!--more-->
+
+
+<pre><code>include /usr/share/nano/sh.nanorc
+</code></pre>
+
+<p>Tous les fichiers se situent <code>/usr/share/nano</code></p>
+
+<pre><code>asm.nanorc     fortran.nanorc   man.nanorc     ocaml.nanorc   ruby.nanorc
+awk.nanorc     gentoo.nanorc    mgp.nanorc     patch.nanorc   sh.nanorc
+cmake.nanorc   groff.nanorc     mutt.nanorc    perl.nanorc    tcl.nanorc
+c.nanorc       html.nanorc      nano-menu.xpm  php.nanorc     tex.nanorc
+css.nanorc     java.nanorc      nanorc.nanorc  pov.nanorc     xml.nanorc
+debian.nanorc  makefile.nanorc  objc.nanorc    python.nanorc
+</code></pre>
+
+<p>Il suffit d&#8217;ajouter la ligne avec le langage que voulez.</p>
+
+<pre><code>include /usr/share/nano/&lt;le language&gt;.nanorc
+</code></pre>
+
+<p>Mais il y a encore mieux !</p>
+
+<p>Un <a href="https://github.com/serialhex/nano-highlight">dépot</a> avec plein de fichier <code>.nanorc</code>.</p>
+
+<p>Pour installer</p>
+
+<pre><code>git clone git://github.com/serialhex/nano-highlight.git ~/.nano
+</code></pre>
+
+<p>Il suffit de rajouter dans son <code>.nanorc</code></p>
+
+<pre><code>include "~/.nano/php.nanorc"
+</code></pre>
+
+<p>Il y a aussi ce <a href="https://github.com/scopatz/nanorc">dépôt</a>.</p>
+
+<h2>En conclusion</h2>
+
+<p>Nano est un outil très chouette. C&#8217;est souvent l&#8217;éditeur par défault dans linux.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Les plugins sous VIM : Tabular]]></title>
@@ -391,142 +447,6 @@ La commande précédente se lit sur la zone sélectionnée <code>'&lt;,'&gt;</co
 <p>La touche <code>gi</code> vous emmène au dernier endroit ou vous avez inséré du texte et place directement en insertion.</p>
 
 <p>En conclusion, Il n&#8217;y pas que le touche <code>i</code> dans Vi. En fait on se sert assez peu de cette touche.. C&#8217;est pourtant la plus connue..</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Retour vers le futur avec Vim]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/10/25/retour-vers-le-futur-avec-vim/"/>
-    <updated>2015-10-25T18:52:49+01:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/10/25/retour-vers-le-futur-avec-vim</id>
-    <content type="html"><![CDATA[<h2>Parlons de retour vers le futur.</h2>
-
-<p>En effet le héros dans le film 2 arrive le 21 octobre 2015. Bon on n&#8217;a pas les voitures volantes. Et c&#8217;est toujours le même éditeur de texte (vi date de 1976 !).</p>
-
-<h2>Annuler dans VIM</h2>
-
-<p>Pour annuler de VIM c&#8217;est plutôt simple <code>u</code> pour <strong>u</strong>ndo. Pour refaire c&#8217;est moins simple <code>&lt;CTRL + r&gt;</code>. Mais en pratique c&#8217;est plus puissant que cela.</p>
-
-<p>En fait on peut voyager dans le temps avec VIM.</p>
-
-<h2>Retour dans le passé</h2>
-
-<p>Grâce à la commande  <code>:earlier</code></p>
-
-<ul>
-<li><code>:earlier 5m</code> reviens en arrière de 5 minutes</li>
-<li><code>:earlier 10</code> annule 10 modifications</li>
-<li><code>:earlier 5h</code> annule 5 heures.</li>
-<li><code>:earlier 1f</code> ramène le fichier avant le dernier enregistrement</li>
-<li><code>:earlier 2f</code> ramène le fichier à l&#8217;avant-dernier enregistrement</li>
-</ul>
-
-
-<p>Bien sur on peut faire un <em>retour vers futur</em> avec la commande suivante.</p>
-
-<ul>
-<li><code>:later 5m</code> retourne 5 minute plus tard.</li>
-<li><code>:later 10</code> refait les 10 derniers modifications</li>
-</ul>
-
-
-<p>Encore plus fort se déplacer dans l&#8217;historique de VIM</p>
-
-<!--more-->
-
-
-<h2>Se déplacer dans les différents passés</h2>
-
-<p>Celui-ci ce comporte comme un arbre.</p>
-
-<p>Par exemple je rentre le texte <code>premier</code>, puis le texte <code>second</code>. Puis je change <code>second</code> en <code>troisième</code> mon historique ressemble à cela.
-<code>
-   premier
-     |
-   modif 1
-     |
-   premier second
-     |
-   modif 2
-     |
-   premier troisième
-</code></p>
-
-<p>Si j&#8217;annule une étape et que je change le texte mon historique ressemble à cela</p>
-
-<pre><code>                  premier 
-                     |
-                   modif 1
-                     |
-                   premier second
-                ^    |       \
-     annulation |  modif 2    modif 3
-                |    |               \
-                   premier troisième premier quatrième.
-</code></pre>
-
-<p>Impossible de revenir à la modif 2 avec <code>u</code> et <code>Ctrl-r</code>.</p>
-
-<p>Mais les touches <code>g+</code> et <code>g-</code> permette de faire cela.</p>
-
-<p>Par exemple <code>g-</code> va nous ramener à la modif 2, un seconde fois <code>g-</code> nous ramène à la modif 1 etc ..</p>
-
-<p>Pour voir toute les modifications il existe une liste de tous les changements avec <code>:undolist</code></p>
-
-<p>Cela n&#8217;est pas très <em>user-friendly</em> comme vue. C&#8217;est pour cela qu&#8217;il existe un plugin vim <a href="https://github.com/sjl/gundo.vim/">gundo</a> qui rend cela beaucoup plus simple</p>
-
-<pre><code>  Undo graph                          File
-+-----------------------------------+---------------------------+
-| " Gundo for something.txt [1]     |one                        |
-| " j/k  - move between undo states |two                        |
-| " &lt;cr&gt; - revert to that state     |three                      |
-|                                   |five                       |
-| @  [5] 3 hours ago                |                           |
-| |                                 |                           |
-| | o  [4] 4 hours ago              |                           |
-| | |                               |                           |
-| o |  [3] 4 hours ago              |                           |
-| | |                               |                           |
-| o |  [2] 4 hours ago              |                           |
-| |/                                |                           |
-| o  [1] 4 hours ago                |                           |
-| |                                 |                           |
-| o  [0] Original                   |                           |
-+-----------------------------------+                           |
-| --- 3 2010-10-12 06:27:35 PM      |                           |
-| +++ 5 2010-10-12 07:38:37 PM      |                           |
-| @@ -1,3 +1,4                      |                           |
-|  one                              |                           |
-|  two                              |                           |
-|  three                            |                           |
-| +five                             |                           |
-+-----------------------------------+---------------------------+
-</code></pre>
-
-<h2>Sauvegarder les annulations.</h2>
-
-<p>Parfois on fait des bêtises et que le fichier n&#8217;est pas encore versionné et/ou commité (et cela vous est déjà arrivé non ?). Quand on a quitté vim. On perd tout l&#8217;historique. Ce n&#8217;est plus le cas en précisant un <code>undofile</code></p>
-
-<h2>Conclusion</h2>
-
-<p>Nous avons appris à nous déplacer comme des pros dans l&#8217;historique vim.</p>
-
-<p>Résumé des touches</p>
-
-<ul>
-<li><code>u</code> annule, <code>ctrl+r</code> refait</li>
-<li><code>:earlier</code> reviens en arrière</li>
-<li><code>g-</code> et <code>g+</code> reviens/retourne à l&#8217;état précédent</li>
-</ul>
-
-
-<h2>Références</h2>
-
-<ul>
-<li>la documentation de vim <code>help undo</code></li>
-<li><a href="https://github.com/sjl/gundo.vim/">Gundo</a></li>
-</ul>
-
 ]]></content>
   </entry>
   

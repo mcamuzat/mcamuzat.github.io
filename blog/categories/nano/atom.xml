@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: nano | Journal d'un panda qui code]]></title>
+  <link href="http://mcamuzat.github.io/blog/categories/nano/atom.xml" rel="self"/>
+  <link href="http://mcamuzat.github.io/"/>
+  <updated>2016-03-27T22:51:39+02:00</updated>
+  <id>http://mcamuzat.github.io/</id>
+  <author>
+    <name><![CDATA[mcamuzat]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Nano : Activer la coloration syntaxique]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/03/27/nano-activer-la-coloration-syntaxique/"/>
+    <updated>2016-03-27T21:41:45+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/03/27/nano-activer-la-coloration-syntaxique</id>
+    <content type="html"><![CDATA[<p>Sous linux, on utilise le plus souvent <code>vim</code> ou <code>nano</code>. Je suis un grand fan de de <code>vim</code> mais aujourd&#8217;hui je vais parler de <code>nano</code>. Par défaut il n&#8217;y a pas de coloration syntaxique et pas de couleurs tout cours. Nous allons activer celle-ci</p>
+
+<p>Et voici le résultat sur un fichier php.</p>
+
+<p><img class="center" src="/images/nanocolors.png" width="600" height="404" title="&lsquo;la coloration syntaxique sous nano&rsquo; &lsquo;la coloration syntaxique&rsquo;" ></p>
+
+<p>Il faut créer un fichier <code>.nanorc</code> dans votre home. Et rajouter la ligne suivante.</p>
+
+<!--more-->
+
+
+<pre><code>include /usr/share/nano/sh.nanorc
+</code></pre>
+
+<p>Tous les fichiers se situent <code>/usr/share/nano</code></p>
+
+<pre><code>asm.nanorc     fortran.nanorc   man.nanorc     ocaml.nanorc   ruby.nanorc
+awk.nanorc     gentoo.nanorc    mgp.nanorc     patch.nanorc   sh.nanorc
+cmake.nanorc   groff.nanorc     mutt.nanorc    perl.nanorc    tcl.nanorc
+c.nanorc       html.nanorc      nano-menu.xpm  php.nanorc     tex.nanorc
+css.nanorc     java.nanorc      nanorc.nanorc  pov.nanorc     xml.nanorc
+debian.nanorc  makefile.nanorc  objc.nanorc    python.nanorc
+</code></pre>
+
+<p>Il suffit d&#8217;ajouter la ligne avec le langage que voulez.</p>
+
+<pre><code>include /usr/share/nano/&lt;le language&gt;.nanorc
+</code></pre>
+
+<p>Mais il y a encore mieux !</p>
+
+<p>Un <a href="https://github.com/serialhex/nano-highlight">dépot</a> avec plein de fichier <code>.nanorc</code>.</p>
+
+<p>Pour installer</p>
+
+<pre><code>git clone git://github.com/serialhex/nano-highlight.git ~/.nano
+</code></pre>
+
+<p>Il suffit de rajouter dans son <code>.nanorc</code></p>
+
+<pre><code>include "~/.nano/php.nanorc"
+</code></pre>
+
+<p>Il y a aussi ce <a href="https://github.com/scopatz/nanorc">dépôt</a>.</p>
+
+<h2>En conclusion</h2>
+
+<p>Nano est un outil très chouette. C&#8217;est souvent l&#8217;éditeur par défault dans linux.</p>
+]]></content>
+  </entry>
+  
+</feed>
