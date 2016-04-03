@@ -12,10 +12,10 @@ Et voici le résultat sur un fichier php.
 
 {% img center /images/nanocolors.png 600 404 'la coloration syntaxique sous nano' 'la coloration syntaxique' %}
 
+<!--more-->
+
 Il faut créer un fichier `.nanorc` dans votre home. Et rajouter la ligne suivante.
 
-
-<!--more-->
 
 ```
 include /usr/share/nano/sh.nanorc
