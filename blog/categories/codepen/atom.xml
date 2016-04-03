@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: codepen | Journal d'un panda qui code]]></title>
+  <link href="http://mcamuzat.github.io/blog/categories/codepen/atom.xml" rel="self"/>
+  <link href="http://mcamuzat.github.io/"/>
+  <updated>2016-04-03T22:02:19+02:00</updated>
+  <id>http://mcamuzat.github.io/</id>
+  <author>
+    <name><![CDATA[mcamuzat]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Jeu de la vie]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/04/03/jeu-de-la-vie/"/>
+    <updated>2016-04-03T21:29:42+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/04/03/jeu-de-la-vie</id>
+    <content type="html"><![CDATA[<h1>Introduction</h1>
+
+<p>Je suis en train de suivre la formation sur <a href="https://www.freecodecamp.com">FreeCodeCamp</a>. Un des exercices et de refaire &ldquo;le jeu de la vie&rdquo; en <a href="https://facebook.github.io/react/">React</a>.</p>
+
+<p>Le jeu de la vie a été crée par <a href="https://fr.wikipedia.org/wiki/John_Horton_Conway">Conway</a>.</p>
+
+<p>Les règles sont très simples.</p>
+
+<ul>
+<li>Soit un Damier avec des cellules.</li>
+<li>Si une cellule à seulement un voisin autour d&#8217;elle, elle meure de à cause de l&#8217;isolement</li>
+<li>Si une cellule a plus de 3 voisins elle meure de surpopulation.</li>
+<li>Si il y a exactement trois voisins et que la case est vide, une cellule se crée.</li>
+</ul>
+
+
+<p>Une animation parle mieux..</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/C2vgICfQawE" frameborder="0" allowfullscreen></iframe>
+
+
+
+
+<!--more-->
+
+
+<p>Vidéo du créateur</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/E8kUJL04ELA" frameborder="0" allowfullscreen></iframe>
+
+
+<p>Voici le code que j&#8217;ai implémenté.</p>
+
+<p data-height="750" data-theme-id="0" data-slug-hash="pywGaG" data-default-tab="result" data-user="mcamuzat" class="codepen">See the Pen <a href="http://codepen.io/mcamuzat/pen/pywGaG/">Game of life React FreecodeCamp</a> by mcamuzat (<a href="http://codepen.io/mcamuzat">@mcamuzat</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+
+
+<script async src="//s.codepen.io/assets/embed/ei.js"></script>
+
+
+<h1>En conclusion</h1>
+
+<p>Au moment ou j&#8217;écris ces lignes, un nouveau type de <a href="http://www.conwaylife.com/wiki/Copperhead">vaisseau</a>  a été découvert <a href="https://niginsblog.wordpress.com/2016/03/07/new-spaceship-speed-in-conways-game-of-life/">voir aussi..</a>. Il y a toujours des amateurs..</p>
+
+<p> Sous google une recherche sur <a href="https://www.google.com/search?q=conway%27s+game+of+life">conway&rsquo;s game of life</a> donne un easter-egg.</p>
+
+<ul>
+<li><a href="https://fr.wikipedia.org/wiki/Jeu_de_la_vie">wikipedia</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

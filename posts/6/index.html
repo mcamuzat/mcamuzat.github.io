@@ -9,7 +9,17 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Introduction Nous allons voir comment multiplier par 5 voir 10 les tests et l'environnement de test et de dev. L'astuce ici est de mettre le &hellip;">
+  <meta name="description" content="Aujourd'hui commençons par un petit programme 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11 #!/bin/sh quine () { echo -e &quot;#!/bin/sh\n$1&quot; echo &quot;quine &#39;$1 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -62,6 +72,74 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/07/11/les-quines/">Les quines</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-11T19:39:53+02:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Aujourd&#8217;hui commençons par un petit programme</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>  <span class="c">#!/bin/sh</span>
+</span><span class='line'>  quine <span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="nb">echo</span> -e <span class="s2">&quot;#!/bin/sh\n$1&quot;</span>
+</span><span class='line'>  <span class="nb">echo</span> <span class="s2">&quot;quine &#39;$1&#39;&quot;</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  quine <span class="s1">&#39;quine () {</span>
+</span><span class='line'><span class="s1">  echo -e &quot;#!/bin/sh\\n$1&quot;</span>
+</span><span class='line'><span class="s1">  echo &quot;quine \047$1\047&quot;</span>
+</span><span class='line'><span class="s1">  }</span>
+</span><span class='line'><span class="s1">  &#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pouvez vous devinez que fais ce programme ?</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/07/11/les-quines/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -515,52 +593,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/05/04/je-joue-donc-je-programme/">Je joue donc je programme</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-05-04T22:32:00+02:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Il existe des jeux vidéos pour apprendre à programmer. Voici quelques exemples.</p>
-
-<h2>VimAdventure</h2>
-
-<p><img class="center" src="/images/vimadventures.jpg" width="600" height="339" title="Vim adventure" alt="Vim adventure">
-<a href="http://vim-adventures.com/">Vim adventure</a> permet d&#8217;apprendre les touches de Vim de manière ludique. Personnellement j&#8217;ai beaucoup joué à <a href="http://crawl.develz.org/wordpress/">Dungeon Crawl</a> qui utilise les touches <code>h</code>, <code>j</code>, <code>k</code>, <code>l</code></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/05/04/je-joue-donc-je-programme/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/7">&larr; Older</a>
@@ -610,6 +642,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/04/03/jeu-de-la-vie/">Jeu de la vie</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/27/nano-activer-la-coloration-syntaxique/">Nano : Activer la coloration syntaxique</a>
       </li>
     
@@ -623,10 +659,6 @@
     
       <li class="post">
         <a href="/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/">Installation d&#8217;un proxmox 4.0 : Nginx</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/02/28/installation-dun-proxmox-4-dot-0/">Installation d&#8217;un proxmox 4.0</a>
       </li>
     
   </ul>
