@@ -4,7 +4,7 @@
   <title><![CDATA[Category: vim | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/vim/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-04-03T22:02:19+02:00</updated>
+  <updated>2016-05-08T18:10:51+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,80 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[VIM : formater le JSON]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/05/08/vim-formater-le-json/"/>
+    <updated>2016-05-08T17:51:22+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/05/08/vim-formater-le-json</id>
+    <content type="html"><![CDATA[<p>Aujourd&#8217;hui nous allons voir comment formater un json un peu crade pour le transformer en quelques choses de plus sympathique.</p>
+
+<p>Soit le JsonSchema suivant
+<code>javascript
+{"$schema":"http://json-schema.org/draft-04/schema#","type":"object","properties":{"address":{"type":"object","properties":{"streetAddress":{"type":"string"},"city":{"type":"string"}},"required":["streetAddress","city"]},"phoneNumber":{"type":"array","items":{"type":"object","properties":{"location":{"type":"string"},"code":{"type":"integer"}},"required":["location","code"]}}},"required":["address","phoneNumber"]}
+</code>
+Pas de retour à la ligne.</p>
+
+<p>Grâce à la commande suivante.
+<code>
+:%!python -m json.tool
+</code>
+Le fichier devient
+<code>javascript
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "properties": {
+        "address": {
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "streetAddress": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "streetAddress",
+                "city"
+            ],
+            "type": "object"
+        },
+        "phoneNumber": {
+            "items": {
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    },
+                    "location": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "location",
+                    "code"
+                ],
+                "type": "object"
+            },
+            "type": "array"
+        }
+    },
+    "required": [
+        "address",
+        "phoneNumber"
+    ],
+    "type": "object"
+}
+</code></p>
+
+<p>On utilise en pratique python pour réécrire le code.</p>
+
+<p>Vous pouvez essayer
+<code>
+python -m json.tool &lt;le fichier&gt;.json
+</code>
+Ce qui est pratique est que python est installé par défaut sous Linux. Il existe aussi <a href="https://stedolan.github.io/jq/">jq</a>, mais il n&#8217;est pas par défaut.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Nano : Activer la coloration syntaxique]]></title>
@@ -342,111 +416,6 @@ Mais grâce à la commande suivante
 <li><a href="https://til.hashrocket.com/">til</a> <strong>TIL</strong> est l&#8217;abbrévation de <strong>T</strong>oday <strong>I</strong> <strong>L</strong>ean cela vient de <a href="https://www.reddit.com/r/todayilearned/">reddit</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Insérer avec classe dans VIM]]></title>
-    <link href="http://mcamuzat.github.io/blog/2016/02/07/inserer-avec-classe-dans-vim/"/>
-    <updated>2016-02-07T19:20:36+01:00</updated>
-    <id>http://mcamuzat.github.io/blog/2016/02/07/inserer-avec-classe-dans-vim</id>
-    <content type="html"><![CDATA[<p><em>tl;dr : sous vi utilisez <code>a</code> au lieu de <code>i</code></em></p>
-
-<p>Tout le monde utilise VI pour éditer ses fichiers de configs sous linux ou les fichiers sur un serveur distant (il y a aussi <code>nano</code> qui marche super bien). Moi personnellement je code aussi du php/js avec. Pour insérer du texte on utilise la touche <code>i</code> comme insérer puis <code>ESC</code> pour quitter le mode insertion. Je vais parler des autres touches pour insérer du texte.</p>
-
-<p><img class="center" src="/images/viminser.png" width="517" height="220" title="&lsquo;Il y a 6 touches pour insérer&rsquo; &lsquo;Il y a 6 touches pour insérer&rsquo;" ></p>
-
-<!--more-->
-
-
-<h2>Insérer.</h2>
-
-<p>Le problème de la touche <code>i</code> c&#8217;est justement que l&#8217;on insère le texte. Le curseur n&#8217;est pas à la bonne position. On souhaite plutôt ajouter du texte après le curseur. Et c&#8217;est le principe de la touche <code>a</code> (comme <strong>A</strong>ppend ou <strong>A</strong>jouter).</p>
-
-<p>Si c&#8217;est rajouter une ligne vide. La touche <code>o</code> comme <strong>o</strong>pen une nouvelle ligne.</p>
-
-<h3>Un concept important dans VIM</h3>
-
-<p><strong>la lettre majuscule est la version plus <em>musclée</em> que la minuscule</strong></p>
-
-<ul>
-<li><code>i</code> insère au <strong>début du curseur</strong>.</li>
-<li><code>I</code> insère au <strong>début de la ligne</strong></li>
-<li><code>a</code> ajoute du <strong>texte à la fin du curseur.</strong></li>
-<li><code>A</code> ajoute du <strong>texte à la fin de la ligne</strong>.</li>
-</ul>
-
-
-<p><strong>la lettre majuscule est le contraire de la version minuscule</strong></p>
-
-<ul>
-<li><code>o</code> ouvre une ligne <strong>après le curseur</strong></li>
-<li><code>O</code> ouvre une ligne <strong>avant le curseur</strong></li>
-</ul>
-
-
-<p><img class="center" src="/images/viminser.png" width="517" height="220" title="&lsquo;Il y a 6 touches pour insérer&rsquo; &lsquo;Il y a 6 touches pour insérer&rsquo;" ></p>
-
-<p>En résumé</p>
-
-<ul>
-<li>Si vous appuyez sur <code>i</code> et <code>-&gt;</code> : utiliser <code>a</code></li>
-<li>Si vous voulez commenter une ligne <code>I</code> suivi de<code>//</code></li>
-<li>vous avez oublié une virgule à la fin de la ligne. alors <code>A,</code></li>
-<li>vous voulez rajouter une ligne au lieu de <code>i</code> et <code>&lt;enter&gt;</code> , la touche <code>o</code>.</li>
-</ul>
-
-
-<h2>Se répéter</h2>
-
-<p>Essayons de commenter les trois lignes.</p>
-
-<pre><code>instruction 1 &lt;-mon curseur est à cette ligne.
-instruction 2
-instruction 3
-</code></pre>
-
-<p>J&#8217;appuie sur <code>I</code> puis <code>//</code> pour commenter</p>
-
-<p>J&#8217;obtiens
-<code>
-//instruction 1
-instruction 2
-instruction 3
-</code></p>
-
-<p>J&#8217;appuie sur <code>j</code> ou <code>bas</code></p>
-
-<pre><code>//instruction 1
-instruction 2 &lt;-mon curseur
-instruction 3
-</code></pre>
-
-<p>Si j&#8217;appuie sur la touche <code>.</code> je répète la dernière instruction. La touche <code>.</code> est probablement la touche la plus utile.</p>
-
-<pre><code>//instruction 1
-//instruction 2 &lt;-mon curseur
-instruction 3
-</code></pre>
-
-<p>Et ainsi de suite..</p>
-
-<p>Mais il y a beaucoup de manière sur VIM pour faire la même chose.</p>
-
-<p>Par exemple sélectionnons le texte avec la touche <code>v</code> ou la souris( <code>set mouse=a</code>). puis appuyons sur <code>:</code></p>
-
-<p>Vous deviez voir
-<code>
-'&lt;,'&gt;`
-</code>
-alors complétons la ligne par <code>'&lt;,'&gt;norm I//</code> et tout le texte sélectionné est commenté!
-La commande précédente se lit sur la zone sélectionnée <code>'&lt;,'&gt;</code>  appuyez(<code>norm</code>)  sur <code>I</code> puis <code>\\</code>.</p>
-
-<h2>Un dernier raccourci-clavier..</h2>
-
-<p>La touche <code>gi</code> vous emmène au dernier endroit ou vous avez inséré du texte et place directement en insertion.</p>
-
-<p>En conclusion, Il n&#8217;y pas que le touche <code>i</code> dans Vi. En fait on se sert assez peu de cette touche.. C&#8217;est pourtant la plus connue..</p>
 ]]></content>
   </entry>
   

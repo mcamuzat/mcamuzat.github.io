@@ -9,7 +9,15 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="J'utilise souvent le programme htop. mais il y en a d'autre. atop Plus austère. Beaucoup d'information sur toutes les ressources. C'est plus un &hellip;">
+  <meta name="description" content="Nous allons repartir sur la SPL. Je vais parler des différentes méthodes amusantes à surcharger. Count Soit la classe suivante 1
+2
+3
+4
+5
+6
+7
+8
+9 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -62,6 +70,76 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/10/03/spl-surcharge-magique/">SPL surcharge magique</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-10-03T17:17:33+02:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Nous allons repartir sur la <a href="http://php.net/manual/fr/book.spl.php">SPL</a>.</p>
+
+<p>Je vais parler des différentes méthodes amusantes à surcharger.</p>
+
+<h2>Count</h2>
+
+<p>Soit la classe suivante</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">BadCounter</span> <span class="k">implements</span> <span class="nx">countable</span><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">count</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="mi">42</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$counter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BadCounter</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="nv">$counter</span><span class="p">));</span><span class="c1">// int(42)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/10/03/spl-surcharge-magique/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -768,60 +846,6 @@ Quand le résultat est connu,  la promise a 3 états possibles</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/08/23/halt-compiler-twig-et-php-dans-le-meme-fichier/">Halt compiler : twig et php dans le même fichier</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-08-23T17:20:41+02:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Introduction</h2>
-
-<p>je vais parler de l&#8217;instruction <code>__halt_compiler()</code>.</p>
-
-<p>Cette instruction arrête l&#8217;interprétation du PHP. Instruction inutile ? Pas vraiment..</p>
-
-<p>Pour ce faire je vais montrer un exemple ou je vais mixer un fichier php et un fichier <a href="http://twig.sensiolabs.org/">twig</a> ensemble.</p>
-
-<h2>L&#8217;instruction <code>__halt_compiler()</code></h2>
-
-<p>D&#8217;après php.net</p>
-
-<blockquote><p>Stoppe l&#8217;exécution du compilateur. Ceci peut être très utile pour embarquer des données dans des scripts PHP, comme des fichiers d&#8217;installation.
-L&#8217;octet de la position du début des données peut être déterminé par la constante <code>__COMPILER_HALT_OFFSET__</code> qui n&#8217;est définie que s&#8217;il y a une fonction <code>__halt_compiler()</code> présente dans le fichier.</p></blockquote>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/08/23/halt-compiler-twig-et-php-dans-le-meme-fichier/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/5">&larr; Older</a>
@@ -871,6 +895,10 @@ L&#8217;octet de la position du début des données peut être déterminé par l
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/05/08/vim-formater-le-json/">VIM : formater le JSON</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/04/03/jeu-de-la-vie/">Jeu de la vie</a>
       </li>
     
@@ -884,10 +912,6 @@ L&#8217;octet de la position du début des données peut être déterminé par l
     
       <li class="post">
         <a href="/blog/2016/03/13/vim-plug-gestion-des-plugins/">Vim-plug : Gestion des plugins</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/">Installation d&#8217;un proxmox 4.0 : Nginx</a>
       </li>
     
   </ul>

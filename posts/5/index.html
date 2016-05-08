@@ -9,7 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Introduction Nous allons voir ensemble, une nouvelle façon de faire des tests. Nous allons installer utiliser un projet php-quickcheck. L'idée ici n' &hellip;">
+  <meta name="description" content="Introduction je vais parler de l'instruction __halt_compiler(). Cette instruction arrête l'interprétation du PHP. Instruction inutile ? Pas vraiment &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -62,6 +62,60 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/23/halt-compiler-twig-et-php-dans-le-meme-fichier/">Halt compiler : twig et php dans le même fichier</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-08-23T17:20:41+02:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Introduction</h2>
+
+<p>je vais parler de l&#8217;instruction <code>__halt_compiler()</code>.</p>
+
+<p>Cette instruction arrête l&#8217;interprétation du PHP. Instruction inutile ? Pas vraiment..</p>
+
+<p>Pour ce faire je vais montrer un exemple ou je vais mixer un fichier php et un fichier <a href="http://twig.sensiolabs.org/">twig</a> ensemble.</p>
+
+<h2>L&#8217;instruction <code>__halt_compiler()</code></h2>
+
+<p>D&#8217;après php.net</p>
+
+<blockquote><p>Stoppe l&#8217;exécution du compilateur. Ceci peut être très utile pour embarquer des données dans des scripts PHP, comme des fichiers d&#8217;installation.
+L&#8217;octet de la position du début des données peut être déterminé par la constante <code>__COMPILER_HALT_OFFSET__</code> qui n&#8217;est définie que s&#8217;il y a une fonction <code>__halt_compiler()</code> présente dans le fichier.</p></blockquote>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/08/23/halt-compiler-twig-et-php-dans-le-meme-fichier/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -532,57 +586,6 @@ quand je lance mes tests je vois cela.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/07/17/processing-et-souvenir/">Processing et Souvenir</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-07-17T22:52:27+02:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="center" src="/images/voiture.png" width="499" height="300" title="Vrooum!!" alt="Screenshot du programme avec le micro"></p>
-
-<p>Aujourd&#8217;hui, je ressors un vieux code que j&#8217;avais écris pour le CNAM. Le sujet était faire que l&#8217;image à l&#8217;écran bouge quand on parle dans un microphone. Mais pas d&#8217;animation à la Winamp (j&#8217;ai des vieilles références :-) ou le player de Windows. J&#8217;avais donc programmé une voiture sur un circuit, pour le réalisme j&#8217;avais connecté un Wii-chuck via un Arduino pour faire le volant. Imaginez une personne avec un Wiichuk et un micro en train de faire &ldquo;Vrrrooum&rdquo; et vous aurez un idée de ma soutenance (qui s&#8217;est bien passée d&#8217;ailleurs).</p>
-
-<p>Les conditions étaient :</p>
-
-<ul>
-<li>Utiliser un Micro</li>
-<li>La langage imposé est Processing</li>
-</ul>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/07/17/processing-et-souvenir/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/6">&larr; Older</a>
@@ -632,6 +635,10 @@ quand je lance mes tests je vois cela.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/05/08/vim-formater-le-json/">VIM : formater le JSON</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/04/03/jeu-de-la-vie/">Jeu de la vie</a>
       </li>
     
@@ -645,10 +652,6 @@ quand je lance mes tests je vois cela.</p>
     
       <li class="post">
         <a href="/blog/2016/03/13/vim-plug-gestion-des-plugins/">Vim-plug : Gestion des plugins</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/">Installation d&#8217;un proxmox 4.0 : Nginx</a>
       </li>
     
   </ul>

@@ -4,7 +4,7 @@
   <title><![CDATA[Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-04-03T22:02:19+02:00</updated>
+  <updated>2016-05-08T18:10:51+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,133 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[VIM : formater le JSON]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/05/08/vim-formater-le-json/"/>
+    <updated>2016-05-08T17:51:22+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/05/08/vim-formater-le-json</id>
+    <content type="html"><![CDATA[<p>Aujourd&#8217;hui nous allons voir comment formater un json un peu crade pour le transformer en quelques choses de plus sympathique.</p>
+
+<p>Soit le JsonSchema suivant</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">{</span><span class="s2">&quot;$schema&quot;</span><span class="o">:</span><span class="s2">&quot;http://json-schema.org/draft-04/schema#&quot;</span><span class="p">,</span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;object&quot;</span><span class="p">,</span><span class="s2">&quot;properties&quot;</span><span class="o">:</span><span class="p">{</span><span class="s2">&quot;address&quot;</span><span class="o">:</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;object&quot;</span><span class="p">,</span><span class="s2">&quot;properties&quot;</span><span class="o">:</span><span class="p">{</span><span class="s2">&quot;streetAddress&quot;</span><span class="o">:</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;string&quot;</span><span class="p">},</span><span class="s2">&quot;city&quot;</span><span class="o">:</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;string&quot;</span><span class="p">}},</span><span class="s2">&quot;required&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;streetAddress&quot;</span><span class="p">,</span><span class="s2">&quot;city&quot;</span><span class="p">]},</span><span class="s2">&quot;phoneNumber&quot;</span><span class="o">:</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;array&quot;</span><span class="p">,</span><span class="s2">&quot;items&quot;</span><span class="o">:</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;object&quot;</span><span class="p">,</span><span class="s2">&quot;properties&quot;</span><span class="o">:</span><span class="p">{</span><span class="s2">&quot;location&quot;</span><span class="o">:</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;string&quot;</span><span class="p">},</span><span class="s2">&quot;code&quot;</span><span class="o">:</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="s2">&quot;integer&quot;</span><span class="p">}},</span><span class="s2">&quot;required&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">,</span><span class="s2">&quot;code&quot;</span><span class="p">]}}},</span><span class="s2">&quot;required&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;address&quot;</span><span class="p">,</span><span class="s2">&quot;phoneNumber&quot;</span><span class="p">]}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pas de retour à la ligne.</p>
+
+<p>Grâce à la commande suivante.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="o">:%!</span><span class="nx">python</span> <span class="o">-</span><span class="nx">m</span> <span class="nx">json</span><span class="p">.</span><span class="nx">tool</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Le fichier devient</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;$schema&quot;</span><span class="o">:</span> <span class="s2">&quot;http://json-schema.org/draft-04/schema#&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;properties&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="s2">&quot;address&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>            <span class="s2">&quot;properties&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                <span class="s2">&quot;city&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                    <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span>
+</span><span class='line'>                <span class="p">},</span>
+</span><span class='line'>                <span class="s2">&quot;streetAddress&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                    <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span>
+</span><span class='line'>                <span class="p">}</span>
+</span><span class='line'>            <span class="p">},</span>
+</span><span class='line'>            <span class="s2">&quot;required&quot;</span><span class="o">:</span> <span class="p">[</span>
+</span><span class='line'>                <span class="s2">&quot;streetAddress&quot;</span><span class="p">,</span>
+</span><span class='line'>                <span class="s2">&quot;city&quot;</span>
+</span><span class='line'>            <span class="p">],</span>
+</span><span class='line'>            <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;object&quot;</span>
+</span><span class='line'>        <span class="p">},</span>
+</span><span class='line'>        <span class="s2">&quot;phoneNumber&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>            <span class="s2">&quot;items&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                <span class="s2">&quot;properties&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                    <span class="s2">&quot;code&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;integer&quot;</span>
+</span><span class='line'>                    <span class="p">},</span>
+</span><span class='line'>                    <span class="s2">&quot;location&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span>
+</span><span class='line'>                    <span class="p">}</span>
+</span><span class='line'>                <span class="p">},</span>
+</span><span class='line'>                <span class="s2">&quot;required&quot;</span><span class="o">:</span> <span class="p">[</span>
+</span><span class='line'>                    <span class="s2">&quot;location&quot;</span><span class="p">,</span>
+</span><span class='line'>                    <span class="s2">&quot;code&quot;</span>
+</span><span class='line'>                <span class="p">],</span>
+</span><span class='line'>                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;object&quot;</span>
+</span><span class='line'>            <span class="p">},</span>
+</span><span class='line'>            <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;array&quot;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="s2">&quot;required&quot;</span><span class="o">:</span> <span class="p">[</span>
+</span><span class='line'>        <span class="s2">&quot;address&quot;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s2">&quot;phoneNumber&quot;</span>
+</span><span class='line'>    <span class="p">],</span>
+</span><span class='line'>    <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;object&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On utilise en pratique python pour réécrire le code.</p>
+
+<p>Vous pouvez essayer</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">python</span> <span class="o">-</span><span class="nx">m</span> <span class="nx">json</span><span class="p">.</span><span class="nx">tool</span> <span class="o">&lt;</span><span class="nx">le</span> <span class="nx">fichier</span><span class="o">&gt;</span><span class="p">.</span><span class="nx">json</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ce qui est pratique est que python est installé par défaut sous Linux. Il existe aussi <a href="https://stedolan.github.io/jq/">jq</a>, mais il n&#8217;est pas par défaut.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Jeu de la vie]]></title>
@@ -3024,318 +3151,6 @@ La valeur 3 n&#8217;a qu&#8217;une valeur qui est <code>3</code> facile, la vale
 
 
 <p>Nous allons continuer notre voyage avec les listes dans le prochain post.</p>
-
-<ul>
-<li>Partie 1 : <a href="http://mcamuzat.github.io/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
-<li>Partie 2 : <a href="http://mcamuzat.github.io/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/">Le functor Maybe</a></li>
-<li>Partie 3 : <a href="http://mcamuzat.github.io/blog/2015/11/22/les-monades-3-le-maybe-suite/">Le functor Maybe avec le Bind</a></li>
-<li>Partie 4 : <a href="http://mcamuzat.github.io/blog/2015/11/29/les-monades-les-listes/">Les listes</a></li>
-<li>Interlude : <a href="http://mcamuzat.github.io/blog/2015/12/06/les-monades-evaluation-partielle/">Les évaluations partielles</a></li>
-<li>Partie 5 : <a href="http://mcamuzat.github.io/blog/2015/12/20/les-monades-5-les-applicatives/">Les applicatives</a></li>
-<li>Partie 6 : <a href="http://mcamuzat.github.io/blog/2016/01/25/les-monades-applicative-et-les-listes/">Les applicatives et les listes</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Les Monades (suite): Le Functor Maybe..]]></title>
-    <link href="http://mcamuzat.github.io/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot/"/>
-    <updated>2015-11-15T16:43:42+01:00</updated>
-    <id>http://mcamuzat.github.io/blog/2015/11/15/les-monades-suite-le-functor-maybe-dot</id>
-    <content type="html"><![CDATA[<p><img class="center" src="http://mcamuzat.github.io/images/lesdeuxcontainerMaybe.png" width="512" height="313" title="Il y a deux container" alt="Il y a deux containers"></p>
-
-<p>Nous avons vue dans le précédent <a href="blog/2015/11/11/les-monades-en-php-cest-possible-dot/">post</a> un pseudo-container qui nous permet d&#8217;emballer nos valeurs. Nous allons muscler un peu notre container mais partons d&#8217;un exemple.</p>
-
-<p>Je souhaite récupérer le mail du client &ldquo;bob&rdquo; ou afficher &ldquo;pas de mail&rdquo;</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">getMail</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'><span class="nv">$mail</span> <span class="o">=</span> <span class="nx">getUserByName</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">getAddress</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getMail</span><span class="p">();</span>
-</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="k">null</span> <span class="o">===</span> <span class="nv">$mail</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>   <span class="k">return</span> <span class="s2">&quot;pas de mail&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="k">return</span> <span class="nv">$mail</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Facile non ?</p>
-
-<!--more-->
-
-
-<p>Si <code>getAdress()</code> renvoie null, Outch &hellip;</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nx">PHP</span> <span class="nx">Fatal</span> <span class="nx">error</span><span class="o">:</span> <span class="nx">Call</span> <span class="nx">to</span> <span class="nx">a</span> <span class="nx">member</span> <span class="k">function</span> <span class="nf">getMail</span><span class="p">()</span> <span class="nx">on</span> <span class="nx">a</span> <span class="nx">non</span><span class="o">-</span><span class="nx">object</span><span class="o">..</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>L&#8217;utilisateur n&#8217;existe pas forcement et puis l&#8217;adresse est peut-être vide.. Une implémentation naïve</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">getMail</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nv">$user</span> <span class="o">=</span> <span class="nx">getUserByName</span><span class="p">(</span><span class="nv">$name</span><span class="p">);</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nv">$user</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$address</span> <span class="o">=</span> <span class="nv">$user</span><span class="o">-&gt;</span><span class="na">getAddress</span><span class="p">();</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$address</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="c1">//etc ...</span>
-</span><span class='line'>            <span class="k">return</span> <span class="nv">$adresse</span><span class="o">-&gt;</span><span class="na">getMail</span><span class="p">();</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>   <span class="p">}</span>
-</span><span class='line'>   <span class="k">return</span> <span class="s2">&quot;pas de mail&quot;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Ce code vous le connaissez, vous l&#8217;avez probablement déjà écris, il y a moyen d&#8217;optimiser de faire plus propre.</p>
-
-<h2>Deux containers pour le prix d&#8217;un.</h2>
-
-<p>Le Maybe à la rescousse..</p>
-
-<p>Voici le Maybe en dessin.</p>
-
-<p><img class="center" src="http://mcamuzat.github.io/images/lesdeuxcontainerMaybe.png" width="512" height="313" title="Il y a deux container" alt="Il y a deux containers"></p>
-
-<p>J&#8217;ai un container <code>Some</code> et un Container <code>Nothing</code>.</p>
-
-<p>Le container <code>Nothing</code> est un container qui n&#8217;a aucune valeurs. La méthode <code>map</code> renvoie toujours un container <code>Nothing</code>.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Nothing</span> <span class="k">extends</span> <span class="nx">Container</span><span class="p">{</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">map</span><span class="p">(</span><span class="nv">$function</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>       <span class="k">return</span> <span class="k">static</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="k">null</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">of</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="k">new</span> <span class="k">static</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">bind</span><span class="p">(</span><span class="nv">$transformation</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="k">static</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="k">null</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getOrElse</span><span class="p">(</span><span class="nv">$default</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$default</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Le container <code>Some</code> le résultats de <code>map</code> est un nouveau container <code>Some</code> s&#8217;il y a un résultat non-null sinon c&#8217;est un container <code>Nothing</code>.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Some</span> <span class="k">extends</span> <span class="nx">Container</span><span class="p">{</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">map</span><span class="p">(</span><span class="nv">$function</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$result</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">bind</span><span class="p">(</span><span class="nv">$function</span><span class="p">);</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nv">$result</span> <span class="o">===</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">return</span> <span class="nx">Nothing</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="k">null</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="k">return</span> <span class="k">static</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="nv">$result</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">of</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="k">new</span> <span class="k">static</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">bind</span><span class="p">(</span><span class="nv">$transformation</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nb">call_user_func</span><span class="p">(</span><span class="nv">$transformation</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">value</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getOrElse</span><span class="p">(</span><span class="nv">$default</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">value</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Enfin j&#8217;ai besoin d&#8217;un helper</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">maybeFromValue</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'> <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="k">null</span><span class="p">)</span>
-</span><span class='line'>   <span class="k">return</span> <span class="nx">Nothing</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="k">null</span><span class="p">);</span>
-</span><span class='line'> <span class="k">return</span> <span class="nx">Some</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="nv">$value</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Notons que j&#8217;ai une méthode qui me permet de sortir avec une valeurs par défaut</p>
-
-<p>Quelques exemples:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">echo</span> <span class="nx">maybeFromValue</span><span class="p">(</span><span class="k">null</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="s2">&quot;ucfirst&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">getOrElse</span><span class="p">(</span><span class="s2">&quot;non!!&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="c1">// non!!</span>
-</span><span class='line'><span class="k">echo</span> <span class="nx">maybeFromValue</span><span class="p">(</span><span class="s2">&quot;oui!!&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="s2">&quot;ucfirst&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">getOrElse</span><span class="p">(</span><span class="s2">&quot;non!!&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="c1">// Oui!!</span>
-</span><span class='line'><span class="k">echo</span> <span class="nx">Some</span><span class="o">::</span><span class="na">of</span><span class="p">(</span><span class="s2">&quot;oui&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="s2">&quot;ucfirst&quot;</span><span class="p">)</span>
-</span><span class='line'>   <span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="k">null</span><span class="p">;})</span>
-</span><span class='line'>   <span class="o">-&gt;</span><span class="na">getOrElse</span><span class="p">(</span><span class="s2">&quot;Non!!&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="c1">// Non !!</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Nous pouvons simplifier notre problème</p>
-
-<p>En le refactorisant ainsi</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="c1">// example</span>
-</span><span class='line'><span class="c1">// method(&quot;name&quot;) return function($obj) {return $obj-&gt;getName()};</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">function</span> <span class="nf">method</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$obj</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$obj</span><span class="o">-&gt;</span><span class="nv">$name</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">};</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$mail</span> <span class="o">=</span> <span class="nx">maybeFromValue</span><span class="p">(</span><span class="nx">getUserByName</span><span class="p">(</span><span class="nv">$name</span><span class="p">))</span>
-</span><span class='line'>    <span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="nx">method</span><span class="p">(</span><span class="s2">&quot;getAddress&quot;</span><span class="p">))</span> <span class="c1">// $value-&gt;getAdress()</span>
-</span><span class='line'>    <span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="nx">method</span><span class="p">(</span><span class="s2">&quot;getMail&quot;</span><span class="p">))</span>
-</span><span class='line'>    <span class="o">-&gt;</span><span class="na">getOrElse</span><span class="p">(</span><span class="s2">&quot;pas de mail&quot;</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Quelques dessins
-Le cas ou tout marche</p>
-
-<p><img class="center" src="http://mcamuzat.github.io/images/maybechainageok.png" width="516" height="260" title="chainage tout va bien" alt="chainage tout va bien"></p>
-
-<p>Le cas ou <code>getUser()</code> renvoie null</p>
-
-<p><img class="center" src="http://mcamuzat.github.io/images/chainagepasok.png" width="516" height="216" title="getAdress renvoie null, on prend la valeur par défault" alt="getAdress renvoie null, on prend la valeur par défaults"></p>
-
-<p>Sympa la refactorisation. On peux supprimer ainsi une partie de la logique (la plupart des if, les nulls ont tous disparus).</p>
-
-<h2>Une librairie toute faite</h2>
-
-<p>Je vais parler de <a href="https://github.com/schmittjoh/php-option">php-option</a>. Si vous faite du <a href="https://symfony.com/">symfony2</a> vous l&#8217;avez déja dans votre <code>/vendor</code> et vous ne le saviez pas.</p>
-
-<p>La syntaxe est un peu près le même</p>
-
-<p>Mais il y a plein de fonctionnalités</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$entity</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">findSomeEntity</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getOrElse</span><span class="p">(</span><span class="k">new</span> <span class="nx">Entity</span><span class="p">());</span>
-</span><span class='line'><span class="nv">$entity</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">findSomeEntity</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getOrCall</span><span class="p">(</span><span class="s1">&#39;createAnNewAddress&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nv">$entity</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">findSomeEntity</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getOrThrow</span><span class="p">(</span><span class="k">new</span> <span class="nx">\Exception</span><span class="p">(</span><span class="s1">&#39;ha!!!!!&#39;</span><span class="p">));</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Il y a aussi des possibilité de chainer les réponses si pas de résultats</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$entity</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">findSomeEntity</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">orElse</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">findSomeOtherEntity</span><span class="p">())</span>
-</span><span class='line'>            <span class="o">-&gt;</span><span class="na">orElse</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">createEntity</span><span class="p">());</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Nous n&#8217;utilisons que l&#8217;instruction <code>map</code> pour le moment. Donc nous n&#8217;utilisons pas le container en tant que monade mais plutôt en tant que functor. Nous verrons cela dans le troisième post.</p>
-
-<h2>Conclusion</h2>
-
-<p>Je suis désolé si certain termes sont inexacts comme le container. Je ne suis pas un expert, mais j&#8217;admets bien volontiers mon erreur.</p>
-
-<p>Si vous avez un code ou vous vérifiez tout le temps si les valeurs sont nulles. Il y a probablement moyen que cette structure vous aide.</p>
-
-<p>Dans le prochain Post nous utiliserons le Maybe avec l&#8217;instruction <code>bind</code>.</p>
 
 <ul>
 <li>Partie 1 : <a href="http://mcamuzat.github.io/blog/2015/11/11/les-monades-en-php-cest-possible-dot/">Monade/Functor</a></li>
