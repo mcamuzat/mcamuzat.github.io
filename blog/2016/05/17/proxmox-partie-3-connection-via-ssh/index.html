@@ -1,0 +1,484 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Proxmox 4 partie 3 : Connection via ssh - Journal d&#8217;un panda qui code</title>
+  <meta name="author" content="mcamuzat">
+
+  
+  <meta name="description" content="Nous avons vus dans les deux anciens post: comment régler le proxmox et le réseau
+comment rediriger le trafic avec nginx Nous allons voir comment &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mcamuzat.github.io/blog/2016/05/17/proxmox-partie-3-connection-via-ssh/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+   <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Journal d'un panda qui code" type="application/atom+xml">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900' rel='stylesheet' type='text/css'>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-60315965-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <style>html{background: url(/images/background.png) no-repeat center center fixed;-webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;}</style>
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+</hgroup>
+
+</header>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Proxmox 4 partie 3 : Connection via ssh</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-05-17T14:54:12+02:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Nous avons vus dans les deux anciens post:</p>
+
+<ul>
+<li><a href="/blog/2016/02/28/installation-dun-proxmox-4-dot-0/">comment régler le proxmox et le réseau</a></li>
+<li><a href="/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/">comment rediriger le trafic avec nginx</a></li>
+</ul>
+
+
+<p>Nous allons voir comment simplifier l&#8217;accès en mettant un accès SSH sur chaque instance. Pour se connecter à l&#8217;instance 101. La commande sera</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ssh deploy@&lt;url/ip du proxmox&gt; -p50101</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Enfin je donne la version complète du fichier <code>ipstable_start.sh</code></p>
+
+<!--more-->
+
+
+<h2>Introduction</h2>
+
+<p>Pour se connecter sur un instance pour le moment on est obligé de passé par l&#8217;interface graphique ou par la ligne de commande. La ligne de commande n&#8217;est pas évidente( pour quitter <code>Ctrl A</code> + <code>q</code>) et pas pratique. On aimerait pourvoir se connecter via l&#8217;extérieur pour mettre en place du déploiement automatique genre <a href="http://capistranorb.com/">capistrano</a></p>
+
+<h3>Par rapport au PROXMOX 3.</h3>
+
+<p>Avec OpenVZ par défaut le ssh est ouvert pour l&#8217;utilisateur root. <em>Ce n&#8217;est pas le cas sur LXC</em>.
+Deux possibilités:</p>
+
+<ul>
+<li>Ajouter un utilisateur deploy : <code>sudo adduser deploy</code> sur l&#8217;instance, c&#8217;est d&#8217;ailleurs en un sens inévitable si vous travaillez en équipe.</li>
+<li>Ou autoriser l&#8217;utilisateur root à se connecter à l&#8217;extérieur. Il faut modifier le fichier <code>/etc/ssh/sshd_config</code> sur l&#8217;instance et modifier la ligne <code>PermitRootLogin without-password</code> à <code>PermitRootLogin yes</code></li>
+</ul>
+
+
+<h3>Redirection via iptable</h3>
+
+<p>voici la syntaxe pour la machine <code>vm101</code>.
+On redirige le port 50101 du proxmox vers la vm101 port 22</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>iptables -t nat -A PREROUTING -i vmbr0 -p tcp --dport 50101 -j DNAT --to-destination 192.168.15.101:22</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On peut faire une boucle for pour créer par défaut. <code>vm101-&gt;50101, vm102-&gt;50102, ..</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>for i in {1..200}
+</span><span class='line'>do
+</span><span class='line'>   let "inport=50+$i"
+</span><span class='line'>   iptables -t nat -A PREROUTING -i vmbr0 -p tcp --dport $inport -j DNAT --to-destination 192.168.15.$i:22
+</span><span class='line'>done</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il y aussi des règles sur mesure, Dans mon fichier vous verrez l&#8217;exemple de Node+Socket.io ou je redirige le port 8000 du proxmox vers l&#8217;instance 102</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>iptables -t nat -A PREROUTING -i vmbr0 -p tcp --dport 8000 -j DNAT --to-destination 192.168.15.102:8000</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Enfin le fichier final.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/bin/bash</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">#vider table NAT</span>
+</span><span class='line'>iptables -F
+</span><span class='line'>iptables -X
+</span><span class='line'>iptables -t nat -F
+</span><span class='line'>iptables -t nat -X
+</span><span class='line'>iptables -t mangle -F
+</span><span class='line'>iptables -t mangle -X
+</span><span class='line'>iptables -P INPUT ACCEPT
+</span><span class='line'>iptables -P FORWARD ACCEPT
+</span><span class='line'>iptables -P OUTPUT ACCEPT
+</span><span class='line'>
+</span><span class='line'><span class="c"># On laisse sortir les vm</span>
+</span><span class='line'>iptables -t nat -A POSTROUTING -s 192.168.15.0/24 -o vmbr0 -j MASQUERADE
+</span><span class='line'>
+</span><span class='line'><span class="c"># Je redirige tout le trafic web vers instance nginx</span>
+</span><span class='line'>
+</span><span class='line'>iptables -t nat -A PREROUTING -i vmbr0 -p tcp --dport <span class="m">80</span> -j DNAT --to-destination 192.168.15.&lt;instance du nginx&gt;:80
+</span><span class='line'>
+</span><span class='line'><span class="c"># Les instances sont joignable via la commande suivante</span>
+</span><span class='line'><span class="c"># ssh &lt;user_instance&gt;@&lt;ip ou url du proxmox&gt; -p 50+&lt;instance&gt;</span>
+</span><span class='line'><span class="c"># par exemple:</span>
+</span><span class='line'><span class="c"># ssh deploy@monadress.com -p 50102</span>
+</span><span class='line'><span class="c"># se connecte sur le vm102 avec l&#39;utilisateur deploy (capistrano)</span>
+</span><span class='line'><span class="k">for</span> i in <span class="o">{</span>1..200<span class="o">}</span>
+</span><span class='line'><span class="k">do</span>
+</span><span class='line'>   <span class="nb">let</span> <span class="s2">&quot;inport=50+$i&quot;</span>
+</span><span class='line'>   iptables -t nat -A PREROUTING -i vmbr0 -p tcp --dport <span class="nv">$inport</span> -j DNAT --to-destination 192.168.15.<span class="nv">$i</span>:22
+</span><span class='line'><span class="k">done</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># la vm 102 est un node.js+socket.io</span>
+</span><span class='line'>iptables -t nat -A PREROUTING -i vmbr0 -p tcp --dport <span class="m">8000</span> -j DNAT --to-destination 192.168.15.102:8000
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Un exemple pour capistrano</h2>
+
+<p>un exemple pour la vm101 (si l&#8217;utilisateur deploy existe..)</p>
+
+<p>Un morceau de <code>deploy.rb</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">ssh_options</span><span class="o">[</span><span class="ss">:port</span><span class="o">]</span> <span class="o">=</span> <span class="mi">50101</span>
+</span><span class='line'><span class="c1"># path the directory</span>
+</span><span class='line'><span class="n">set</span> <span class="ss">:deploy_to</span><span class="p">,</span>   <span class="s2">&quot;/var/www/le_projet/&quot;</span>
+</span><span class='line'><span class="n">set</span> <span class="ss">:branch</span><span class="p">,</span> <span class="s1">&#39;master&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">set</span> <span class="ss">:domain</span><span class="p">,</span>      <span class="s2">&quot;&lt;url du proxmox&gt;&quot;</span>
+</span><span class='line'><span class="n">role</span> <span class="ss">:web</span><span class="p">,</span>        <span class="n">domain</span>                         <span class="c1"># Your HTTP server, Apache/etc</span>
+</span><span class='line'><span class="n">role</span> <span class="ss">:app</span><span class="p">,</span>        <span class="n">domain</span><span class="p">,</span> <span class="ss">:primary</span> <span class="o">=&gt;</span> <span class="kp">true</span>       <span class="c1"># This may be the same as your `Web` server</span>
+</span><span class='line'><span class="n">role</span> <span class="ss">:db</span><span class="p">,</span>         <span class="n">domain</span><span class="p">,</span> <span class="ss">:primary</span> <span class="o">=&gt;</span> <span class="kp">true</span>       <span class="c1"># This may be the same as your `Web` server</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Use SSH agent forwarding to deploy via Capistrano</span>
+</span><span class='line'><span class="n">ssh_options</span><span class="o">[</span><span class="ss">:forward_agent</span><span class="o">]</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Set user </span>
+</span><span class='line'><span class="n">set</span> <span class="ss">:user</span><span class="p">,</span> <span class="s2">&quot;deploy&quot;</span>
+</span><span class='line'><span class="n">set</span> <span class="ss">:group</span><span class="p">,</span> <span class="s2">&quot;deploy&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Alors la commande</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">cap</span> <span class="n">deploy</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+se connecte tout seul sur la Vm</p>
+
+<p>La <a href="http://capistranorb.com/documentation/getting-started/authentication-and-authorisation/">documentation</a> de capistrano est bien faite.
+Pour Symfony il existe <a href="https://github.com/everzet/capifony">capyfony</a> mais c&#8217;est depreacted depuis..</p>
+
+<h1>Conclusion</h1>
+
+<p>J&#8217;ai eu beaucoup de mal à trouver des documentations à jours pour le PROXMOX 4. Cette série d&#8217;article contient le résultat de mes recherches. (Je remercie aussi mes collègues pour l&#8217;aide).</p>
+
+<p>Il y a plein de liens qui expliquent beaucoup mieux que moi. N&#8217;hésitez pas à commencer par ceux-là et revenez sur mes posts pour adapter de proxmox3 à proxmox4.
+Je pense surtout à</p>
+
+<ul>
+<li><a href="http://myatus.com/p/poor-mans-proxmox-cluster/">proxmox cluster</a></li>
+<li><a href="http://blog.ganbaranai.fr/2013/08/il-etait-une-fois-proxmox-derriere-une-ip-unique/">Il était une fois, Proxmox derrière une IP unique …</a> Humblement je n&#8217;ai pas tout compris.</li>
+</ul>
+
+
+<p>Merci de m&#8217;avoir lu.</p>
+
+<ul>
+<li>Partie 1 : <a href="/blog/2016/02/28/installation-dun-proxmox-4-dot-0/">Proxmox : mise en place</a></li>
+<li>Partie 2 : <a href="/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/">Proxmox : Nginx</a></li>
+<li>Partie 3 : <a href="/blog/2016/05/17/proxmox-partie-3-connection-via-ssh/">Proxmox : Réglage ssh</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">mcamuzat</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-05-17T14:54:12+02:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/capistrano/'>capistrano</a>, <a class='category' href='/blog/categories/iptable/'>iptable</a>, <a class='category' href='/blog/categories/lxc/'>lxc</a>, <a class='category' href='/blog/categories/proxmox/'>proxmox</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://mcamuzat.github.io/blog/2016/05/17/proxmox-partie-3-connection-via-ssh/" data-via="" data-counturl="http://mcamuzat.github.io/blog/2016/05/17/proxmox-partie-3-connection-via-ssh/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/05/08/vim-formater-le-json/" title="Previous Post: VIM : formater le JSON">&laquo; VIM : formater le JSON</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section id="titles">
+  <a href="" title="Journal d'un panda qui code"><img id="logo" src="/images/panda.png" /></a>
+  <h1 id="site_title"><a href="/" title="Journal d'un panda qui code">Journal d&#8217;un panda qui code</a></h1>
+  <h3 id="site_subtitle">Un simple blog PHP/Linux/Programmation/Docker</h3>
+</section>
+
+<section id="menu">
+  <ul>
+    <li><i class="fa fa-home fa-lg"></i><a href="/"> Home </a></li>
+    <li><i class="fa fa-calendar fa-lg"></i><a href="/blog/archives/"> Archives </a></li>
+    <li><i class="fa fa-user fa-lg"></i><a href="/about/"> About </a></li>
+    <li><i class="fa fa-rss fa-lg"></i><a href="/atom.xml"> Feed </a></li>
+  </ul>
+</section>
+
+<section id="social">
+  
+
+  
+
+  
+
+  
+    <a href="https://github.com/mcamuzat" title="mcamuzat"><i class="fa fa-github fa-2x"></i></a>
+  
+
+  
+
+  
+</section>
+
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/05/17/proxmox-partie-3-connection-via-ssh/">Proxmox 4 partie 3 : Connection via ssh</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/05/08/vim-formater-le-json/">VIM : formater le JSON</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/04/03/jeu-de-la-vie/">Jeu de la vie</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/27/nano-activer-la-coloration-syntaxique/">Nano : Activer la coloration syntaxique</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/20/les-plugins-sous-vim-tabular/">Les plugins sous VIM : Tabular</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/mcamuzat">@mcamuzat</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'mcamuzat',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - mcamuzat -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

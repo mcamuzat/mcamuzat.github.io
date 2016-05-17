@@ -4,7 +4,7 @@
   <title><![CDATA[Category: proxmox | Journal d'un panda qui code]]></title>
   <link href="http://mcamuzat.github.io/blog/categories/proxmox/atom.xml" rel="self"/>
   <link href="http://mcamuzat.github.io/"/>
-  <updated>2016-05-08T18:10:51+02:00</updated>
+  <updated>2016-05-17T17:48:54+02:00</updated>
   <id>http://mcamuzat.github.io/</id>
   <author>
     <name><![CDATA[mcamuzat]]></name>
@@ -12,6 +12,182 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Proxmox 4 partie 3 : Connection via ssh]]></title>
+    <link href="http://mcamuzat.github.io/blog/2016/05/17/proxmox-partie-3-connection-via-ssh/"/>
+    <updated>2016-05-17T14:54:12+02:00</updated>
+    <id>http://mcamuzat.github.io/blog/2016/05/17/proxmox-partie-3-connection-via-ssh</id>
+    <content type="html"><![CDATA[<p>Nous avons vus dans les deux anciens post:</p>
+
+<ul>
+<li><a href="/blog/2016/02/28/installation-dun-proxmox-4-dot-0/">comment régler le proxmox et le réseau</a></li>
+<li><a href="/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/">comment rediriger le trafic avec nginx</a></li>
+</ul>
+
+
+<p>Nous allons voir comment simplifier l&#8217;accès en mettant un accès SSH sur chaque instance. Pour se connecter à l&#8217;instance 101. La commande sera
+<code>
+ssh deploy@&lt;url/ip du proxmox&gt; -p50101
+</code></p>
+
+<p>Enfin je donne la version complète du fichier <code>ipstable_start.sh</code></p>
+
+<!--more-->
+
+
+<h2>Introduction</h2>
+
+<p>Pour se connecter sur un instance pour le moment on est obligé de passé par l&#8217;interface graphique ou par la ligne de commande. La ligne de commande n&#8217;est pas évidente( pour quitter <code>Ctrl A</code> + <code>q</code>) et pas pratique. On aimerait pourvoir se connecter via l&#8217;extérieur pour mettre en place du déploiement automatique genre <a href="http://capistranorb.com/">capistrano</a></p>
+
+<h3>Par rapport au PROXMOX 3.</h3>
+
+<p>Avec OpenVZ par défaut le ssh est ouvert pour l&#8217;utilisateur root. <em>Ce n&#8217;est pas le cas sur LXC</em>.
+Deux possibilités:</p>
+
+<ul>
+<li>Ajouter un utilisateur deploy : <code>sudo adduser deploy</code> sur l&#8217;instance, c&#8217;est d&#8217;ailleurs en un sens inévitable si vous travaillez en équipe.</li>
+<li>Ou autoriser l&#8217;utilisateur root à se connecter à l&#8217;extérieur. Il faut modifier le fichier <code>/etc/ssh/sshd_config</code> sur l&#8217;instance et modifier la ligne <code>PermitRootLogin without-password</code> à <code>PermitRootLogin yes</code></li>
+</ul>
+
+
+<h3>Redirection via iptable</h3>
+
+<p>voici la syntaxe pour la machine <code>vm101</code>.
+On redirige le port 50101 du proxmox vers la vm101 port 22
+<code>
+iptables -t nat -A PREROUTING -i vmbr0 -p tcp --dport 50101 -j DNAT --to-destination 192.168.15.101:22
+</code>
+On peut faire une boucle for pour créer par défaut. <code>vm101-&gt;50101, vm102-&gt;50102, ..</code>
+<code>
+for i in {1..200}
+do
+   let "inport=50+$i"
+   iptables -t nat -A PREROUTING -i vmbr0 -p tcp --dport $inport -j DNAT --to-destination 192.168.15.$i:22
+done
+</code></p>
+
+<p>Il y aussi des règles sur mesure, Dans mon fichier vous verrez l&#8217;exemple de Node+Socket.io ou je redirige le port 8000 du proxmox vers l&#8217;instance 102
+<code>
+iptables -t nat -A PREROUTING -i vmbr0 -p tcp --dport 8000 -j DNAT --to-destination 192.168.15.102:8000
+</code></p>
+
+<p>Enfin le fichier final.</p>
+
+<pre><code class="sh   ">#!/bin/bash
+
+#vider table NAT
+iptables -F
+iptables -X
+iptables -t nat -F
+iptables -t nat -X
+iptables -t mangle -F
+iptables -t mangle -X
+iptables -P INPUT ACCEPT
+iptables -P FORWARD ACCEPT
+iptables -P OUTPUT ACCEPT
+
+# On laisse sortir les vm
+iptables -t nat -A POSTROUTING -s 192.168.15.0/24 -o vmbr0 -j MASQUERADE
+
+# Je redirige tout le trafic web vers instance nginx
+
+iptables -t nat -A PREROUTING -i vmbr0 -p tcp --dport 80 -j DNAT --to-destination 192.168.15.&lt;instance du nginx&gt;:80
+
+# Les instances sont joignable via la commande suivante
+# ssh &lt;user_instance&gt;@&lt;ip ou url du proxmox&gt; -p 50+&lt;instance&gt;
+# par exemple:
+# ssh deploy@monadress.com -p 50102
+# se connecte sur le vm102 avec l'utilisateur deploy (capistrano)
+for i in {1..200}
+do
+   let "inport=50+$i"
+   iptables -t nat -A PREROUTING -i vmbr0 -p tcp --dport $inport -j DNAT --to-destination 192.168.15.$i:22
+done
+
+# la vm 102 est un node.js+socket.io
+iptables -t nat -A PREROUTING -i vmbr0 -p tcp --dport 8000 -j DNAT --to-destination 192.168.15.102:8000
+</code></pre>
+
+<h2>Un exemple pour capistrano</h2>
+
+<p>un exemple pour la vm101 (si l&#8217;utilisateur deploy existe..)</p>
+
+<p>Un morceau de <code>deploy.rb</code>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">ssh_options</span><span class="o">[</span><span class="ss">:port</span><span class="o">]</span> <span class="o">=</span> <span class="mi">50101</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;path the directory&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">set</span> <span class="ss">:deploy_to</span><span class="p">,</span>   <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">le_projet</span><span class="o">/&amp;</span><span class="n">rdquo</span><span class="p">;</span>
+</span><span class='line'><span class="n">set</span> <span class="ss">:branch</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">master</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;set :domain,      &amp;ldquo;&lt;url du proxmox&gt;&amp;rdquo;</span>
+</span><span class='line'><span class="sr">role :web,        domain                         # Your HTTP server, Apache/e</span><span class="n">tc</span>
+</span><span class='line'><span class="n">role</span> <span class="ss">:app</span><span class="p">,</span>        <span class="n">domain</span><span class="p">,</span> <span class="ss">:primary</span> <span class="o">=&gt;</span> <span class="kp">true</span>       <span class="c1"># This may be the same as your &lt;code&gt;Web&lt;/code&gt; server</span>
+</span><span class='line'><span class="n">role</span> <span class="ss">:db</span><span class="p">,</span>         <span class="n">domain</span><span class="p">,</span> <span class="ss">:primary</span> <span class="o">=&gt;</span> <span class="kp">true</span>       <span class="c1"># This may be the same as your &lt;code&gt;Web&lt;/code&gt; server&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Use</span> <span class="no">SSH</span> <span class="n">agent</span> <span class="n">forwarding</span> <span class="n">to</span> <span class="n">deploy</span> <span class="n">via</span> <span class="no">Capistrano</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;ssh_options[:forward_agent] = true&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Set</span> <span class="n">user</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;set :user, &amp;ldquo;deploy&amp;rdquo;</span>
+</span><span class='line'><span class="sr">set :group, &amp;ldquo;deploy&amp;rdquo;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Alors la commande
+<code>
+cap deploy
+</code>
+se connecte tout seul sur la Vm</p>
+
+<p>La <a href="http://capistranorb.com/documentation/getting-started/authentication-and-authorisation/">documentation</a> de capistrano est bien faite.
+Pour Symfony il existe <a href="https://github.com/everzet/capifony">capyfony</a> mais c&#8217;est depreacted depuis..</p>
+
+<h1>Conclusion</h1>
+
+<p>J&#8217;ai eu beaucoup de mal à trouver des documentations à jours pour le PROXMOX 4. Cette série d&#8217;article contient le résultat de mes recherches. (Je remercie aussi mes collègues pour l&#8217;aide).</p>
+
+<p>Il y a plein de liens qui expliquent beaucoup mieux que moi. N&#8217;hésitez pas à commencer par ceux-là et revenez sur mes posts pour adapter de proxmox3 à proxmox4.
+Je pense surtout à</p>
+
+<ul>
+<li><a href="http://myatus.com/p/poor-mans-proxmox-cluster/">proxmox cluster</a></li>
+<li><a href="http://blog.ganbaranai.fr/2013/08/il-etait-une-fois-proxmox-derriere-une-ip-unique/">Il était une fois, Proxmox derrière une IP unique …</a> Humblement je n&#8217;ai pas tout compris.</li>
+</ul>
+
+
+<p>Merci de m&#8217;avoir lu.</p>
+
+<ul>
+<li>Partie 1 : <a href="/blog/2016/02/28/installation-dun-proxmox-4-dot-0/">Proxmox : mise en place</a></li>
+<li>Partie 2 : <a href="/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/">Proxmox : Nginx</a></li>
+<li>Partie 3 : <a href="/blog/2016/05/17/proxmox-partie-3-connection-via-ssh/">Proxmox : Réglage ssh</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Installation d'un proxmox 4.0 : Nginx]]></title>
@@ -27,7 +203,7 @@
 <p>Par exemple, je souhaite</p>
 
 <ul>
-<li>blog.domaine1.fr partte vers l&#8217;instance 102 qui contient son propre apache.</li>
+<li>blog.domaine1.fr parte vers l&#8217;instance 102 qui contient son propre apache.</li>
 <li>image.domaine1.fr vers l&#8217;instance 103 etc ..</li>
 </ul>
 
@@ -124,6 +300,7 @@ ln -s ../site-available/blog.domaine1.com.conf
 <ul>
 <li>Partie 1 : <a href="/blog/2016/02/28/installation-dun-proxmox-4-dot-0/">Proxmox : mise en place</a></li>
 <li>Partie 2 : <a href="/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/">Proxmox : Nginx</a></li>
+<li>Partie 3 : <a href="/blog/2016/05/17/proxmox-partie-3-connection-via-ssh/">Proxmox : Réglage ssh</a></li>
 </ul>
 
 ]]></content>
@@ -334,6 +511,7 @@ dans le bridge mettre <strong>vmbr1</strong></p>
 <ul>
 <li>Partie 1 : <a href="/blog/2016/02/28/installation-dun-proxmox-4-dot-0/">Proxmox : mise en place</a></li>
 <li>Partie 2 : <a href="/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/">Proxmox : Nginx</a></li>
+<li>Partie 3 : <a href="/blog/2016/05/17/proxmox-partie-3-connection-via-ssh/">Proxmox : Réglage ssh</a></li>
 </ul>
 
 ]]></content>

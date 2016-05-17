@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://mcamuzat.github.io/blog/2016/05/17/proxmox-partie-3-connection-via-ssh/</loc>
+    <lastmod>2016-05-17T14:54:12+02:00</lastmod>
+  </url>
+  <url>
     <loc>http://mcamuzat.github.io/blog/2016/05/08/vim-formater-le-json/</loc>
     <lastmod>2016-05-08T17:51:22+02:00</lastmod>
   </url>
@@ -310,15 +314,15 @@
   </url>
   <url>
     <loc>http://mcamuzat.github.io/</loc>
-    <lastmod>2016-05-08T18:10:51+02:00</lastmod>
+    <lastmod>2016-05-17T17:48:54+02:00</lastmod>
   </url>
   <url>
     <loc>http://mcamuzat.github.io/blog/archives/</loc>
-    <lastmod>2016-05-08T18:10:51+02:00</lastmod>
+    <lastmod>2016-05-17T17:48:54+02:00</lastmod>
   </url>
   <url>
     <loc>http://mcamuzat.github.io/about/</loc>
-    <lastmod>2016-05-08T18:10:51+02:00</lastmod>
+    <lastmod>2016-05-17T17:48:54+02:00</lastmod>
   </url>
   <url>
     <loc>http://mcamuzat.github.io/google8cb39a84ece2ce48.html</loc>

@@ -9,7 +9,7 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Introduction Nous allons voir docker-machine. Docker-machine permet de simplifier l'installation/gestion/déploiement de Docker. ">
+  <meta name="description" content="Introduction J'ai regardé Docker. Docker est en Go ainsi que pas mal de projets en fait. J'ai donc décidé d'essayer. Dans ce chapitre nous n'allons &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -62,6 +62,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/05/10/go-introduction/">Go Introduction</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-05-10T18:21:31+02:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Introduction</h2>
+
+<p>J&#8217;ai regardé Docker. Docker est en Go ainsi que pas mal de projets en fait. J&#8217;ai donc décidé d&#8217;essayer.</p>
+
+<p>Dans ce chapitre nous n&#8217;allons pas trop discuter du langage mais surtout mettre en place tout les outils.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/05/10/go-introduction/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -1293,556 +1338,6 @@ Tout le livre est centré sur le programme de basic suivant qui donne l&#8217;im
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/04/06/suite-visiteur-pattern-visiteur-bool%C3%A9en/">Suite visiteur pattern : Visiteur Booleen</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-04-06T19:55:44+02:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Introduction:</h2>
-
-<p>Nous allons refaire la même chose que notre interpréteur d&#8217;expressions.
-Mais avec des expressions booléennes.
-Par exemple</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$expression</span> <span class="o">=</span> <span class="k">new</span> <span class="k">Or</span><span class="p">(</span> <span class="k">new</span> <span class="k">And</span><span class="p">(</span><span class="k">New</span> <span class="k">False</span><span class="p">(),</span> <span class="k">New</span> <span class="k">True</span><span class="p">()),</span> <span class="k">new</span> <span class="k">False</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Nous allons ensuite rajouter les comparaisons <code>==</code>, <code>&lt;</code>, etc ..</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$expression</span> <span class="o">=</span> <span class="k">new</span> <span class="k">Not</span><span class="p">(</span><span class="k">new</span> <span class="nx">NotEqual</span><span class="p">(</span><span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Variable</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">)));</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Beaucoup de code. mais si vous avez compris la première partie. cela devrait aller.</p>
-
-<h2>Expression Booléenne</h2>
-
-<p>Nous définissons l&#8217;interface suivante.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * Une expression Booléenne</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">interface</span> <span class="nx">BoolExpression</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">accept</span><span class="p">(</span><span class="nx">VisitorBoolExpression</span> <span class="nv">$v</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="sd">/**</span>
-</span><span class='line'><span class="sd"> * Une classe abstraite.</span>
-</span><span class='line'><span class="sd"> */</span>
-</span><span class='line'><span class="k">abstract</span> <span class="k">class</span> <span class="nc">Unary</span> <span class="k">implements</span> <span class="nx">BoolExpression</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">accept</span><span class="p">(</span><span class="nx">VisitorBoolExpression</span> <span class="nv">$v</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$v</span><span class="o">-&gt;</span><span class="na">visit</span><span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Pour faire l&#8217;algèbre booléen j&#8217;ai besoin de <code>False</code> et de <code>True</code></p>
-
-<p>Voici le code.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">True</span> <span class="k">extends</span> <span class="nx">Unary</span> <span class="p">{}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">False</span> <span class="k">extends</span> <span class="nx">Unary</span> <span class="p">{}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>J&#8217;ai aussi besoin de la négation</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Not</span> <span class="k">extends</span> <span class="nx">Unary</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">private</span> <span class="nv">$value</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">value</span> <span class="o">=</span> <span class="nv">$expr</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getValue</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">value</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Je vais rajouter la condition And, Or, Nand (No-et), Nor(Non-ou)</p>
-
-<p>Je définis une classe avec deux arguments dans le constructeur.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">Binary</span> <span class="k">extends</span> <span class="nx">Unary</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">private</span> <span class="nv">$left</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">private</span> <span class="nv">$right</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$left</span><span class="p">,</span> <span class="nx">BoolExpression</span> <span class="nv">$right</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">left</span> <span class="o">=</span> <span class="nv">$left</span><span class="p">;</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">right</span> <span class="o">=</span> <span class="nv">$right</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getLeft</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">left</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getRight</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">left</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Les classes sont alors très simples.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="c1">// Or et And sont des mots réservés en Php.</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">BinaryOr</span> <span class="k">extends</span> <span class="nx">Binary</span><span class="p">{}</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">BinaryAnd</span> <span class="k">extends</span> <span class="nx">Binary</span><span class="p">{}</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">BinaryNand</span> <span class="k">extends</span> <span class="nx">Binary</span><span class="p">{}</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">BinaryNor</span> <span class="k">extends</span> <span class="nx">Binary</span><span class="p">{}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>J&#8217;ai un peu près tout.</p>
-
-<p>On peut passer au Visiteur.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">interface</span> <span class="nx">VisitorBoolExpression</span><span class="p">{</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visit</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">VisitorBoolEvaluation</span> <span class="k">implements</span> <span class="nx">VisitorBoolExpression</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">protected</span> <span class="nv">$context</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$context</span><span class="p">){</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">context</span> <span class="o">=</span> <span class="nv">$context</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visit</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">){</span>
-</span><span class='line'>        <span class="nv">$class</span> <span class="o">=</span> <span class="s1">&#39;visit&#39;</span><span class="o">.</span><span class="nb">get_class</span><span class="p">(</span><span class="nv">$expr</span><span class="p">);</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="nv">$class</span><span class="p">(</span><span class="nv">$expr</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitTrue</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitFalse</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitNot</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="o">!</span><span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getValue</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitBinaryOr</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getLeft</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">)</span><span class="o">||</span><span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getRight</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitBinaryAnd</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getLeft</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">)</span><span class="o">&amp;&amp;</span><span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getRight</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitBinaryNor</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="o">!</span><span class="p">(</span><span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getLeft</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">)</span><span class="o">||</span><span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getRight</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">));</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitBinaryNand</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="o">!</span><span class="p">(</span><span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getLeft</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getRight</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">));</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Quelques exemples.</p>
-
-<p>On réutilise notre mémoire du billet précédent. On utilise aussi <code>var_dump</code> plutôt que <code>echo</code> car <code>echo false</code> ne renvoie rien.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$memory</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Memory</span><span class="p">();</span>
-</span><span class='line'><span class="nv">$memory</span><span class="o">-&gt;</span><span class="na">write</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$ve</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VisitorBoolEvaluation</span><span class="p">(</span><span class="nv">$memory</span><span class="p">);</span>
-</span><span class='line'><span class="c1">// une expression</span>
-</span><span class='line'><span class="nv">$expression</span> <span class="o">=</span>  <span class="k">new</span> <span class="k">True</span><span class="p">();</span>
-</span><span class='line'><span class="c1">// appelle le visiteur</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$ve</span><span class="p">))</span> <span class="c1">// affiche bool(true);</span>
-</span><span class='line'><span class="nv">$expression</span> <span class="o">=</span>  <span class="k">new</span> <span class="k">Not</span><span class="p">(</span><span class="k">new</span> <span class="k">False</span><span class="p">());</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$ve</span><span class="p">))</span> <span class="c1">// affiche bool(true);</span>
-</span><span class='line'><span class="nv">$expression</span> <span class="o">=</span>  <span class="k">new</span> <span class="nx">BinaryAnd</span><span class="p">(</span><span class="k">new</span> <span class="k">Not</span><span class="p">(</span><span class="k">new</span> <span class="k">False</span><span class="p">()),</span> <span class="k">new</span> <span class="nx">BinaryOr</span><span class="p">(</span><span class="k">new</span> <span class="k">True</span><span class="p">(),</span> <span class="k">new</span> <span class="k">False</span><span class="p">()));</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$ve</span><span class="p">))</span> <span class="c1">//Affiche bool(true);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>bien sur on peux refaire un autre visiteur pour traduire en chaînes de caractères</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">VisitorBoolPrint</span> <span class="k">implements</span> <span class="nx">VisitorBoolExpression</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">protected</span> <span class="nv">$context</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$context</span><span class="p">){</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">context</span> <span class="o">=</span> <span class="nv">$context</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visit</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">){</span>
-</span><span class='line'>        <span class="nv">$class</span> <span class="o">=</span> <span class="s1">&#39;visit&#39;</span><span class="o">.</span><span class="nb">get_class</span><span class="p">(</span><span class="nv">$expr</span><span class="p">);</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="nv">$class</span><span class="p">(</span><span class="nv">$expr</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitTrue</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="s2">&quot;true&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitFalse</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="s2">&quot;false&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitNot</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="s2">&quot;!&quot;</span> <span class="o">.</span> <span class="nv">$epr</span><span class="o">-&gt;</span><span class="na">getValue</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">visitBinaryOr</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="s2">&quot;(&quot;</span> <span class="o">.</span> <span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getLeft</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">)</span>
-</span><span class='line'>        <span class="o">.</span><span class="s1">&#39;||&#39;</span> <span class="o">.</span><span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getRight</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="p">)</span><span class="o">.</span> <span class="s2">&quot;)&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="o">...</span>
-</span><span class='line'>    <span class="o">...</span>
-</span><span class='line'> <span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Le même exemple .</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$memory</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Memory</span><span class="p">();</span>
-</span><span class='line'><span class="nv">$memory</span><span class="o">-&gt;</span><span class="na">write</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
-</span><span class='line'><span class="nv">$ve</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VisitorBoolPrint</span><span class="p">(</span><span class="nv">$memory</span><span class="p">);</span>
-</span><span class='line'><span class="c1">// une expression</span>
-</span><span class='line'><span class="nv">$expression</span> <span class="o">=</span>  <span class="k">new</span> <span class="k">True</span><span class="p">();</span>
-</span><span class='line'><span class="c1">// appelle le visiteur</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$ve</span><span class="p">))</span> <span class="c1">// affiche true;</span>
-</span><span class='line'><span class="nv">$expression</span> <span class="o">=</span>  <span class="k">new</span> <span class="k">Not</span><span class="p">(</span><span class="k">new</span> <span class="k">False</span><span class="p">());</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$ve</span><span class="p">))</span> <span class="c1">// affiche !false;</span>
-</span><span class='line'><span class="nv">$expression</span> <span class="o">=</span>  <span class="k">new</span> <span class="nx">BinaryAnd</span><span class="p">(</span><span class="k">new</span> <span class="k">Not</span><span class="p">(</span><span class="k">new</span> <span class="k">False</span><span class="p">()),</span> <span class="k">new</span> <span class="nx">BinaryOr</span><span class="p">(</span><span class="k">new</span> <span class="k">True</span><span class="p">(),</span> <span class="k">new</span> <span class="k">False</span><span class="p">()));</span>
-</span><span class='line'><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$ve</span><span class="p">))</span> <span class="c1">//Affiche (!false&amp;&amp;(true||false));</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Les comparaisons</h2>
-
-<p>Nous pouvons rajouter le <code>==</code>, <code>!=</code>, <code>&gt;</code> , <code>&lt;</code> !</p>
-
-<p>ajoutons de nouveau objet. les object prennent en entrée des expressions mais sortent des boléens.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">class</span> <span class="nc">BinaryComparaison</span> <span class="k">extends</span> <span class="nx">Unary</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">private</span> <span class="nv">$left</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">private</span> <span class="nv">$right</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">Expression</span> <span class="nv">$left</span><span class="p">,</span> <span class="nx">Expression</span> <span class="nv">$right</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">left</span> <span class="o">=</span> <span class="nv">$left</span><span class="p">;</span>
-</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">right</span> <span class="o">=</span> <span class="nv">$right</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getLeft</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">left</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getRight</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">right</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Equal</span> <span class="k">extends</span> <span class="nx">BinaryComparaison</span><span class="p">{}</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">NotEqual</span> <span class="k">extends</span> <span class="nx">BinaryComparaison</span><span class="p">{}</span>
-</span><span class='line'><span class="c1">//Greater Than Equal</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">Gte</span> <span class="k">extends</span> <span class="nx">BinaryComparaison</span><span class="p">{}</span>
-</span><span class='line'><span class="c1">// Lesser Than Equal</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">Lte</span> <span class="k">extends</span> <span class="nx">BinaryComparaison</span><span class="p">{}</span>
-</span><span class='line'><span class="c1">// Lesser Than</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">Lt</span> <span class="k">extends</span> <span class="nx">BinaryComparaison</span><span class="p">{}</span>
-</span><span class='line'><span class="c1">// Greater Than</span>
-</span><span class='line'><span class="k">class</span> <span class="nc">Gt</span> <span class="k">extends</span> <span class="nx">BinaryComparaison</span><span class="p">{}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Pour mon visiteur je vais utiliser mon visiteur d&#8217;expression du post précédent.</p>
-
-<p>donc je modifie le constructeur.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$context</span><span class="p">,</span> <span class="nv">$ve</span><span class="p">){</span>
-</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">context</span> <span class="o">=</span> <span class="nv">$context</span><span class="p">;</span>
-</span><span class='line'>    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ve</span> <span class="o">=</span> <span class="nv">$ve</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>je ne montre que le égal, mais vous avez un peu près l&#8217;idée pour le reste.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">visitEqual</span><span class="p">(</span><span class="nx">BoolExpression</span> <span class="nv">$expr</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="p">(</span><span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getLeft</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ve</span><span class="p">)</span>  <span class="o">==</span> <span class="nv">$expr</span><span class="o">-&gt;</span><span class="na">getRight</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">ve</span><span class="p">));</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Le visiteur booléen utilise un autre visiteur pour évaluer une expression.</p>
-
-<p>Un exemple d&#8217;utilisation</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$memory</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Memory</span><span class="p">();</span>
-</span><span class='line'><span class="nv">$memory</span><span class="o">-&gt;</span><span class="na">write</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
-</span><span class='line'><span class="c1">// une visiteur d&#39;expression</span>
-</span><span class='line'><span class="nv">$ve</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VisitorEvaluation</span><span class="p">(</span><span class="nv">$memory</span><span class="p">);</span>
-</span><span class='line'><span class="c1">// un visiteur pour les expressions booléennes</span>
-</span><span class='line'><span class="nv">$vb</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VisitorBoolEvaluation</span><span class="p">(</span><span class="nv">$memory</span><span class="p">,</span> <span class="nv">$ve</span><span class="p">);</span>
-</span><span class='line'><span class="c1">// une expression</span>
-</span><span class='line'><span class="nv">$expression</span> <span class="o">=</span>  <span class="k">new</span> <span class="k">Not</span><span class="p">(</span><span class="k">new</span> <span class="nx">Equal</span><span class="p">(</span> <span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Addition</span><span class="p">(</span><span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Variable</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">))));</span>
-</span><span class='line'><span class="nb">var_dump</span> <span class="p">(</span> <span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$vb</span><span class="p">)</span> <span class="p">);</span><span class="c1">// affiche bool(true)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>si je reprend mon autre visiteur <code>VisitorToPhp</code> avec le <code>visitorBoolPrint</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="nv">$memory</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Memory</span><span class="p">();</span>
-</span><span class='line'><span class="nv">$memory</span><span class="o">-&gt;</span><span class="na">write</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
-</span><span class='line'><span class="nv">$ve</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VisitorToPhp</span><span class="p">(</span><span class="nv">$memory</span><span class="p">);</span>
-</span><span class='line'><span class="nv">$vb</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VisitorBoolPrint</span><span class="p">(</span><span class="nv">$memory</span><span class="p">,</span> <span class="nv">$ve</span><span class="p">);</span>
-</span><span class='line'><span class="c1">// une expression</span>
-</span><span class='line'><span class="nv">$expression</span> <span class="o">=</span>  <span class="k">new</span> <span class="k">Not</span><span class="p">(</span><span class="k">new</span> <span class="nx">Equal</span><span class="p">(</span> <span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Addition</span><span class="p">(</span><span class="k">new</span> <span class="nx">Constant</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="k">new</span> <span class="nx">Variable</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">))));</span>
-</span><span class='line'><span class="nb">var_dump</span> <span class="p">(</span> <span class="nv">$expression</span><span class="o">-&gt;</span><span class="na">accept</span><span class="p">(</span><span class="nv">$vb</span><span class="p">)</span> <span class="p">);</span> <span class="c1">//affiche  &quot;!(10==(5+$i))&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Une conclusion.</h2>
-
-<ul>
-<li>Dans le premier post : On a vu le visiteur pour évaluer/afficher des expressions.</li>
-<li>dans le second post : le visiteur pour les expressions booléennes et les comparaisons. Celui-ci utilise le premier visiteur pour faire les calculs.</li>
-</ul>
-
-
-<p>dans un prochain post, je vais montrer un troisième visiteur <code>visitorInstruction</code> pour évaluer des instructions d&#8217;un langage très simple. Mais cela est un peu long à écrire. Il y a un peu de théorie et des figures à faire.</p>
-
-<p>Merci de m&#8217;avoir lu.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/8">&larr; Older</a>
@@ -1892,6 +1387,10 @@ Par exemple</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/05/17/proxmox-partie-3-connection-via-ssh/">Proxmox 4 partie 3 : Connection via ssh</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/05/08/vim-formater-le-json/">VIM : formater le JSON</a>
       </li>
     
@@ -1905,10 +1404,6 @@ Par exemple</p>
     
       <li class="post">
         <a href="/blog/2016/03/20/les-plugins-sous-vim-tabular/">Les plugins sous VIM : Tabular</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/03/13/vim-plug-gestion-des-plugins/">Vim-plug : Gestion des plugins</a>
       </li>
     
   </ul>

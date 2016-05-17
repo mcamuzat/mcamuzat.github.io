@@ -9,7 +9,8 @@
   <meta name="author" content="mcamuzat">
 
   
-  <meta name="description" content="Aujourd'hui nous allons voir comment formater un json un peu crade pour le transformer en quelques choses de plus sympathique. Soit le JsonSchema &hellip;">
+  <meta name="description" content="Nous avons vus dans les deux anciens post: comment régler le proxmox et le réseau
+comment rediriger le trafic avec nginx Nous allons voir comment &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -62,6 +63,61 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/05/17/proxmox-partie-3-connection-via-ssh/">Proxmox 4 partie 3 : Connection via ssh</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-05-17T14:54:12+02:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Nous avons vus dans les deux anciens post:</p>
+
+<ul>
+<li><a href="/blog/2016/02/28/installation-dun-proxmox-4-dot-0/">comment régler le proxmox et le réseau</a></li>
+<li><a href="/blog/2016/03/08/installation-dun-proxmox-4-dot-0-partie-2-nginx/">comment rediriger le trafic avec nginx</a></li>
+</ul>
+
+
+<p>Nous allons voir comment simplifier l&#8217;accès en mettant un accès SSH sur chaque instance. Pour se connecter à l&#8217;instance 101. La commande sera</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ssh deploy@&lt;url/ip du proxmox&gt; -p50101</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Enfin je donne la version complète du fichier <code>ipstable_start.sh</code></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2016/05/17/proxmox-partie-3-connection-via-ssh/">Lire &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -463,7 +519,7 @@ par exemple :</p>
 <p>Par exemple, je souhaite</p>
 
 <ul>
-<li>blog.domaine1.fr partte vers l&#8217;instance 102 qui contient son propre apache.</li>
+<li>blog.domaine1.fr parte vers l&#8217;instance 102 qui contient son propre apache.</li>
 <li>image.domaine1.fr vers l&#8217;instance 103 etc ..</li>
 </ul>
 
@@ -659,49 +715,6 @@ par exemple :</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/02/14/remettre-au-propre-son-depot-git/">Remettre au propre son dépot git</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2016-02-14T17:03:58+01:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Lorsque l&#8217;on souhaite sauvegarder son travail. Il y a toujours des fichiers modifiés que l&#8217;on ne souhaite pas commiter.</p>
-
-<p><img class="center" src="/images/gitmenage.png" width="387" height="490" title="avant et après" alt="avant et après"></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2016/02/14/remettre-au-propre-son-depot-git/">Lire &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -749,6 +762,10 @@ par exemple :</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/05/17/proxmox-partie-3-connection-via-ssh/">Proxmox 4 partie 3 : Connection via ssh</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/05/08/vim-formater-le-json/">VIM : formater le JSON</a>
       </li>
     
@@ -762,10 +779,6 @@ par exemple :</p>
     
       <li class="post">
         <a href="/blog/2016/03/20/les-plugins-sous-vim-tabular/">Les plugins sous VIM : Tabular</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/03/13/vim-plug-gestion-des-plugins/">Vim-plug : Gestion des plugins</a>
       </li>
     
   </ul>
